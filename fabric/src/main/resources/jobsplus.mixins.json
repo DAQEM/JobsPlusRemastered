@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "package": "com.daqem.jobsplus.fabric.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "client": [
+    "MixinTitleScreenFabric"
+  ],
+  "mixins": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
