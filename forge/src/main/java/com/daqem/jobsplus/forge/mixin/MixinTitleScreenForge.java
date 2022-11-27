@@ -10,6 +10,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class MixinTitleScreenForge {
     @Inject(at = @At("HEAD"), method = "init()V")
     private void init(CallbackInfo info) {
-        System.out.println("Hello from example architectury forge mixin!");
+        System.out.println("Hello from jobsplus forge mixin!");
     }
 }

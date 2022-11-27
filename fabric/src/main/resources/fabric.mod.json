@@ -2,21 +2,21 @@
   "schemaVersion": 1,
   "id": "jobsplus",
   "version": "${version}",
-  "name": "Example Mod",
-  "description": "This is an example description! Tell everyone what your mod is about!",
+  "name": "Jobs+",
+  "description": "",
   "authors": [
-    "Me!"
+    "DAQEM"
   ],
   "contact": {
-    "homepage": "https://fabricmc.net/",
-    "sources": "https://github.com/FabricMC/fabric-example-mod"
+    "homepage": "https://daqem.com/",
+    "sources": "https://github.com/DAQEM/JobsPlusRemastered"
   },
-  "license": "Insert License Here",
-  "icon": "assets/examplemod/icon.png",
+  "license": "MIT",
+  "icon": "assets/jobsplus/icon.png",
   "environment": "*",
   "entrypoints": {
     "main": [
-      "com.daqem.jobsplus.fabric.ExampleModFabric"
+      "com.daqem.jobsplus.fabric.JobsPlusFabric"
     ]
   },
   "mixins": [

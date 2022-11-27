@@ -1,11 +1,11 @@
 package com.daqem.jobsplus.fabric;
 
-import com.daqem.jobsplus.ExampleMod;
+import com.daqem.jobsplus.JobsPlus;
 import net.fabricmc.api.ModInitializer;
 
-public class ExampleModFabric implements ModInitializer {
+public class JobsPlusFabric implements ModInitializer {
     @Override
     public void onInitialize() {
-        ExampleMod.init();
+        JobsPlus.init();
     }
 }
