@@ -17,6 +17,9 @@
   "entrypoints": {
     "main": [
       "com.daqem.jobsplus.fabric.JobsPlusFabric"
+    ],
+    "client": [
+      "com.daqem.jobsplus.fabric.client.JobsPlusFabricClient"
     ]
   },
   "mixins": [

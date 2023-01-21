@@ -1,6 +1,7 @@
 package com.daqem.jobsplus.fabric;
 
 import com.daqem.jobsplus.JobsPlusExpectPlatform;
+import com.daqem.jobsplus.resources.JobManager;
 import net.fabricmc.loader.api.FabricLoader;
 
 import java.nio.file.Path;
@@ -11,5 +12,12 @@ public class JobsPlusExpectPlatformImpl {
      */
     public static Path getConfigDirectory() {
         return FabricLoader.getInstance().getConfigDir();
+    }
+
+    /**
+     * This is our actual method to {@link JobsPlusExpectPlatform#getJobManager()}.
+     */
+    public static JobManager getJobManager() {
+        return JobsPlusFabric.getJobManager();
     }
 }

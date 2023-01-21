@@ -1,31 +1,50 @@
 package com.daqem.jobsplus;
 
-import com.google.common.base.Suppliers;
-import dev.architectury.registry.CreativeTabRegistry;
-import dev.architectury.registry.registries.DeferredRegister;
-import dev.architectury.registry.registries.Registries;
-import dev.architectury.registry.registries.RegistrySupplier;
-import net.minecraft.core.Registry;
+import com.daqem.jobsplus.config.server.ServerConfig;
+import com.daqem.jobsplus.event.command.EventRegisterCommands;
+import com.daqem.jobsplus.event.player.EventPlayerJoin;
+import com.daqem.jobsplus.networking.JobsPlusNetworking;
+import com.daqem.jobsplus.resources.JobManager;
+import com.daqem.multiloaderconfiglib.MultiLoaderConfigLib;
+import com.mojang.logging.LogUtils;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-
-import java.util.function.Supplier;
+import org.slf4j.Logger;
 
 public class JobsPlus {
     public static final String MOD_ID = "jobsplus";
-    public static final Supplier<Registries> REGISTRIES = Suppliers.memoize(() -> Registries.get(MOD_ID));
-    public static final CreativeModeTab TAB = CreativeTabRegistry.create(new ResourceLocation(MOD_ID, "tab"), () ->
-            new ItemStack(JobsPlus.ITEM.get()));
-    
-    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(MOD_ID, Registry.ITEM_REGISTRY);
-    public static final RegistrySupplier<Item> ITEM = ITEMS.register("item", () ->
-            new Item(new Item.Properties().tab(JobsPlus.TAB)));
-    
+    public static final Logger LOGGER = LogUtils.getLogger();
+    public static final ServerConfig SERVER_CONFIG = new ServerConfig();
+
     public static void init() {
-        ITEMS.register();
-        
-        System.out.println(JobsPlusExpectPlatform.getConfigDirectory().toAbsolutePath().normalize().toString());
+        registerEvents();
+        JobsPlusNetworking.init();
+        MultiLoaderConfigLib.addServerConfigs(SERVER_CONFIG);
+    }
+
+    private static void registerEvents() {
+        EventPlayerJoin.registerEvent();
+        EventRegisterCommands.registerEvent();
+    }
+
+    public static ResourceLocation getId(String id) {
+        return new ResourceLocation(MOD_ID, id);
+    }
+
+    public static MutableComponent translatable(String str) {
+        return Component.translatable("jobsplus." + str);
+    }
+
+    public static MutableComponent translatable(String str, Object... objects) {
+        return Component.translatable("jobsplus." + str, objects);
+    }
+
+    public static MutableComponent literal(String str) {
+        return Component.literal(str);
+    }
+
+    public static JobManager getJobManager() {
+        return JobsPlusExpectPlatform.getJobManager();
     }
 }

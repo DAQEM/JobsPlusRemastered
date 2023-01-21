@@ -1,0 +1,121 @@
+{
+  "name": "Hunter",
+  "max_level": 250,
+  "color": "#4D94D9",
+  "icon_item": "minecraft:iron_sword",
+  "actions": [
+    {
+      "type": "jobsplus:on_build",
+      "rewards": [
+        {
+          "type": "jobsplus:job_exp",
+          "chance": 100,
+          "min_exp": 2,
+          "max_exp": 4
+        },
+        {
+          "type": "jobsplus:exp",
+          "chance": 43,
+          "min_exp": 100,
+          "max_exp": 34
+        },
+        {
+          "type": "jobsplus:item",
+          "chance": 10,
+          "item": "minecraft:iron_axe"
+        }
+      ],
+      "conditions": [
+        {
+          "type": "jobsplus:crop_age",
+          "max_age": true
+        },
+        {
+          "type": "jobsplus:crop_age",
+          "max_age": false
+        }
+      ],
+      "all_blocks": false,
+      "blocks": [
+        "minecraft:obsidian",
+        "#minecraft:wool",
+        "#minecraft:doors"
+      ],
+      "banned_blocks": []
+    }
+  ],
+  "powerups": [
+    {
+      "name": "Builders Swiftness",
+      "description": "Gives swiftness when placing a block.",
+      "all_jobs": true,
+      "jobs": [],
+      "cost": 10,
+      "actions": [
+        {
+          "type": "jobsplus:on_build",
+          "rewards": [
+            {
+              "type": "jobsplus:give_effect",
+              "chance": 100,
+              "effect": "minecraft:speed",
+              "duration": 20
+            }
+          ],
+          "conditions": [
+            {
+              "type": "jobsplus:job_level",
+              "all_jobs": false,
+              "jobs": [
+                "jobsplus:builder"
+              ],
+              "min_level": 10,
+              "max_level": 100
+            }
+          ],
+          "all_blocks": false,
+          "blocks": [
+            "minecraft:obsidian",
+            "#minecraft:wool",
+            "#minecraft:doors"
+          ],
+          "banned_blocks": []
+        }
+      ]
+    },
+    {
+      "name": "Builders EXP",
+      "description": "Gives builders triple job EXP.",
+      "all_jobs": false,
+      "jobs": [],
+      "cost": 30,
+      "actions": [
+        {
+          "type": "jobsplus:on_job_exp",
+          "rewards": [
+            {
+              "type": "jobsplus:job_exp_multiplier",
+              "chance": 100,
+              "multiplier": 3
+            }
+          ],
+          "conditions": [
+            {
+              "type": "jobsplus:job_level",
+              "all_jobs": false,
+              "jobs": [
+                "jobsplus:builder"
+              ],
+              "min_level": 50,
+              "max_level": 75
+            }
+          ],
+          "all_jobs": false,
+          "jobs": [
+            "jobsplus:builder"
+          ]
+        }
+      ]
+    }
+  ]
+}

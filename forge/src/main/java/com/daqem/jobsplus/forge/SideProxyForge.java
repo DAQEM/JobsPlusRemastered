@@ -1,0 +1,75 @@
+package com.daqem.jobsplus.forge;
+
+import com.daqem.jobsplus.JobsPlus;
+import com.daqem.jobsplus.client.JobsPlusClient;
+import com.daqem.jobsplus.command.arguments.EnumArgument;
+import com.daqem.jobsplus.command.arguments.JobArgument;
+import com.daqem.jobsplus.command.arguments.PowerupArgument;
+import com.daqem.jobsplus.forge.registry.JobsPlusRegistryForge;
+import com.daqem.jobsplus.forge.resources.JobManagerForge;
+import net.minecraft.commands.synchronization.ArgumentTypeInfo;
+import net.minecraft.commands.synchronization.ArgumentTypeInfos;
+import net.minecraft.commands.synchronization.SingletonArgumentInfo;
+import net.minecraft.core.Registry;
+import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.AddReloadListenerEvent;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.registries.DeferredRegister;
+
+public class SideProxyForge {
+
+    private static final JobManagerForge JOB_MANAGER = new JobManagerForge();
+
+    SideProxyForge() {
+        IEventBus eventBus = MinecraftForge.EVENT_BUS;
+        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+        eventBus.addListener(this::onAddReloadListeners);
+
+        modEventBus.addListener(JobsPlusRegistryForge::onRegisterRegistries);
+
+        registerCommandArgumentTypes();
+    }
+
+    private void registerCommandArgumentTypes() {
+        DeferredRegister<ArgumentTypeInfo<?, ?>> argTypeRegistry = DeferredRegister.create(Registry.COMMAND_ARGUMENT_TYPE_REGISTRY, JobsPlus.MOD_ID);
+        argTypeRegistry.register("job", () -> ArgumentTypeInfos.registerByClass(JobArgument.class, SingletonArgumentInfo.contextFree(JobArgument::job)));
+        argTypeRegistry.register("powerup", () -> ArgumentTypeInfos.registerByClass(PowerupArgument.class, SingletonArgumentInfo.contextFree(PowerupArgument::powerup)));
+        argTypeRegistry.register("enum", () -> ArgumentTypeInfos.registerByClass(EnumArgument.class, new EnumArgument.Info()));
+        argTypeRegistry.register(FMLJavaModLoadingContext.get().getModEventBus());
+    }
+
+    public static JobManagerForge getJobManager() {
+        return JOB_MANAGER;
+    }
+
+    public void onAddReloadListeners(AddReloadListenerEvent event) {
+        event.addListener(JOB_MANAGER);
+    }
+
+    public static class Server extends SideProxyForge {
+        Server() {
+
+        }
+
+    }
+
+    public static class Client extends SideProxyForge {
+
+        Client() {
+            JobsPlusClient.init();
+
+            registerEvents();
+        }
+
+        private void registerEvents() {
+            IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
+            eventBus.addListener(this::registerKeyBindings);
+        }
+
+        private void registerKeyBindings(RegisterKeyMappingsEvent event) {
+            event.register(JobsPlusClient.OPEN_MENU);
+        }
+    }
+}
