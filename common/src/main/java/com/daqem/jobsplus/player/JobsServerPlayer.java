@@ -17,13 +17,17 @@ public interface JobsServerPlayer {
 
     List<Job> getJobs();
 
+    List<JobInstance> getJobInstances();
+
     List<Job> getInactiveJobs();
+
+    List<JobInstance> getInactiveJobInstances();
 
     void addNewJob(ResourceLocation jobLocation);
 
     void addNewJob(JobInstance job);
 
-    void removeJob(Job job);
+    void removeJob(JobInstance job);
 
     boolean hasJob(JobInstance jobLocation);
 

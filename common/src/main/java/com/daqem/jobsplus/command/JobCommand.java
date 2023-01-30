@@ -186,7 +186,7 @@ public class JobCommand {
 
             if (level == 0) {
                 if (jobsServerPlayer.hasJob(jobInstance)) {
-                    jobsServerPlayer.removeJob(jobsServerPlayer.getJob(jobInstance));
+                    jobsServerPlayer.removeJob(jobInstance);
                     source.sendSuccess(JobsPlus.translatable(
                             "command.set.level.removed_job", jobInstance.getLocation(), jobsServerPlayer.name()), false);
                 } else {

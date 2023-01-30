@@ -1,13 +1,17 @@
 package com.daqem.jobsplus.networking.s2c;
 
+import com.daqem.jobsplus.JobsPlus;
 import com.daqem.jobsplus.client.screen.JobsScreen;
 import com.daqem.jobsplus.networking.JobsPlusNetworking;
 import dev.architectury.networking.NetworkManager;
 import dev.architectury.networking.simple.BaseS2CMessage;
 import dev.architectury.networking.simple.MessageType;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.FriendlyByteBuf;
 
 public class PacketOpenMenuS2C extends BaseS2CMessage {
@@ -32,9 +36,11 @@ public class PacketOpenMenuS2C extends BaseS2CMessage {
         buf.writeNbt(serverData);
     }
 
+    @Environment(EnvType.CLIENT)
     @Override
     public void handle(NetworkManager.PacketContext context) {
         if (context.getPlayer() instanceof LocalPlayer) {
+            JobsPlus.LOGGER.error(NbtUtils.prettyPrint(serverData));
             Minecraft.getInstance().setScreen(new JobsScreen(serverData));
         }
     }

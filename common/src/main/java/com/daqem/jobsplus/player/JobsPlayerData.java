@@ -34,5 +34,4 @@ public record JobsPlayerData(List<Job> activeJobs, List<Job> inactiveJobs, int c
                 });
         return new JobsPlayerData(activeJobs, inactiveJobs, coins, jobDisplay);
     }
-
 }

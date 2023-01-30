@@ -7,7 +7,6 @@
     "MixinTitleScreen"
   ],
   "mixins": [
-    "MixinMinecraftServer",
     "MixinServerPlayerEntity"
   ],
   "injectors": {

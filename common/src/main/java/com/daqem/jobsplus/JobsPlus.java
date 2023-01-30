@@ -1,11 +1,8 @@
 package com.daqem.jobsplus;
 
-import com.daqem.jobsplus.config.server.ServerConfig;
 import com.daqem.jobsplus.event.command.EventRegisterCommands;
-import com.daqem.jobsplus.event.player.EventPlayerJoin;
 import com.daqem.jobsplus.networking.JobsPlusNetworking;
 import com.daqem.jobsplus.resources.JobManager;
-import com.daqem.multiloaderconfiglib.MultiLoaderConfigLib;
 import com.mojang.logging.LogUtils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -15,16 +12,13 @@ import org.slf4j.Logger;
 public class JobsPlus {
     public static final String MOD_ID = "jobsplus";
     public static final Logger LOGGER = LogUtils.getLogger();
-    public static final ServerConfig SERVER_CONFIG = new ServerConfig();
 
     public static void init() {
         registerEvents();
         JobsPlusNetworking.init();
-        MultiLoaderConfigLib.addServerConfigs(SERVER_CONFIG);
     }
 
     private static void registerEvents() {
-        EventPlayerJoin.registerEvent();
         EventRegisterCommands.registerEvent();
     }
 

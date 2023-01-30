@@ -1,43 +1,226 @@
 package com.daqem.jobsplus.client.screen;
 
 import com.daqem.jobsplus.JobsPlus;
+import com.daqem.jobsplus.client.render.RenderColor;
+import com.daqem.jobsplus.networking.c2s.PacketConfirmationC2S;
+import com.daqem.jobsplus.networking.c2s.PacketOpenMenuC2S;
+import com.daqem.jobsplus.networking.utils.ConfirmationButtonType;
+import com.daqem.jobsplus.networking.utils.ConfirmationMessageType;
+import com.daqem.jobsplus.resources.job.JobInstance;
+import com.daqem.jobsplus.resources.job.powerup.PowerupInstance;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class ConfirmationScreen extends Screen {
 
     private static final ResourceLocation BACKGROUND = JobsPlus.getId("textures/gui/confirmation_screen.png");
+    private static final int BUTTON_WIDTH = 75;
+    private static final int BUTTON_HEIGHT = 18;
+    private static final int BUTTON_TOP_OFFSET = 1;
+    private static final int BUTTON_SIDE_OFFSET = 3;
+    private static final int BUTTON_START_POS = 11;
+    private static final int LEFT_START_POS = 0;
+    private static final int LEFT_WIDTH = 4;
+    private static final int MIDDLE_START_POS = 5;
+    private static final int MIDDLE_WIDTH = 1;
+    private static final int RIGHT_START_POS = 7;
+    private static final int RIGHT_WIDTH = 4;
+    private static final int IMAGE_HEIGHT = 28;
+    private static final int TEXT_COLOR = 0x333333;
+    private int imageWidth;
+    private final ConfirmationMessageType messageType;
+    private int messageWidth;
+    private final Screen lastScreen;
+    private int startX;
+    private int startY;
 
-    protected ConfirmationScreen() {
+    private Mouse mouse;
+
+    private @Nullable JobInstance job;
+    private @Nullable PowerupInstance powerup;
+
+    public ConfirmationScreen(Screen lastScreen, ConfirmationMessageType messageType, @Nullable PowerupInstance powerup) {
+        this(lastScreen, messageType);
+        this.powerup = powerup;
+    }
+
+    public ConfirmationScreen(Screen lastScreen, ConfirmationMessageType messageType, @Nullable JobInstance job) {
+        this(lastScreen, messageType);
+        this.job = job;
+    }
+
+    protected ConfirmationScreen(Screen lastScreen, ConfirmationMessageType messageType) {
         super(JobsPlus.literal("Confirmation"));
+        this.lastScreen = lastScreen;
+        this.messageType = messageType;
     }
 
-    public enum MessageType {
-        START_JOB_FREE(JobsPlus.translatable("confirmation.start_job_free"), ButtonType.YES_NO),
-        STOP_JOB_FREE(JobsPlus.translatable("confirmation.stop_job_free"), ButtonType.YES_NO),
-        POWER_UP(JobsPlus.translatable("confirmation.power_up"), ButtonType.YES_NO),
-        START_JOB_PAID(JobsPlus.translatable("confirmation.start_job_paid"), ButtonType.YES_NO),
-        STOP_JOB_PAID(JobsPlus.translatable("confirmation.stop_job_paid"), ButtonType.YES_NO),
-        NOT_ENOUGH_COINS_STOP(JobsPlus.translatable("confirmation.error.not_enough_coins_stop"), ButtonType.BACK),
-        NOT_ENOUGH_COINS_START(JobsPlus.translatable("confirmation.error.not_enough_coins_start"), ButtonType.BACK),
-        NOT_ENOUGH_COINS_POWERUP(JobsPlus.translatable("confirmation.error.not_enough_coins_powerup"), ButtonType.BACK),
-        JOB_NOT_ENABLED(JobsPlus.translatable("confirmation.error.job_not_enabled"), ButtonType.BACK),
-        MUST_BE_LEVEL_100(JobsPlus.translatable("confirmation.error.must_be_level_100"), ButtonType.BACK);
-
-        private final Component message;
-
-        MessageType(Component message, ButtonType buttonType) {
-            this.message = message;
+    @Override
+    protected void init() {
+        int requiredCoins = getRequiredCoins();
+        if (requiredCoins > 0) {
+            messageType.withObjects(requiredCoins);
         }
+        this.messageWidth = font.width(messageType.getMessage());
+        this.imageWidth = messageWidth;
+    }
 
-        public Component getMessage() {
-            return this.message;
+    @Override
+    public void render(@NotNull PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
+        this.renderBackground(poseStack);
+        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderColor.normal();
+        RenderSystem.setShaderTexture(0, BACKGROUND);
+
+        mouse = new Mouse(this, mouseX, mouseY);
+
+        startX = (this.width - imageWidth) / 2;
+        startY = (this.height - IMAGE_HEIGHT) / 2;
+
+        drawBackground(poseStack);
+        drawButtons(poseStack);
+
+        drawMessage(poseStack);
+        drawButtonMessages(poseStack);
+
+        super.render(poseStack, mouseX, mouseY, partialTicks);
+    }
+
+    private void drawButtons(@NotNull PoseStack poseStack) {
+        if (messageType.getButtonType() == ConfirmationButtonType.BACK) {
+            drawButton(poseStack, ButtonType.BACK);
+        } else {
+            drawButton(poseStack, ButtonType.YES);
+            drawButton(poseStack, ButtonType.CANCEL);
         }
     }
 
-    public enum ButtonType {
-        YES_NO,
-        BACK
+    private void drawButtonMessages(@NotNull PoseStack poseStack) {
+        if (messageType.getButtonType() == ConfirmationButtonType.BACK) {
+            drawButtonMessage(poseStack, JobsPlus.translatable("gui.confirmation.back"), ButtonType.BACK);
+        } else {
+            drawButtonMessage(poseStack, JobsPlus.translatable("gui.confirmation.yes"), ButtonType.YES);
+            drawButtonMessage(poseStack, JobsPlus.translatable("gui.confirmation.cancel"), ButtonType.CANCEL);
+        }
+    }
+
+    private void drawButtonMessage(@NotNull PoseStack poseStack, Component component, ButtonType buttonType) {
+        font.draw(poseStack, component, width / 2F - font.width(component) / 2F + buttonType.offset, startY + 34, TEXT_COLOR);
+    }
+
+    @Override
+    public boolean mouseClicked(double mouseX, double mouseY, int clickType) {
+        if (mouse.isHoveringButton(ButtonType.BACK)
+                || mouse.isHoveringButton(ButtonType.CANCEL)) {
+            closeWithClick(false);
+            return true;
+        }
+        if (mouse.isHoveringButton(ButtonType.YES)) {
+            if (messageType == ConfirmationMessageType.BUY_POWER_UP) {
+                if (powerup != null) {
+                    new PacketConfirmationC2S(messageType, getRequiredCoins(), powerup).sendToServer();
+                }
+            }
+            if (messageType == ConfirmationMessageType.START_JOB_FREE
+                    || messageType == ConfirmationMessageType.START_JOB_PAID
+                    || messageType == ConfirmationMessageType.STOP_JOB_FREE
+                    || messageType == ConfirmationMessageType.STOP_JOB_PAID) {
+                if (job != null) {
+                    new PacketConfirmationC2S(messageType, getRequiredCoins(), job).sendToServer();
+                }
+            }
+            closeWithClick(true);
+        }
+        return super.mouseClicked(mouseX, mouseY, clickType);
+    }
+
+    private void drawMessage(@NotNull PoseStack poseStack) {
+        font.draw(poseStack, messageType.getMessage(), startX, height / 2F - (font.lineHeight) / 2F, TEXT_COLOR);
+    }
+
+    private void drawBackground(@NotNull PoseStack poseStack) {
+        final int offset = 5;
+        blit(poseStack, startX - LEFT_WIDTH - offset, startY, LEFT_START_POS, 0, LEFT_WIDTH, IMAGE_HEIGHT);
+        for (int i = -offset; i < imageWidth + offset; i++) {
+            blit(poseStack, startX + i, startY, MIDDLE_START_POS, 0, MIDDLE_WIDTH, IMAGE_HEIGHT);
+        }
+        blit(poseStack, startX + imageWidth + offset, startY, RIGHT_START_POS, 0, RIGHT_WIDTH, IMAGE_HEIGHT);
+    }
+
+    private void drawButton(PoseStack poseStack, ButtonType buttonType) {
+        if (mouse.isHoveringButton(buttonType)) {
+            RenderColor.buttonHover();
+        }
+        blit(poseStack,
+                (int) ((width / 2F) - (BUTTON_WIDTH / 2F) + buttonType.offset), startY + IMAGE_HEIGHT + BUTTON_TOP_OFFSET,
+                BUTTON_START_POS, 0,
+                BUTTON_WIDTH, BUTTON_HEIGHT);
+        RenderColor.normal();
+    }
+
+    private void closeWithClick(boolean withPacket) {
+        ScreenHelper.playClientGUIClick();
+        if (withPacket) {
+            new PacketOpenMenuC2S().sendToServer();
+        } else {
+            this.onClose();
+        }
+    }
+
+    @Override
+    public void onClose() {
+        if (minecraft != null) {
+            minecraft.setScreen(lastScreen);
+        }
+    }
+
+    @Override
+    public boolean isPauseScreen() {
+        return false;
+    }
+
+    private int getRequiredCoins() {
+        int requiredCoins = 0;
+        switch (messageType.getRequireCoinsType()) {
+            case START_JOB -> requiredCoins = 10; //TODO config
+            case STOP_JOB -> requiredCoins = 5; //TODO config
+            case POWER_UP -> {
+                if (powerup != null) {
+                    requiredCoins = powerup.getCost();
+                }
+            }
+        }
+        return requiredCoins;
+    }
+
+    private enum ButtonType {
+        YES((-BUTTON_WIDTH / 2) - BUTTON_SIDE_OFFSET),
+        CANCEL((BUTTON_WIDTH / 2) + BUTTON_SIDE_OFFSET),
+        BACK(0);
+
+        int offset;
+
+        ButtonType(int offset) {
+            this.offset = offset;
+        }
+    }
+
+    private record Mouse(ConfirmationScreen confirmationScreen, int x, int y) {
+
+        public boolean isHoveringButton(ButtonType buttonType) {
+            return isBetween((int) ((confirmationScreen.width / 2F) - (BUTTON_WIDTH / 2F) + buttonType.offset),
+                    confirmationScreen.startY + IMAGE_HEIGHT + BUTTON_TOP_OFFSET,
+                    BUTTON_WIDTH, BUTTON_HEIGHT);
+        }
+
+        public boolean isBetween(int x, int y, int width, int height) {
+            return this.x >= x && this.x < x + width && this.y >= y && this.y < y + height;
+        }
     }
 }

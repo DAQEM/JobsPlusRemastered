@@ -1,13 +1,19 @@
 package com.daqem.jobsplus.player.job.powerup;
 
-import net.minecraft.resources.ResourceLocation;
+import com.daqem.jobsplus.resources.job.powerup.PowerupInstance;
 
 public class Powerup {
 
     private final PowerupState powerupState;
+    private final PowerupInstance powerupInstance;
 
-    public Powerup(ResourceLocation location, PowerupState powerupState) {
+    public Powerup(PowerupInstance powerupInstance, PowerupState powerupState) {
+        this.powerupInstance = powerupInstance;
         this.powerupState = powerupState;
+    }
+
+    public PowerupInstance getPowerupInstance() {
+        return powerupInstance;
     }
 
     public PowerupState getPowerupState() {

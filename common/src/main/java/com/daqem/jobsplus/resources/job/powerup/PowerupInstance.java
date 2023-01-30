@@ -1,8 +1,10 @@
 package com.daqem.jobsplus.resources.job.powerup;
 
+import com.daqem.jobsplus.resources.JobManager;
 import com.daqem.jobsplus.resources.job.action.Action;
 import com.google.gson.*;
 import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -53,6 +55,11 @@ public class PowerupInstance {
                 ", cost=" + cost +
                 ", actions=" + actions +
                 '}';
+    }
+
+    @Nullable
+    public static PowerupInstance of(ResourceLocation location) {
+        return JobManager.getInstance().getPowerups().get(location);
     }
 
     public static class PowerupSerializer implements JsonDeserializer<PowerupInstance> {

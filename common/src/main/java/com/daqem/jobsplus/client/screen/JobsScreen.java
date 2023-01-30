@@ -2,6 +2,7 @@ package com.daqem.jobsplus.client.screen;
 
 import com.daqem.jobsplus.JobsPlus;
 import com.daqem.jobsplus.client.render.RenderColor;
+import com.daqem.jobsplus.networking.utils.ConfirmationMessageType;
 import com.daqem.jobsplus.player.JobsPlayerData;
 import com.daqem.jobsplus.player.job.Job;
 import com.daqem.jobsplus.player.job.powerup.PowerupState;
@@ -19,12 +20,10 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.entity.ItemRenderer;
-import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -69,7 +68,9 @@ public class JobsScreen extends Screen {
         this.jobsPlayerData = JobsPlayerData.fromNBT(dataTag);
         this.jobs.addAll(jobsPlayerData.activeJobs());
         this.jobs.addAll(jobsPlayerData.inactiveJobs());
-        this.jobs.sort(Comparator.comparing(o -> o.getJobInstance().getName()));
+        JobsPlus.LOGGER.error("amount: " + jobs.size());
+        JobsPlus.LOGGER.error("manager: " + JobsPlus.getJobManager().getJobs().size());
+        this.jobs.sort(Comparator.comparing(job -> job.getJobInstance().getName()));
     }
 
     public static void drawRightAlignedString(@NotNull PoseStack poseStack, Font font, @NotNull String text, int posX, int posY, int color) {
@@ -78,10 +79,6 @@ public class JobsScreen extends Screen {
 
     public static void drawCenteredString(@NotNull PoseStack poseStack, Font font, @NotNull String text, int posX, int posY, int color) {
         font.draw(poseStack, text, (float) (posX - font.width(text) / 2), (float) posY, color);
-    }
-
-    public static void playClientGUIClick() {
-        Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
     }
 
     @Override
@@ -559,7 +556,7 @@ public class JobsScreen extends Screen {
         //CONSTRUCTION TABLE
         if (activeRightButton == 1) {
             if (isBetween(mouseX, mouseY, startX + 162, startY + 168, startX + 162 + 24, startY + 168 + 23)) {
-                playClientGUIClick();
+                ScreenHelper.playClientGUIClick();
 //                JobsPlusJeiPlugin.showJEIPage(ModItems.CONSTRUCTION_TABLE.get().getDefaultInstance());
             }
         }
@@ -576,7 +573,7 @@ public class JobsScreen extends Screen {
                                     getDisabledJobs().get(selectedButton);
                     scrollOffsRight = 0;
                     startIndexRight = 0;
-                    playClientGUIClick();
+                    ScreenHelper.playClientGUIClick();
                     return true;
                 } catch (IndexOutOfBoundsException ignore) {
                 }
@@ -621,7 +618,7 @@ public class JobsScreen extends Screen {
         }
         //ALL JOBS BUTTON
         if (isBetween(mouseX, mouseY, 6, -22, 32, 0)) {
-            playClientGUIClick();
+            ScreenHelper.playClientGUIClick();
             if (activeLeftButton != 0) {
                 selectedButton = -1;
                 job = null;
@@ -634,7 +631,7 @@ public class JobsScreen extends Screen {
         }
         //PERFORMING JOBS BUTTON
         else if (isBetween(mouseX, mouseY, 6 + 28, -22, 32 + 28, 0)) {
-            playClientGUIClick();
+            ScreenHelper.playClientGUIClick();
             if (activeLeftButton != 1) {
                 selectedButton = -1;
                 job = null;
@@ -647,7 +644,7 @@ public class JobsScreen extends Screen {
         }
         //NOT PERFORMING JOBS BUTTON
         else if (isBetween(mouseX, mouseY, 6 + 28 + 28, -22, 32 + 28 + 28, 0)) {
-            playClientGUIClick();
+            ScreenHelper.playClientGUIClick();
             if (activeLeftButton != 2) {
                 selectedButton = -1;
                 job = null;
@@ -660,28 +657,28 @@ public class JobsScreen extends Screen {
         }
         //JOB INFO BUTTON
         else if (isBetween(mouseX, mouseY, 6 + 150, -22, 32 + 150, 0)) {
-            playClientGUIClick();
+            ScreenHelper.playClientGUIClick();
             activeRightButton = 0;
             scrollOffsRight = 0;
             startIndexRight = 0;
         }
         //CRAFTING RECIPES BUTTON
         else if (isBetween(mouseX, mouseY, 6 + 28 + 150, -22, 32 + 28 + 150, 0)) {
-            playClientGUIClick();
+            ScreenHelper.playClientGUIClick();
             activeRightButton = 1;
             scrollOffsRight = 0;
             startIndexRight = 0;
         }
         // POWERUPS BUTTON
         else if (isBetween(mouseX, mouseY, 6 + 28 + 28 + 150, -22, 32 + 28 + 28 + 150, 0)) {
-            playClientGUIClick();
+            ScreenHelper.playClientGUIClick();
             activeRightButton = 2;
             scrollOffsRight = 0;
             startIndexRight = 0;
         }
         // HOW TO GET EXP BUTTON
         else if (isBetween(mouseX, mouseY, 6 + 28 + 28 + 28 + 150, -22, 32 + 28 + 28 + 28 + 150, 0)) {
-            playClientGUIClick();
+            ScreenHelper.playClientGUIClick();
             activeRightButton = 3;
             scrollOffsRight = 0;
             startIndexRight = 0;
@@ -691,24 +688,23 @@ public class JobsScreen extends Screen {
             // JOB START STOP BUTTON
             if (activeRightButton == 0) {
                 if (isBetween(mouseX, mouseY, 169, 132, 169 + 138, 132 + 18)) {
-                    playClientGUIClick();
+                    ScreenHelper.playClientGUIClick();
                     if (getSelectedJobLevel() == 0) {
                         if (hasFreeClaimableJobs()) {
-                            openConfirmScreen(JobsPlus.translatable("confirm.start"), "start", 0);
+                            openConfirmScreen(ConfirmationMessageType.START_JOB_FREE);
                         } else {
                             if (getCoins() >= getJobStartCost())
-                                openConfirmScreen(JobsPlus.translatable("confirm.start_paid", getJobStartCost()), "start_paid", 0);
+                                openConfirmScreen(ConfirmationMessageType.START_JOB_PAID);
                             else
-                                openConfirmScreen(JobsPlus.translatable("confirm.not_enough_coins_start"), "not_enough_coins_start", 0);
-
+                                openConfirmScreen(ConfirmationMessageType.NOT_ENOUGH_COINS_START);
                         }
                     } else if (getSelectedJobLevel() == getJobLevelToStopJobForFree()) {
-                        openConfirmScreen(JobsPlus.translatable("confirm.stop_free"), "stop_free", 0);
+                        openConfirmScreen(ConfirmationMessageType.STOP_JOB_FREE);
                     } else {
                         if (getCoins() >= getJobStopCost())
-                            openConfirmScreen(JobsPlus.translatable("confirm.stop", getJobStopCost()), "stop", 0);
+                            openConfirmScreen(ConfirmationMessageType.STOP_JOB_PAID);
                         else
-                            openConfirmScreen(JobsPlus.translatable("confirm.not_enough_coins_stop"), "not_enough_coins_stop", 0);
+                            openConfirmScreen(ConfirmationMessageType.NOT_ENOUGH_COINS_STOP);
 
                     }
                 }
@@ -717,7 +713,7 @@ public class JobsScreen extends Screen {
             if (activeRightButton == 1) {
                 ItemStack itemStack = getHoveredItemStack(mouseX, mouseY);
                 if (itemStack != ItemStack.EMPTY) {
-                    playClientGUIClick();
+                    ScreenHelper.playClientGUIClick();
 //                    JobsPlusJeiPlugin.showJEIPage(itemStack);
                 }
             }
@@ -744,7 +740,7 @@ public class JobsScreen extends Screen {
 //                            openConfirmScreen(JobsPlus.translatable("confirm.not_enough_coins_powerup"), "not_enough_coins_powerup", clickedPowerupID);
 //                        }
 //                    }
-//                    playClientGUIClick();
+//                    ScreenHelper.playClientGUIClick();
 //                }
 //                if (isBetween(mouseX, mouseY, 169, 27 + 103, 169 + 139, 27 + 18 + 103)) {
 //                    if (getSelectedJobLevel() == 100) {
@@ -753,7 +749,7 @@ public class JobsScreen extends Screen {
 //                    } else {
 //                        openConfirmScreen(JobsPlus.translatable("error.level.must_be_100"), "must_be_level_100", clickedPowerupID);
 //                    }
-//                    playClientGUIClick();
+//                    ScreenHelper.playClientGUIClick();
 //                }
             }
         }
@@ -893,9 +889,16 @@ public class JobsScreen extends Screen {
         return ExperienceHandler.getMaxExperienceForLevel(getSelectedJobLevel());
     }
 
-    public void openConfirmScreen(Component component, String string, int powerUp) {
-//        Minecraft.getInstance().setScreen(new ConfirmationScreen(component, string, Jobs.getJobFromInt(jobId), powerUp, this));
+    public void openConfirmScreen(ConfirmationMessageType messageType) {
+        Minecraft.getInstance().setScreen(new ConfirmationScreen(this, messageType));
+    }
 
+    public void openConfirmScreen(ConfirmationMessageType messageType, JobInstance job) {
+        Minecraft.getInstance().setScreen(new ConfirmationScreen(this, messageType, job));
+    }
+
+    public void openConfirmScreen(ConfirmationMessageType messageType, PowerupInstance powerup) {
+        Minecraft.getInstance().setScreen(new ConfirmationScreen(this, messageType, powerup));
     }
 
     private void drawNoJobSelected(PoseStack poseStack, String string) {
@@ -988,7 +991,6 @@ public class JobsScreen extends Screen {
 
     private int getAmountOfFreeJobs() { //TODO config
         return 2;
-//        return this.dataTag.getInt("AmountOfFreeJobs");
     }
 
     private boolean hasFreeClaimableJobs() {
@@ -997,27 +999,22 @@ public class JobsScreen extends Screen {
 
     private int getJobStartCost() { //TODO config
         return 10;
-//        return this.dataTag.getInt("JobStartCost");
     }
 
     private int getJobStopCost() { //TODO config
         return 5;
-//        return this.dataTag.getInt("JobStopCost");
     }
 
     private int getJobLevelToStopJobForFree() { //TODO config
         return 0;
-//        return this.dataTag.getInt("JobLevelToStopJobForFree");
     }
 
     private int getPowerupCost() { //TODO config
         return 10;
-//        return this.dataTag.getInt("PowerupCost");
     }
 
     private boolean isJobDisplayEnabled() { //TODO config
         return true;
-//        return this.dataTag.getBoolean("DisplayJobConfig");
     }
 
     private Optional<Job> getDisplay() {
