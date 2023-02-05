@@ -1,6 +1,5 @@
 package com.daqem.jobsplus.resources.job.action.reward.rewards;
 
-import com.daqem.jobsplus.JobsPlus;
 import com.daqem.jobsplus.player.ActionData;
 import com.daqem.jobsplus.player.JobsServerPlayer;
 import com.daqem.jobsplus.resources.job.action.reward.ActionReward;
@@ -52,13 +51,11 @@ public class ItemActionReward extends ActionReward {
                 try {
                     itemStack.setTag(TagParser.parseTag(jsonObject.get("nbt").getAsString()));
                 } catch (CommandSyntaxException e) {
-                    JobsPlus.LOGGER.error("Failed to parse nbt for item reward: " + jsonObject.get("nbt").getAsString());
-                    throw new RuntimeException(e);
+                    throw new JsonParseException("Failed to parse nbt ( " + jsonObject.get("nbt").getAsString() + " ) for item reward.");
                 }
             }
 
             double chance = jsonObject.has("chance") ? jsonObject.get("chance").getAsDouble() : 100;
-
 
             return new ItemActionReward(
                     chance,
