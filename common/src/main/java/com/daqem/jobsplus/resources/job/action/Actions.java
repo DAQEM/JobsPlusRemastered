@@ -42,9 +42,6 @@ public class Actions {
     public static final ActionType GET_HURT = register(JobsPlus.getId("on_get_hurt"), GetHurtAction.class, new GetHurtAction.Serializer());
     public static final ActionType KILL_ENTITY = register(JobsPlus.getId("on_kill_entity"), KillEntityAction.class, new KillEntityAction.Serializer());
     public static final ActionType HURT_ENTITY = register(JobsPlus.getId("on_hurt_entity"), HurtEntityAction.class, new HurtEntityAction.Serializer());
-    public static final ActionType SWIM = register(JobsPlus.getId("on_swim"), SwimAction.class, new SwimAction.Deserializer());
-    public static final ActionType SWIM_START = register(JobsPlus.getId("on_swim_start"), SwimStartAction.class, new SwimStartAction.Deserializer());
-    public static final ActionType SWIM_STOP = register(JobsPlus.getId("on_swim_stop"), SwimStopAction.class, new SwimStopAction.Deserializer());
     public static final ActionType CRAFT_ITEM = register(JobsPlus.getId("on_craft_item"), CraftItemAction.class, new CraftItemAction.Deserializer());
     public static final ActionType DROP_ITEM = register(JobsPlus.getId("on_drop_item"), DropItemAction.class, new DropItemAction.Deserializer());
     public static final ActionType USE_ITEM = register(JobsPlus.getId("on_use_item"), UseItemAction.class, new UseItemAction.Deserializer());
@@ -54,6 +51,10 @@ public class Actions {
     public static final ActionType THROW_ITEM = register(JobsPlus.getId("on_throw_item"), ThrowItemAction.class, new ThrowItemAction.Deserializer());
     public static final ActionType SHOOT_PROJECTILE = register(JobsPlus.getId("on_shoot_projectile"), ShootProjectileAction.class, new ShootProjectileAction.Deserializer());
     public static final ActionType BREW_POTION = register(JobsPlus.getId("on_brew_potion"), BrewPotionAction.class, new BrewPotionAction.Deserializer());
+
+    public static final ActionType SWIM = register(JobsPlus.getId("on_swim"), SwimAction.class, new SwimAction.Deserializer());
+    public static final ActionType SWIM_START = register(JobsPlus.getId("on_swim_start"), SwimStartAction.class, new SwimStartAction.Deserializer());
+    public static final ActionType SWIM_STOP = register(JobsPlus.getId("on_swim_stop"), SwimStopAction.class, new SwimStopAction.Deserializer());
     public static final ActionType WALK = register(JobsPlus.getId("on_walk"), WalkAction.class, new WalkAction.Deserializer());
     public static final ActionType WALK_START = register(JobsPlus.getId("on_walk_start"), WalkStartAction.class, new WalkStartAction.Deserializer());
     public static final ActionType WALK_STOP = register(JobsPlus.getId("on_walk_stop"), WalkStopAction.class, new WalkStopAction.Deserializer());
