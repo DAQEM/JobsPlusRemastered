@@ -1,15 +1,21 @@
 package com.daqem.jobsplus.client.screen;
 
+import com.daqem.jobsplus.Constants;
 import com.daqem.jobsplus.JobsPlus;
+import com.daqem.jobsplus.client.render.ModItemRenderer;
 import com.daqem.jobsplus.client.render.RenderColor;
+import com.daqem.jobsplus.networking.c2s.PacketOpenMenuC2S;
+import com.daqem.jobsplus.networking.c2s.PacketTogglePowerUp;
 import com.daqem.jobsplus.networking.utils.ConfirmationMessageType;
 import com.daqem.jobsplus.player.JobsPlayerData;
 import com.daqem.jobsplus.player.job.Job;
 import com.daqem.jobsplus.player.job.powerup.PowerupState;
 import com.daqem.jobsplus.resources.job.JobInstance;
+import com.daqem.jobsplus.resources.job.action.Action;
 import com.daqem.jobsplus.resources.job.powerup.PowerupInstance;
 import com.daqem.jobsplus.util.chat.ChatColor;
 import com.daqem.jobsplus.util.experience.ExperienceHandler;
+import com.google.common.collect.Sets;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.ChatFormatting;
@@ -25,8 +31,12 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.alchemy.PotionUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -45,32 +55,38 @@ public class JobsScreen extends Screen {
     private final LinkedList<Job> shownJobs = new LinkedList<>();
     private int activeRightButton;
     private int activeLeftButton;
-    private float scrollOffs;
+    private float scrollOffset;
     private boolean scrolling;
     private int startIndex;
     private int startX;
     private int startY;
+    private int firstHiddenIndex;
+    private int firstHiddenIndexRight;
     private Job job;
     private int selectedButton;
-
-    private float scrollOffsRight;
-    private boolean scrollingCrafting;
+    private float scrollOffsetRight;
+    private boolean scrollingRight;
     private int startIndexRight;
 
     public JobsScreen(CompoundTag dataTag) {
         super(JobsPlus.literal("Jobs"));
-        this.job = null;
-        this.activeLeftButton = dataTag.getInt("ActiveLeftButton");
-        this.activeRightButton = dataTag.getInt("ActiveRightButton");
-        this.selectedButton = dataTag.getInt("SelectedButton");
-        this.scrollOffs = dataTag.getFloat("ScrollOffset");
-        this.startIndex = dataTag.getInt("StartIndex");
+        this.activeLeftButton = dataTag.getInt(Constants.ACTIVE_LEFT_BUTTON);
+        this.activeRightButton = dataTag.getInt(Constants.ACTIVE_RIGHT_BUTTON);
+        this.selectedButton = dataTag.getInt(Constants.SELECTED_BUTTON);
+        this.scrollOffset = dataTag.getFloat(Constants.SCROLL_OFFSET);
+        this.scrollOffsetRight = dataTag.getFloat(Constants.SCROLL_OFFSET_RIGHT);
+        this.startIndex = dataTag.getInt(Constants.START_INDEX);
+        this.startIndexRight = dataTag.getInt(Constants.START_INDEX_RIGHT);
         this.jobsPlayerData = JobsPlayerData.fromNBT(dataTag);
         this.jobs.addAll(jobsPlayerData.activeJobs());
         this.jobs.addAll(jobsPlayerData.inactiveJobs());
-        JobsPlus.LOGGER.error("amount: " + jobs.size());
-        JobsPlus.LOGGER.error("manager: " + JobsPlus.getJobManager().getJobs().size());
         this.jobs.sort(Comparator.comparing(job -> job.getJobInstance().getName()));
+
+        if (selectedButton < 0) {
+            this.job = null;
+        } else {
+            setJob();
+        }
     }
 
     public static void drawRightAlignedString(@NotNull PoseStack poseStack, Font font, @NotNull String text, int posX, int posY, int color) {
@@ -91,17 +107,17 @@ public class JobsScreen extends Screen {
         this.startX = (this.width - this.imageWidth) / 2;
         this.startY = (this.height - this.imageHeight) / 2;
 
-        int firstHiddenIndex = this.startIndex + 4;
-        int firstHiddenIndexRight = getActiveRightButton() == 1 ? this.startIndexRight + 49 : this.startIndexRight + 4;
+        this.firstHiddenIndex = this.startIndex + 4;
+        this.firstHiddenIndexRight = getActiveRightButton() == 1 ? this.startIndexRight + 21 : this.startIndexRight + 4;
 
         this.setShownJobs(firstHiddenIndex);
 
         this.renderBackgroundImage(poseStack);
         this.renderScrollWheel(poseStack);
-        this.renderButtons(poseStack, mouseX, mouseY, firstHiddenIndex, firstHiddenIndexRight);
+        this.renderButtons(poseStack, mouseX, mouseY);
         this.renderTooltip(poseStack, mouseX, mouseY);
-        this.renderItems(startX, startY, firstHiddenIndex, firstHiddenIndexRight);
-        this.renderTexts(poseStack, firstHiddenIndex, firstHiddenIndexRight);
+        this.renderItems(poseStack);
+        this.renderTexts(poseStack);
         super.render(poseStack, mouseX, mouseY, partialTicks);
     }
 
@@ -140,21 +156,20 @@ public class JobsScreen extends Screen {
     }
 
     private void addPotionsToCraftableStacks() {
-//        if (!hasJobSelected() || getSelectedJob() == null || !getSelectedJob().is(Jobs.ALCHEMIST)) return;
-//
-//        LinkedHashMap<MobEffect, Integer> potionMap = new LinkedHashMap<>();
-//        potionMap.put(MobEffects.MOVEMENT_SPEED, 4);
-//        potionMap.put(MobEffects.DIG_SPEED, 4);
-//        potionMap.put(MobEffects.DAMAGE_BOOST, 4);
-//        potionMap.put(MobEffects.REGENERATION, 3);
-//        potionMap.put(MobEffects.LUCK, 4);
-//        potionMap.put(ModEffects.JESUS.get(), 2);
-//        potionMap.put(ModEffects.FLYING.get(), 2);
-//        for (Map.Entry<MobEffect, Integer> entry : potionMap.entrySet()) {
-//            for (int i = 0; i < entry.getValue(); i++) {
-//                selectedJobCraftableStacks.add(PotionUtils.setCustomEffects(Items.POTION.getDefaultInstance(), Sets.newHashSet(new MobEffectInstance(entry.getKey()))));
-//            }
-//        }
+        if (!hasJobSelected() || getSelectedJob() == null) return;
+
+        LinkedHashMap<MobEffect, Integer> potionMap = new LinkedHashMap<>();
+        potionMap.put(MobEffects.MOVEMENT_SPEED, 4);
+        potionMap.put(MobEffects.DIG_SPEED, 4);
+        potionMap.put(MobEffects.DAMAGE_BOOST, 4);
+        potionMap.put(MobEffects.REGENERATION, 3);
+        potionMap.put(MobEffects.LUCK, 4);
+        for (Map.Entry<MobEffect, Integer> entry : potionMap.entrySet()) {
+            for (int i = 0; i < entry.getValue(); i++) {
+                selectedJobCraftableStacks.add(PotionUtils.setCustomEffects(Items.POTION.getDefaultInstance(), Sets.newHashSet(new MobEffectInstance(entry.getKey()))));
+            }
+        }
+        selectedJobCraftableStacks.addAll(List.of(Items.STONE.getDefaultInstance(), Items.STONE.getDefaultInstance(), Items.STONE.getDefaultInstance()));
     }
 
     private void renderBackgroundImage(PoseStack poseStack) {
@@ -163,7 +178,7 @@ public class JobsScreen extends Screen {
 
     private void renderScrollWheel(PoseStack poseStack) {
         if (!isScrollBarActive()) RenderColor.grayedOut();
-        blitThis(poseStack, 127, (int) (17 + (123.0F * getScrollOffs())), 0, 207, 12, 15);
+        blitThis(poseStack, 127, (int) (16 + (123.0F * getScrollOffset())), 0, 207, 12, 15);
         RenderColor.normal();
     }
 
@@ -274,7 +289,7 @@ public class JobsScreen extends Screen {
         else blitThis(poseStack, 7 + 5, i1 + 5, 168, imageHeight, 27, 27);
     }
 
-    public void renderButtons(PoseStack poseStack, int mouseX, int mouseY, int firstHiddenIndex, int firstHiddenIndexRight) {
+    public void renderButtons(PoseStack poseStack, int mouseX, int mouseY) {
         //SETTINGS
         if (isBetween(mouseX, mouseY, 3, height - 20, 18, height - 4))
             RenderSystem.setShaderColor(0.8F, 0.8F, 0.8F, 1);
@@ -296,20 +311,19 @@ public class JobsScreen extends Screen {
         drawTopButtons(poseStack, mouseX, mouseY, 4, 156, 60, activeRightButton);
         //JOB BUTTONS
         drawJobButtons(poseStack, mouseX, mouseY, firstHiddenIndex);
-        // JOB START AND STOP BUTTONS
-        if (hasJobSelected() && (getActiveRightButton() == 1 || getActiveRightButton() == 2)) {
+
+        if (hasJobSelected() && (getActiveRightButton() == 1 || getActiveRightButton() == 2 || getActiveRightButton() == 3)) {
             //BROWN BACKGROUND
-            blitThis(poseStack, 171, 17, 189, 198, 128, 128);
+            blitThis(poseStack, 158, 15, 183, 198, 144, 140);
 
             //SCROLLBAR
-            blitThis(poseStack, 302, 17, 317, 198, 9, 128);
+            blitThis(poseStack, 305, 15, 126, 15, 14, 140);
 
             //SCROLL WHEEL
-            blitThis(poseStack, 303, (int) (18 + (111.0F * getScrollOffsRight())), 160, 210, 7, 15);
+            blitThis(poseStack, 306, (int) (16 + (123.0F * getScrollOffsetRight())), 0, 207, 12, 15);
         }
-
-        if (activeRightButton == 0) {
-            if (hasJobSelected()) {
+        if (hasJobSelected()) {
+            if (activeRightButton == 0) {
                 if (isBetween(mouseX - startX, mouseY - startY, 169, 132, 169 + 138, 132 + 17)) {
                     RenderSystem.setShaderColor(0.7F, 0.7F, 1F, 1);
                 } else {
@@ -317,44 +331,55 @@ public class JobsScreen extends Screen {
                 }
                 blitThis(poseStack, 150 + 19, 132, 26, imageHeight + 105, 139, 18);
                 RenderColor.normal();
-
-            }
-            // CRAFTING RECIPE BUTTONS
-        } else if (activeRightButton == 1) {
-            if (hasJobSelected()) {
+                // CRAFTING RECIPE BUTTONS
+            } else if (activeRightButton == 1) {
                 //BUTTONS
                 for (int i = this.startIndexRight; i < firstHiddenIndexRight && i < selectedJobCraftableStacks.size(); ++i) {
                     int j = i - this.startIndexRight;
-                    int k = 172 + j % 7 * 18;
-                    int l = j / 7;
-                    int i1 = 18 + l * 18;
+                    int k = 158 + j % 3 * 48;
+                    int l = j / 3;
+                    int i1 = 15 + l * 20;
 
-                    if (isBetween(mouseX - startX, mouseY - startY, k, i1, k + 17, i1 + 17)) {
+                    if (isBetween(mouseX - startX, mouseY - startY, k, i1, k + 47, i1 + 19)) {
                         RenderColor.buttonHover();
                     }
-                    blitThis(poseStack, k, i1, 142, 210, 18, 18);
+                    blitThis(poseStack, k, i1, 26, 201, 48, 20);
                     RenderColor.normal();
                 }
 
                 //CONSTRUCTION TABLE
                 blitThis(poseStack, 158, imageHeight, 150, 136, 100, 30);
                 blitThis(poseStack, 218, imageHeight, 226, 136, 100, 30);
-            }
-            //POWERUP BUTTONS
-        } else if (activeRightButton == 2) {
-            if (hasJobSelected()) {
+
+                //POWERUP BUTTONS
+            } else if (activeRightButton == 2) {
                 for (int i = this.startIndexRight; i < firstHiddenIndexRight && i < getSelectedJob().getJobInstance().getPowerups().size(); ++i) {
                     int j = i - this.startIndexRight;
-                    int i1 = 17 + j * 32;
+                    int i1 = 15 + j * 35;
 
                     //BUTTONS
-                    if (isBetween(mouseX, mouseY, this.startX + 171, i1 + startY, this.startX + 298, i1 + startY + 31)) {
+                    if (isBetween(mouseX, mouseY, this.startX + 158, i1 + startY, this.startX + 158 + 144 - 1, i1 + startY + 34)) {
                         RenderColor.normalSelected();
                     }
-                    blitThis(poseStack, 171, i1, 26, this.imageHeight, 116, 31);
-                    blitThis(poseStack, 184, i1, 27, this.imageHeight, 115, 31);
-                    blitThis(poseStack, 171, i1 + 1, 26, this.imageHeight + 4, 116, 31);
-                    blitThis(poseStack, 184, i1 + 1, 27, this.imageHeight + 4, 115, 31);
+                    blitThis(poseStack, 158, i1, 26, this.imageHeight, 116, 31);
+                    blitThis(poseStack, 187, i1, 27, this.imageHeight, 115, 31);
+                    blitThis(poseStack, 158, i1 + 4, 26, this.imageHeight + 4, 116, 31);
+                    blitThis(poseStack, 187, i1 + 4, 27, this.imageHeight + 4, 115, 31);
+                    RenderColor.normal();
+                }
+            } else if (activeRightButton == 3) {
+                for (int i = this.startIndexRight; i < firstHiddenIndexRight && i < getSelectedJob().getJobInstance().getActions().size(); ++i) {
+                    int j = i - this.startIndexRight;
+                    int i1 = 15 + j * 35;
+
+                    //BUTTONS
+                    if (isBetween(mouseX, mouseY, this.startX + 158, i1 + startY, this.startX + 158 + 144 - 1, i1 + startY + 34)) {
+                        RenderColor.normalSelected();
+                    }
+                    blitThis(poseStack, 158, i1, 26, this.imageHeight, 116, 31);
+                    blitThis(poseStack, 187, i1, 27, this.imageHeight, 115, 31);
+                    blitThis(poseStack, 158, i1 + 4, 26, this.imageHeight + 4, 116, 31);
+                    blitThis(poseStack, 187, i1 + 4, 27, this.imageHeight + 4, 115, 31);
                     RenderColor.normal();
                 }
             }
@@ -430,7 +455,7 @@ public class JobsScreen extends Screen {
         }
     }
 
-    public void renderTexts(PoseStack poseStack, int firstHiddenIndex, int firstHiddenIndexRight) {
+    public void renderTexts(PoseStack poseStack) {
         font.draw(poseStack, ChatColor.darkGray() + JobsPlus.translatable("gui.jobs").getString(), startX + 7, startY + 6, 16777215);
         drawRightAlignedString(poseStack, font, ChatColor.darkGray() + JobsPlus.translatable("gui.coins.top", getCoins()).getString(), startX + 140, startY + 6, 16777215);
 
@@ -460,42 +485,36 @@ public class JobsScreen extends Screen {
                 drawCenteredString(poseStack, font, ChatColor.darkGray() + JobsPlus.translatable("gui.powerups.powerups").getString(), centerR, startY + 6, 16777215);
                 for (int i = this.startIndexRight; i < firstHiddenIndexRight && i < getSelectedJob().getJobInstance().getPowerups().size(); ++i) {
                     int j = i - this.startIndexRight;
-                    int i1 = 17 + j * 32;
+                    int i1 = 18 + j * 35;
 
                     PowerupInstance powerupInstance = getSelectedJob().getJobInstance().getPowerups().get(i);
-                    font.draw(poseStack, powerupInstance.getName(), this.startX + 176, i1 + startY + 5, 16777215);
+                    font.draw(poseStack, powerupInstance.getName(), this.startX + 164, i1 + startY + 5, 16777215);
                     if (getSelectedJob().hasPowerup(powerupInstance)) {
                         PowerupState state = getSelectedJob().getPowerups().get(powerupInstance.getLocation());
-                        font.draw(poseStack, "State: " + (state == PowerupState.ACTIVE ? ChatColor.green() + state.getState() : ChatColor.red() + state.getState()), this.startX + 176, i1 + startY + 16, 16777215);
+                        font.draw(poseStack, "State: " + (state == PowerupState.ACTIVE ? ChatColor.green() + state.getState() : ChatColor.red() + state.getState()), this.startX + 164, i1 + startY + 16, 16777215);
                     } else {
-                        font.draw(poseStack, "Cost: " + powerupInstance.getCost(), this.startX + 176, i1 + startY + 16, 16777215);
+                        font.draw(poseStack, "Cost: " + powerupInstance.getCost(), this.startX + 164, i1 + startY + 16, 16777215);
                     }
                 }
-//                drawCenteredStringNew(poseStack, font, ChatColor.gray() + JobsPlus.translatable("gui.powerups.cost", getPowerupCost()).getString(), centerR, startY + 16, 16777215);
-//                drawCenteredStringNew(poseStack, font, ChatColor.darkGray() + JobsPlus.translatable("gui.powerups.superpowers").getString(), centerR, startY + 110, 16777215);
-//                drawCenteredStringNew(poseStack, font, ChatColor.gray() + JobsPlus.translatable("gui.powerups.superpowers.cost").getString(), centerR, startY + 120, 16777215);
-                poseStack.pushPose();
-                poseStack.scale(0.72F, 0.72F, 0.72F);
-//                drawCenteredPowerupsString(poseStack, font, ChatColor.darkGray() + JobsPlus.translatable("gui.powerups." + Jobs.getEnglishString(jobId).toLowerCase() + ".1").getString(), (int) ((startX + (imageWidth + 152) / 2) / 0.72F), (int) ((startY + 33) / 0.72F), 16777215);
-//                drawCenteredPowerupsString(poseStack, font, ChatColor.darkGray() + JobsPlus.translatable("gui.powerups." + Jobs.getEnglishString(jobId).toLowerCase() + ".2").getString(), (int) ((startX + (imageWidth + 152) / 2) / 0.72F), (int) ((startY + 58) / 0.72F), 16777215);
-//                drawCenteredPowerupsString(poseStack, font, ChatColor.darkGray() + JobsPlus.translatable("gui.powerups." + Jobs.getEnglishString(jobId).toLowerCase() + ".3").getString(), (int) ((startX + (imageWidth + 152) / 2) / 0.72F), (int) ((startY + 83) / 0.72F), 16777215);
-//                drawCenteredPowerupsString(poseStack, font, ChatColor.darkGray() + JobsPlus.translatable("gui.powerups." + Jobs.getEnglishString(jobId).toLowerCase() + ".superpower").getString(), (int) ((startX + (imageWidth + 152) / 2) / 0.72F), (int) ((startY + 137) / 0.72F), 16777215);
-                poseStack.popPose();
             } else if (activeRightButton == 3) {
-                drawnBigJobTitle(poseStack);
-                drawCenteredString(poseStack, font, ChatFormatting.STRIKETHROUGH + "             ", centerR, startY + 47, 16777215);
-                for (int i = 1; i < 10; ++i) {
-                    drawCenteredString(poseStack, font, getTCText(i), centerR, startY + 50 + (i * 10), getTCTextColor(i));
+                drawCenteredString(poseStack, font, ChatColor.darkGray() + JobsPlus.translatable("gui.job_how_to_get_exp").append(" ").append(JobsPlus.translatable("gui.click_for_details")).getString(), centerR, startY + 6, 16777215);
+                for (int i = this.startIndexRight; i < firstHiddenIndexRight && i < getSelectedJob().getJobInstance().getActions().size(); ++i) {
+                    int j = i - this.startIndexRight;
+                    int i1 = 18 + j * 35;
+
+                    Action action = getSelectedJob().getJobInstance().getActions().get(i);
+                    poseStack.pushPose();
+                    poseStack.scale(1.2F, 1.2F, 1.2F);
+                    font.draw(poseStack, action.getName(), (this.startX + 164) / 1.2F, (i1 + startY + 3) / 1.2F, 0xFFFFFF);
+                    poseStack.popPose();
+                    font.draw(poseStack, String.valueOf(i + 1), this.startX + 290, i1 + startY + 5, 0xA9A9A9);
+                    font.draw(poseStack, action.shortDescription(), this.startX + 164, i1 + startY + 17, 0x55FFFF);
                 }
-                poseStack.pushPose();
-                poseStack.scale(1.2F, 1.2F, 1.2F);
-                drawCenteredString(poseStack, font, ChatColor.darkGray() + JobsPlus.translatable("gui.exp.title").getString(), (int) ((centerR) / 1.2), (int) ((startY + 37) / 1.2), 16777215);
-                poseStack.popPose();
             }
         }
     }
 
-    public void renderItems(int x, int y, int firstHiddenIndex, int firstHiddenIndexRight) {
+    public void renderItems(PoseStack poseStack) {
         if (minecraft == null) return;
         ItemRenderer itemRenderer = minecraft.getItemRenderer();
 
@@ -505,19 +524,21 @@ public class JobsScreen extends Screen {
             if (activeRightButton == 1) {
                 for (int i = this.startIndexRight; i < firstHiddenIndexRight && i < selectedJobCraftableStacks.size(); i++) {
                     int j = i - this.startIndexRight;
-                    int xOffset = x + 173 + j % 7 * 18;
-                    int l = j / 7;
-                    int yOffset = y + 19 + l * 18;
-                    itemRenderer.renderAndDecorateItem(selectedJobCraftableStacks.get(i), xOffset, yOffset);
+                    int xOffset = startX + 160 + j % 3 * 48;
+                    int l = j / 3;
+                    int yOffset = startY + 17 + l * 20;
+                    ModItemRenderer.renderAndDecorateItem(itemRenderer, selectedJobCraftableStacks.get(i), xOffset, yOffset, 16);
+                    int level = new Random().nextInt(0, job.getJobInstance().getMaxLevel());
+                    font.draw(poseStack, String.valueOf(level), xOffset + 22, yOffset + 4, job.getLevel() >= level ? 0x55FF55 : 0xFF5555);
                 }
                 //CONSTRUCTION TABLE
-//                itemRenderer.renderAndDecorateItem(ModItems.CONSTRUCTION_TABLE.get().getDefaultInstance(), startX + 166, startY + 171);
+                //itemRenderer.renderAndDecorateItem(ModItems.CONSTRUCTION_TABLE.get().getDefaultInstance(), startX + 166, startY + 171);
             }
             if (getSelectedJobLevel() != 0 && isJobDisplayEnabled()) {
                 if (getDisplay().isPresent() && getDisplay().get() == job)
-                    itemRenderer.renderAndDecorateItem(Items.NAME_TAG.getDefaultInstance(), startX + 328, startY + 11);
+                    itemRenderer.renderAndDecorateItem(Items.NAME_TAG.getDefaultInstance(), this.startX + 328, this.startY + 11);
                 else
-                    itemRenderer.renderAndDecorateItem(Items.NAME_TAG.getDefaultInstance(), startX + 327, startY + 11);
+                    itemRenderer.renderAndDecorateItem(Items.NAME_TAG.getDefaultInstance(), this.startX + 327, this.startY + 11);
             }
         }
     }
@@ -537,7 +558,7 @@ public class JobsScreen extends Screen {
         LocalPlayer player = Minecraft.getInstance().player;
         if (player == null) return false;
         this.scrolling = false;
-        this.scrollingCrafting = false;
+        this.scrollingRight = false;
 
         //SETTINGS
         if (isBetween(mouseX, mouseY, 3, height - 20, 19, height - 4)) {
@@ -566,12 +587,8 @@ public class JobsScreen extends Screen {
             if (isBetween(mouseX - startX, mouseY - startY, 7, 16, 122, 35 * (l - startIndex + 1) + 15)) {
                 try {
                     selectedButton = l;
-                    job = activeLeftButton == 0 ?
-                            jobs.get(selectedButton) :
-                            activeLeftButton == 1 ?
-                                    getEnabledJobs().get(selectedButton) :
-                                    getDisabledJobs().get(selectedButton);
-                    scrollOffsRight = 0;
+                    setJob();
+                    scrollOffsetRight = 0;
                     startIndexRight = 0;
                     ScreenHelper.playClientGUIClick();
                     return true;
@@ -590,7 +607,7 @@ public class JobsScreen extends Screen {
 
         //SCROLL BAR CRAFTING
         if (isBetween(mouseX, mouseY, 302, 17, 311, 155)) {
-            this.scrollingCrafting = true;
+            this.scrollingRight = true;
         }
 
         //DISPLAY AND BOSSBAR
@@ -623,8 +640,8 @@ public class JobsScreen extends Screen {
                 selectedButton = -1;
                 job = null;
                 startIndex = 0;
-                scrollOffs = 0;
-                scrollOffsRight = 0;
+                scrollOffset = 0;
+                scrollOffsetRight = 0;
                 startIndexRight = 0;
             }
             activeLeftButton = 0;
@@ -636,8 +653,8 @@ public class JobsScreen extends Screen {
                 selectedButton = -1;
                 job = null;
                 startIndex = 0;
-                scrollOffs = 0;
-                scrollOffsRight = 0;
+                scrollOffset = 0;
+                scrollOffsetRight = 0;
                 startIndexRight = 0;
             }
             activeLeftButton = 1;
@@ -649,8 +666,8 @@ public class JobsScreen extends Screen {
                 selectedButton = -1;
                 job = null;
                 startIndex = 0;
-                scrollOffs = 0;
-                scrollOffsRight = 0;
+                scrollOffset = 0;
+                scrollOffsetRight = 0;
                 startIndexRight = 0;
             }
             activeLeftButton = 2;
@@ -659,28 +676,28 @@ public class JobsScreen extends Screen {
         else if (isBetween(mouseX, mouseY, 6 + 150, -22, 32 + 150, 0)) {
             ScreenHelper.playClientGUIClick();
             activeRightButton = 0;
-            scrollOffsRight = 0;
+            scrollOffsetRight = 0;
             startIndexRight = 0;
         }
         //CRAFTING RECIPES BUTTON
         else if (isBetween(mouseX, mouseY, 6 + 28 + 150, -22, 32 + 28 + 150, 0)) {
             ScreenHelper.playClientGUIClick();
             activeRightButton = 1;
-            scrollOffsRight = 0;
+            scrollOffsetRight = 0;
             startIndexRight = 0;
         }
         // POWERUPS BUTTON
         else if (isBetween(mouseX, mouseY, 6 + 28 + 28 + 150, -22, 32 + 28 + 28 + 150, 0)) {
             ScreenHelper.playClientGUIClick();
             activeRightButton = 2;
-            scrollOffsRight = 0;
+            scrollOffsetRight = 0;
             startIndexRight = 0;
         }
         // HOW TO GET EXP BUTTON
         else if (isBetween(mouseX, mouseY, 6 + 28 + 28 + 28 + 150, -22, 32 + 28 + 28 + 28 + 150, 0)) {
             ScreenHelper.playClientGUIClick();
             activeRightButton = 3;
-            scrollOffsRight = 0;
+            scrollOffsetRight = 0;
             startIndexRight = 0;
         }
         // RIGHT BUTTONS
@@ -691,18 +708,18 @@ public class JobsScreen extends Screen {
                     ScreenHelper.playClientGUIClick();
                     if (getSelectedJobLevel() == 0) {
                         if (hasFreeClaimableJobs()) {
-                            openConfirmScreen(ConfirmationMessageType.START_JOB_FREE);
+                            openConfirmScreen(ConfirmationMessageType.START_JOB_FREE, job.getJobInstance());
                         } else {
                             if (getCoins() >= getJobStartCost())
-                                openConfirmScreen(ConfirmationMessageType.START_JOB_PAID);
+                                openConfirmScreen(ConfirmationMessageType.START_JOB_PAID, job.getJobInstance());
                             else
                                 openConfirmScreen(ConfirmationMessageType.NOT_ENOUGH_COINS_START);
                         }
                     } else if (getSelectedJobLevel() == getJobLevelToStopJobForFree()) {
-                        openConfirmScreen(ConfirmationMessageType.STOP_JOB_FREE);
+                        openConfirmScreen(ConfirmationMessageType.STOP_JOB_FREE, job.getJobInstance());
                     } else {
                         if (getCoins() >= getJobStopCost())
-                            openConfirmScreen(ConfirmationMessageType.STOP_JOB_PAID);
+                            openConfirmScreen(ConfirmationMessageType.STOP_JOB_PAID, job.getJobInstance());
                         else
                             openConfirmScreen(ConfirmationMessageType.NOT_ENOUGH_COINS_STOP);
 
@@ -718,42 +735,64 @@ public class JobsScreen extends Screen {
                 }
             }
             // POWERUPS
+            JobInstance jobInstance = getSelectedJob().getJobInstance();
             if (activeRightButton == 2) {
-//                int clickedPowerupID = 0;
-//                if (isBetween(mouseX, mouseY, 169, 27, 169 + 139, 27 + 18)) clickedPowerupID = 1;
-//                if (isBetween(mouseX, mouseY, 169, 27 + 25, 169 + 139, 27 + 18 + 25)) clickedPowerupID = 2;
-//                if (isBetween(mouseX, mouseY, 169, 27 + 50, 169 + 139, 27 + 18 + 50)) clickedPowerupID = 3;
-//                if (clickedPowerupID != 0) {
-//                    if (hasBoughtPowerup(clickedPowerupID)) {
-////                        ModPackets.INSTANCE.sendToServer(new PacketMenuPowerUp(true, Jobs.getJobFromInt(job), clickedPowerupID + 1));
-////                        ModPackets.INSTANCE.sendToServer(new PacketOpenMenu(job, activeLeftButton, activeRightButton, selectedButton, scrollOffs, startIndex));
-//                    } else {
-//                        //Check if player has enough coins to buy a power-up
-//                        if (getCoins() >= getPowerupCost()) {
-//                            //Check is the player has the job.
-//                            if (getSelectedJobLevel() != 0)
-//                                openConfirmScreen(JobsPlus.translatable("confirm.powerup", getPowerupCost()), "powerup", clickedPowerupID);
-//                            else {
-//                                openConfirmScreen(JobsPlus.translatable("confirm.job_not_enabled"), "job_not_enabled", clickedPowerupID);
-//                            }
-//                        } else {
-//                            openConfirmScreen(JobsPlus.translatable("confirm.not_enough_coins_powerup"), "not_enough_coins_powerup", clickedPowerupID);
-//                        }
-//                    }
-//                    ScreenHelper.playClientGUIClick();
-//                }
-//                if (isBetween(mouseX, mouseY, 169, 27 + 103, 169 + 139, 27 + 18 + 103)) {
-//                    if (getSelectedJobLevel() == 100) {
-////                        ModPackets.INSTANCE.sendToServer(new PacketSwitchSuperpower(Jobs.getJobFromInt(job)));
-////                        ModPackets.INSTANCE.sendToServer(new PacketOpenMenu(job, activeLeftButton, activeRightButton, selectedButton, scrollOffs, startIndex));
-//                    } else {
-//                        openConfirmScreen(JobsPlus.translatable("error.level.must_be_100"), "must_be_level_100", clickedPowerupID);
-//                    }
-//                    ScreenHelper.playClientGUIClick();
-//                }
+                for (int i = this.startIndexRight; i < firstHiddenIndexRight && i < jobInstance.getPowerups().size(); ++i) {
+                    int j = i - this.startIndexRight;
+                    int i1 = 15 + j * 35;
+
+                    //BUTTONS
+                    if (isBetween(mouseX, mouseY, 158, i1, 158 + 144, i1 + 35)) {
+                        ScreenHelper.playClientGUIClick();
+                        if (getSelectedJobLevel() > 0) {
+                            PowerupInstance powerupInstance = jobInstance.getPowerups().get(i);
+                            PowerupState powerupState = getSelectedJob().getPowerups().get(powerupInstance.getLocation());
+                            if (powerupState == null) powerupState = PowerupState.NOT_OWNED;
+                            switch (powerupState) {
+                                case ACTIVE, INACTIVE -> {
+                                    new PacketTogglePowerUp(powerupInstance).sendToServer();
+                                    refreshScreen();
+                                }
+                                case NOT_OWNED -> {
+                                    if (getCoins() >= powerupInstance.getCost())
+                                        openConfirmScreen(ConfirmationMessageType.BUY_POWER_UP, powerupInstance);
+                                    else
+                                        openConfirmScreen(ConfirmationMessageType.NOT_ENOUGH_COINS_POWERUP);
+                                }
+                            }
+                        } else {
+                            openConfirmScreen(ConfirmationMessageType.JOB_NOT_ENABLED);
+                        }
+                    }
+                }
+            }
+            if (activeRightButton == 3) {
+                for (int i = this.startIndexRight; i < firstHiddenIndexRight && i < jobInstance.getActions().size(); ++i) {
+                    int j = i - this.startIndexRight;
+                    int i1 = 15 + j * 35;
+
+                    //BUTTONS
+                    if (isBetween(mouseX, mouseY, 158, i1, 158 + 144, i1 + 35)) {
+                        ScreenHelper.playClientGUIClick();
+                        Action action = jobInstance.getActions().get(i);
+                        openActionScreen(jobInstance, action);
+                    }
+                }
             }
         }
         return super.mouseClicked(mouseX, mouseY, clickType);
+    }
+
+    private void openActionScreen(JobInstance jobInstance, Action action) {
+        Minecraft.getInstance().setScreen(new ActionScreen(this, jobInstance, action));
+    }
+
+    private void setJob() {
+        job = activeLeftButton == 0 ?
+                jobs.get(selectedButton) :
+                activeLeftButton == 1 ?
+                        getEnabledJobs().get(selectedButton) :
+                        getDisabledJobs().get(selectedButton);
     }
 
     private boolean hasJobSelected() {
@@ -767,9 +806,18 @@ public class JobsScreen extends Screen {
 
         for (int i = this.startIndexRight; i < selectedJobCraftableStacks.size(); i++) {
             int j = i - this.startIndexRight;
+
+            int amountX = 3;
+            int amountY = 3;
+
+            int startX = 8;
+            int startY = 15;
+            int buttonWidth = 48;
+            int buttonHeight = 20;
+
             if (isBetween(mouseX, mouseY,
-                    22 + (j % 7) * 18, 18 + (j / 7) * 18,
-                    22 + 17 + (j % 7) * 18, 18 + 17 + (j / 7) * 18)) {
+                    startX + (j % amountX) * buttonWidth, startY + (j / amountY) * buttonHeight,
+                    startX + buttonWidth + (j % amountX) * buttonWidth - 1, startY + buttonHeight + (j / amountY) * buttonHeight - 1)) {
                 return selectedJobCraftableStacks.get(i);
             }
         }
@@ -782,21 +830,21 @@ public class JobsScreen extends Screen {
             if (this.scrolling && this.isScrollBarActive()) {
                 int i = startY + 14;
                 int j = i + 140;
-                this.scrollOffs = ((float) mouseY - (float) i - 7.5F) / ((float) (j - i) - 15.0F);
-                this.scrollOffs = Mth.clamp(this.scrollOffs, 0.0F, 1.0F);
-                this.startIndex = (int) ((double) (this.scrollOffs * (float) this.getOffscreenRows()) + 0.5D);
+                this.scrollOffset = ((float) mouseY - (float) i - 7.5F) / ((float) (j - i) - 15.0F);
+                this.scrollOffset = Mth.clamp(this.scrollOffset, 0.0F, 1.0F);
+                this.startIndex = (int) ((double) (this.scrollOffset * (float) this.getOffscreenRows()) + 0.5D);
                 return true;
             } else {
                 return super.mouseDragged(mouseX, mouseY, clickType, speedX, speedY);
             }
         } else {
-            if (this.scrollingCrafting && this.isScrollBarRightActive()) {
+            if (this.scrollingRight && this.isScrollBarRightActive()) {
                 int i = startY + 14;
                 int j = i + 128;
-                this.scrollOffsRight = ((float) mouseY - (float) i - 7.5F) / ((float) (j - i) - 15.0F);
-                this.scrollOffsRight = Mth.clamp(this.scrollOffsRight, 0.0F, 1.0F);
-                int count = getActiveRightButton() == 1 ? 7 : 1;
-                this.startIndexRight = (int) ((double) (this.scrollOffsRight * (float) this.getOffscreenRowsRight()) + 0.5D) * count;
+                this.scrollOffsetRight = ((float) mouseY - (float) i - 7.5F) / ((float) (j - i) - 15.0F);
+                this.scrollOffsetRight = Mth.clamp(this.scrollOffsetRight, 0.0F, 1.0F);
+                int count = getActiveRightButton() == 1 ? 3 : 1;
+                this.startIndexRight = (int) ((double) (this.scrollOffsetRight * (float) this.getOffscreenRowsRight()) + 0.5D) * count;
                 return true;
             } else {
                 return super.mouseDragged(mouseX, mouseY, clickType, speedX, speedY);
@@ -805,21 +853,20 @@ public class JobsScreen extends Screen {
     }
 
     public boolean mouseScrolled(double mouseX, double mouseY, double p_99316_) {
-        if (isBetween(mouseX, mouseY, 0, 0, width / 2 - 14, height) || getActiveRightButton() != 1 && getActiveRightButton() != 2) {
+        if (isBetween(mouseX, mouseY, 0, 0, width / 2 - 14, height) || (getActiveRightButton() != 1 && getActiveRightButton() != 2 && getActiveRightButton() != 3)) {
             if (this.isScrollBarActive()) {
                 int i = this.getOffscreenRows();
                 float f = (float) p_99316_ / (float) i;
-                this.scrollOffs = Mth.clamp(this.scrollOffs - f, 0.0F, 1.0F);
-                this.startIndex = (int) ((double) (this.scrollOffs * (float) i) + 0.5D);
+                this.scrollOffset = Mth.clamp(this.scrollOffset - f, 0.0F, 1.0F);
+                this.startIndex = (int) ((double) (this.scrollOffset * (float) i) + 0.5D);
             }
         } else {
             if (this.isScrollBarRightActive()) {
                 int i = this.getOffscreenRowsRight();
-                JobsPlus.LOGGER.info("i: " + i);
                 float f = (float) p_99316_ / (float) i;
-                this.scrollOffsRight = Mth.clamp(this.scrollOffsRight - f, 0.0F, 1.0F);
-                int count = getActiveRightButton() == 1 ? 7 : 1;
-                this.startIndexRight = (int) ((double) (this.scrollOffsRight * (float) i) + 0.5D) * count;
+                this.scrollOffsetRight = Mth.clamp(this.scrollOffsetRight - f, 0.0F, 1.0F);
+                int count = getActiveRightButton() == 1 ? 3 : 1;
+                this.startIndexRight = (int) ((double) (this.scrollOffsetRight * (float) i) + 0.5D) * count;
             }
         }
         return true;
@@ -839,15 +886,17 @@ public class JobsScreen extends Screen {
 
     protected int getOffscreenRowsRight() {
         if (getSelectedJob() == null) return 0;
-        return getActiveRightButton() == 1 ? (this.selectedJobCraftableStacks.size() + 7 - 1) / 7 - 7 :
+        return getActiveRightButton() == 1 ? (selectedJobCraftableStacks.size() + 3 - 1) / 3 - 7 :
                 getActiveRightButton() == 2 ? getSelectedJob().getJobInstance().getPowerups().size() - 4 :
-                        0;
+                        getActiveRightButton() == 3 ? getSelectedJob().getJobInstance().getActions().size() - 4 :
+                                0;
     }
 
     private boolean isScrollBarRightActive() {
         if (getSelectedJob() == null) return false;
-        return getActiveRightButton() == 1 ? this.selectedJobCraftableStacks.size() > 49 :
-                getActiveRightButton() == 2 && getSelectedJob().getJobInstance().getPowerups().size() > 4;
+        return getActiveRightButton() == 1 ? this.selectedJobCraftableStacks.size() > 21 :
+                getActiveRightButton() == 2 ? getSelectedJob().getJobInstance().getPowerups().size() > 4 :
+                        getActiveRightButton() == 3 && getSelectedJob().getJobInstance().getActions().size() > 4;
     }
 
     public void blitThis(PoseStack poseStack, int posX, int posY, int startX, int startY, int stopX, int stopY) {
@@ -860,17 +909,6 @@ public class JobsScreen extends Screen {
 
     private @Nullable Job getSelectedJob() {
         return job;
-    }
-
-    private CompoundTag getSelectedJobData() {
-        if (getSelectedJob() == null) return new CompoundTag();
-        return new CompoundTag();
-//        return this.dataTag.getCompound(getSelectedJob().name());
-    }
-
-    private CompoundTag getJobData(Job job) {
-        return new CompoundTag();
-//        return this.dataTag.getCompound(job.name());
     }
 
     private int getSelectedJobLevel() {
@@ -908,27 +946,51 @@ public class JobsScreen extends Screen {
     }
 
     private void drawJobInfo(PoseStack poseStack) {
-        for (int i = 1; i < 10; i++) {
-            drawCenteredString(poseStack, font, ChatColor.darkGray() + JobsPlus.translatable("gui.info." + job.getJobInstance().getName() + "." + i, "" + ChatColor.boldWhite(), "" + ChatColor.darkGray(), "" + ChatColor.boldWhite(), "" + ChatColor.darkGray()).getString(), startX + (imageWidth + 150) / 2, startY + 35 + (i * 9), 16777215);
+        float scale = 1.0F;
+        while (getTextHeightForDescription(poseStack, scale) > 94) {
+            scale -= 0.025F;
         }
+        poseStack.pushPose();
+        poseStack.scale(scale, scale, scale);
+        String description = job.getJobInstance().getDescription();
+        String[] descriptionSplit = description.split(" ");
+        int lineCount = 0;
+        while (descriptionSplit.length > 0) {
+            StringBuilder line = new StringBuilder();
+            while (font.width(line + descriptionSplit[0]) < (150 / scale)) {
+                line.append(descriptionSplit[0]).append(" ");
+                descriptionSplit = Arrays.copyOfRange(descriptionSplit, 1, descriptionSplit.length);
+                if (descriptionSplit.length == 0) break;
+            }
+            font.draw(poseStack, line.toString(), (startX + 163) / scale, (startY + 36 + (lineCount * (9 * scale))) / scale, 5592405);
+            lineCount++;
+        }
+        poseStack.popPose();
     }
 
-    private String getTCText(int num) {
-//        String[] split = (JobsPlus.translatable("gui.exp." + Jobs.getEnglishString(job).toLowerCase() + "." + num).getString()).split(">text:");
-//        return split.length > 1 ? split[1] : "";
-        return "";
-    }
-
-    private int getTCTextColor(int num) {
-//        String replace = (JobsPlus.translatable("gui.exp." + Jobs.getEnglishString(job).toLowerCase() + "." + num).getString()).split(">text:")[0].replace("color:<", "");
-//        return StringUtils.isNumeric(replace) ? Integer.parseInt(replace) : 16777215;
-        return 0;
+    private float getTextHeightForDescription(PoseStack poseStack, float scale) {
+        poseStack.pushPose();
+        poseStack.scale(scale, scale, scale);
+        String description = job.getJobInstance().getDescription();
+        String[] descriptionSplit = description.split(" ");
+        int lineCount = 0;
+        while (descriptionSplit.length > 0) {
+            StringBuilder line = new StringBuilder();
+            while (font.width(line + descriptionSplit[0]) < (150 / scale)) {
+                line.append(descriptionSplit[0]).append(" ");
+                descriptionSplit = Arrays.copyOfRange(descriptionSplit, 1, descriptionSplit.length);
+                if (descriptionSplit.length == 0) break;
+            }
+            lineCount++;
+        }
+        poseStack.popPose();
+        return lineCount * (9 * scale);
     }
 
     public void drawnBigJobTitle(PoseStack poseStack) {
         poseStack.pushPose();
         poseStack.scale(2F, 2F, 2F);
-        font.draw(poseStack, getSelectedJobLevel() != 0 ? ChatColor.boldGreen() + job.getJobInstance().getName() : ChatColor.boldRed() + job.getJobInstance().getName(), (startX + 156) / 2F, (startY + 5) / 2F, 16777215);
+        font.draw(poseStack, ChatColor.bold() + job.getJobInstance().getName(), (startX + 156) / 2F, (startY + 5) / 2F, job.getJobInstance().getColorDecimal());
         poseStack.popPose();
         if (getSelectedJobLevel() != 0) {
             font.draw(poseStack, ChatColor.darkGray() + JobsPlus.translatable("gui.level", ChatColor.reset(), getSelectedJobLevel()).getString(), startX + 156, startY + 22, 16777215);
@@ -964,16 +1026,20 @@ public class JobsScreen extends Screen {
         return selectedButton;
     }
 
-    public float getScrollOffs() {
-        return scrollOffs;
+    public float getScrollOffset() {
+        return scrollOffset;
     }
 
-    public float getScrollOffsRight() {
-        return scrollOffsRight;
+    public float getScrollOffsetRight() {
+        return scrollOffsetRight;
     }
 
     public int getStartIndex() {
         return startIndex;
+    }
+
+    public int getStartIndexRight() {
+        return startIndexRight;
     }
 
     @Override
@@ -1046,12 +1112,8 @@ public class JobsScreen extends Screen {
         return getSelectedJobPowerupState(powerup) == PowerupState.INACTIVE;
     }
 
-    private int getSelectedJobSuperpowerState() {
-        return getSelectedJobData().getInt("Superpower");
-    }
-
-    private boolean hasSelectedJobSuperpowerEnabled() {
-        return getSelectedJobSuperpowerState() == 0;
+    private void refreshScreen() {
+        new PacketOpenMenuC2S(this).sendToServer();
     }
 
     private ArrayList<Job> getEnabledJobs() {

@@ -1,6 +1,8 @@
 package com.daqem.jobsplus;
 
 import com.daqem.jobsplus.event.command.EventRegisterCommands;
+import com.daqem.jobsplus.event.triggers.BlockEvents;
+import com.daqem.jobsplus.event.triggers.ItemEvents;
 import com.daqem.jobsplus.networking.JobsPlusNetworking;
 import com.daqem.jobsplus.resources.JobManager;
 import com.mojang.logging.LogUtils;
@@ -20,6 +22,9 @@ public class JobsPlus {
 
     private static void registerEvents() {
         EventRegisterCommands.registerEvent();
+
+        BlockEvents.registerEvents();
+        ItemEvents.registerEvents();
     }
 
     public static ResourceLocation getId(String id) {

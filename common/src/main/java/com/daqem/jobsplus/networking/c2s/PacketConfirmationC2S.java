@@ -9,6 +9,8 @@ import dev.architectury.networking.NetworkManager;
 import dev.architectury.networking.simple.BaseC2SMessage;
 import dev.architectury.networking.simple.MessageType;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class PacketConfirmationC2S extends BaseC2SMessage {
@@ -18,16 +20,16 @@ public class PacketConfirmationC2S extends BaseC2SMessage {
     private final @Nullable JobInstance jobInstance;
     private final @Nullable PowerupInstance powerupInstance;
 
-    public PacketConfirmationC2S(ConfirmationMessageType type, int price, @Nullable JobInstance jobInstance) {
+    public PacketConfirmationC2S(ConfirmationMessageType type, @NotNull JobInstance jobInstance) {
         this.type = type;
-        this.price = price;
+        this.price = 10; //TODO config
         this.jobInstance = jobInstance;
         this.powerupInstance = null;
     }
 
-    public PacketConfirmationC2S(ConfirmationMessageType type, int price, @Nullable PowerupInstance powerupInstance) {
+    public PacketConfirmationC2S(ConfirmationMessageType type, @NotNull PowerupInstance powerupInstance) {
         this.type = type;
-        this.price = price;
+        this.price = powerupInstance.getCost();
         this.jobInstance = null;
         this.powerupInstance = powerupInstance;
     }
@@ -35,8 +37,18 @@ public class PacketConfirmationC2S extends BaseC2SMessage {
     public PacketConfirmationC2S(FriendlyByteBuf friendlyByteBuf) {
         this.type = ConfirmationMessageType.values()[friendlyByteBuf.readVarInt()];
         this.price = friendlyByteBuf.readVarInt();
-        this.jobInstance = JobInstance.of(friendlyByteBuf.readResourceLocation());
-        this.powerupInstance = PowerupInstance.of(friendlyByteBuf.readResourceLocation());
+        String jobInstanceString = friendlyByteBuf.readUtf();
+        if (!jobInstanceString.isEmpty()) {
+            this.jobInstance = JobInstance.of(new ResourceLocation(jobInstanceString));
+        } else {
+            this.jobInstance = null;
+        }
+        String powerupInstanceString = friendlyByteBuf.readUtf();
+        if (!powerupInstanceString.isEmpty()) {
+            this.powerupInstance = PowerupInstance.of(new ResourceLocation(powerupInstanceString));
+        } else {
+            this.powerupInstance = null;
+        }
     }
 
     @Override
@@ -48,12 +60,8 @@ public class PacketConfirmationC2S extends BaseC2SMessage {
     public void write(FriendlyByteBuf buf) {
         buf.writeVarInt(type.ordinal());
         buf.writeVarInt(price);
-        if (jobInstance != null) {
-            buf.writeResourceLocation(jobInstance.getLocation());
-        }
-        if (powerupInstance != null) {
-            buf.writeResourceLocation(powerupInstance.getLocation());
-        }
+        buf.writeUtf(jobInstance == null ? "" : jobInstance.getLocation().toString());
+        buf.writeUtf(powerupInstance == null ? "" : powerupInstance.getLocation().toString());
     }
 
     @Override

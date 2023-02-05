@@ -7,7 +7,11 @@
     "MixinTitleScreen"
   ],
   "mixins": [
-    "MixinServerPlayerEntity"
+    "MixinBlockStateBase",
+    "MixinBrewingStandBlockEntity",
+    "MixinItemStack",
+    "MixinProjectile",
+    "MixinServerPlayer"
   ],
   "injectors": {
     "defaultRequire": 1

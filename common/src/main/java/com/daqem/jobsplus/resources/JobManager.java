@@ -58,6 +58,7 @@ public abstract class JobManager extends SimpleJsonResourceReloadListener {
         LOGGER.info("Loaded {} jobs and {} powerups", tempJobInstances.size(), tempPowerupInstances.size());
 
         this.jobs = ImmutableMap.copyOf(tempJobInstances);
+        this.powerups = ImmutableMap.copyOf(tempPowerupInstances);
     }
 
     public static JobManager getInstance() {

@@ -1,6 +1,8 @@
 package com.daqem.jobsplus.player.job;
 
 import com.daqem.jobsplus.Constants;
+import com.daqem.jobsplus.event.triggers.JobEvents;
+import com.daqem.jobsplus.player.JobsServerPlayer;
 import com.daqem.jobsplus.player.job.powerup.PowerupState;
 import com.daqem.jobsplus.resources.JobManager;
 import com.daqem.jobsplus.resources.job.JobInstance;
@@ -15,20 +17,22 @@ import java.util.Map;
 
 public class Job {
 
+    private final JobsServerPlayer player;
     private final JobInstance jobInstance;
     private int level;
     private int experience;
     private final Map<ResourceLocation, PowerupState> powerups;
 
-    public Job(JobInstance jobInstance) {
-        this(jobInstance, 0, 0, new HashMap<>());
+    public Job(JobsServerPlayer player, JobInstance jobInstance) {
+        this(player, jobInstance, 0, 0, new HashMap<>());
     }
 
-    public Job(ResourceLocation jobInstanceLocation, int level, int experience, Map<ResourceLocation, PowerupState> powerups) {
-        this(JobManager.getInstance().getJobs().get(jobInstanceLocation), level, experience, powerups);
+    public Job(JobsServerPlayer player, ResourceLocation jobInstanceLocation, int level, int experience, Map<ResourceLocation, PowerupState> powerups) {
+        this(player, JobManager.getInstance().getJobs().get(jobInstanceLocation), level, experience, powerups);
     }
 
-    public Job(JobInstance jobInstance, int level, int experience, Map<ResourceLocation, PowerupState> powerups) {
+    public Job(JobsServerPlayer player, JobInstance jobInstance, int level, int experience, Map<ResourceLocation, PowerupState> powerups) {
+        this.player = player;
         this.jobInstance = jobInstance;
         this.level = level;
         this.experience = experience;
@@ -53,6 +57,32 @@ public class Job {
 
     public void setExperience(int experience) {
         this.experience = experience;
+        while (this.experience >= getExperienceToLevelUp(level)) {
+            checkForLevelUp();
+        }
+    }
+
+    public void addExperience(int experience) {
+        setExperience(getExperience() + experience);
+        JobEvents.onJobExperience(player, this, experience);
+    }
+
+    public void addExperienceWithoutEvent(int experience) {
+        setExperience(getExperience() + experience);
+    }
+
+    private void checkForLevelUp() {
+        int experienceToLevelUp = getExperienceToLevelUp(level);
+        if (experience >= experienceToLevelUp) {
+            level++;
+            experience -= experienceToLevelUp;
+            JobEvents.onJobLevelUp(player, this);
+        }
+    }
+
+    public static int getExperienceToLevelUp(int level) {
+        if (level == 0) return 0;
+        return (int) (100 + level * level * 0.5791);
     }
 
     public Map<ResourceLocation, PowerupState> getPowerups() {
@@ -77,7 +107,7 @@ public class Job {
 
     public CompoundTag toNBT() {
         CompoundTag jobTag = new CompoundTag();
-
+        
         jobTag.putString(Constants.JOB_INSTANCE_LOCATION, getJobInstance().getLocation().toString());
         jobTag.putInt(Constants.LEVEL, getLevel());
         jobTag.putInt(Constants.EXPERIENCE, getExperience());
@@ -98,7 +128,7 @@ public class Job {
         return jobTag;
     }
 
-    public static Job fromNBT(CompoundTag tag) {
+    public static Job fromNBT(JobsServerPlayer player, CompoundTag tag) {
 
         ResourceLocation jobInstanceLocation = new ResourceLocation(tag.getString(Constants.JOB_INSTANCE_LOCATION));
         int level = tag.getInt(Constants.LEVEL);
@@ -115,7 +145,7 @@ public class Job {
             powerups.put(powerupLocation, state);
         }
 
-        return new Job(jobInstanceLocation, level, exp, powerups);
+        return new Job(player, jobInstanceLocation, level, exp, powerups);
     }
 
     @Override

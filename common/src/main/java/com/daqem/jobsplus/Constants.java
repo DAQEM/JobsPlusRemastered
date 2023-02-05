@@ -17,4 +17,6 @@ public class Constants {
     public static final String SELECTED_BUTTON = "SelectedButton";
     public static final String SCROLL_OFFSET = "ScrollOffset";
     public static final String START_INDEX = "StartIndex";
+    public static final String SCROLL_OFFSET_RIGHT = "ScrollOffsetRight";
+    public static final String START_INDEX_RIGHT = "StartIndexRight";
 }

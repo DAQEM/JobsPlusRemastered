@@ -2,3 +2,7 @@ accessWidener   v2  named
 
 accessible method net/minecraft/core/Registry registerSimple (Lnet/minecraft/resources/ResourceKey;Lnet/minecraft/core/Registry$RegistryBootstrap;)Lnet/minecraft/core/Registry;
 accessible method net/minecraft/core/Registry createRegistryKey (Ljava/lang/String;)Lnet/minecraft/resources/ResourceKey;
+accessible method net/minecraft/world/entity/projectile/AbstractArrow getPickupItem ()Lnet/minecraft/world/item/ItemStack;
+
+accessible field net/minecraft/client/renderer/entity/ItemRenderer textureManager Lnet/minecraft/client/renderer/texture/TextureManager;
+

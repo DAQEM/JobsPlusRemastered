@@ -21,14 +21,16 @@ public class JobInstance {
     private final int maxLevel;
     private final String color;
     private final Item iconItem;
+    private final String description;
     private final List<Action> actions;
     private final List<PowerupInstance> powerupInstances;
 
-    public JobInstance(String name, int maxLevel, String color, Item iconItem, List<Action> actions, List<PowerupInstance> powerupInstances) {
+    public JobInstance(String name, int maxLevel, String color, Item iconItem, String description, List<Action> actions, List<PowerupInstance> powerupInstances) {
         this.name = name;
         this.maxLevel = maxLevel;
         this.color = color;
         this.iconItem = iconItem;
+        this.description = description;
         this.actions = actions;
         this.powerupInstances = powerupInstances;
     }
@@ -79,6 +81,14 @@ public class JobInstance {
         return iconItem;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public List<Action> getActions() {
+        return actions;
+    }
+
     @Override
     public String toString() {
         return "Job{" +
@@ -117,6 +127,7 @@ public class JobInstance {
                     jsonObject.get("max_level").getAsInt(),
                     jsonObject.get("color").getAsString(),
                     Registry.ITEM.get(new ResourceLocation(jsonObject.get("icon_item").getAsString())),
+                    jsonObject.get("description").getAsString(),
                     actions,
                     powerupInstances);
         }

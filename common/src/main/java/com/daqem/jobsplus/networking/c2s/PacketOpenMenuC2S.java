@@ -1,6 +1,8 @@
 package com.daqem.jobsplus.networking.c2s;
 
 import com.daqem.jobsplus.Constants;
+import com.daqem.jobsplus.JobsPlus;
+import com.daqem.jobsplus.client.screen.JobsScreen;
 import com.daqem.jobsplus.networking.JobsPlusNetworking;
 import com.daqem.jobsplus.networking.s2c.PacketOpenMenuS2C;
 import com.daqem.jobsplus.player.JobsServerPlayer;
@@ -16,10 +18,52 @@ import net.minecraft.server.level.ServerPlayer;
 
 public class PacketOpenMenuC2S extends BaseC2SMessage {
 
+    private final int activeLeftButton;
+    private final int activeRightButton;
+    private final int selectedButton;
+    private final float scrollOffset;
+    private final float scrollOffsetRight;
+    private final int startIndex;
+    private final int startIndexRight;
+
+    public PacketOpenMenuC2S(int activeLeftButton, int activeRightButton, int selectedButton, float ScrollOffset, float ScrollOffsetRight, int startIndex, int startIndexRight) {
+        this.activeLeftButton = activeLeftButton;
+        this.activeRightButton = activeRightButton;
+        this.selectedButton = selectedButton;
+        this.scrollOffset = ScrollOffset;
+        this.scrollOffsetRight = ScrollOffsetRight;
+        this.startIndex = startIndex;
+        this.startIndexRight = startIndexRight;
+    }
+
+    public PacketOpenMenuC2S(JobsScreen jobsScreen) {
+        this.activeLeftButton = jobsScreen.getActiveLeftButton();
+        this.activeRightButton = jobsScreen.getActiveRightButton();
+        this.selectedButton = jobsScreen.getSelectedButton();
+        this.scrollOffset = jobsScreen.getScrollOffset();
+        this.scrollOffsetRight = jobsScreen.getScrollOffsetRight();
+        this.startIndex = jobsScreen.getStartIndex();
+        this.startIndexRight = jobsScreen.getStartIndexRight();
+    }
+
     public PacketOpenMenuC2S() {
+        this.activeLeftButton = 0;
+        this.activeRightButton = 0;
+        this.selectedButton = -1;
+        this.scrollOffset = 0;
+        this.scrollOffsetRight = 0;
+        this.startIndex = 0;
+        this.startIndexRight = 0;
     }
 
     public PacketOpenMenuC2S(FriendlyByteBuf friendlyByteBuf) {
+        this.activeLeftButton = friendlyByteBuf.readInt();
+        this.activeRightButton = friendlyByteBuf.readInt();
+        this.selectedButton = friendlyByteBuf.readInt();
+        this.scrollOffset = friendlyByteBuf.readFloat();
+        this.scrollOffsetRight = friendlyByteBuf.readFloat();
+        this.startIndex = friendlyByteBuf.readInt();
+        this.startIndexRight = friendlyByteBuf.readInt();
     }
 
     @Override
@@ -29,6 +73,13 @@ public class PacketOpenMenuC2S extends BaseC2SMessage {
 
     @Override
     public void write(FriendlyByteBuf buf) {
+        buf.writeInt(activeLeftButton);
+        buf.writeInt(activeRightButton);
+        buf.writeInt(selectedButton);
+        buf.writeFloat(scrollOffset);
+        buf.writeFloat(scrollOffsetRight);
+        buf.writeInt(startIndex);
+        buf.writeInt(startIndexRight);
     }
 
     @Override
@@ -42,11 +93,13 @@ public class PacketOpenMenuC2S extends BaseC2SMessage {
             serverData.putInt(Constants.COINS, serverPlayer.getCoins());
             serverData.putString(Constants.DISPLAY, serverPlayer.getDisplay().map(JobDisplay::getLocationString).orElse(""));
 
-            serverData.putInt(Constants.ACTIVE_LEFT_BUTTON, 0);
-            serverData.putInt(Constants.ACTIVE_RIGHT_BUTTON, 0);
-            serverData.putInt(Constants.SELECTED_BUTTON, -1);
-            serverData.putInt(Constants.SCROLL_OFFSET, 0);
-            serverData.putInt(Constants.START_INDEX, 0);
+            serverData.putInt(Constants.ACTIVE_LEFT_BUTTON, activeLeftButton);
+            serverData.putInt(Constants.ACTIVE_RIGHT_BUTTON, activeRightButton);
+            serverData.putInt(Constants.SELECTED_BUTTON, selectedButton);
+            serverData.putFloat(Constants.SCROLL_OFFSET, scrollOffset);
+            serverData.putFloat(Constants.SCROLL_OFFSET_RIGHT, scrollOffsetRight);
+            serverData.putInt(Constants.START_INDEX, startIndex);
+            serverData.putInt(Constants.START_INDEX_RIGHT, startIndexRight);
 
             new PacketOpenMenuS2C(serverData).sendTo((ServerPlayer) serverPlayer);
         }

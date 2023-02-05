@@ -1,18 +1,12 @@
 package com.daqem.jobsplus.resources.job.action.condition;
 
-import com.daqem.jobsplus.resources.job.action.condition.type.CropAgeActionCondition;
-import com.daqem.jobsplus.resources.job.action.condition.type.JobLevelActionCondition;
+import com.daqem.jobsplus.player.ActionData;
 import com.google.gson.*;
 import net.minecraft.resources.ResourceLocation;
 
 import java.lang.reflect.Type;
 
 public abstract class ActionCondition {
-
-    private static final Gson GSON = new GsonBuilder()
-            .registerTypeAdapter(CropAgeActionCondition.class, new CropAgeActionCondition.CropAgeActionConditionSerializer())
-            .registerTypeAdapter(JobLevelActionCondition.class, new JobLevelActionCondition.JobLevelActionConditionSerializer())
-            .create();
 
     private final ActionConditionType type;
 
@@ -24,14 +18,26 @@ public abstract class ActionCondition {
         return type;
     }
 
+    abstract public boolean isMet(ActionData actionData);
+
     public static class ActionConditionSerializer<T extends ActionCondition> implements JsonDeserializer<T> {
+
+        private static Gson getGson() {
+            GsonBuilder builder = new GsonBuilder();
+
+            for (ActionConditionType type : ActionConditions.ACTION_CONDITION_TYPES) {
+                builder.registerTypeAdapter(type.clazz(), type.deserializer());
+            }
+
+            return builder.create();
+        }
 
         @Override
         public T deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
             JsonObject conditionObject = json.getAsJsonObject();
             Class<? extends ActionCondition> clazz = ActionConditions.getClass(new ResourceLocation(conditionObject.get("type").getAsString()));
             conditionObject.remove("type");
-            return (T) GSON.fromJson(conditionObject, clazz);
+            return (T) getGson().fromJson(conditionObject, clazz);
         }
     }
 }

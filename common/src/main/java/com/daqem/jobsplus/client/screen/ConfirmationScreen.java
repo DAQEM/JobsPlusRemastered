@@ -116,7 +116,7 @@ public class ConfirmationScreen extends Screen {
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int clickType) {
-        if (mouse.isHoveringButton(ButtonType.BACK)
+        if ((mouse.isHoveringButton(ButtonType.BACK) && messageType.getButtonType() == ConfirmationButtonType.BACK)
                 || mouse.isHoveringButton(ButtonType.CANCEL)) {
             closeWithClick(false);
             return true;
@@ -124,7 +124,7 @@ public class ConfirmationScreen extends Screen {
         if (mouse.isHoveringButton(ButtonType.YES)) {
             if (messageType == ConfirmationMessageType.BUY_POWER_UP) {
                 if (powerup != null) {
-                    new PacketConfirmationC2S(messageType, getRequiredCoins(), powerup).sendToServer();
+                    new PacketConfirmationC2S(messageType, powerup).sendToServer();
                 }
             }
             if (messageType == ConfirmationMessageType.START_JOB_FREE
@@ -132,7 +132,7 @@ public class ConfirmationScreen extends Screen {
                     || messageType == ConfirmationMessageType.STOP_JOB_FREE
                     || messageType == ConfirmationMessageType.STOP_JOB_PAID) {
                 if (job != null) {
-                    new PacketConfirmationC2S(messageType, getRequiredCoins(), job).sendToServer();
+                    new PacketConfirmationC2S(messageType, job).sendToServer();
                 }
             }
             closeWithClick(true);
@@ -167,7 +167,11 @@ public class ConfirmationScreen extends Screen {
     private void closeWithClick(boolean withPacket) {
         ScreenHelper.playClientGUIClick();
         if (withPacket) {
-            new PacketOpenMenuC2S().sendToServer();
+            if (lastScreen instanceof JobsScreen jobsScreen) {
+                new PacketOpenMenuC2S(jobsScreen).sendToServer();
+            } else {
+                new PacketOpenMenuC2S().sendToServer();
+            }
         } else {
             this.onClose();
         }

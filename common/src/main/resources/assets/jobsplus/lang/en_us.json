@@ -69,7 +69,14 @@
   "jobsplus.gui.confirmation.buy_power_up": "Are you sure you want to buy this power-up for %s coins?",
   "jobsplus.gui.confirmation.error.not_enough_coins_powerup": "You do not have enough coins (%s) to buy this power-up.",
   "jobsplus.gui.confirmation.error.job_not_enabled": "You are not performing this job.",
+  "jobsplus.gui.click_for_details": "(Click for details)",
   "jobsplus.job.none": "NONE",
+  "jobsplus.action.on_build": "Build Action",
+  "jobsplus.action.on_build.short_description": "When placing blocks.",
+  "jobsplus.action.on_build.description": "Gives EXP when a block is placed. The block must be in the list of blocks in the config. The EXP is multiplied by the amount of blocks placed. The EXP is multiplied by the amount of blocks placed. The EXP is multiplied by the amount of blocks placed. The EXP is multiplied by the amount of blocks placed. The EXP is multiplied by the amount of blocks placed. The EXP is multiplied by the amount of blocks placed. The EXP is multiplied by the amount of blocks placed. The EXP is multiplied by the amount of blocks placed.",
+  "jobsplus.action.on_job_exp": "Job EXP Action",
+  "jobsplus.action.on_job_exp.short_description": "When getting Job EXP.",
+  "jobsplus.action.on_job_exp.description": "Gives EXP when a player performs a job action. The EXP is multiplied by the amount of blocks placed. The EXP is multiplied by the amount of blocks placed. The EXP is multiplied by the amount of blocks placed. The EXP is multiplied by the amount of blocks placed. The EXP is multiplied by the amount of blocks placed. The EXP is multiplied by the amount of blocks placed.",
   "key.categories.jobsplus": "Jobs+",
   "key.jobsplus.open_menu": "Open Jobs+ GUI"
 }

@@ -1,0 +1,58 @@
+package com.daqem.jobsplus.event.triggers;
+
+import com.daqem.jobsplus.player.ActionDataBuilder;
+import com.daqem.jobsplus.player.ActionSpecification;
+import com.daqem.jobsplus.player.JobsServerPlayer;
+import com.daqem.jobsplus.resources.job.action.Actions;
+import dev.architectury.event.EventResult;
+import dev.architectury.event.events.common.PlayerEvent;
+import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
+import net.minecraft.world.item.Item;
+
+public class ItemEvents {
+
+    public static void registerEvents() {
+        PlayerEvent.CRAFT_ITEM.register((player, constructed, inventory) -> {
+            if (player instanceof JobsServerPlayer jobsServerPlayer) {
+                new ActionDataBuilder(jobsServerPlayer, Actions.CRAFT_ITEM)
+                        .withSpecification(ActionSpecification.ITEM, constructed.getItem())
+                        .withSpecification(ActionSpecification.ITEM_STACK, constructed)
+                        .withSpecification(ActionSpecification.CONTAINER, inventory)
+                        .build()
+                        .sendToAction();
+            }
+        });
+
+        PlayerEvent.DROP_ITEM.register((player, itemStack) -> {
+            if (player instanceof JobsServerPlayer jobsServerPlayer) {
+                new ActionDataBuilder(jobsServerPlayer, Actions.DROP_ITEM)
+                        .withSpecification(ActionSpecification.ITEM, itemStack.getItem())
+                        .withSpecification(ActionSpecification.ITEM_STACK, itemStack)
+                        .build()
+                        .sendToAction();
+            }
+            return EventResult.pass();
+        });
+    }
+
+    /**
+     * Called when a player uses an item.
+     *
+     * @param player   - The player that used the item.
+     * @param usedItem - The item that was used.
+     */
+    public static void onUseItem(JobsServerPlayer player, Item usedItem) {
+        new ActionDataBuilder(player, Actions.USE_ITEM)
+                .withSpecification(ActionSpecification.ITEM, usedItem)
+                .build()
+                .sendToAction();
+    }
+
+    public static void onThrowItem(JobsServerPlayer player, ThrowableItemProjectile thrownItemEntity) {
+        new ActionDataBuilder(player, Actions.THROW_ITEM)
+                .withSpecification(ActionSpecification.ITEM_STACK, thrownItemEntity.getItem())
+                .withSpecification(ActionSpecification.ENTITY, thrownItemEntity)
+                .build()
+                .sendToAction();
+    }
+}
