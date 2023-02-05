@@ -4,6 +4,35 @@
   "color": "#9B7653",
   "icon_item": "minecraft:wooden_shovel",
   "description": "Digging is a skill that allows you to dig faster and more efficiently. It is also used to determine the chance of finding ores and other items when mining.",
-  "actions": [],
+  "actions": [
+    {
+      "type": "jobsplus:on_block_break",
+      "rewards": [
+        {
+          "type": "jobsplus:item",
+          "item": "minecraft:diamond"
+        }
+      ],
+      "conditions": [
+        {
+          "type": "jobsplus:or",
+          "conditions": [
+            {
+              "type": "jobsplus:item_in_hand",
+              "item": "minecraft:wooden_shovel"
+            },
+            {
+              "type": "jobsplus:item_in_inventory",
+              "item": "minecraft:gravel"
+            },
+            {
+              "type": "jobsplus:item_equipped",
+              "item": "minecraft:iron_chestplate"
+            }
+          ]
+        }
+      ]
+    }
+  ],
   "powerups": []
 }

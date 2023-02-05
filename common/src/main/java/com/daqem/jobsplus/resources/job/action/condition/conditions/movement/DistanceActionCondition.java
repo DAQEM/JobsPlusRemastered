@@ -35,7 +35,7 @@ public class DistanceActionCondition extends ActionCondition {
         return false;
     }
 
-    public static class Serializer implements JsonDeserializer<DistanceActionCondition> {
+    public static class Deserializer implements JsonDeserializer<DistanceActionCondition> {
 
         @Override
         public DistanceActionCondition deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {

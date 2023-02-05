@@ -19,6 +19,7 @@ public class EntityEvents {
             } else if (source.getEntity() instanceof JobsServerPlayer jobsServerPlayer) {
                 new ActionDataBuilder(jobsServerPlayer, Actions.KILL_ENTITY)
                         .withSpecification(ActionSpecification.ENTITY, entity)
+                        .withSpecification(ActionSpecification.EXP_DROP, entity.getExperienceReward())
                         .build()
                         .sendToAction();
             }

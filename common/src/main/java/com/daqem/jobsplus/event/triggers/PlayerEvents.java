@@ -9,6 +9,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.Level;
 
 public class PlayerEvents {
@@ -49,6 +50,26 @@ public class PlayerEvents {
         new ActionDataBuilder(player, Actions.EFFECT_ADDED)
                 .withSpecification(ActionSpecification.MOB_EFFECT_INSTANCE, effect)
                 .withSpecification(ActionSpecification.ENTITY, source)
+                .build()
+                .sendToAction();
+    }
+
+    public static void onSmeltItem(JobsServerPlayer player, Recipe<?> recipe, ItemStack stack, BlockPos furnacePos, Level level) {
+        new ActionDataBuilder(player, Actions.SMELT_ITEM)
+                .withSpecification(ActionSpecification.ITEM_STACK, stack)
+                .withSpecification(ActionSpecification.BLOCK_POSITION, furnacePos)
+                .withSpecification(ActionSpecification.BLOCK_STATE, level.getBlockState(furnacePos))
+                .withSpecification(ActionSpecification.WORLD, level)
+                .withSpecification(ActionSpecification.RECIPE, recipe)
+                .build()
+                .sendToAction();
+    }
+
+    public static void onCraftItem(JobsServerPlayer player, Recipe<?> recipe, ItemStack stack, Level level) {
+        new ActionDataBuilder(player, Actions.CRAFT_ITEM)
+                .withSpecification(ActionSpecification.ITEM_STACK, stack)
+                .withSpecification(ActionSpecification.WORLD, level)
+                .withSpecification(ActionSpecification.RECIPE, recipe)
                 .build()
                 .sendToAction();
     }

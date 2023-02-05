@@ -33,7 +33,7 @@ public class BannedBlocksActionCondition extends ActionCondition {
                 || this.bannedBlockTags.stream().noneMatch(blockState::is));
     }
 
-    public static class Serializer implements JsonDeserializer<BannedBlocksActionCondition> {
+    public static class Deserializer implements JsonDeserializer<BannedBlocksActionCondition> {
 
         @Override
         public BannedBlocksActionCondition deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {

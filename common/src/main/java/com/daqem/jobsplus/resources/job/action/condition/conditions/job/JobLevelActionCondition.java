@@ -36,7 +36,7 @@ public class JobLevelActionCondition extends ActionCondition {
                 '}';
     }
 
-    public static class Serializer implements JsonDeserializer<JobLevelActionCondition> {
+    public static class Deserializer implements JsonDeserializer<JobLevelActionCondition> {
 
         @Override
         public JobLevelActionCondition deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {

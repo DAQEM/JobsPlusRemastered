@@ -32,7 +32,7 @@ public class CropFullyGrownActionCondition extends ActionCondition {
                 '}';
     }
 
-    public static class Serializer implements JsonDeserializer<CropFullyGrownActionCondition> {
+    public static class Deserializer implements JsonDeserializer<CropFullyGrownActionCondition> {
 
         @Override
         public CropFullyGrownActionCondition deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {

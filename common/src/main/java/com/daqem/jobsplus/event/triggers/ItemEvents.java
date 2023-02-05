@@ -12,17 +12,6 @@ import net.minecraft.world.item.Item;
 public class ItemEvents {
 
     public static void registerEvents() {
-        PlayerEvent.CRAFT_ITEM.register((player, constructed, inventory) -> {
-            if (player instanceof JobsServerPlayer jobsServerPlayer) {
-                new ActionDataBuilder(jobsServerPlayer, Actions.CRAFT_ITEM)
-                        .withSpecification(ActionSpecification.ITEM, constructed.getItem())
-                        .withSpecification(ActionSpecification.ITEM_STACK, constructed)
-                        .withSpecification(ActionSpecification.CONTAINER, inventory)
-                        .build()
-                        .sendToAction();
-            }
-        });
-
         PlayerEvent.DROP_ITEM.register((player, itemStack) -> {
             if (player instanceof JobsServerPlayer jobsServerPlayer) {
                 new ActionDataBuilder(jobsServerPlayer, Actions.DROP_ITEM)

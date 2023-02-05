@@ -7,18 +7,18 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-
-import javax.swing.text.html.parser.Entity;
 
 public record ActionSpecification<T>(ResourceLocation location) {
 
     public static final ActionSpecification<BlockState> BLOCK_STATE = create("block_state");
     public static final ActionSpecification<BlockPos> BLOCK_POSITION = create("block_position");
-    public static final ActionSpecification<Integer> BLOCK_EXP_DROP = create("block_exp_drop");
+    public static final ActionSpecification<Integer> EXP_DROP = create("exp_drop");
     public static final ActionSpecification<Level> WORLD = create("world");
     public static final ActionSpecification<DamageSource> DAMAGE_SOURCE = create("damage_source");
     public static final ActionSpecification<Integer> JOB_EXP = create("job_exp");
@@ -31,6 +31,7 @@ public record ActionSpecification<T>(ResourceLocation location) {
     public static final ActionSpecification<Container> CONTAINER = create("container");
     public static final ActionSpecification<Advancement> ADVANCEMENT = create("advancement");
     public static final ActionSpecification<MobEffectInstance> MOB_EFFECT_INSTANCE = create("mob_effect_instance");
+    public static final ActionSpecification<Recipe<?>> RECIPE = create("recipe");
 
     private static <T> ActionSpecification<T> create(String location) {
         return new ActionSpecification<>(new ResourceLocation(location));

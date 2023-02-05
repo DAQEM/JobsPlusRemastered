@@ -37,7 +37,7 @@ public class CropAgeActionCondition extends ActionCondition {
                 '}';
     }
 
-    public static class Serializer implements JsonDeserializer<CropAgeActionCondition> {
+    public static class Deserializer implements JsonDeserializer<CropAgeActionCondition> {
 
         @Override
         public CropAgeActionCondition deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {

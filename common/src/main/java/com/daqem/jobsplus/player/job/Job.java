@@ -107,7 +107,7 @@ public class Job {
 
     public CompoundTag toNBT() {
         CompoundTag jobTag = new CompoundTag();
-        
+
         jobTag.putString(Constants.JOB_INSTANCE_LOCATION, getJobInstance().getLocation().toString());
         jobTag.putInt(Constants.LEVEL, getLevel());
         jobTag.putInt(Constants.EXPERIENCE, getExperience());
@@ -167,5 +167,9 @@ public class Job {
                     powerups: %s
                 }
                 """.formatted(jobInstance.getLocation(), level, experience, powerups.toString().replace(", ", ", \n"));
+    }
+
+    public double getExperiencePercentage() {
+        return (double) experience / (double) getExperienceToLevelUp(level) * 100;
     }
 }

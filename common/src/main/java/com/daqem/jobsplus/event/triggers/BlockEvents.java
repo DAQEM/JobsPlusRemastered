@@ -6,6 +6,9 @@ import com.daqem.jobsplus.player.JobsServerPlayer;
 import com.daqem.jobsplus.resources.job.action.Actions;
 import dev.architectury.event.EventResult;
 import dev.architectury.event.events.common.BlockEvent;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class BlockEvents {
 
@@ -26,11 +29,20 @@ public class BlockEvents {
                 new ActionDataBuilder(jobsServerPlayer, Actions.BLOCK_BREAK)
                         .withSpecification(ActionSpecification.BLOCK_STATE, state)
                         .withSpecification(ActionSpecification.BLOCK_POSITION, pos)
-                        .withSpecification(ActionSpecification.BLOCK_EXP_DROP, xp)
+                        .withSpecification(ActionSpecification.EXP_DROP, xp)
                         .withSpecification(ActionSpecification.WORLD, level)
                         .build()
                         .sendToAction();
             return EventResult.pass();
         });
+    }
+
+    public static void onBlockInteract(JobsServerPlayer player, BlockState state, BlockPos pos, Level level) {
+        new ActionDataBuilder(player, Actions.BLOCK_INTERACT)
+                .withSpecification(ActionSpecification.BLOCK_STATE, state)
+                .withSpecification(ActionSpecification.BLOCK_POSITION, pos)
+                .withSpecification(ActionSpecification.WORLD, level)
+                .build()
+                .sendToAction();
     }
 }

@@ -7,10 +7,12 @@
     "MixinTitleScreen"
   ],
   "mixins": [
+    "MixinAbstractFurnaceBlockEntity",
     "MixinBlockStateBase",
     "MixinBrewingStandBlockEntity",
     "MixinItemStack",
     "MixinProjectile",
+    "MixinRecipeHolder",
     "MixinServerPlayer"
   ],
   "injectors": {

@@ -33,7 +33,7 @@ public class BlocksActionCondition extends ActionCondition {
                 || this.blockTags.stream().anyMatch(blockState::is));
     }
 
-    public static class Serializer implements JsonDeserializer<BlocksActionCondition> {
+    public static class Deserializer implements JsonDeserializer<BlocksActionCondition> {
 
         @Override
         public BlocksActionCondition deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {

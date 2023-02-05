@@ -30,6 +30,22 @@ public class Actions {
 
     public static final List<ActionType> ACTION_TYPES = new ArrayList<>();
 
+    public static final ActionType SWIM = register(JobsPlus.getId("on_swim"), SwimAction.class, new SwimAction.Deserializer());
+    public static final ActionType SWIM_START = register(JobsPlus.getId("on_swim_start"), SwimStartAction.class, new SwimStartAction.Deserializer());
+    public static final ActionType SWIM_STOP = register(JobsPlus.getId("on_swim_stop"), SwimStopAction.class, new SwimStopAction.Deserializer());
+    public static final ActionType WALK = register(JobsPlus.getId("on_walk"), WalkAction.class, new WalkAction.Deserializer());
+    public static final ActionType WALK_START = register(JobsPlus.getId("on_walk_start"), WalkStartAction.class, new WalkStartAction.Deserializer());
+    public static final ActionType WALK_STOP = register(JobsPlus.getId("on_walk_stop"), WalkStopAction.class, new WalkStopAction.Deserializer());
+    public static final ActionType SPRINT = register(JobsPlus.getId("on_sprint"), SprintAction.class, new SprintAction.Deserializer());
+    public static final ActionType SPRINT_START = register(JobsPlus.getId("on_sprint_start"), SprintStartAction.class, new SprintStartAction.Deserializer());
+    public static final ActionType SPRINT_STOP = register(JobsPlus.getId("on_sprint_stop"), SprintStopAction.class, new SprintStopAction.Deserializer());
+    public static final ActionType CROUCH = register(JobsPlus.getId("on_crouch"), CrouchAction.class, new CrouchAction.Deserializer());
+    public static final ActionType CROUCH_START = register(JobsPlus.getId("on_crouch_start"), CrouchStartAction.class, new CrouchStartAction.Deserializer());
+    public static final ActionType CROUCH_STOP = register(JobsPlus.getId("on_crouch_stop"), CrouchStopAction.class, new CrouchStopAction.Deserializer());
+    public static final ActionType ELYTRA_FLY = register(JobsPlus.getId("on_elytra_fly"), ElytraFlyAction.class, new ElytraFlyAction.Deserializer());
+    public static final ActionType ELYTRA_FLY_START = register(JobsPlus.getId("on_elytra_fly_start"), ElytraFlyStartAction.class, new ElytraFlyStartAction.Deserializer());
+    public static final ActionType ELYTRA_FLY_STOP = register(JobsPlus.getId("on_elytra_fly_stop"), ElytraFlyStopAction.class, new ElytraFlyStopAction.Deserializer());
+
     public static final ActionType BLOCK_PLACE = register(JobsPlus.getId("on_block_place"), BlockPlaceAction.class, new BlockPlaceAction.Serializer());
     public static final ActionType BLOCK_BREAK = register(JobsPlus.getId("on_block_break"), BlockBreakAction.class, new BlockBreakAction.Serializer());
     public static final ActionType BLOCK_INTERACT = register(JobsPlus.getId("on_block_interact"), BlockInteractAction.class, new BlockInteractAction.Deserializer());
@@ -49,22 +65,7 @@ public class Actions {
     public static final ActionType SHOOT_PROJECTILE = register(JobsPlus.getId("on_shoot_projectile"), ShootProjectileAction.class, new ShootProjectileAction.Deserializer());
     public static final ActionType BREW_POTION = register(JobsPlus.getId("on_brew_potion"), BrewPotionAction.class, new BrewPotionAction.Deserializer());
     public static final ActionType EFFECT_ADDED = register(JobsPlus.getId("on_effect_added"), EffectAddedAction.class, new EffectAddedAction.Deserializer());
-
-    public static final ActionType SWIM = register(JobsPlus.getId("on_swim"), SwimAction.class, new SwimAction.Deserializer());
-    public static final ActionType SWIM_START = register(JobsPlus.getId("on_swim_start"), SwimStartAction.class, new SwimStartAction.Deserializer());
-    public static final ActionType SWIM_STOP = register(JobsPlus.getId("on_swim_stop"), SwimStopAction.class, new SwimStopAction.Deserializer());
-    public static final ActionType WALK = register(JobsPlus.getId("on_walk"), WalkAction.class, new WalkAction.Deserializer());
-    public static final ActionType WALK_START = register(JobsPlus.getId("on_walk_start"), WalkStartAction.class, new WalkStartAction.Deserializer());
-    public static final ActionType WALK_STOP = register(JobsPlus.getId("on_walk_stop"), WalkStopAction.class, new WalkStopAction.Deserializer());
-    public static final ActionType SPRINT = register(JobsPlus.getId("on_sprint"), SprintAction.class, new SprintAction.Deserializer());
-    public static final ActionType SPRINT_START = register(JobsPlus.getId("on_sprint_start"), SprintStartAction.class, new SprintStartAction.Deserializer());
-    public static final ActionType SPRINT_STOP = register(JobsPlus.getId("on_sprint_stop"), SprintStopAction.class, new SprintStopAction.Deserializer());
-    public static final ActionType CROUCH = register(JobsPlus.getId("on_crouch"), CrouchAction.class, new CrouchAction.Deserializer());
-    public static final ActionType CROUCH_START = register(JobsPlus.getId("on_crouch_start"), CrouchStartAction.class, new CrouchStartAction.Deserializer());
-    public static final ActionType CROUCH_STOP = register(JobsPlus.getId("on_crouch_stop"), CrouchStopAction.class, new CrouchStopAction.Deserializer());
-    public static final ActionType ELYTRA_FLY = register(JobsPlus.getId("on_elytra_fly"), ElytraFlyAction.class, new ElytraFlyAction.Deserializer());
-    public static final ActionType ELYTRA_FLY_START = register(JobsPlus.getId("on_elytra_fly_start"), ElytraFlyStartAction.class, new ElytraFlyStartAction.Deserializer());
-    public static final ActionType ELYTRA_FLY_STOP = register(JobsPlus.getId("on_elytra_fly_stop"), ElytraFlyStopAction.class, new ElytraFlyStopAction.Deserializer());
+    public static final ActionType SMELT_ITEM = register(JobsPlus.getId("on_smelt_item"), SmeltItemAction.class, new SmeltItemAction.Deserializer());
 
     private static <T extends Action> ActionType register(ResourceLocation location, Class<T> clazz, JsonDeserializer<? extends Action> deserializer) {
         ActionType actionType = new ActionType(clazz, location, deserializer);
