@@ -259,11 +259,6 @@ public abstract class MixinServerPlayer extends Player implements JobsServerPlay
     }
 
     @Override
-    public int getSwimmingDistanceInCm() {
-        return swimmingDistanceInCm;
-    }
-
-    @Override
     public void setSwimmingDistanceInCm(int swimmingDistanceInCm) {
         this.swimmingDistanceInCm = swimmingDistanceInCm;
     }

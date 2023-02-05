@@ -67,8 +67,6 @@ public interface JobsServerPlayer {
 
     void addStatData(StatData statData);
 
-    int getSwimmingDistanceInCm();
-
     void setSwimmingDistanceInCm(int swimmingDistanceInCm);
 
     void setElytraFlyingDistanceInCm(float flyingDistanceInCm);
