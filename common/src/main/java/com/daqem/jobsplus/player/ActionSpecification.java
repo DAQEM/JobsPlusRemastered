@@ -23,7 +23,7 @@ public record ActionSpecification<T>(ResourceLocation location) {
     public static final ActionSpecification<Integer> JOB_EXP = create("job_exp");
     public static final ActionSpecification<Entity> ENTITY = create("entity");
     public static final ActionSpecification<Float> DAMAGE_AMOUNT = create("damage_amount");
-    public static final ActionSpecification<Integer> SWIMMING_DISTANCE_IN_CM = create("swimming_distance_in_cm");
+    public static final ActionSpecification<Integer> DISTANCE_IN_CM = create("swimming_distance_in_cm");
     public static final ActionSpecification<Job> ONLY_FOR_JOB = create("only_for_job");
     public static final ActionSpecification<ItemStack> ITEM_STACK = create("item_stack");
     public static final ActionSpecification<Item> ITEM = create("item");

@@ -9,7 +9,8 @@ public class StatEvents {
 
     public static void onAwardStat(JobsServerPlayer player, Stat<?> stat, int previousAmount, int newAmount) {
         onAwardSwimStat(player, stat, newAmount);
-        onAwardUseStat(player, stat, newAmount);
+        onAwardUseStat(player, stat);
+        onAwardElytraFlyingStat(player, stat, newAmount);
     }
 
     private static void onAwardSwimStat(JobsServerPlayer player, Stat<?> stat, int newAmount) {
@@ -18,9 +19,15 @@ public class StatEvents {
         }
     }
 
-    private static void onAwardUseStat(JobsServerPlayer player, Stat<?> stat, int newAmount) {
+    private static void onAwardUseStat(JobsServerPlayer player, Stat<?> stat) {
         if (stat.getType() == Stats.ITEM_USED) {
             ItemEvents.onUseItem(player, (Item) stat.getValue());
+        }
+    }
+
+    private static void onAwardElytraFlyingStat(JobsServerPlayer player, Stat<?> stat, int newAmount) {
+        if (stat == Stats.CUSTOM.get(Stats.AVIATE_ONE_CM)) {
+            player.setElytraFlyingDistanceInCm(newAmount);
         }
     }
 }

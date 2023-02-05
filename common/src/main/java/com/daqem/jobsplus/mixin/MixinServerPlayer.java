@@ -2,9 +2,9 @@ package com.daqem.jobsplus.mixin;
 
 import com.daqem.jobsplus.Constants;
 import com.daqem.jobsplus.JobsPlus;
+import com.daqem.jobsplus.event.triggers.MovementEvents;
 import com.daqem.jobsplus.event.triggers.PlayerEvents;
 import com.daqem.jobsplus.event.triggers.StatEvents;
-import com.daqem.jobsplus.event.triggers.SwimmingEvents;
 import com.daqem.jobsplus.player.JobsServerPlayer;
 import com.daqem.jobsplus.player.job.Job;
 import com.daqem.jobsplus.player.job.JobSerializer;
@@ -40,6 +40,14 @@ public abstract class MixinServerPlayer extends Player implements JobsServerPlay
     private final NonNullList<StatData> statData = NonNullList.create();
     private boolean isSwimming = false;
     private int swimmingDistanceInCm = 0;
+    private boolean isWalking = false;
+    private float walkingDistance = 0;
+    private boolean isSprinting = false;
+    private float sprintingDistance = 0;
+    private boolean isCrouching = false;
+    private float crouchingDistance = 0;
+    private boolean isElytraFlying = false;
+    private float elytraFlyingDistance = 0;
     private List<Job> jobs = new ArrayList<>();
     private int coins = 0;
     private @Nullable JobDisplay display = null;
@@ -261,6 +269,86 @@ public abstract class MixinServerPlayer extends Player implements JobsServerPlay
     }
 
     @Override
+    public boolean isWalkingBuiltin() {
+        return this.isWalking;
+    }
+
+    @Override
+    public void setWalkingBuiltin(boolean walking) {
+        this.isWalking = walking;
+    }
+
+    @Override
+    public float getWalkingDistanceBuiltin() {
+        return this.walkingDistance;
+    }
+
+    @Override
+    public void setWalkingDistanceBuiltin(float walkingDistance) {
+        this.walkingDistance = walkingDistance;
+    }
+
+    @Override
+    public boolean isSprintingBuiltin() {
+        return this.isSprinting;
+    }
+
+    @Override
+    public void setSprintingBuiltin(boolean sprinting) {
+        this.isSprinting = sprinting;
+    }
+
+    @Override
+    public float getSprintingDistanceBuiltin() {
+        return this.sprintingDistance;
+    }
+
+    @Override
+    public void setSprintingDistanceBuiltin(float sprintingDistance) {
+        this.sprintingDistance = sprintingDistance;
+    }
+
+    @Override
+    public boolean isCrouchingBuiltin() {
+        return this.isCrouching;
+    }
+
+    @Override
+    public void setCrouchingBuiltin(boolean crouching) {
+        this.isCrouching = crouching;
+    }
+
+    @Override
+    public float getCrouchingDistanceBuiltin() {
+        return this.crouchingDistance;
+    }
+
+    @Override
+    public void setCrouchingDistanceBuiltin(float crouchingDistance) {
+        this.crouchingDistance = crouchingDistance;
+    }
+
+    @Override
+    public boolean isElytraFlyingBuiltin() {
+        return this.isElytraFlying;
+    }
+
+    @Override
+    public void setElytraFlyingBuiltin(boolean flying) {
+        this.isElytraFlying = flying;
+    }
+
+    @Override
+    public float getElytraFlyingDistanceInCmBuiltin() {
+        return this.elytraFlyingDistance;
+    }
+
+    @Override
+    public void setElytraFlyingDistanceInCm(float flyingDistanceInCm) {
+        this.elytraFlyingDistance = flyingDistanceInCm;
+    }
+
+    @Override
     public @NotNull ItemStack eat(@NotNull Level level, @NotNull ItemStack itemStack) {
         PlayerEvents.onPlayerEat(this, itemStack);
         return super.eat(level, itemStack);
@@ -269,15 +357,70 @@ public abstract class MixinServerPlayer extends Player implements JobsServerPlay
     @Inject(at = @At("TAIL"), method = "tick()V")
     public void tick(CallbackInfo ci) {
         if (this.isSwimming && this.isSwimming()) {
-            SwimmingEvents.onSwim(this, this.swimmingDistanceInCm);
+            MovementEvents.onSwim(this, this.swimmingDistanceInCm);
         } else {
             if (this.isSwimming) {
                 this.isSwimming = false;
-                SwimmingEvents.onStopSwimming(this);
+                MovementEvents.onStopSwimming(this);
             } else {
                 if (this.isSwimming()) {
                     this.isSwimming = true;
-                    SwimmingEvents.onStartSwimming(this);
+                    MovementEvents.onStartSwimming(this);
+                }
+            }
+        }
+
+        boolean isCurrentlyWalking = this.walkDist > this.walkingDistance;
+        float distance = this.walkDist - this.walkingDistance;
+        if (this.isWalking && isCurrentlyWalking) {
+            this.walkingDistance = this.walkDist;
+            MovementEvents.onWalk(this, (int) (this.walkingDistance * 100));
+        } else {
+            if (this.isWalking) {
+                this.isWalking = false;
+                MovementEvents.onStopWalking(this);
+            } else if (isCurrentlyWalking) {
+                this.isWalking = true;
+                MovementEvents.onStartWalking(this);
+            }
+        }
+
+        if (this.isSprinting && this.isSprinting()) {
+            this.sprintingDistance += distance;
+            MovementEvents.onSprint(this, (int) (this.sprintingDistance * 100));
+        } else {
+            if (this.isSprinting) {
+                this.isSprinting = false;
+                MovementEvents.onStopSprinting(this);
+            } else if (this.isSprinting()) {
+                this.isSprinting = true;
+                MovementEvents.onStartSprinting(this);
+            }
+        }
+
+        if (this.isCrouching && this.isCrouching()) {
+            this.crouchingDistance += distance;
+            MovementEvents.onCrouch(this, (int) (this.crouchingDistance * 100));
+        } else {
+            if (this.isCrouching) {
+                this.isCrouching = false;
+                MovementEvents.onStopCrouching(this);
+            } else if (this.isCrouching()) {
+                this.isCrouching = true;
+                MovementEvents.onStartCrouching(this);
+            }
+        }
+
+        if (this.isElytraFlying && this.isFallFlying()) {
+            MovementEvents.onElytraFly(this, (int) this.elytraFlyingDistance);
+        } else {
+            if (this.isElytraFlying) {
+                this.isElytraFlying = false;
+                MovementEvents.onStopElytraFlying(this);
+            } else {
+                if (this.isFallFlying()) {
+                    this.isElytraFlying = true;
+                    MovementEvents.onStartElytraFlying(this);
                 }
             }
         }

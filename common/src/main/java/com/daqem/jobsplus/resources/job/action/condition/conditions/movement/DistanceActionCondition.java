@@ -1,4 +1,4 @@
-package com.daqem.jobsplus.resources.job.action.condition.conditions.swim;
+package com.daqem.jobsplus.resources.job.action.condition.conditions.movement;
 
 import com.daqem.jobsplus.JobsPlus;
 import com.daqem.jobsplus.player.ActionData;
@@ -9,19 +9,19 @@ import com.google.gson.*;
 
 import java.lang.reflect.Type;
 
-public class SwimmingDistanceActionCondition extends ActionCondition {
+public class DistanceActionCondition extends ActionCondition {
 
     private final int distanceInBlocks;
     private int lastDistanceInBlocks = 0;
 
-    public SwimmingDistanceActionCondition(int distanceInBlocks) {
-        super(ActionConditions.SWIMMING_DISTANCE);
+    public DistanceActionCondition(int distanceInBlocks) {
+        super(ActionConditions.DISTANCE);
         this.distanceInBlocks = distanceInBlocks;
     }
 
     @Override
     public boolean isMet(ActionData actionData) {
-        Integer distanceInCm = actionData.getSpecification(ActionSpecification.SWIMMING_DISTANCE_IN_CM);
+        Integer distanceInCm = actionData.getSpecification(ActionSpecification.DISTANCE_IN_CM);
         if (distanceInCm != null) {
             int currentDistanceInBlocks = distanceInCm / 100;
             if (currentDistanceInBlocks != lastDistanceInBlocks) {
@@ -35,18 +35,18 @@ public class SwimmingDistanceActionCondition extends ActionCondition {
         return false;
     }
 
-    public static class Serializer implements JsonDeserializer<SwimmingDistanceActionCondition> {
+    public static class Serializer implements JsonDeserializer<DistanceActionCondition> {
 
         @Override
-        public SwimmingDistanceActionCondition deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+        public DistanceActionCondition deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
             JsonObject jsonObject = json.getAsJsonObject();
             int distanceInBlocks;
             if (jsonObject.has("distance_in_blocks")) {
                 distanceInBlocks = jsonObject.get("distance_in_blocks").getAsInt();
             } else {
-                throw new JsonParseException("Missing distance_in_blocks, expected to find a int in SwimmingDistanceActionCondition");
+                throw new JsonParseException("Missing distance_in_blocks, expected to find a int in DistanceActionCondition");
             }
-            return new SwimmingDistanceActionCondition(distanceInBlocks);
+            return new DistanceActionCondition(distanceInBlocks);
         }
     }
 }

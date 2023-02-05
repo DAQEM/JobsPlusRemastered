@@ -1,4 +1,4 @@
-package com.daqem.jobsplus.resources.job.action.actions.swim;
+package com.daqem.jobsplus.resources.job.action.actions.movement;
 
 import com.daqem.jobsplus.resources.job.action.Action;
 import com.daqem.jobsplus.resources.job.action.Actions;
@@ -9,24 +9,24 @@ import com.google.gson.JsonParseException;
 
 import java.lang.reflect.Type;
 
-public class SwimStartAction extends Action {
+public class SwimAction extends Action {
 
-    public SwimStartAction() {
-        super(Actions.SWIM_START);
+    public SwimAction() {
+        super(Actions.SWIM);
     }
 
     @Override
     public String toString() {
-        return "SwimStartAction{" +
+        return "SwimAction{" +
                 "type=" + this.getType() +
                 '}';
     }
 
-    public static class Deserializer implements JsonDeserializer<SwimStartAction> {
+    public static class Deserializer implements JsonDeserializer<SwimAction> {
 
         @Override
-        public SwimStartAction deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-            return new SwimStartAction();
+        public SwimAction deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+            return new SwimAction();
         }
     }
 }

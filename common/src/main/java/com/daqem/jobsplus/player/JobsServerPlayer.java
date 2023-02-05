@@ -70,4 +70,36 @@ public interface JobsServerPlayer {
     int getSwimmingDistanceInCm();
 
     void setSwimmingDistanceInCm(int swimmingDistanceInCm);
+
+    boolean isWalkingBuiltin();
+
+    void setWalkingBuiltin(boolean walking);
+
+    float getWalkingDistanceBuiltin();
+
+    void setWalkingDistanceBuiltin(float walkingDistanceInCm);
+
+    boolean isSprintingBuiltin();
+
+    void setSprintingBuiltin(boolean sprinting);
+
+    float getSprintingDistanceBuiltin();
+
+    void setSprintingDistanceBuiltin(float sprintingDistanceInCm);
+
+    boolean isCrouchingBuiltin();
+
+    void setCrouchingBuiltin(boolean crouching);
+
+    float getCrouchingDistanceBuiltin();
+
+    void setCrouchingDistanceBuiltin(float crouchingDistanceInCm);
+
+    boolean isElytraFlyingBuiltin();
+
+    void setElytraFlyingBuiltin(boolean flying);
+
+    float getElytraFlyingDistanceInCmBuiltin();
+
+    void setElytraFlyingDistanceInCm(float flyingDistanceInCm);
 }

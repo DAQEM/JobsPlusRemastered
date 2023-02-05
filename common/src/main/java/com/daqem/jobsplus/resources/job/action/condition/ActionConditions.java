@@ -8,7 +8,7 @@ import com.daqem.jobsplus.resources.job.action.condition.conditions.block.Blocks
 import com.daqem.jobsplus.resources.job.action.condition.conditions.block.crop.CropAgeActionCondition;
 import com.daqem.jobsplus.resources.job.action.condition.conditions.block.crop.CropFullyGrownActionCondition;
 import com.daqem.jobsplus.resources.job.action.condition.conditions.job.JobLevelActionCondition;
-import com.daqem.jobsplus.resources.job.action.condition.conditions.swim.SwimmingDistanceActionCondition;
+import com.daqem.jobsplus.resources.job.action.condition.conditions.movement.DistanceActionCondition;
 import com.google.gson.JsonDeserializer;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
@@ -25,7 +25,7 @@ public class ActionConditions {
     public static final ActionConditionType JOB_LEVEL = register(JobsPlus.getId("job_level"), JobLevelActionCondition.class, new JobLevelActionCondition.Serializer());
     public static final ActionConditionType BLOCKS = register(JobsPlus.getId("blocks"), BlocksActionCondition.class, new BlocksActionCondition.Serializer());
     public static final ActionConditionType BANNED_BLOCKS = register(JobsPlus.getId("banned_blocks"), BannedBlocksActionCondition.class, new BannedBlocksActionCondition.Serializer());
-    public static final ActionConditionType SWIMMING_DISTANCE = register(JobsPlus.getId("swimming_distance"), SwimmingDistanceActionCondition.class, new SwimmingDistanceActionCondition.Serializer());
+    public static final ActionConditionType DISTANCE = register(JobsPlus.getId("swimming_distance"), DistanceActionCondition.class, new DistanceActionCondition.Serializer());
 
     private static ActionConditionType register(ResourceLocation location, Class<? extends ActionCondition> clazz, JsonDeserializer<? extends ActionCondition> deserializer) {
         ActionConditionType actionConditionType = new ActionConditionType(clazz, location, deserializer);

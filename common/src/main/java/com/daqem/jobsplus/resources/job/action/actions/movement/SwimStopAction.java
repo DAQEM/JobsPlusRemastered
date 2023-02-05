@@ -1,4 +1,4 @@
-package com.daqem.jobsplus.resources.job.action.actions.swim;
+package com.daqem.jobsplus.resources.job.action.actions.movement;
 
 import com.daqem.jobsplus.resources.job.action.Action;
 import com.daqem.jobsplus.resources.job.action.Actions;
