@@ -5,6 +5,8 @@ import com.daqem.jobsplus.player.ActionSpecification;
 import com.daqem.jobsplus.player.JobsServerPlayer;
 import com.daqem.jobsplus.resources.job.action.Actions;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -39,6 +41,14 @@ public class PlayerEvents {
                 .withSpecification(ActionSpecification.BLOCK_POSITION, pos)
                 .withSpecification(ActionSpecification.BLOCK_STATE, level.getBlockState(pos))
                 .withSpecification(ActionSpecification.WORLD, level)
+                .build()
+                .sendToAction();
+    }
+
+    public static void onEffectAdded(JobsServerPlayer player, MobEffectInstance effect, Entity source) {
+        new ActionDataBuilder(player, Actions.EFFECT_ADDED)
+                .withSpecification(ActionSpecification.MOB_EFFECT_INSTANCE, effect)
+                .withSpecification(ActionSpecification.ENTITY, source)
                 .build()
                 .sendToAction();
     }

@@ -6,6 +6,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -29,6 +30,7 @@ public record ActionSpecification<T>(ResourceLocation location) {
     public static final ActionSpecification<Item> ITEM = create("item");
     public static final ActionSpecification<Container> CONTAINER = create("container");
     public static final ActionSpecification<Advancement> ADVANCEMENT = create("advancement");
+    public static final ActionSpecification<MobEffectInstance> MOB_EFFECT_INSTANCE = create("mob_effect_instance");
 
     private static <T> ActionSpecification<T> create(String location) {
         return new ActionSpecification<>(new ResourceLocation(location));

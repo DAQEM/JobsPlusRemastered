@@ -18,10 +18,7 @@ import com.daqem.jobsplus.resources.job.action.actions.item.UseItemAction;
 import com.daqem.jobsplus.resources.job.action.actions.job.JobExpAction;
 import com.daqem.jobsplus.resources.job.action.actions.job.JobLevelUpAction;
 import com.daqem.jobsplus.resources.job.action.actions.movement.*;
-import com.daqem.jobsplus.resources.job.action.actions.player.BrewPotionAction;
-import com.daqem.jobsplus.resources.job.action.actions.player.DrinkAction;
-import com.daqem.jobsplus.resources.job.action.actions.player.EatAction;
-import com.daqem.jobsplus.resources.job.action.actions.player.ShootProjectileAction;
+import com.daqem.jobsplus.resources.job.action.actions.player.*;
 import com.google.gson.JsonDeserializer;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
@@ -51,6 +48,7 @@ public class Actions {
     public static final ActionType THROW_ITEM = register(JobsPlus.getId("on_throw_item"), ThrowItemAction.class, new ThrowItemAction.Deserializer());
     public static final ActionType SHOOT_PROJECTILE = register(JobsPlus.getId("on_shoot_projectile"), ShootProjectileAction.class, new ShootProjectileAction.Deserializer());
     public static final ActionType BREW_POTION = register(JobsPlus.getId("on_brew_potion"), BrewPotionAction.class, new BrewPotionAction.Deserializer());
+    public static final ActionType EFFECT_ADDED = register(JobsPlus.getId("on_effect_added"), EffectAddedAction.class, new EffectAddedAction.Deserializer());
 
     public static final ActionType SWIM = register(JobsPlus.getId("on_swim"), SwimAction.class, new SwimAction.Deserializer());
     public static final ActionType SWIM_START = register(JobsPlus.getId("on_swim_start"), SwimStartAction.class, new SwimStartAction.Deserializer());
