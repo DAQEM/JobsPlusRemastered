@@ -3,14 +3,183 @@
   "max_level": 250,
   "color": "#00AEFF",
   "icon_item": "minecraft:brewing_stand",
-  "description": "Alchemists are the masters of potions and brewing. They can brew potions and splash potions, and can also brew lingering potions. They can also brew potions that are not normally brewable, such as the Potion of Fire Resistance.",
+  "description": "",
   "actions": [
     {
       "type": "jobsplus:on_brew_potion",
       "rewards": [
         {
+          "type": "jobsplus:job_exp",
+          "min_exp": 1,
+          "max_exp": 2
+        }
+      ]
+    },
+    {
+      "type": "jobsplus:on_drink",
+      "rewards": [
+        {
+          "type": "jobsplus:job_exp",
+          "min_exp": 1,
+          "max_exp": 2
+        }
+      ],
+      "conditions": [
+        {
           "type": "jobsplus:item",
-          "item": "minecraft:emerald"
+          "item": "minecraft:potion"
+        }
+      ]
+    },
+    {
+      "type": "jobsplus:on_throw_item",
+      "rewards": [
+        {
+          "type": "jobsplus:job_exp",
+          "min_exp": 1,
+          "max_exp": 2
+        }
+      ],
+      "conditions": [
+        {
+          "type": "jobsplus:or",
+          "conditions": [
+            {
+              "type": "jobsplus:item",
+              "item": "minecraft:splash_potion"
+            },
+            {
+              "type": "jobsplus:item",
+              "item": "minecraft:lingering_potion"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "jobsplus:on_craft",
+      "rewards": [
+        {
+          "type": "jobsplus:job_exp",
+          "min_exp": 1,
+          "max_exp": 2
+        }
+      ],
+      "conditions": [
+        {
+          "type": "jobsplus:or",
+          "conditions": [
+            {
+              "type": "jobsplus:item",
+              "item": "minecraft:brewing_stand"
+            },
+            {
+              "type": "jobsplus:item",
+              "item": "minecraft:minecraft:glistering_melon_slice"
+            },
+            {
+              "type": "jobsplus:item",
+              "item": "minecraft:sugar"
+            },
+            {
+              "type": "jobsplus:item",
+              "item": "minecraft:rabbit_foot"
+            },
+            {
+              "type": "jobsplus:item",
+              "item": "minecraft:blaze_powder"
+            },
+            {
+              "type": "jobsplus:item",
+              "item": "minecraft:fermented_spider_eye"
+            },
+            {
+              "type": "jobsplus:item",
+              "item": "minecraft:magma_cream"
+            },
+            {
+              "type": "jobsplus:item",
+              "item": "minecraft:golden_carrot"
+            },
+            {
+              "type": "jobsplus:item",
+              "item": "minecraft:turtle_helmet"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "jobsplus:on_kill_entity",
+      "rewards": [
+        {
+          "type": "jobsplus:job_exp",
+          "min_exp": 1,
+          "max_exp": 2
+        }
+      ],
+      "conditions": [
+        {
+          "type": "jobsplus:or",
+          "conditions": [
+            {
+              "type": "jobsplus:entity",
+              "entity": "minecraft:phantom"
+            },
+            {
+              "type": "jobsplus:entity",
+              "entity": "minecraft:pufferfish"
+            },
+            {
+              "type": "jobsplus:entity",
+              "entity": "minecraft:magma_cube"
+            },
+            {
+              "type": "jobsplus:entity",
+              "entity": "minecraft:ghast"
+            },
+            {
+              "type": "jobsplus:entity",
+              "entity": "minecraft:rabbit"
+            },
+            {
+              "type": "jobsplus:entity",
+              "entity": "minecraft:spider"
+            },
+            {
+              "type": "jobsplus:entity",
+              "entity": "minecraft:cave_spider"
+            },
+            {
+              "type": "jobsplus:entity",
+              "entity": "minecraft:blaze"
+            },
+            {
+              "type": "jobsplus:entity",
+              "entity": "minecraft:witch"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "jobsplus:on_break_block",
+      "rewards": [
+        {
+          "type": "jobsplus:job_exp",
+          "min_exp": 1,
+          "max_exp": 2
+        }
+      ],
+      "conditions": [
+        {
+          "type": "jobsplus:blocks",
+          "blocks": [
+            "minecraft:nether_wart"
+          ]
+        },
+        {
+          "type": "jobsplus:crop_fully_grown"
         }
       ]
     }
