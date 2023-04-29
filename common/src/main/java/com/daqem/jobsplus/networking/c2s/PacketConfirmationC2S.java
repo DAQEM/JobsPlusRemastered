@@ -1,5 +1,6 @@
 package com.daqem.jobsplus.networking.c2s;
 
+import com.daqem.jobsplus.JobsPlus;
 import com.daqem.jobsplus.networking.JobsPlusNetworking;
 import com.daqem.jobsplus.networking.utils.ConfirmationMessageType;
 import com.daqem.jobsplus.player.JobsServerPlayer;
@@ -22,7 +23,9 @@ public class PacketConfirmationC2S extends BaseC2SMessage {
 
     public PacketConfirmationC2S(ConfirmationMessageType type, @NotNull JobInstance jobInstance) {
         this.type = type;
-        this.price = jobInstance.getPrice();
+        this.price = type == ConfirmationMessageType.START_JOB_FREE || type == ConfirmationMessageType.STOP_JOB_FREE ?
+                0 : type == ConfirmationMessageType.STOP_JOB_PAID ?
+                jobInstance.getStopPrice() : jobInstance.getPrice();
         this.jobInstance = jobInstance;
         this.powerupInstance = null;
     }
@@ -67,7 +70,9 @@ public class PacketConfirmationC2S extends BaseC2SMessage {
     @Override
     public void handle(NetworkManager.PacketContext context) {
         if (context.getPlayer() instanceof JobsServerPlayer serverPlayer) {
-            if (serverPlayer.getCoins() >= price) {
+            JobsPlus.LOGGER.info("Received confirmation packet from player " + serverPlayer.getServerPlayer().getName());
+            if (serverPlayer.getCoins() >= price || type == ConfirmationMessageType.START_JOB_FREE || type == ConfirmationMessageType.STOP_JOB_FREE) {
+                JobsPlus.LOGGER.info("Player " + serverPlayer.getServerPlayer().getName() + " has enough coins");
                 boolean success = false;
                 if (type == ConfirmationMessageType.BUY_POWER_UP) {
                     if (powerupInstance != null) {
@@ -77,10 +82,13 @@ public class PacketConfirmationC2S extends BaseC2SMessage {
                         }
                     }
                 } else if (jobInstance != null) {
+                    JobsPlus.LOGGER.info("Player " + serverPlayer.getServerPlayer().getName() + " is buying job " + jobInstance);
                     switch (type) {
                         case START_JOB_FREE -> {
+                            JobsPlus.LOGGER.info("Player " + serverPlayer.getServerPlayer().getName() + " is starting job " + jobInstance);
                             if (!serverPlayer.hasJob(jobInstance)) {
                                 serverPlayer.addNewJob(jobInstance);
+                                JobsPlus.LOGGER.info("Added job " + jobInstance + " to player " + serverPlayer.getServerPlayer().getName());
                             }
                         }
                         case STOP_JOB_FREE -> {
