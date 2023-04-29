@@ -1,7 +1,6 @@
 package com.daqem.jobsplus.forge;
 
 import com.daqem.jobsplus.JobsPlusExpectPlatform;
-import com.daqem.jobsplus.config.ICommonConfig;
 import com.daqem.jobsplus.resources.JobManager;
 import net.minecraftforge.fml.loading.FMLPaths;
 
@@ -20,9 +19,5 @@ public class JobsPlusExpectPlatformImpl {
      */
     public static JobManager getJobManager() {
         return SideProxyForge.getJobManager();
-    }
-
-    public static ICommonConfig getCommonConfig() {
-        return SideProxyForge.getCommonConfig();
     }
 }

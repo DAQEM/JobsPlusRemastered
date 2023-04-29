@@ -1,7 +1,6 @@
 package com.daqem.jobsplus.fabric;
 
 import com.daqem.jobsplus.JobsPlusExpectPlatform;
-import com.daqem.jobsplus.config.ICommonConfig;
 import com.daqem.jobsplus.resources.JobManager;
 import net.fabricmc.loader.api.FabricLoader;
 
@@ -20,9 +19,5 @@ public class JobsPlusExpectPlatformImpl {
      */
     public static JobManager getJobManager() {
         return JobsPlusFabric.getJobManager();
-    }
-
-    public static ICommonConfig getCommonConfig() {
-        return JobsPlusFabric.getCommonConfig();
     }
 }

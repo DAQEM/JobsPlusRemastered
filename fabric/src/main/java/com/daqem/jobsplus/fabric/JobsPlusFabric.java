@@ -4,8 +4,6 @@ import com.daqem.jobsplus.JobsPlus;
 import com.daqem.jobsplus.command.arguments.EnumArgument;
 import com.daqem.jobsplus.command.arguments.JobArgument;
 import com.daqem.jobsplus.command.arguments.PowerupArgument;
-import com.daqem.jobsplus.config.ICommonConfig;
-import com.daqem.jobsplus.fabric.config.CommonConfigFabric;
 import com.daqem.jobsplus.fabric.registry.JobsPlusRegistryFabric;
 import com.daqem.jobsplus.fabric.resources.JobManagerFabric;
 import net.fabricmc.api.ModInitializer;
@@ -17,11 +15,9 @@ import net.minecraft.server.packs.PackType;
 public class JobsPlusFabric implements ModInitializer {
 
     private static final JobManagerFabric JOB_MANAGER = new JobManagerFabric();
-    private static final ICommonConfig COMMON_CONFIG = new CommonConfigFabric();
 
     @Override
     public void onInitialize() {
-        CommonConfigFabric.init();
         JobsPlus.init();
         ResourceManagerHelper.get(PackType.SERVER_DATA).registerReloadListener(JOB_MANAGER);
 
@@ -36,10 +32,6 @@ public class JobsPlusFabric implements ModInitializer {
 
     public static JobManagerFabric getJobManager() {
         return JOB_MANAGER;
-    }
-
-    public static ICommonConfig getCommonConfig() {
-        return COMMON_CONFIG;
     }
 
     static {

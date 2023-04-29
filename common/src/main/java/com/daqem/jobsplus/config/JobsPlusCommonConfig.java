@@ -1,12 +1,11 @@
-package com.daqem.jobsplus.fabric.config;
+package com.daqem.jobsplus.config;
 
-import com.daqem.jobsplus.config.ICommonConfig;
 import com.supermartijn642.configlib.api.ConfigBuilders;
 import com.supermartijn642.configlib.api.IConfigBuilder;
 
 import java.util.function.Supplier;
 
-public class CommonConfigFabric implements ICommonConfig {
+public class JobsPlusCommonConfig {
 
     public static void init() {
     }
@@ -20,10 +19,5 @@ public class CommonConfigFabric implements ICommonConfig {
         config.pop();
 
         config.build();
-    }
-
-    @Override
-    public boolean isDebug() {
-        return isDebug.get();
     }
 }
