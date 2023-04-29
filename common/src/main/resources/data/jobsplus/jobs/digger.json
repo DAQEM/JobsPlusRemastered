@@ -1,5 +1,6 @@
 {
   "name": "Digger",
+  "price": 10,
   "max_level": 250,
   "color": "#9B7653",
   "icon_item": "minecraft:wooden_shovel",

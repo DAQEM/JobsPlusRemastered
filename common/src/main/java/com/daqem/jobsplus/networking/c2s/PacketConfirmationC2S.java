@@ -22,14 +22,14 @@ public class PacketConfirmationC2S extends BaseC2SMessage {
 
     public PacketConfirmationC2S(ConfirmationMessageType type, @NotNull JobInstance jobInstance) {
         this.type = type;
-        this.price = 10; //TODO config
+        this.price = jobInstance.getPrice();
         this.jobInstance = jobInstance;
         this.powerupInstance = null;
     }
 
     public PacketConfirmationC2S(ConfirmationMessageType type, @NotNull PowerupInstance powerupInstance) {
         this.type = type;
-        this.price = powerupInstance.getCost();
+        this.price = powerupInstance.getPrice();
         this.jobInstance = null;
         this.powerupInstance = powerupInstance;
     }

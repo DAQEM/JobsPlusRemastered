@@ -1,5 +1,6 @@
 {
   "name": "Builder",
+  "price": 10,
   "max_level": 250,
   "color": "#FFC107",
   "icon_item": "minecraft:scaffolding",

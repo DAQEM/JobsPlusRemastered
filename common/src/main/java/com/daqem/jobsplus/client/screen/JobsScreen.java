@@ -431,11 +431,7 @@ public class JobsScreen extends Screen {
         } else {
             font.draw(poseStack, ChatColor.boldRed() + job.getJobInstance().getName(), startX + 7 + 3 + 35, i1 + 3, 16777215);
             font.draw(poseStack, ChatColor.aqua() + JobsPlus.translatable("gui.want_this_job").getString(), startX + 7 + 3 + 35, i1 + 14, 16777215);
-            if (hasFreeClaimableJobs()) {
-                font.draw(poseStack, ChatColor.aqua() + JobsPlus.translatable("gui.cost", ChatColor.reset(), 0).getString(), startX + 7 + 3 + 35, i1 + 23, 16777215);
-            } else {
-                font.draw(poseStack, ChatColor.aqua() + JobsPlus.translatable("gui.cost", ChatColor.reset(), 10).getString(), startX + 7 + 3 + 35, i1 + 23, 16777215);
-            }
+            font.draw(poseStack, ChatColor.aqua() + JobsPlus.translatable("gui.price", ChatColor.reset(), hasFreeClaimableJobs() ? 0 : job.getJobInstance().getPrice()).getString(), startX + 7 + 3 + 35, i1 + 23, 16777215);
         }
     }
 
@@ -493,7 +489,7 @@ public class JobsScreen extends Screen {
                         PowerupState state = getSelectedJob().getPowerups().get(powerupInstance.getLocation());
                         font.draw(poseStack, "State: " + (state == PowerupState.ACTIVE ? ChatColor.green() + state.getState() : ChatColor.red() + state.getState()), this.startX + 164, i1 + startY + 16, 16777215);
                     } else {
-                        font.draw(poseStack, "Cost: " + powerupInstance.getCost(), this.startX + 164, i1 + startY + 16, 16777215);
+                        font.draw(poseStack, "Price: " + powerupInstance.getPrice(), this.startX + 164, i1 + startY + 16, 16777215);
                     }
                 }
             } else if (activeRightButton == 3) {
@@ -710,7 +706,7 @@ public class JobsScreen extends Screen {
                         if (hasFreeClaimableJobs()) {
                             openConfirmScreen(ConfirmationMessageType.START_JOB_FREE, job.getJobInstance());
                         } else {
-                            if (getCoins() >= getJobStartCost())
+                            if (getCoins() >= getJobStartPrice(job.getJobInstance()))
                                 openConfirmScreen(ConfirmationMessageType.START_JOB_PAID, job.getJobInstance());
                             else
                                 openConfirmScreen(ConfirmationMessageType.NOT_ENOUGH_COINS_START);
@@ -718,7 +714,7 @@ public class JobsScreen extends Screen {
                     } else if (getSelectedJobLevel() == getJobLevelToStopJobForFree()) {
                         openConfirmScreen(ConfirmationMessageType.STOP_JOB_FREE, job.getJobInstance());
                     } else {
-                        if (getCoins() >= getJobStopCost())
+                        if (getCoins() >= getJobStopPrice(job.getJobInstance()))
                             openConfirmScreen(ConfirmationMessageType.STOP_JOB_PAID, job.getJobInstance());
                         else
                             openConfirmScreen(ConfirmationMessageType.NOT_ENOUGH_COINS_STOP);
@@ -754,7 +750,7 @@ public class JobsScreen extends Screen {
                                     refreshScreen();
                                 }
                                 case NOT_OWNED -> {
-                                    if (getCoins() >= powerupInstance.getCost())
+                                    if (getCoins() >= powerupInstance.getPrice())
                                         openConfirmScreen(ConfirmationMessageType.BUY_POWER_UP, powerupInstance);
                                     else
                                         openConfirmScreen(ConfirmationMessageType.NOT_ENOUGH_COINS_POWERUP);
@@ -998,11 +994,7 @@ public class JobsScreen extends Screen {
                 font.draw(poseStack, ChatColor.darkGray() + JobsPlus.translatable("gui.exp", ChatColor.reset(), "[" + getSelectedJobExperience() + "/" + getSelectedJobMaxEXP() + "]").getString(), startX + 216, startY + 22, 16777215);
         } else {
             font.draw(poseStack, ChatColor.darkGray() + JobsPlus.translatable("gui.want_this_job").getString(), startX + 156, startY + 22, 16777215);
-            if (hasFreeClaimableJobs()) {
-                drawRightAlignedString(poseStack, font, ChatColor.darkGray() + JobsPlus.translatable("gui.cost", ChatColor.reset(), 0).getString(), startX + imageWidth - 10, startY + 22, 16777215);
-            } else {
-                drawRightAlignedString(poseStack, font, ChatColor.darkGray() + JobsPlus.translatable("gui.cost", ChatColor.reset(), 10).getString(), startX + imageWidth - 10, startY + 22, 16777215);
-            }
+            drawRightAlignedString(poseStack, font, ChatColor.darkGray() + JobsPlus.translatable("gui.price", ChatColor.reset(), hasFreeClaimableJobs() ? 0 : getSelectedJob().getJobInstance().getPrice()).getString(), startX + imageWidth - 10, startY + 22, 16777215);
         }
         font.draw(poseStack, ChatFormatting.STRIKETHROUGH + "                                        ", startX + 156, startY + 28, 16777215);
     }
@@ -1063,20 +1055,20 @@ public class JobsScreen extends Screen {
         return getActiveJobsAmount() < getAmountOfFreeJobs();
     }
 
-    private int getJobStartCost() { //TODO config
-        return 10;
+    private int getJobStartPrice(JobInstance jobInstance) {
+        return jobInstance.getPrice();
     }
 
-    private int getJobStopCost() { //TODO config
-        return 5;
+    private int getJobStopPrice(JobInstance jobInstance) {
+        return jobInstance.getStopPrice();
     }
 
     private int getJobLevelToStopJobForFree() { //TODO config
         return 0;
     }
 
-    private int getPowerupCost() { //TODO config
-        return 10;
+    private int getPowerupPrice(PowerupInstance powerupInstance) {
+        return powerupInstance.getPrice();
     }
 
     private boolean isJobDisplayEnabled() { //TODO config

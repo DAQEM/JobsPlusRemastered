@@ -1,5 +1,6 @@
 {
   "name": "Enchanter",
+  "price": 10,
   "max_level": 250,
   "color": "#663399",
   "icon_item": "minecraft:enchanted_book",

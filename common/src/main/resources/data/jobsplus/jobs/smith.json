@@ -1,5 +1,6 @@
 {
   "name": "Smith",
+  "price": 10,
   "max_level": 250,
   "color": "#B22222",
   "icon_item": "minecraft:anvil",

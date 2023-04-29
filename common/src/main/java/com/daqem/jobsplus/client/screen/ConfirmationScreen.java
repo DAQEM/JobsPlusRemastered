@@ -196,7 +196,7 @@ public class ConfirmationScreen extends Screen {
             case STOP_JOB -> requiredCoins = 5; //TODO config
             case POWER_UP -> {
                 if (powerup != null) {
-                    requiredCoins = powerup.getCost();
+                    requiredCoins = powerup.getPrice();
                 }
             }
         }

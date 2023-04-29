@@ -17,15 +17,15 @@ public class PowerupInstance {
     private final String description;
     private final boolean allJobs;
     private final List<ResourceLocation> jobs;
-    private final int cost;
+    private final int price;
     private final List<Action> actions;
 
-    public PowerupInstance(String name, String description, boolean allJobs, List<ResourceLocation> jobs, int cost, List<Action> actions) {
+    public PowerupInstance(String name, String description, boolean allJobs, List<ResourceLocation> jobs, int price, List<Action> actions) {
         this.name = name;
         this.description = description;
         this.allJobs = allJobs;
         this.jobs = jobs;
-        this.cost = cost;
+        this.price = price;
         this.actions = actions;
     }
 
@@ -41,8 +41,8 @@ public class PowerupInstance {
         return location;
     }
 
-    public int getCost() {
-        return cost;
+    public int getPrice() {
+        return price;
     }
 
     @Override
@@ -52,7 +52,7 @@ public class PowerupInstance {
                 ", description='" + description +
                 ", allJobs=" + allJobs +
                 ", jobs=" + jobs +
-                ", cost=" + cost +
+                ", price=" + price +
                 ", actions=" + actions +
                 '}';
     }
@@ -82,7 +82,7 @@ public class PowerupInstance {
                     jsonObject.get("description").getAsString(),
                     jsonObject.get("all_jobs").getAsBoolean(),
                     jobs,
-                    jsonObject.get("cost").getAsInt(),
+                    jsonObject.get("price").getAsInt(),
                     actions);
         }
     }

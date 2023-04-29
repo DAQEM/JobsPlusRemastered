@@ -1,5 +1,6 @@
 {
   "name": "Miner",
+  "price": 10,
   "max_level": 250,
   "color": "#FFA500",
   "icon_item": "minecraft:diamond_pickaxe",

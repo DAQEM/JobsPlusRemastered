@@ -1,5 +1,6 @@
 {
   "name": "Farmer",
+  "price": 10,
   "max_level": 250,
   "color": "#228B22",
   "icon_item": "minecraft:stone_hoe",

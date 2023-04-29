@@ -1,5 +1,6 @@
 {
   "name": "Fisherman",
+  "price": 10,
   "max_level": 250,
   "color": "#007FFF",
   "icon_item": "minecraft:fishing_rod",
