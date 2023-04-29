@@ -1,8 +1,8 @@
 package com.daqem.jobsplus.resources.job.action;
 
 import com.daqem.jobsplus.JobsPlus;
+import com.daqem.jobsplus.exception.UnknownActionTypeException;
 import com.daqem.jobsplus.registry.JobsPlusRegistry;
-import com.daqem.jobsplus.resources.JobManager;
 import com.daqem.jobsplus.resources.job.action.actions.advancement.AdvancementAction;
 import com.daqem.jobsplus.resources.job.action.actions.block.BreakBlockAction;
 import com.daqem.jobsplus.resources.job.action.actions.block.InteractBlockAction;
@@ -73,10 +73,10 @@ public class Actions {
         return Registry.register(JobsPlusRegistry.ACTION, location, actionType);
     }
 
-    public static Class<? extends Action> getClass(ResourceLocation location) {
+    public static Class<? extends Action> getClass(ResourceLocation location) throws UnknownActionTypeException {
         ActionType actionType = JobsPlusRegistry.ACTION.get(location);
         if (actionType == null) {
-            JobManager.LOGGER.error("Unknown action type: {}", location.toString());
+            throw new UnknownActionTypeException(location);
         }
         return actionType.clazz();
     }

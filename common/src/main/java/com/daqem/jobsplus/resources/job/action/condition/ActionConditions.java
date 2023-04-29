@@ -1,8 +1,8 @@
 package com.daqem.jobsplus.resources.job.action.condition;
 
 import com.daqem.jobsplus.JobsPlus;
+import com.daqem.jobsplus.exception.UnknownConditionTypeException;
 import com.daqem.jobsplus.registry.JobsPlusRegistry;
-import com.daqem.jobsplus.resources.JobManager;
 import com.daqem.jobsplus.resources.job.action.condition.conditions.OrActionCondition;
 import com.daqem.jobsplus.resources.job.action.condition.conditions.block.BannedBlocksActionCondition;
 import com.daqem.jobsplus.resources.job.action.condition.conditions.block.BlockActionCondition;
@@ -58,10 +58,10 @@ public class ActionConditions {
         return Registry.register(JobsPlusRegistry.ACTION_CONDITION, location, actionConditionType);
     }
 
-    public static Class<? extends ActionCondition> getClass(ResourceLocation location) {
+    public static Class<? extends ActionCondition> getClass(ResourceLocation location) throws UnknownConditionTypeException {
         ActionConditionType actionConditionType = JobsPlusRegistry.ACTION_CONDITION.get(location);
         if (actionConditionType == null)
-            JobManager.LOGGER.error("Unknown action condition type: {}", location.toString());
+            throw new UnknownConditionTypeException(location);
         return actionConditionType.clazz();
     }
 }

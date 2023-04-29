@@ -1,8 +1,8 @@
 package com.daqem.jobsplus.resources.job.action.reward;
 
 import com.daqem.jobsplus.JobsPlus;
+import com.daqem.jobsplus.exception.UnknownRewardTypeException;
 import com.daqem.jobsplus.registry.JobsPlusRegistry;
-import com.daqem.jobsplus.resources.JobManager;
 import com.daqem.jobsplus.resources.job.action.reward.rewards.*;
 import com.google.gson.JsonDeserializer;
 import net.minecraft.core.Registry;
@@ -27,10 +27,10 @@ public class ActionRewards {
         return Registry.register(JobsPlusRegistry.ACTION_REWARD, location, actionRewardType);
     }
 
-    public static Class<? extends ActionReward> getClass(ResourceLocation location) {
+    public static Class<? extends ActionReward> getClass(ResourceLocation location) throws UnknownRewardTypeException {
         ActionRewardType actionRewardType = JobsPlusRegistry.ACTION_REWARD.get(location);
         if (actionRewardType == null) {
-            JobManager.LOGGER.error("Unknown action reward type: {}", location.toString());
+            throw new UnknownRewardTypeException(location);
         }
         return actionRewardType.clazz();
     }
