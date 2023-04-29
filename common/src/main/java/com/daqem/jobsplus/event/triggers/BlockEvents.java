@@ -15,7 +15,7 @@ public class BlockEvents {
     public static void registerEvents() {
         BlockEvent.PLACE.register((level, pos, state, placer) -> {
             if (placer instanceof JobsServerPlayer jobsServerPlayer)
-                new ActionDataBuilder(jobsServerPlayer, Actions.BLOCK_PLACE)
+                new ActionDataBuilder(jobsServerPlayer, Actions.PLACE_BLOCK)
                         .withSpecification(ActionSpecification.BLOCK_STATE, state)
                         .withSpecification(ActionSpecification.BLOCK_POSITION, pos)
                         .withSpecification(ActionSpecification.WORLD, level)
@@ -26,7 +26,7 @@ public class BlockEvents {
 
         BlockEvent.BREAK.register((level, pos, state, player, xp) -> {
             if (player instanceof JobsServerPlayer jobsServerPlayer)
-                new ActionDataBuilder(jobsServerPlayer, Actions.BLOCK_BREAK)
+                new ActionDataBuilder(jobsServerPlayer, Actions.BREAK_BLOCK)
                         .withSpecification(ActionSpecification.BLOCK_STATE, state)
                         .withSpecification(ActionSpecification.BLOCK_POSITION, pos)
                         .withSpecification(ActionSpecification.EXP_DROP, xp)
@@ -38,7 +38,7 @@ public class BlockEvents {
     }
 
     public static void onBlockInteract(JobsServerPlayer player, BlockState state, BlockPos pos, Level level) {
-        new ActionDataBuilder(player, Actions.BLOCK_INTERACT)
+        new ActionDataBuilder(player, Actions.INTERACT_BLOCK)
                 .withSpecification(ActionSpecification.BLOCK_STATE, state)
                 .withSpecification(ActionSpecification.BLOCK_POSITION, pos)
                 .withSpecification(ActionSpecification.WORLD, level)

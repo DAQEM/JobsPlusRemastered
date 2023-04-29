@@ -57,7 +57,7 @@
       ]
     },
     {
-      "type": "jobsplus:on_craft",
+      "type": "jobsplus:on_craft_item",
       "rewards": [
         {
           "type": "jobsplus:job_exp",
@@ -75,7 +75,7 @@
             },
             {
               "type": "jobsplus:item",
-              "item": "minecraft:minecraft:glistering_melon_slice"
+              "item": "minecraft:glistering_melon_slice"
             },
             {
               "type": "jobsplus:item",
@@ -123,40 +123,18 @@
           "type": "jobsplus:or",
           "conditions": [
             {
-              "type": "jobsplus:entity",
-              "entity": "minecraft:phantom"
-            },
-            {
-              "type": "jobsplus:entity",
-              "entity": "minecraft:pufferfish"
-            },
-            {
-              "type": "jobsplus:entity",
-              "entity": "minecraft:magma_cube"
-            },
-            {
-              "type": "jobsplus:entity",
-              "entity": "minecraft:ghast"
-            },
-            {
-              "type": "jobsplus:entity",
-              "entity": "minecraft:rabbit"
-            },
-            {
-              "type": "jobsplus:entity",
-              "entity": "minecraft:spider"
-            },
-            {
-              "type": "jobsplus:entity",
-              "entity": "minecraft:cave_spider"
-            },
-            {
-              "type": "jobsplus:entity",
-              "entity": "minecraft:blaze"
-            },
-            {
-              "type": "jobsplus:entity",
-              "entity": "minecraft:witch"
+              "type": "jobsplus:entity_types",
+              "entity_types": [
+                "minecraft:phantom",
+                "minecraft:pufferfish",
+                "minecraft:magma_cube",
+                "minecraft:ghast",
+                "minecraft:rabbit",
+                "minecraft:spider",
+                "minecraft:cave_spider",
+                "minecraft:blaze",
+                "minecraft:witch"
+              ]
             }
           ]
         }

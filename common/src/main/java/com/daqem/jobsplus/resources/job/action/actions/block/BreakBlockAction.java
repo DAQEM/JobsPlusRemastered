@@ -9,10 +9,10 @@ import com.google.gson.JsonParseException;
 
 import java.lang.reflect.Type;
 
-public class BlockBreakAction extends Action {
+public class BreakBlockAction extends Action {
 
-    public BlockBreakAction() {
-        super(Actions.BLOCK_BREAK);
+    public BreakBlockAction() {
+        super(Actions.BREAK_BLOCK);
     }
 
     @Override
@@ -22,11 +22,11 @@ public class BlockBreakAction extends Action {
                 '}';
     }
 
-    public static class Serializer implements JsonDeserializer<BlockBreakAction> {
+    public static class Serializer implements JsonDeserializer<BreakBlockAction> {
 
         @Override
-        public BlockBreakAction deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-            return new BlockBreakAction();
+        public BreakBlockAction deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+            return new BreakBlockAction();
         }
     }
 }

@@ -4,9 +4,9 @@ import com.daqem.jobsplus.JobsPlus;
 import com.daqem.jobsplus.registry.JobsPlusRegistry;
 import com.daqem.jobsplus.resources.JobManager;
 import com.daqem.jobsplus.resources.job.action.actions.advancement.AdvancementAction;
-import com.daqem.jobsplus.resources.job.action.actions.block.BlockBreakAction;
-import com.daqem.jobsplus.resources.job.action.actions.block.BlockInteractAction;
-import com.daqem.jobsplus.resources.job.action.actions.block.BlockPlaceAction;
+import com.daqem.jobsplus.resources.job.action.actions.block.BreakBlockAction;
+import com.daqem.jobsplus.resources.job.action.actions.block.InteractBlockAction;
+import com.daqem.jobsplus.resources.job.action.actions.block.PlaceBlockAction;
 import com.daqem.jobsplus.resources.job.action.actions.entity.DeathAction;
 import com.daqem.jobsplus.resources.job.action.actions.entity.GetHurtAction;
 import com.daqem.jobsplus.resources.job.action.actions.entity.HurtEntityAction;
@@ -46,9 +46,9 @@ public class Actions {
     public static final ActionType ELYTRA_FLY_START = register(JobsPlus.getId("on_elytra_fly_start"), ElytraFlyStartAction.class, new ElytraFlyStartAction.Deserializer());
     public static final ActionType ELYTRA_FLY_STOP = register(JobsPlus.getId("on_elytra_fly_stop"), ElytraFlyStopAction.class, new ElytraFlyStopAction.Deserializer());
 
-    public static final ActionType BLOCK_PLACE = register(JobsPlus.getId("on_block_place"), BlockPlaceAction.class, new BlockPlaceAction.Serializer());
-    public static final ActionType BLOCK_BREAK = register(JobsPlus.getId("on_block_break"), BlockBreakAction.class, new BlockBreakAction.Serializer());
-    public static final ActionType BLOCK_INTERACT = register(JobsPlus.getId("on_block_interact"), BlockInteractAction.class, new BlockInteractAction.Deserializer());
+    public static final ActionType PLACE_BLOCK = register(JobsPlus.getId("on_place_block"), PlaceBlockAction.class, new PlaceBlockAction.Serializer());
+    public static final ActionType BREAK_BLOCK = register(JobsPlus.getId("on_break_block"), BreakBlockAction.class, new BreakBlockAction.Serializer());
+    public static final ActionType INTERACT_BLOCK = register(JobsPlus.getId("on_interact_block"), InteractBlockAction.class, new InteractBlockAction.Deserializer());
     public static final ActionType JOB_EXP = register(JobsPlus.getId("on_job_exp"), JobExpAction.class, new JobExpAction.Serializer());
     public static final ActionType JOB_LEVEL_UP = register(JobsPlus.getId("on_job_level_up"), JobLevelUpAction.class, new JobLevelUpAction.Deserializer());
     public static final ActionType DEATH = register(JobsPlus.getId("on_death"), DeathAction.class, new DeathAction.Serializer());

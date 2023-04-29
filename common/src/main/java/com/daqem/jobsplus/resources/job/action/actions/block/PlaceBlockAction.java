@@ -9,24 +9,24 @@ import com.google.gson.JsonParseException;
 
 import java.lang.reflect.Type;
 
-public class BlockInteractAction extends Action {
+public class PlaceBlockAction extends Action {
 
-    public BlockInteractAction() {
-        super(Actions.BLOCK_INTERACT);
+    public PlaceBlockAction() {
+        super(Actions.PLACE_BLOCK);
     }
 
     @Override
     public String toString() {
-        return "BlockInteractAction{" +
+        return "BlockPlaceAction{" +
                 "type=" + this.getType() +
                 '}';
     }
 
-    public static class Deserializer implements JsonDeserializer<BlockInteractAction> {
+    public static class Serializer implements JsonDeserializer<PlaceBlockAction> {
 
         @Override
-        public BlockInteractAction deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-            return new BlockInteractAction();
+        public PlaceBlockAction deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+            return new PlaceBlockAction();
         }
     }
 }

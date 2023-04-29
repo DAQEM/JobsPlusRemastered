@@ -6,7 +6,7 @@
   "description": "Builds structures.",
   "actions": [
     {
-      "type": "jobsplus:on_block_place",
+      "type": "jobsplus:on_place_block",
       "rewards": [
         {
           "type": "jobsplus:job_exp",
