@@ -29,6 +29,7 @@
   "depends": {
     "fabric": "*",
     "minecraft": ">=1.19.2",
-    "architectury": ">=6.2.43"
+    "architectury": ">=6.2.43",
+    "supermartijn642configlib": ">=1.1.0"
   }
 }

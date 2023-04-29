@@ -18,6 +18,13 @@ public class JobsPlus {
     public static void init() {
         registerEvents();
         JobsPlusNetworking.init();
+
+        LOGGER.info("JobsPlus initialized");
+        if (JobsPlusExpectPlatform.getCommonConfig().isDebug()) {
+            LOGGER.info("JobsPlus is in debug mode");
+        } else {
+            LOGGER.info("JobsPlus is not in debug mode");
+        }
     }
 
     private static void registerEvents() {

@@ -1,6 +1,7 @@
 package com.daqem.jobsplus.forge;
 
 import com.daqem.jobsplus.JobsPlus;
+import com.daqem.jobsplus.forge.config.CommonConfigForge;
 import dev.architectury.platform.forge.EventBuses;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
@@ -9,6 +10,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 @Mod(JobsPlus.MOD_ID)
 public class JobsPlusForge {
     public JobsPlusForge() {
+        CommonConfigForge.init();
         EventBuses.registerModEventBus(JobsPlus.MOD_ID, FMLJavaModLoadingContext.get().getModEventBus());
         JobsPlus.init();
 

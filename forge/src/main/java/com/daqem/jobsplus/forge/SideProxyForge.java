@@ -5,6 +5,8 @@ import com.daqem.jobsplus.client.JobsPlusClient;
 import com.daqem.jobsplus.command.arguments.EnumArgument;
 import com.daqem.jobsplus.command.arguments.JobArgument;
 import com.daqem.jobsplus.command.arguments.PowerupArgument;
+import com.daqem.jobsplus.config.ICommonConfig;
+import com.daqem.jobsplus.forge.config.CommonConfigForge;
 import com.daqem.jobsplus.forge.registry.JobsPlusRegistryForge;
 import com.daqem.jobsplus.forge.resources.JobManagerForge;
 import net.minecraft.commands.synchronization.ArgumentTypeInfo;
@@ -21,6 +23,7 @@ import net.minecraftforge.registries.DeferredRegister;
 public class SideProxyForge {
 
     private static final JobManagerForge JOB_MANAGER = new JobManagerForge();
+    private static final ICommonConfig COMMON_CONFIG = new CommonConfigForge();
 
     SideProxyForge() {
         IEventBus eventBus = MinecraftForge.EVENT_BUS;
@@ -42,6 +45,10 @@ public class SideProxyForge {
 
     public static JobManagerForge getJobManager() {
         return JOB_MANAGER;
+    }
+
+    public static ICommonConfig getCommonConfig() {
+        return COMMON_CONFIG;
     }
 
     public void onAddReloadListeners(AddReloadListenerEvent event) {
