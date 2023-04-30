@@ -43,16 +43,10 @@
       ],
       "conditions": [
         {
-          "type": "jobsplus:or",
-          "conditions": [
-            {
-              "type": "jobsplus:item",
-              "item": "minecraft:splash_potion"
-            },
-            {
-              "type": "jobsplus:item",
-              "item": "minecraft:lingering_potion"
-            }
+          "type": "jobsplus:items",
+          "items": [
+            "minecraft:splash_potion",
+            "minecraft:lingering_potion"
           ]
         }
       ]
@@ -68,44 +62,17 @@
       ],
       "conditions": [
         {
-          "type": "jobsplus:or",
-          "conditions": [
-            {
-              "type": "jobsplus:item",
-              "item": "minecraft:brewing_stand"
-            },
-            {
-              "type": "jobsplus:item",
-              "item": "minecraft:glistering_melon_slice"
-            },
-            {
-              "type": "jobsplus:item",
-              "item": "minecraft:sugar"
-            },
-            {
-              "type": "jobsplus:item",
-              "item": "minecraft:rabbit_foot"
-            },
-            {
-              "type": "jobsplus:item",
-              "item": "minecraft:blaze_powder"
-            },
-            {
-              "type": "jobsplus:item",
-              "item": "minecraft:fermented_spider_eye"
-            },
-            {
-              "type": "jobsplus:item",
-              "item": "minecraft:magma_cream"
-            },
-            {
-              "type": "jobsplus:item",
-              "item": "minecraft:golden_carrot"
-            },
-            {
-              "type": "jobsplus:item",
-              "item": "minecraft:turtle_helmet"
-            }
+          "type": "jobsplus:items",
+          "items": [
+            "minecraft:brewing_stand",
+            "minecraft:glistering_melon_slice",
+            "minecraft:sugar",
+            "minecraft:rabbit_foot",
+            "minecraft:blaze_powder",
+            "minecraft:fermented_spider_eye",
+            "minecraft:magma_cream",
+            "minecraft:golden_carrot",
+            "minecraft:turtle_helmet"
           ]
         }
       ]
@@ -121,22 +88,17 @@
       ],
       "conditions": [
         {
-          "type": "jobsplus:or",
-          "conditions": [
-            {
-              "type": "jobsplus:entity_types",
-              "entity_types": [
-                "minecraft:phantom",
-                "minecraft:pufferfish",
-                "minecraft:magma_cube",
-                "minecraft:ghast",
-                "minecraft:rabbit",
-                "minecraft:spider",
-                "minecraft:cave_spider",
-                "minecraft:blaze",
-                "minecraft:witch"
-              ]
-            }
+          "type": "jobsplus:entity_types",
+          "entity_types": [
+            "minecraft:phantom",
+            "minecraft:pufferfish",
+            "minecraft:magma_cube",
+            "minecraft:ghast",
+            "minecraft:rabbit",
+            "minecraft:spider",
+            "minecraft:cave_spider",
+            "minecraft:blaze",
+            "minecraft:witch"
           ]
         }
       ]

@@ -192,8 +192,16 @@ public class ConfirmationScreen extends Screen {
     private int getRequiredCoins() {
         int requiredCoins = 0;
         switch (messageType.getRequireCoinsType()) {
-            case START_JOB -> requiredCoins = 10; //TODO config
-            case STOP_JOB -> requiredCoins = 5; //TODO config
+            case START_JOB -> {
+                if (job != null) {
+                    requiredCoins = job.getPrice();
+                }
+            }
+            case STOP_JOB -> {
+                if (job != null) {
+                    requiredCoins = job.getStopPrice();
+                }
+            }
             case POWER_UP -> {
                 if (powerup != null) {
                     requiredCoins = powerup.getPrice();

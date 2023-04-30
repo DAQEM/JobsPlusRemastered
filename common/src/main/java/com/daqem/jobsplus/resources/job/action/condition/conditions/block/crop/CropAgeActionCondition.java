@@ -1,14 +1,18 @@
 package com.daqem.jobsplus.resources.job.action.condition.conditions.block.crop;
 
+import com.daqem.jobsplus.JobsPlus;
 import com.daqem.jobsplus.player.ActionData;
 import com.daqem.jobsplus.player.ActionSpecification;
 import com.daqem.jobsplus.resources.job.action.condition.ActionCondition;
 import com.daqem.jobsplus.resources.job.action.condition.ActionConditions;
 import com.google.gson.*;
-import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.level.block.state.properties.Property;
 
 import java.lang.reflect.Type;
+import java.util.Collection;
+import java.util.Optional;
 
 public class CropAgeActionCondition extends ActionCondition {
 
@@ -22,7 +26,26 @@ public class CropAgeActionCondition extends ActionCondition {
     @Override
     public boolean isMet(ActionData actionData) {
         BlockState blockState = actionData.getSpecification(ActionSpecification.BLOCK_STATE);
-        return blockState != null && blockState.getOptionalValue(CropBlock.AGE).orElse(-1) == this.age;
+        if (blockState != null) {
+            Collection<Property<?>> properties = blockState.getProperties();
+            Optional<Property<?>> optionalAgeProperty = properties.stream()
+                    .filter(property -> property.getName().equals("age"))
+                    .findFirst();
+            if (optionalAgeProperty.isPresent()) {
+                IntegerProperty ageProperty = (IntegerProperty) optionalAgeProperty.get();
+                Collection<Integer> possibleValues = ageProperty.getPossibleValues();
+                Integer lastValue = possibleValues.stream().reduce((a, b) -> b).orElse(null);
+                if (lastValue != null) {
+                    JobsPlus.LOGGER.info("ageProperty: " + lastValue.intValue());
+                }
+                Optional<Integer> optionalAgeValue = blockState.getOptionalValue(ageProperty);
+                if (optionalAgeValue.isPresent()) {
+                    JobsPlus.LOGGER.info("age: " + optionalAgeValue.get());
+                    return optionalAgeValue.get() == this.age;
+                }
+            }
+        }
+        return false;
     }
 
     public int getAge() {

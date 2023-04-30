@@ -39,7 +39,8 @@ public class BlocksActionCondition extends ActionCondition {
         public BlocksActionCondition deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
             JsonObject jsonObject = json.getAsJsonObject();
             List<String> blockStrings = new ArrayList<>();
-            jsonObject.get("blocks").getAsJsonArray().forEach(jsonElement -> blockStrings.add(jsonElement.getAsString()));
+            JsonArray blocksArray = jsonObject.get("blocks").getAsJsonArray();
+            blocksArray.forEach(jsonElement -> blockStrings.add(jsonElement.getAsString()));
             return new BlocksActionCondition(
                     BlockConverter.convertToBlocks(blockStrings),
                     BlockConverter.convertToBlockTags(blockStrings));

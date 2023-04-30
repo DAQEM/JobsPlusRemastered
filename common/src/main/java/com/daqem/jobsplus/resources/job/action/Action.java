@@ -59,11 +59,7 @@ public abstract class Action {
     public void perform(ActionData actionData) {
         if (metConditions(actionData)) {
             JobsPlus.LOGGER.info("Action {} passed conditions for job {}", type.location(), actionData.getSourceJob().getJobInstance().getName());
-            for (ActionReward reward : rewards) {
-                if (reward.passedChance(actionData)) {
-                    reward.apply(actionData);
-                }
-            }
+            applyRewards(actionData);
         }
     }
 
@@ -74,6 +70,14 @@ public abstract class Action {
             }
         }
         return true;
+    }
+
+    public void applyRewards(ActionData actionData) {
+        for (ActionReward reward : rewards) {
+            if (reward.passedChance(actionData)) {
+                reward.apply(actionData);
+            }
+        }
     }
 
     public static class ActionSerializer<T extends Action> implements JsonDeserializer<T> {

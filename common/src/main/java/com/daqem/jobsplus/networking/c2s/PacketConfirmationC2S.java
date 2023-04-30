@@ -1,6 +1,5 @@
 package com.daqem.jobsplus.networking.c2s;
 
-import com.daqem.jobsplus.JobsPlus;
 import com.daqem.jobsplus.networking.JobsPlusNetworking;
 import com.daqem.jobsplus.networking.utils.ConfirmationMessageType;
 import com.daqem.jobsplus.player.JobsServerPlayer;
@@ -40,18 +39,14 @@ public class PacketConfirmationC2S extends BaseC2SMessage {
     public PacketConfirmationC2S(FriendlyByteBuf friendlyByteBuf) {
         this.type = ConfirmationMessageType.values()[friendlyByteBuf.readVarInt()];
         this.price = friendlyByteBuf.readVarInt();
+
         String jobInstanceString = friendlyByteBuf.readUtf();
-        if (!jobInstanceString.isEmpty()) {
-            this.jobInstance = JobInstance.of(new ResourceLocation(jobInstanceString));
-        } else {
-            this.jobInstance = null;
-        }
+        ResourceLocation jobInstanceLocation = new ResourceLocation(jobInstanceString);
+        this.jobInstance = jobInstanceString.isEmpty() ? null : JobInstance.of(jobInstanceLocation);
+
         String powerupInstanceString = friendlyByteBuf.readUtf();
-        if (!powerupInstanceString.isEmpty()) {
-            this.powerupInstance = PowerupInstance.of(new ResourceLocation(powerupInstanceString));
-        } else {
-            this.powerupInstance = null;
-        }
+        ResourceLocation powerupInstanceLocation = new ResourceLocation(powerupInstanceString);
+        this.powerupInstance = powerupInstanceString.isEmpty() ? null : PowerupInstance.of(powerupInstanceLocation);
     }
 
     @Override
@@ -70,25 +65,20 @@ public class PacketConfirmationC2S extends BaseC2SMessage {
     @Override
     public void handle(NetworkManager.PacketContext context) {
         if (context.getPlayer() instanceof JobsServerPlayer serverPlayer) {
-            JobsPlus.LOGGER.info("Received confirmation packet from player " + serverPlayer.getServerPlayer().getName());
-            if (serverPlayer.getCoins() >= price || type == ConfirmationMessageType.START_JOB_FREE || type == ConfirmationMessageType.STOP_JOB_FREE) {
-                JobsPlus.LOGGER.info("Player " + serverPlayer.getServerPlayer().getName() + " has enough coins");
-                boolean success = false;
+            if (serverPlayer.getCoins() >= price || type.getRequireCoinsType() == ConfirmationMessageType.RequireCoinsType.NONE) {
+                boolean hasToPay = false;
                 if (type == ConfirmationMessageType.BUY_POWER_UP) {
                     if (powerupInstance != null) {
                         if (!serverPlayer.hasPowerup(powerupInstance)) {
                             serverPlayer.addPowerup(powerupInstance);
-                            success = true;
+                            hasToPay = true;
                         }
                     }
                 } else if (jobInstance != null) {
-                    JobsPlus.LOGGER.info("Player " + serverPlayer.getServerPlayer().getName() + " is buying job " + jobInstance);
                     switch (type) {
                         case START_JOB_FREE -> {
-                            JobsPlus.LOGGER.info("Player " + serverPlayer.getServerPlayer().getName() + " is starting job " + jobInstance);
                             if (!serverPlayer.hasJob(jobInstance)) {
                                 serverPlayer.addNewJob(jobInstance);
-                                JobsPlus.LOGGER.info("Added job " + jobInstance + " to player " + serverPlayer.getServerPlayer().getName());
                             }
                         }
                         case STOP_JOB_FREE -> {
@@ -99,18 +89,18 @@ public class PacketConfirmationC2S extends BaseC2SMessage {
                         case START_JOB_PAID -> {
                             if (!serverPlayer.hasJob(jobInstance)) {
                                 serverPlayer.addNewJob(jobInstance);
-                                success = true;
+                                hasToPay = true;
                             }
                         }
                         case STOP_JOB_PAID -> {
                             if (serverPlayer.hasJob(jobInstance)) {
                                 serverPlayer.removeJob(jobInstance);
-                                success = true;
+                                hasToPay = true;
                             }
                         }
                     }
                 }
-                if (success) {
+                if (hasToPay) {
                     serverPlayer.setCoins(serverPlayer.getCoins() - price);
                 }
             }
