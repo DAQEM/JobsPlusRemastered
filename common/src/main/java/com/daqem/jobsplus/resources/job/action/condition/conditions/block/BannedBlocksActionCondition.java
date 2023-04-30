@@ -28,9 +28,15 @@ public class BannedBlocksActionCondition extends ActionCondition {
     @Override
     public boolean isMet(ActionData actionData) {
         BlockState blockState = actionData.getSpecification(ActionSpecification.BLOCK_STATE);
-        return blockState != null
-                && (!this.bannedBlocks.contains(blockState.getBlock())
-                || this.bannedBlockTags.stream().noneMatch(blockState::is));
+        return blockState != null && !(isBannedBlock(blockState) || isBannedBlockByTag(blockState));
+    }
+
+    private boolean isBannedBlock(BlockState blockState) {
+        return this.bannedBlocks.contains(blockState.getBlock());
+    }
+
+    private boolean isBannedBlockByTag(BlockState blockState) {
+        return this.bannedBlockTags.stream().anyMatch(blockState::is);
     }
 
     public static class Deserializer implements JsonDeserializer<BannedBlocksActionCondition> {
