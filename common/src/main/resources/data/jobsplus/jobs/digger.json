@@ -1,7 +1,7 @@
 {
   "name": "Digger",
   "price": 10,
-  "max_level": 250,
+  "max_level": 100,
   "color": "#9B7653",
   "icon_item": "minecraft:wooden_shovel",
   "description": "Digging is a skill that allows you to dig faster and more efficiently. It is also used to determine the chance of finding ores and other items when mining.",
@@ -10,26 +10,49 @@
       "type": "jobsplus:on_break_block",
       "rewards": [
         {
-          "type": "jobsplus:item",
-          "item": "minecraft:diamond"
+          "type": "jobsplus:job_exp",
+          "chance": 100,
+          "min_exp": 0,
+          "max_exp": 2
         }
       ],
       "conditions": [
         {
-          "type": "jobsplus:or",
-          "conditions": [
-            {
-              "type": "jobsplus:item_in_hand",
-              "item": "minecraft:wooden_shovel"
-            },
-            {
-              "type": "jobsplus:item_in_inventory",
-              "item": "minecraft:gravel"
-            },
-            {
-              "type": "jobsplus:item_equipped",
-              "item": "minecraft:iron_chestplate"
-            }
+          "type": "jobsplus:blocks",
+          "blocks": [
+            "minecraft:dirt",
+            "minecraft:sand"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "jobsplus:on_break_block",
+      "rewards": [
+        {
+          "type": "jobsplus:job_exp",
+          "chance": 100,
+          "min_exp": 2,
+          "max_exp": 4
+        }
+      ],
+      "conditions": [
+        {
+          "type": "jobsplus:blocks",
+          "blocks": [
+            "minecraft:grass_block",
+            "minecraft:coarse_dirt",
+            "minecraft:podzol",
+            "minecraft:rooted_dirt",
+            "minecraft:clay",
+            "minecraft:red_sand",
+            "minecraft:soul_sand",
+            "minecraft:soul_soil",
+            "minecraft:mycelium",
+            "minecraft:grass_path",
+            "minecraft:gravel",
+            "minecraft:mud",
+            "minecraft:muddy_mangrove_roots"
           ]
         }
       ]

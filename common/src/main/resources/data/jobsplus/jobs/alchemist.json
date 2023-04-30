@@ -1,7 +1,7 @@
 {
   "name": "Alchemist",
   "price": 10,
-  "max_level": 250,
+  "max_level": 100,
   "color": "#00AEFF",
   "icon_item": "minecraft:brewing_stand",
   "description": "",
