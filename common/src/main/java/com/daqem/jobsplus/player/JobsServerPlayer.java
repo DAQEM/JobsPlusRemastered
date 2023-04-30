@@ -1,7 +1,6 @@
 package com.daqem.jobsplus.player;
 
 import com.daqem.jobsplus.player.job.Job;
-import com.daqem.jobsplus.player.job.display.JobDisplay;
 import com.daqem.jobsplus.player.job.powerup.PowerupState;
 import com.daqem.jobsplus.player.stat.StatData;
 import com.daqem.jobsplus.resources.job.JobInstance;
@@ -12,7 +11,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 public interface JobsServerPlayer {
@@ -40,10 +38,6 @@ public interface JobsServerPlayer {
     void addCoins(int coins);
 
     void setCoins(int coins);
-
-    Optional<JobDisplay> getDisplay();
-
-    void setDisplay(JobDisplay jobDisplay);
 
     void addPowerup(PowerupInstance powerupInstance);
 

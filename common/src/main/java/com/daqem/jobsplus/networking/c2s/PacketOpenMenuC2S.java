@@ -1,13 +1,11 @@
 package com.daqem.jobsplus.networking.c2s;
 
 import com.daqem.jobsplus.Constants;
-import com.daqem.jobsplus.JobsPlus;
 import com.daqem.jobsplus.client.screen.JobsScreen;
 import com.daqem.jobsplus.networking.JobsPlusNetworking;
 import com.daqem.jobsplus.networking.s2c.PacketOpenMenuS2C;
 import com.daqem.jobsplus.player.JobsServerPlayer;
 import com.daqem.jobsplus.player.job.JobSerializer;
-import com.daqem.jobsplus.player.job.display.JobDisplay;
 import dev.architectury.networking.NetworkManager;
 import dev.architectury.networking.simple.BaseC2SMessage;
 import dev.architectury.networking.simple.MessageType;
@@ -91,7 +89,6 @@ public class PacketOpenMenuC2S extends BaseC2SMessage {
             listTag.addAll(serverPlayer.inactiveJobsToNBT());
             serverData.put(Constants.JOBS, listTag);
             serverData.putInt(Constants.COINS, serverPlayer.getCoins());
-            serverData.putString(Constants.DISPLAY, serverPlayer.getDisplay().map(JobDisplay::getLocationString).orElse(""));
 
             serverData.putInt(Constants.ACTIVE_LEFT_BUTTON, activeLeftButton);
             serverData.putInt(Constants.ACTIVE_RIGHT_BUTTON, activeRightButton);

@@ -4,6 +4,7 @@ import com.daqem.jobsplus.Constants;
 import com.daqem.jobsplus.JobsPlus;
 import com.daqem.jobsplus.client.render.ModItemRenderer;
 import com.daqem.jobsplus.client.render.RenderColor;
+import com.daqem.jobsplus.config.JobsPlusCommonConfig;
 import com.daqem.jobsplus.networking.c2s.PacketOpenMenuC2S;
 import com.daqem.jobsplus.networking.c2s.PacketTogglePowerUp;
 import com.daqem.jobsplus.networking.utils.ConfirmationMessageType;
@@ -28,7 +29,6 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffect;
@@ -199,28 +199,6 @@ public class JobsScreen extends Screen {
             super.renderTooltip(poseStack, JobsPlus.translatable("gui.job_powerups"), mouseX + startX, mouseY + startY);
         } else if (isBetween(mouseX, mouseY, 6 + 28 + 28 + 28 + 150, -22, 32 + 28 + 28 + 28 + 150, 0)) {
             super.renderTooltip(poseStack, JobsPlus.translatable("gui.job_how_to_get_exp"), mouseX + startX, mouseY + startY);
-        } else if (isBetween(mouseX, mouseY, imageWidth, 6, imageWidth + 21, 31)) {
-            if (hasJobSelected() && isJobDisplayEnabled()) {
-                if (getSelectedJobLevel() != 0) {
-                    List<Component> components;
-                    if (getDisplay().isPresent()) {
-                        JobInstance jobInstance = getDisplay().get().getJobInstance();
-
-                        Component colorizedJobName = JobsPlus.literal(jobInstance.getName().toUpperCase())
-                                .withStyle(Style.EMPTY
-                                        .withColor(jobInstance.getColorDecimal())
-                                        .withBold(true));
-
-                        components = List.of(JobsPlus.translatable("gui.toggle_prefix"),
-                                JobsPlus.translatable("gui.active").append(colorizedJobName));
-                    } else {
-                        components = List.of(JobsPlus.translatable("gui.toggle_prefix"),
-                                JobsPlus.translatable("gui.active", ChatColor.boldBlue()
-                                        + JobsPlus.translatable("job.none").getString()));
-                    }
-                    super.renderTooltip(poseStack, components, Optional.empty(), mouseX + startX, mouseY + startY + 17);
-                }
-            }
         } else if (isBetween(mouseX, mouseY, imageWidth, 35, imageWidth + 21, 60)) {
             if (hasJobSelected()) {
                 if (getSelectedJobLevel() != 0) {
@@ -386,12 +364,6 @@ public class JobsScreen extends Screen {
         }
         if (hasJobSelected()) {
             if (getSelectedJobLevel() != 0) {
-                //Job Display Background
-                if (isJobDisplayEnabled()) {
-                    if (getDisplay().isPresent() && getDisplay().get() == job)
-                        blitThis(poseStack, imageWidth, 6, 142, 234, 22, 26);
-                    else blitThis(poseStack, imageWidth, 6, 164, 234, 19, 26);
-                }
                 //Boss Bar Background
                 if (getActiveBossBar() == job) blitThis(poseStack, imageWidth, 9 + 26, 142, 234, 22, 26);
                 else blitThis(poseStack, imageWidth, 9 + 26, 164, 234, 19, 26);
@@ -530,12 +502,6 @@ public class JobsScreen extends Screen {
                 //CONSTRUCTION TABLE
                 //itemRenderer.renderAndDecorateItem(ModItems.CONSTRUCTION_TABLE.get().getDefaultInstance(), startX + 166, startY + 171);
             }
-            if (getSelectedJobLevel() != 0 && isJobDisplayEnabled()) {
-                if (getDisplay().isPresent() && getDisplay().get() == job)
-                    itemRenderer.renderAndDecorateItem(Items.NAME_TAG.getDefaultInstance(), this.startX + 328, this.startY + 11);
-                else
-                    itemRenderer.renderAndDecorateItem(Items.NAME_TAG.getDefaultInstance(), this.startX + 327, this.startY + 11);
-            }
         }
     }
 
@@ -606,21 +572,9 @@ public class JobsScreen extends Screen {
             this.scrollingRight = true;
         }
 
-        //DISPLAY AND BOSSBAR
+        //BOSSBAR
         if (hasJobSelected()) {
             if (getSelectedJobLevel() != 0) {
-                //DISPLAY
-                if (isJobDisplayEnabled()) {
-                    if (isBetween(mouseX, mouseY, imageWidth, 6, imageWidth + 21, 31)) {
-                        String job;
-                        if (getDisplay().isPresent() && getDisplay().get() == this.job)
-                            job = "NONE";
-//                        else
-//                            job = Jobs.getEnglishString(this.job);
-//                        ModPackets.INSTANCE.sendToServer(new PacketJobDisplay(job));
-//                        ModPackets.INSTANCE.sendToServer(new PacketOpenMenu(this.job, activeLeftButton, activeRightButton, selectedButton, scrollOffs, startIndex));
-                    }
-                }
                 //BOSSBAR
                 if (isBetween(mouseX, mouseY, imageWidth, 35, imageWidth + 21, 60)) {
 //                    if (job == getActiveBossBar()) ModPackets.INSTANCE.sendToServer(new PacketBossBarr("NONE"));
@@ -1037,8 +991,8 @@ public class JobsScreen extends Screen {
         return this.jobsPlayerData.activeJobs().size();
     }
 
-    private int getAmountOfFreeJobs() { //TODO config
-        return 2;
+    private int getAmountOfFreeJobs() {
+        return JobsPlusCommonConfig.amountOfFreeJobs.get();
     }
 
     private boolean hasFreeClaimableJobs() {
@@ -1051,18 +1005,6 @@ public class JobsScreen extends Screen {
 
     private int getPowerupPrice(PowerupInstance powerupInstance) {
         return powerupInstance.getPrice();
-    }
-
-    private boolean isJobDisplayEnabled() { //TODO config
-        return true;
-    }
-
-    private Optional<Job> getDisplay() {
-        if (jobsPlayerData.jobDisplay() == null) return Optional.empty();
-        return this.jobs.stream()
-                .filter(job1 -> job1.getJobInstance().getLocation().equals(jobsPlayerData.jobDisplay().jobInstance().getLocation()))
-                .findFirst();
-//        return this.dataTag.getInt("Display");
     }
 
     private Job getActiveBossBar() {

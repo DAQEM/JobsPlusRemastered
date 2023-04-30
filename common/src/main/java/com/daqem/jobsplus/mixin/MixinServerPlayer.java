@@ -9,7 +9,6 @@ import com.daqem.jobsplus.event.triggers.StatEvents;
 import com.daqem.jobsplus.player.JobsServerPlayer;
 import com.daqem.jobsplus.player.job.Job;
 import com.daqem.jobsplus.player.job.JobSerializer;
-import com.daqem.jobsplus.player.job.display.JobDisplay;
 import com.daqem.jobsplus.player.job.powerup.PowerupState;
 import com.daqem.jobsplus.player.stat.StatData;
 import com.daqem.jobsplus.resources.job.JobInstance;
@@ -35,7 +34,10 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 @Mixin(ServerPlayer.class)
 public abstract class MixinServerPlayer extends Player implements JobsServerPlayer {
@@ -53,7 +55,6 @@ public abstract class MixinServerPlayer extends Player implements JobsServerPlay
     private float elytraFlyingDistance = 0;
     private List<Job> jobs = new ArrayList<>();
     private int coins = 0;
-    private @Nullable JobDisplay display = null;
 
     public MixinServerPlayer(Level level, BlockPos blockPos, float yaw, GameProfile gameProfile, @Nullable ProfilePublicKey profilePublicKey) {
         super(level, blockPos, yaw, gameProfile, profilePublicKey);
@@ -155,16 +156,6 @@ public abstract class MixinServerPlayer extends Player implements JobsServerPlay
     @Override
     public void setCoins(int coins) {
         this.coins = coins;
-    }
-
-    @Override
-    public Optional<JobDisplay> getDisplay() {
-        return this.display == null ? Optional.empty() : Optional.of(display);
-    }
-
-    @Override
-    public void setDisplay(@Nullable JobDisplay display) {
-        this.display = display;
     }
 
     @Override
@@ -387,7 +378,6 @@ public abstract class MixinServerPlayer extends Player implements JobsServerPlay
         if (oldPlayer instanceof JobsServerPlayer oldJobsServerPlayer) {
             this.jobs = oldJobsServerPlayer.getJobs();
             this.coins = oldJobsServerPlayer.getCoins();
-            this.display = oldJobsServerPlayer.getDisplay().orElse(null);
         }
     }
 
@@ -396,7 +386,6 @@ public abstract class MixinServerPlayer extends Player implements JobsServerPlay
         CompoundTag jobsTag = new CompoundTag();
         jobsTag.put(Constants.JOBS, JobSerializer.toNBT(this.jobs));
         jobsTag.putInt(Constants.COINS, this.coins);
-        jobsTag.putString(Constants.DISPLAY, this.display == null ? "" : this.display.getLocationString());
         compoundTag.put(Constants.JOBS_DATA, jobsTag);
 //        JobsPlus.LOGGER.error("Saved jobs: {}. For player {}", this.jobs, getServerPlayer().getDisplayName().getString());
     }
@@ -406,7 +395,6 @@ public abstract class MixinServerPlayer extends Player implements JobsServerPlay
         CompoundTag jobsTag = compoundTag.getCompound(Constants.JOBS_DATA);
         this.jobs = JobSerializer.fromNBT(this, jobsTag);
         this.coins = jobsTag.getInt(Constants.COINS);
-        this.display = JobDisplay.fromNBT(jobsTag);
 //        JobsPlus.LOGGER.error("Loaded jobs: {}. For player {}", this.jobs, getServerPlayer().getDisplayName().getString());
     }
 }

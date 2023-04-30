@@ -3,7 +3,6 @@ package com.daqem.jobsplus.player;
 import com.daqem.jobsplus.Constants;
 import com.daqem.jobsplus.player.job.Job;
 import com.daqem.jobsplus.player.job.JobSerializer;
-import com.daqem.jobsplus.player.job.display.JobDisplay;
 import net.minecraft.nbt.CompoundTag;
 
 import java.util.ArrayList;
@@ -18,9 +17,8 @@ import java.util.List;
  * @param activeJobs   - The list of jobs that the player has at least 1 level in.
  * @param inactiveJobs - The list of jobs that the player has 0 levels in.
  * @param coins        - The amount of coins the player has.
- * @param jobDisplay   - The job display the player has selected.
  */
-public record JobsPlayerData(List<Job> activeJobs, List<Job> inactiveJobs, int coins, JobDisplay jobDisplay) {
+public record JobsPlayerData(List<Job> activeJobs, List<Job> inactiveJobs, int coins) {
 
     /**
      * This method is used to convert the data from a Player object to a JobsPlayerData object.
@@ -32,8 +30,7 @@ public record JobsPlayerData(List<Job> activeJobs, List<Job> inactiveJobs, int c
         return new JobsPlayerData(
                 jobsServerPlayer.getJobs(),
                 jobsServerPlayer.getInactiveJobs(),
-                jobsServerPlayer.getCoins(),
-                jobsServerPlayer.getDisplay().orElse(null));
+                jobsServerPlayer.getCoins());
     }
 
     /**
@@ -44,7 +41,6 @@ public record JobsPlayerData(List<Job> activeJobs, List<Job> inactiveJobs, int c
      */
     public static JobsPlayerData fromNBT(CompoundTag compoundTag) {
         int coins = compoundTag.getInt(Constants.COINS);
-        JobDisplay jobDisplay = JobDisplay.fromNBT(compoundTag);
         List<Job> activeJobs = new ArrayList<>();
         List<Job> inactiveJobs = new ArrayList<>();
         JobSerializer.fromNBT(null, compoundTag)
@@ -55,6 +51,6 @@ public record JobsPlayerData(List<Job> activeJobs, List<Job> inactiveJobs, int c
                         inactiveJobs.add(job);
                     }
                 });
-        return new JobsPlayerData(activeJobs, inactiveJobs, coins, jobDisplay);
+        return new JobsPlayerData(activeJobs, inactiveJobs, coins);
     }
 }

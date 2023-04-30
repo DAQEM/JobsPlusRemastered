@@ -6,7 +6,6 @@ import com.daqem.jobsplus.command.arguments.JobArgument;
 import com.daqem.jobsplus.command.arguments.PowerupArgument;
 import com.daqem.jobsplus.player.JobsServerPlayer;
 import com.daqem.jobsplus.player.job.Job;
-import com.daqem.jobsplus.player.job.display.JobDisplay;
 import com.daqem.jobsplus.player.job.powerup.PowerupState;
 import com.daqem.jobsplus.resources.job.JobInstance;
 import com.daqem.jobsplus.resources.job.powerup.PowerupInstance;
@@ -70,17 +69,6 @@ public class JobCommand {
                                         )
                                 )
                         )
-                        .then(Commands.literal("display")
-                                .then(Commands.argument("target_player", EntityArgument.player())
-                                        .then(Commands.argument("job", JobArgument.job())
-                                                .executes(context -> setDisplay(
-                                                        context.getSource(),
-                                                        EntityArgument.getPlayer(context, "target_player"),
-                                                        JobArgument.getJob(context, "job")
-                                                ))
-                                        )
-                                )
-                        )
                         .then(Commands.literal("powerup")
                                 .then(Commands.argument("target_player", EntityArgument.player())
                                         .then(Commands.argument("job", JobArgument.job())
@@ -126,20 +114,6 @@ public class JobCommand {
                     source.sendFailure(JobsPlus.translatable(
                             "command.set.powerup.not_available_for_job ", powerupInstance.getLocation(), jobInstance.getLocation()));
                 }
-            } else {
-                source.sendFailure(JobsPlus.translatable(
-                        "command.does_not_have_job", jobsServerPlayer.name(), jobInstance.getLocation()));
-            }
-        }
-        return 0;
-    }
-
-    private static int setDisplay(CommandSourceStack source, ServerPlayer target, JobInstance jobInstance) {
-        if (target instanceof JobsServerPlayer jobsServerPlayer) {
-            if (jobsServerPlayer.hasJob(jobInstance)) {
-                jobsServerPlayer.setDisplay(new JobDisplay(jobInstance));
-                source.sendSuccess(JobsPlus.translatable(
-                        "command.set.display.success", jobInstance.getName(), jobsServerPlayer.name()), false);
             } else {
                 source.sendFailure(JobsPlus.translatable(
                         "command.does_not_have_job", jobsServerPlayer.name(), jobInstance.getLocation()));
