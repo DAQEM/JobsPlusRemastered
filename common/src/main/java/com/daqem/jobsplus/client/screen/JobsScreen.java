@@ -709,16 +709,10 @@ public class JobsScreen extends Screen {
                             if (getCoins() >= getJobStartPrice(job.getJobInstance()))
                                 openConfirmScreen(ConfirmationMessageType.START_JOB_PAID, job.getJobInstance());
                             else
-                                openConfirmScreen(ConfirmationMessageType.NOT_ENOUGH_COINS_START);
+                                openConfirmScreen(ConfirmationMessageType.NOT_ENOUGH_COINS_START, job.getJobInstance());
                         }
-                    } else if (getSelectedJobLevel() == getJobLevelToStopJobForFree()) {
-                        openConfirmScreen(ConfirmationMessageType.STOP_JOB_FREE, job.getJobInstance());
                     } else {
-                        if (getCoins() >= getJobStopPrice(job.getJobInstance()))
-                            openConfirmScreen(ConfirmationMessageType.STOP_JOB_PAID, job.getJobInstance());
-                        else
-                            openConfirmScreen(ConfirmationMessageType.NOT_ENOUGH_COINS_STOP);
-
+                        openConfirmScreen(ConfirmationMessageType.STOP_JOB, job.getJobInstance());
                     }
                 }
             }
@@ -753,11 +747,11 @@ public class JobsScreen extends Screen {
                                     if (getCoins() >= powerupInstance.getPrice())
                                         openConfirmScreen(ConfirmationMessageType.BUY_POWER_UP, powerupInstance);
                                     else
-                                        openConfirmScreen(ConfirmationMessageType.NOT_ENOUGH_COINS_POWERUP);
+                                        openConfirmScreen(ConfirmationMessageType.NOT_ENOUGH_COINS_POWERUP, powerupInstance);
                                 }
                             }
                         } else {
-                            openConfirmScreen(ConfirmationMessageType.JOB_NOT_ENABLED);
+                            openConfirmScreen(ConfirmationMessageType.JOB_NOT_ENABLED, jobInstance);
                         }
                     }
                 }
@@ -923,10 +917,6 @@ public class JobsScreen extends Screen {
         return ExperienceHandler.getMaxExperienceForLevel(getSelectedJobLevel());
     }
 
-    public void openConfirmScreen(ConfirmationMessageType messageType) {
-        Minecraft.getInstance().setScreen(new ConfirmationScreen(this, messageType));
-    }
-
     public void openConfirmScreen(ConfirmationMessageType messageType, JobInstance job) {
         Minecraft.getInstance().setScreen(new ConfirmationScreen(this, messageType, job));
     }
@@ -1057,14 +1047,6 @@ public class JobsScreen extends Screen {
 
     private int getJobStartPrice(JobInstance jobInstance) {
         return jobInstance.getPrice();
-    }
-
-    private int getJobStopPrice(JobInstance jobInstance) {
-        return jobInstance.getStopPrice();
-    }
-
-    private int getJobLevelToStopJobForFree() { //TODO config
-        return 0;
     }
 
     private int getPowerupPrice(PowerupInstance powerupInstance) {

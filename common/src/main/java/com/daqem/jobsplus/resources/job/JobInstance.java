@@ -1,5 +1,6 @@
 package com.daqem.jobsplus.resources.job;
 
+import com.daqem.jobsplus.config.JobsPlusCommonConfig;
 import com.daqem.jobsplus.resources.JobManager;
 import com.daqem.jobsplus.resources.job.action.Action;
 import com.daqem.jobsplus.resources.job.powerup.PowerupInstance;
@@ -63,8 +64,8 @@ public class JobInstance {
         return price;
     }
 
-    public int getStopPrice() {
-        return price / 2;
+    public int getStopRefund() {
+        return price * JobsPlusCommonConfig.jobStopRefundPercentage.get() / 100;
     }
 
     public int getMaxLevel() {

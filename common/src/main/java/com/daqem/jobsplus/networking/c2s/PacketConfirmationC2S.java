@@ -22,9 +22,7 @@ public class PacketConfirmationC2S extends BaseC2SMessage {
 
     public PacketConfirmationC2S(ConfirmationMessageType type, @NotNull JobInstance jobInstance) {
         this.type = type;
-        this.price = type == ConfirmationMessageType.START_JOB_FREE || type == ConfirmationMessageType.STOP_JOB_FREE ?
-                0 : type == ConfirmationMessageType.STOP_JOB_PAID ?
-                jobInstance.getStopPrice() : jobInstance.getPrice();
+        this.price = type.getRequireCoinsType() == ConfirmationMessageType.RequireCoinsType.NONE ? 0 : jobInstance.getPrice();
         this.jobInstance = jobInstance;
         this.powerupInstance = null;
     }
@@ -81,21 +79,16 @@ public class PacketConfirmationC2S extends BaseC2SMessage {
                                 serverPlayer.addNewJob(jobInstance);
                             }
                         }
-                        case STOP_JOB_FREE -> {
-                            if (serverPlayer.hasJob(jobInstance)) {
-                                serverPlayer.removeJob(jobInstance);
-                            }
-                        }
                         case START_JOB_PAID -> {
                             if (!serverPlayer.hasJob(jobInstance)) {
                                 serverPlayer.addNewJob(jobInstance);
                                 hasToPay = true;
                             }
                         }
-                        case STOP_JOB_PAID -> {
+                        case STOP_JOB -> {
                             if (serverPlayer.hasJob(jobInstance)) {
                                 serverPlayer.removeJob(jobInstance);
-                                hasToPay = true;
+                                serverPlayer.refundJob(jobInstance);
                             }
                         }
                     }

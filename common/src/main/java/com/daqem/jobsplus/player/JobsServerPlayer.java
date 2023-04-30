@@ -70,4 +70,6 @@ public interface JobsServerPlayer {
     void setSwimmingDistanceInCm(int swimmingDistanceInCm);
 
     void setElytraFlyingDistanceInCm(float flyingDistanceInCm);
+
+    void refundJob(JobInstance jobInstance);
 }

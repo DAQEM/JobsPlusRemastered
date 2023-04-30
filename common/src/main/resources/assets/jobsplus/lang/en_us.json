@@ -64,8 +64,6 @@
   "jobsplus.gui.confirmation.start_job_paid": "Are you sure you want to start performing this job for %s coins?",
   "jobsplus.gui.confirmation.error.not_enough_coins_start": "You do not have enough coins (%s) to start performing this job.",
   "jobsplus.gui.confirmation.stop_job_free": "Are you sure you want to stop performing this job?",
-  "jobsplus.gui.confirmation.stop_job_paid": "Are you sure you want to stop performing this job for %s coins?",
-  "jobsplus.gui.confirmation.error.not_enough_coins_stop": "You do not have enough coins (%s) to stop performing this job.",
   "jobsplus.gui.confirmation.buy_power_up": "Are you sure you want to buy this power-up for %s coins?",
   "jobsplus.gui.confirmation.error.not_enough_coins_powerup": "You do not have enough coins (%s) to buy this power-up.",
   "jobsplus.gui.confirmation.error.job_not_enabled": "You are not performing this job.",

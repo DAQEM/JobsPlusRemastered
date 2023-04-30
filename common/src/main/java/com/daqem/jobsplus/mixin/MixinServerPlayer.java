@@ -2,6 +2,7 @@ package com.daqem.jobsplus.mixin;
 
 import com.daqem.jobsplus.Constants;
 import com.daqem.jobsplus.JobsPlus;
+import com.daqem.jobsplus.config.JobsPlusCommonConfig;
 import com.daqem.jobsplus.event.triggers.MovementEvents;
 import com.daqem.jobsplus.event.triggers.PlayerEvents;
 import com.daqem.jobsplus.event.triggers.StatEvents;
@@ -113,6 +114,16 @@ public abstract class MixinServerPlayer extends Player implements JobsServerPlay
             Job job = jobs.get(i);
             if (job.getJobInstance().getLocation().equals(jobInstance.getLocation())) {
                 jobs.remove(i);
+            }
+        }
+    }
+
+    @Override
+    public void refundJob(JobInstance jobInstance) {
+        int refund = jobInstance.getStopRefund();
+        if (getJobs().size() > JobsPlusCommonConfig.amountOfFreeJobs.get()) {
+            if (refund > 0) {
+                addCoins(refund);
             }
         }
     }

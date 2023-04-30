@@ -129,8 +129,7 @@ public class ConfirmationScreen extends Screen {
             }
             if (messageType == ConfirmationMessageType.START_JOB_FREE
                     || messageType == ConfirmationMessageType.START_JOB_PAID
-                    || messageType == ConfirmationMessageType.STOP_JOB_FREE
-                    || messageType == ConfirmationMessageType.STOP_JOB_PAID) {
+                    || messageType == ConfirmationMessageType.STOP_JOB) {
                 if (job != null) {
                     new PacketConfirmationC2S(messageType, job).sendToServer();
                 }
@@ -195,11 +194,6 @@ public class ConfirmationScreen extends Screen {
             case START_JOB -> {
                 if (job != null) {
                     requiredCoins = job.getPrice();
-                }
-            }
-            case STOP_JOB -> {
-                if (job != null) {
-                    requiredCoins = job.getStopPrice();
                 }
             }
             case POWER_UP -> {
