@@ -69,6 +69,7 @@ public class Actions {
     public static final ActionType BREED_ANIMAL = register(JobsPlus.getId("on_breed_animal"), BreedAnimalAction.class, new BreedAnimalAction.Deserializer());
     public static final ActionType FISHED_UP_ITEM = register(JobsPlus.getId("on_fished_up_item"), FishedUpItemAction.class, new FishedUpItemAction.Deserializer());
     public static final ActionType STRIP_LOG = register(JobsPlus.getId("on_strip_log"), StripLogAction.class, new StripLogAction.Deserializer());
+    public static final ActionType GRIND_ITEM = register(JobsPlus.getId("on_grind_item"), GrindItemAction.class, new GrindItemAction.Deserializer());
 
     private static <T extends Action> ActionType register(ResourceLocation location, Class<T> clazz, JsonDeserializer<? extends Action> deserializer) {
         ActionType actionType = new ActionType(clazz, location, deserializer);

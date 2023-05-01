@@ -32,6 +32,17 @@
           ]
         }
       ]
+    },
+    {
+      "type": "jobsplus:on_grind_item",
+      "rewards": [
+        {
+          "type": "jobsplus:job_exp",
+          "chance": 100,
+          "min_exp": 4,
+          "max_exp": 6
+        }
+      ]
     }
   ],
   "powerups": []

@@ -23,8 +23,12 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stat;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.player.ProfilePublicKey;
+import net.minecraft.world.inventory.GrindstoneMenu;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.AirItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
@@ -55,6 +59,7 @@ public abstract class MixinServerPlayer extends Player implements JobsServerPlay
     private float elytraFlyingDistance = 0;
     private List<Job> jobs = new ArrayList<>();
     private int coins = 0;
+    private boolean isGrinding = false;
 
     public MixinServerPlayer(Level level, BlockPos blockPos, float yaw, GameProfile gameProfile, @Nullable ProfilePublicKey profilePublicKey) {
         super(level, blockPos, yaw, gameProfile, profilePublicKey);
@@ -347,6 +352,41 @@ public abstract class MixinServerPlayer extends Player implements JobsServerPlay
                     MovementEvents.onStartElytraFlying(this);
                 }
             }
+        }
+
+        if (getServerPlayer().containerMenu instanceof GrindstoneMenu) {
+            if (isGrinding) {
+                boolean firstSlot = false;
+                boolean secondSlot = false;
+                for (Slot slot : containerMenu.slots) {
+                    if (!(slot.getItem().getItem() instanceof AirItem || slot.container instanceof Inventory)) {
+
+                        if (slot.getContainerSlot() == 0) {
+                            firstSlot = true;
+                        }
+                        if (slot.getContainerSlot() == 1) {
+                            secondSlot = true;
+                        }
+                    }
+                }
+                if (!firstSlot && !secondSlot) {
+                    PlayerEvents.onGrindItem(this);
+                }
+            }
+            boolean firstSlot = false;
+            boolean secondSlot = false;
+            for (Slot slot : containerMenu.slots) {
+                if (!(slot.getItem().getItem() instanceof AirItem || slot.container instanceof Inventory)) {
+
+                    if (slot.getContainerSlot() == 0) {
+                        firstSlot = true;
+                    }
+                    if (slot.getContainerSlot() == 1) {
+                        secondSlot = true;
+                    }
+                }
+            }
+            isGrinding = firstSlot && secondSlot;
         }
     }
 

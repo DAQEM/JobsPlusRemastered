@@ -98,4 +98,10 @@ public class PlayerEvents {
                 .build()
                 .sendToAction();
     }
+
+    public static void onGrindItem(JobsServerPlayer player) {
+        new ActionDataBuilder(player, Actions.GRIND_ITEM)
+                .build()
+                .sendToAction();
+    }
 }
