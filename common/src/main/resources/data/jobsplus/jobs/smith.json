@@ -21,17 +21,14 @@
           "type": "jobsplus:items",
           "items": [
             "#forge:tools",
-            "#forge:armors",
             "#c:swords",
             "#c:axes",
             "#c:pickaxes",
             "#c:shovels",
             "#c:hoes",
             "#c:shears",
-            "#c:helmets",
-            "#c:chestplates",
-            "#c:leggings",
-            "#c:boots"
+            "#forge:armors",
+            "#c:armor"
           ]
         }
       ]
