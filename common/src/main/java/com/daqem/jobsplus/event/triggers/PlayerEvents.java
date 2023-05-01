@@ -104,4 +104,12 @@ public class PlayerEvents {
                 .build()
                 .sendToAction();
     }
+
+    public static void onUseAnvil(JobsServerPlayer player, ItemStack stack) {
+        new ActionDataBuilder(player, Actions.USE_ANVIL)
+                .withSpecification(ActionSpecification.ITEM_STACK, stack)
+                .withSpecification(ActionSpecification.ITEM, stack.getItem())
+                .build()
+                .sendToAction();
+    }
 }

@@ -9,6 +9,7 @@
   "mixins": [
     "MixinAbstractFurnaceBlockEntity",
     "MixinAnimal",
+    "MixinAnvilMenu",
     "MixinAxeItem",
     "MixinBlockStateBase",
     "MixinBrewingStandBlockEntity",

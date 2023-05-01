@@ -34,7 +34,44 @@
       ]
     },
     {
+      "type": "jobsplus:on_smelt_item",
+      "rewards": [
+        {
+          "type": "jobsplus:job_exp",
+          "chance": 100,
+          "min_exp": 2,
+          "max_exp": 4
+        }
+      ],
+      "conditions": [
+        {
+          "type": "jobsplus:items",
+          "items": [
+            "#forge:gems",
+            "#forge:ingots",
+            "#c:gems",
+            "#c:ingots",
+            "#minecraft:beacon_payment_items",
+            "minecraft:coal",
+            "minecraft:lapis_lazuli",
+            "minecraft:redstone"
+          ]
+        }
+      ]
+    },
+    {
       "type": "jobsplus:on_grind_item",
+      "rewards": [
+        {
+          "type": "jobsplus:job_exp",
+          "chance": 100,
+          "min_exp": 4,
+          "max_exp": 6
+        }
+      ]
+    },
+    {
+      "type": "jobsplus:on_use_anvil",
       "rewards": [
         {
           "type": "jobsplus:job_exp",
