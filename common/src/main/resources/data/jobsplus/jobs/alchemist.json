@@ -5,6 +5,7 @@
   "color": "#00AEFF",
   "icon_item": "minecraft:brewing_stand",
   "description": "",
+  "is_default": true,
   "actions": [
     {
       "type": "jobsplus:on_brew_potion",

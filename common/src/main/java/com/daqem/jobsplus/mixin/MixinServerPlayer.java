@@ -433,7 +433,9 @@ public abstract class MixinServerPlayer extends Player implements JobsServerPlay
     @Inject(at = @At("TAIL"), method = "readAdditionalSaveData(Lnet/minecraft/nbt/CompoundTag;)V")
     public void readAdditionalSaveData(CompoundTag compoundTag, CallbackInfo ci) {
         CompoundTag jobsTag = compoundTag.getCompound(Constants.JOBS_DATA);
-        this.jobs = JobSerializer.fromNBT(this, jobsTag);
+        this.jobs = JobSerializer.fromNBT(this, jobsTag).stream()
+                .filter(job -> job.getJobInstance() != null)
+                .toList();
         this.coins = jobsTag.getInt(Constants.COINS);
 //        JobsPlus.LOGGER.error("Loaded jobs: {}. For player {}", this.jobs, getServerPlayer().getDisplayName().getString());
     }

@@ -5,6 +5,7 @@
   "color": "#FFA500",
   "icon_item": "minecraft:diamond_pickaxe",
   "description": "A Miner is a player who has mined 1000 blocks.",
+  "is_default": true,
   "actions": [
     {
       "type": "jobsplus:on_break_block",

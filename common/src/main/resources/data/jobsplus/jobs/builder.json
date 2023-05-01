@@ -5,6 +5,7 @@
   "color": "#FFC107",
   "icon_item": "minecraft:scaffolding",
   "description": "Builds structures.",
+  "is_default": true,
   "actions": [
     {
       "type": "jobsplus:on_place_block",

@@ -1,6 +1,5 @@
 package com.daqem.jobsplus.resources.job.action.condition.conditions.movement;
 
-import com.daqem.jobsplus.JobsPlus;
 import com.daqem.jobsplus.player.ActionData;
 import com.daqem.jobsplus.player.ActionSpecification;
 import com.daqem.jobsplus.resources.job.action.condition.ActionCondition;
@@ -27,7 +26,6 @@ public class DistanceActionCondition extends ActionCondition {
             if (currentDistanceInBlocks != lastDistanceInBlocks) {
                 if (currentDistanceInBlocks % distanceInBlocks == 0) {
                     lastDistanceInBlocks = currentDistanceInBlocks;
-                    JobsPlus.LOGGER.info("fired for job " + actionData.getSourceJob().getJobInstance().getName() + " with distance " + currentDistanceInBlocks);
                     return true;
                 }
             }

@@ -1,6 +1,5 @@
 package com.daqem.jobsplus.resources.job.action.condition.conditions.block.crop;
 
-import com.daqem.jobsplus.JobsPlus;
 import com.daqem.jobsplus.player.ActionData;
 import com.daqem.jobsplus.player.ActionSpecification;
 import com.daqem.jobsplus.resources.job.action.condition.ActionCondition;
@@ -33,14 +32,8 @@ public class CropAgeActionCondition extends ActionCondition {
                     .findFirst();
             if (optionalAgeProperty.isPresent()) {
                 IntegerProperty ageProperty = (IntegerProperty) optionalAgeProperty.get();
-                Collection<Integer> possibleValues = ageProperty.getPossibleValues();
-                Integer lastValue = possibleValues.stream().reduce((a, b) -> b).orElse(null);
-                if (lastValue != null) {
-                    JobsPlus.LOGGER.info("ageProperty: " + lastValue.intValue());
-                }
                 Optional<Integer> optionalAgeValue = blockState.getOptionalValue(ageProperty);
                 if (optionalAgeValue.isPresent()) {
-                    JobsPlus.LOGGER.info("age: " + optionalAgeValue.get());
                     return optionalAgeValue.get() == this.age;
                 }
             }

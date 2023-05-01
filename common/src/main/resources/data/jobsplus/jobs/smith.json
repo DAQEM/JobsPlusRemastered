@@ -5,6 +5,7 @@
   "color": "#B22222",
   "icon_item": "minecraft:anvil",
   "description": "Smithing is the art of creating and repairing items using an anvil. The higher the level, the more items can be repaired and the more items can be enchanted.",
+  "is_default": true,
   "actions": [
     {
       "type": "jobsplus:on_craft_item",

@@ -5,6 +5,7 @@
   "color": "#228B22",
   "icon_item": "minecraft:golden_axe",
   "description": "You have a 1% chance to get a log when you break a log.",
+  "is_default": true,
   "actions": [
     {
       "type": "jobsplus:on_break_block",

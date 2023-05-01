@@ -1,5 +1,6 @@
 package com.daqem.jobsplus.resources;
 
+import com.daqem.jobsplus.config.JobsPlusCommonConfig;
 import com.daqem.jobsplus.resources.job.JobInstance;
 import com.daqem.jobsplus.resources.job.powerup.PowerupInstance;
 import com.google.common.collect.ImmutableMap;
@@ -44,12 +45,13 @@ public abstract class JobManager extends SimpleJsonResourceReloadListener {
         map.forEach((location, jsonElement) -> {
             try {
                 JobInstance job = GSON.fromJson(jsonElement.getAsJsonObject(), JobInstance.class);
-                job.setLocations(location);
-                for (PowerupInstance powerupInstance : job.getPowerups()) {
-                    tempPowerupInstances.put(powerupInstance.getLocation(), powerupInstance);
+                if (!job.isDefault() || (job.isDefault() && JobsPlusCommonConfig.enableDefaultJobs.get())) {
+                    job.setLocations(location);
+                    for (PowerupInstance powerupInstance : job.getPowerups()) {
+                        tempPowerupInstances.put(powerupInstance.getLocation(), powerupInstance);
+                    }
+                    tempJobInstances.put(location, job);
                 }
-                tempJobInstances.put(location, job);
-
             } catch (Exception e) {
                 LOGGER.error("Could not finish deserializing job {}, reason for failing: {}", location.toString(), e.getMessage());
                 throw e;

@@ -24,16 +24,18 @@ public class JobInstance {
     private final String color;
     private final Item iconItem;
     private final String description;
+    private final boolean isDefault;
     private final List<Action> actions;
     private final List<PowerupInstance> powerupInstances;
 
-    public JobInstance(String name, int price, int maxLevel, String color, Item iconItem, String description, List<Action> actions, List<PowerupInstance> powerupInstances) {
+    public JobInstance(String name, int price, int maxLevel, String color, Item iconItem, String description, boolean isDefault, List<Action> actions, List<PowerupInstance> powerupInstances) {
         this.name = name;
         this.price = price;
         this.maxLevel = maxLevel;
         this.color = color;
         this.iconItem = iconItem;
         this.description = description;
+        this.isDefault = isDefault;
         this.actions = actions;
         this.powerupInstances = powerupInstances;
     }
@@ -96,6 +98,10 @@ public class JobInstance {
         return description;
     }
 
+    public boolean isDefault() {
+        return isDefault;
+    }
+
     public List<Action> getActions() {
         return actions;
     }
@@ -141,6 +147,7 @@ public class JobInstance {
                     jsonObject.get("color").getAsString(),
                     Registry.ITEM.get(new ResourceLocation(jsonObject.get("icon_item").getAsString())),
                     jsonObject.get("description").getAsString(),
+                    jsonObject.has("is_default") && jsonObject.get("is_default").getAsBoolean(),
                     actions,
                     powerupInstances);
         }
