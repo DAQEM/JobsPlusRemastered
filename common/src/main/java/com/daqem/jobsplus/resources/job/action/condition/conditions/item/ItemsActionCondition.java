@@ -4,12 +4,11 @@ import com.daqem.jobsplus.player.ActionData;
 import com.daqem.jobsplus.player.ActionSpecification;
 import com.daqem.jobsplus.resources.job.action.condition.ActionCondition;
 import com.daqem.jobsplus.resources.job.action.condition.ActionConditions;
+import com.daqem.jobsplus.util.item.ItemConverter;
 import com.google.gson.*;
-import net.minecraft.core.Registry;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -18,22 +17,33 @@ import java.util.List;
 public class ItemsActionCondition extends ActionCondition {
 
     private final List<Item> items;
+    private final List<TagKey<Item>> itemTags;
 
-    public ItemsActionCondition(List<Item> items) {
+
+    public ItemsActionCondition(List<Item> items, List<TagKey<Item>> itemTags) {
         super(ActionConditions.ITEMS);
         this.items = items;
+        this.itemTags = itemTags;
     }
 
     @Override
     public boolean isMet(ActionData actionData) {
-        Item item = actionData.getSpecification(ActionSpecification.ITEM);
-        if (item == null) {
-            ItemStack itemStack = actionData.getSpecification(ActionSpecification.ITEM_STACK);
-            if (itemStack != null) {
-                item = itemStack.getItem();
+        ItemStack itemStack = actionData.getSpecification(ActionSpecification.ITEM_STACK);
+        if (itemStack == null) {
+            Item item = actionData.getSpecification(ActionSpecification.ITEM);
+            if (item != null) {
+                itemStack = item.getDefaultInstance();
             }
         }
-        return item != null && items.contains(item);
+        return itemStack != null && (isItem(itemStack) || isItemByTag(itemStack));
+    }
+
+    private boolean isItem(ItemStack itemStack) {
+        return this.items.contains(itemStack.getItem());
+    }
+
+    private boolean isItemByTag(ItemStack itemStack) {
+        return this.itemTags.stream().anyMatch(itemStack::is);
     }
 
     public static class Deserializer implements JsonDeserializer<ItemsActionCondition> {
@@ -41,21 +51,11 @@ public class ItemsActionCondition extends ActionCondition {
         @Override
         public ItemsActionCondition deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
             JsonObject jsonObject = json.getAsJsonObject();
-            ArrayList<Item> items = new ArrayList<>();
-            if (jsonObject.has("items")) {
-                JsonArray jsonArray = jsonObject.getAsJsonArray("items");
-                for (JsonElement jsonElement : jsonArray) {
-                    Item item = Registry.ITEM.get(new ResourceLocation(jsonElement.getAsString()));
-                    if (item == Items.AIR && !jsonElement.getAsString().equals("minecraft:air")) {
-                        throw new JsonParseException("Unknown item " + jsonElement.getAsString() + " in ItemsActionCondition.");
-                    } else {
-                        items.add(item);
-                    }
-                }
-            } else {
-                throw new JsonParseException("Missing items, expected to find a string in ItemsActionCondition");
-            }
-            return new ItemsActionCondition(items);
+            List<String> itemStrings = new ArrayList<>();
+            jsonObject.get("items").getAsJsonArray().forEach(jsonElement -> itemStrings.add(jsonElement.getAsString()));
+            return new ItemsActionCondition(
+                    ItemConverter.convertToItems(itemStrings),
+                    ItemConverter.convertToItemTags(itemStrings));
         }
     }
 

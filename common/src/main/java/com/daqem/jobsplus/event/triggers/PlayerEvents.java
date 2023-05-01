@@ -81,4 +81,12 @@ public class PlayerEvents {
                 .build()
                 .sendToAction();
     }
+
+    public static void onFishedUpItem(JobsServerPlayer player, ItemStack stack) {
+        new ActionDataBuilder(player, Actions.FISHED_UP_ITEM)
+                .withSpecification(ActionSpecification.ITEM_STACK, stack)
+                .withSpecification(ActionSpecification.ITEM, stack.getItem())
+                .build()
+                .sendToAction();
+    }
 }

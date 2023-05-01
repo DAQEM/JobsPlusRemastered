@@ -55,6 +55,7 @@ public class ActionConditions {
     public static final ActionConditionType EXP_DROP = register(JobsPlus.getId("exp_drop"), ExpDropActionCondition.class, new ExpDropActionCondition.Deserializer());
     public static final ActionConditionType EXP_LEVEL = register(JobsPlus.getId("exp_level"), ExpLevelActionCondition.class, new ExpLevelActionCondition.Deserializer());
     public static final ActionConditionType READY_FOR_SHEARING = register(JobsPlus.getId("ready_for_shearing"), ReadyForShearingActionCondition.class, new ReadyForShearingActionCondition.Deserializer());
+    public static final ActionConditionType BANNED_ITEMS = register(JobsPlus.getId("banned_items"), BannedItemsActionCondition.class, new BannedItemsActionCondition.Deserializer());
 
     private static ActionConditionType register(ResourceLocation location, Class<? extends ActionCondition> clazz, JsonDeserializer<? extends ActionCondition> deserializer) {
         ActionConditionType actionConditionType = new ActionConditionType(clazz, location, deserializer);

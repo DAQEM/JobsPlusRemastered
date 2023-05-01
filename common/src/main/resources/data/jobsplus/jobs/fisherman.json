@@ -12,14 +12,52 @@
         {
           "type": "jobsplus:job_exp",
           "chance": 100,
+          "min_exp": 1,
+          "max_exp": 2
+        }
+      ],
+      "conditions": [
+        {
+          "type": "jobsplus:swimming_distance",
+          "distance_in_blocks": 10
+        }
+      ]
+    },
+    {
+      "type": "jobsplus:on_fished_up_item",
+      "rewards": [
+        {
+          "type": "jobsplus:job_exp",
+          "chance": 100,
           "min_exp": 5,
           "max_exp": 10
         }
       ],
       "conditions": [
         {
-          "type": "jobsplus:swimming_distance",
-          "distance_in_blocks": 5
+          "type": "jobsplus:items",
+          "items": [
+            "#minecraft:fishes"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "jobsplus:on_fished_up_item",
+      "rewards": [
+        {
+          "type": "jobsplus:job_exp",
+          "chance": 100,
+          "min_exp": 10,
+          "max_exp": 20
+        }
+      ],
+      "conditions": [
+        {
+          "type": "jobsplus:banned_items",
+          "banned_items": [
+            "#minecraft:fishes"
+          ]
         }
       ]
     }
