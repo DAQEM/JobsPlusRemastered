@@ -18,6 +18,8 @@ import com.daqem.jobsplus.resources.job.action.condition.conditions.item.*;
 import com.daqem.jobsplus.resources.job.action.condition.conditions.job.JobExperiencePercentageActionCondition;
 import com.daqem.jobsplus.resources.job.action.condition.conditions.job.JobLevelActionCondition;
 import com.daqem.jobsplus.resources.job.action.condition.conditions.movement.DistanceActionCondition;
+import com.daqem.jobsplus.resources.job.action.condition.conditions.recipe.IsBlastingRecipeActionCondition;
+import com.daqem.jobsplus.resources.job.action.condition.conditions.recipe.IsSmokingRecipeActionCondition;
 import com.daqem.jobsplus.resources.job.action.condition.conditions.scoreboard.ScoreboardActionCondition;
 import com.daqem.jobsplus.resources.job.action.condition.conditions.team.TeamActionCondition;
 import com.daqem.jobsplus.resources.job.action.condition.conditions.world.DimensionActionCondition;
@@ -56,6 +58,8 @@ public class ActionConditions {
     public static final ActionConditionType EXP_LEVEL = register(JobsPlus.getId("exp_level"), ExpLevelActionCondition.class, new ExpLevelActionCondition.Deserializer());
     public static final ActionConditionType READY_FOR_SHEARING = register(JobsPlus.getId("ready_for_shearing"), ReadyForShearingActionCondition.class, new ReadyForShearingActionCondition.Deserializer());
     public static final ActionConditionType BANNED_ITEMS = register(JobsPlus.getId("banned_items"), BannedItemsActionCondition.class, new BannedItemsActionCondition.Deserializer());
+    public static final ActionConditionType IS_BLASTING_RECIPE = register(JobsPlus.getId("is_blasting_recipe"), IsBlastingRecipeActionCondition.class, new IsBlastingRecipeActionCondition.Deserializer());
+    public static final ActionConditionType IS_SMOKING_RECIPE = register(JobsPlus.getId("is_smoking_recipe"), IsSmokingRecipeActionCondition.class, new IsSmokingRecipeActionCondition.Deserializer());
 
     private static ActionConditionType register(ResourceLocation location, Class<? extends ActionCondition> clazz, JsonDeserializer<? extends ActionCondition> deserializer) {
         ActionConditionType actionConditionType = new ActionConditionType(clazz, location, deserializer);
