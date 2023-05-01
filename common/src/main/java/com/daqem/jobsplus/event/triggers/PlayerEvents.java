@@ -73,4 +73,12 @@ public class PlayerEvents {
                 .build()
                 .sendToAction();
     }
+
+    public static void onEnchantItem(JobsServerPlayer player, ItemStack stack, int level) {
+        new ActionDataBuilder(player, Actions.ENCHANT_ITEM)
+                .withSpecification(ActionSpecification.ITEM_STACK, stack)
+                .withSpecification(ActionSpecification.EXP_LEVEL, level)
+                .build()
+                .sendToAction();
+    }
 }

@@ -5,6 +5,76 @@
   "color": "#228B22",
   "icon_item": "minecraft:stone_hoe",
   "description": "You have a farm and you know how to use it.",
-  "actions": [],
+  "actions": [
+    {
+      "type": "jobsplus:on_harvest_crop",
+      "rewards": [
+        {
+          "type": "jobsplus:job_exp",
+          "chance": 100,
+          "min_exp": 1,
+          "max_exp": 3
+        }
+      ],
+      "conditions": [
+        {
+          "type": "jobsplus:crop_fully_grown"
+        }
+      ]
+    },
+    {
+      "type": "jobsplus:on_plant_crop",
+      "rewards": [
+        {
+          "type": "jobsplus:job_exp",
+          "chance": 100,
+          "min_exp": 0,
+          "max_exp": 1
+        }
+      ]
+    },
+    {
+      "type": "jobsplus:on_interact_entity",
+      "rewards": [
+        {
+          "type": "jobsplus:job_exp",
+          "chance": 100,
+          "min_exp": 2,
+          "max_exp": 5
+        }
+      ],
+      "conditions": [
+        {
+          "type": "jobsplus:entity_type",
+          "entity_type": "minecraft:sheep"
+        },
+        {
+          "type": "jobsplus:ready_for_shearing"
+        }
+      ]
+    },
+    {
+      "type": "jobsplus:on_tame_animal",
+      "rewards": [
+        {
+          "type": "jobsplus:job_exp",
+          "chance": 100,
+          "min_exp": 25,
+          "max_exp": 50
+        }
+      ]
+    },
+    {
+      "type": "jobsplus:on_breed_animal",
+      "rewards": [
+        {
+          "type": "jobsplus:job_exp",
+          "chance": 100,
+          "min_exp": 6,
+          "max_exp": 10
+        }
+      ]
+    }
+  ],
   "powerups": []
 }

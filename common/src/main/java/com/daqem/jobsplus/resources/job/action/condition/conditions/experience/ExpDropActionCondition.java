@@ -1,4 +1,4 @@
-package com.daqem.jobsplus.resources.job.action.condition.conditions.block;
+package com.daqem.jobsplus.resources.job.action.condition.conditions.experience;
 
 import com.daqem.jobsplus.player.ActionData;
 import com.daqem.jobsplus.player.ActionSpecification;

@@ -9,24 +9,24 @@ import com.google.gson.JsonParseException;
 
 import java.lang.reflect.Type;
 
-public class GetHurtAction extends Action {
+public class TameAnimalAction extends Action {
 
-    public GetHurtAction() {
-        super(Actions.GET_HURT);
+    public TameAnimalAction() {
+        super(Actions.TAME_ANIMAL);
     }
 
     @Override
     public String toString() {
-        return "DeathAction{" +
+        return "TameAnimalAction{" +
                 "type=" + this.getType() +
                 '}';
     }
 
-    public static class Deserializer implements JsonDeserializer<GetHurtAction> {
+    public static class Deserializer implements JsonDeserializer<TameAnimalAction> {
 
         @Override
-        public GetHurtAction deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-            return new GetHurtAction();
+        public TameAnimalAction deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+            return new TameAnimalAction();
         }
     }
 }

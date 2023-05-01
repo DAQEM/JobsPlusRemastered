@@ -15,8 +15,8 @@ public class ItemEvents {
         PlayerEvent.DROP_ITEM.register((player, itemStack) -> {
             if (player instanceof JobsServerPlayer jobsServerPlayer) {
                 new ActionDataBuilder(jobsServerPlayer, Actions.DROP_ITEM)
-                        .withSpecification(ActionSpecification.ITEM, itemStack.getItem())
-                        .withSpecification(ActionSpecification.ITEM_STACK, itemStack)
+                        .withSpecification(ActionSpecification.ITEM, itemStack.getItem().getItem())
+                        .withSpecification(ActionSpecification.ITEM_STACK, itemStack.getItem())
                         .build()
                         .sendToAction();
             }

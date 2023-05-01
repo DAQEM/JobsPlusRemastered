@@ -22,7 +22,7 @@ public class JobExpAction extends Action {
                 '}';
     }
 
-    public static class Serializer implements JsonDeserializer<JobExpAction> {
+    public static class Deserializer implements JsonDeserializer<JobExpAction> {
 
         @Override
         public JobExpAction deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {

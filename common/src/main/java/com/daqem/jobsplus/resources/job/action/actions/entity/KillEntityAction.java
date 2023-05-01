@@ -22,7 +22,7 @@ public class KillEntityAction extends Action {
                 '}';
     }
 
-    public static class Serializer implements JsonDeserializer<KillEntityAction> {
+    public static class Deserializer implements JsonDeserializer<KillEntityAction> {
 
         @Override
         public KillEntityAction deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {

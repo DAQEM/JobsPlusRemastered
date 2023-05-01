@@ -9,24 +9,24 @@ import com.google.gson.JsonParseException;
 
 import java.lang.reflect.Type;
 
-public class BreakBlockAction extends Action {
+public class HarvestCropAction extends Action {
 
-    public BreakBlockAction() {
-        super(Actions.BREAK_BLOCK);
+    public HarvestCropAction() {
+        super(Actions.HARVEST_CROP);
     }
 
     @Override
     public String toString() {
-        return "BlockBreakAction{" +
+        return "HarvestCropAction{" +
                 "type=" + this.getType() +
                 '}';
     }
 
-    public static class Deserializer implements JsonDeserializer<BreakBlockAction> {
+    public static class Deserializer implements JsonDeserializer<HarvestCropAction> {
 
         @Override
-        public BreakBlockAction deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-            return new BreakBlockAction();
+        public HarvestCropAction deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+            return new HarvestCropAction();
         }
     }
 }

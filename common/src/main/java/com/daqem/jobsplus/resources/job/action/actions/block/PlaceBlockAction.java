@@ -22,7 +22,7 @@ public class PlaceBlockAction extends Action {
                 '}';
     }
 
-    public static class Serializer implements JsonDeserializer<PlaceBlockAction> {
+    public static class Deserializer implements JsonDeserializer<PlaceBlockAction> {
 
         @Override
         public PlaceBlockAction deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {

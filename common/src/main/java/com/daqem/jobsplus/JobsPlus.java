@@ -2,7 +2,9 @@ package com.daqem.jobsplus;
 
 import com.daqem.jobsplus.config.JobsPlusCommonConfig;
 import com.daqem.jobsplus.event.command.EventRegisterCommands;
+import com.daqem.jobsplus.event.triggers.AdvancementEvents;
 import com.daqem.jobsplus.event.triggers.BlockEvents;
+import com.daqem.jobsplus.event.triggers.EntityEvents;
 import com.daqem.jobsplus.event.triggers.ItemEvents;
 import com.daqem.jobsplus.networking.JobsPlusNetworking;
 import com.daqem.jobsplus.resources.JobManager;
@@ -33,6 +35,8 @@ public class JobsPlus {
 
         BlockEvents.registerEvents();
         ItemEvents.registerEvents();
+        EntityEvents.registerEvents();
+        AdvancementEvents.registerEvents();
     }
 
     public static ResourceLocation getId(String id) {

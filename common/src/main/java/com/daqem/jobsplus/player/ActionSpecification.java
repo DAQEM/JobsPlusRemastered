@@ -19,6 +19,7 @@ public record ActionSpecification<T>(ResourceLocation location) {
     public static final ActionSpecification<BlockState> BLOCK_STATE = create("block_state");
     public static final ActionSpecification<BlockPos> BLOCK_POSITION = create("block_position");
     public static final ActionSpecification<Integer> EXP_DROP = create("exp_drop");
+    public static final ActionSpecification<Integer> EXP_LEVEL = create("exp_level");
     public static final ActionSpecification<Level> WORLD = create("world");
     public static final ActionSpecification<DamageSource> DAMAGE_SOURCE = create("damage_source");
     public static final ActionSpecification<Integer> JOB_EXP = create("job_exp");

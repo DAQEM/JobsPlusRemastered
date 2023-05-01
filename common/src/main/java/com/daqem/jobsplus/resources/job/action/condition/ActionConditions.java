@@ -7,11 +7,13 @@ import com.daqem.jobsplus.resources.job.action.condition.conditions.OrActionCond
 import com.daqem.jobsplus.resources.job.action.condition.conditions.block.BannedBlocksActionCondition;
 import com.daqem.jobsplus.resources.job.action.condition.conditions.block.BlockActionCondition;
 import com.daqem.jobsplus.resources.job.action.condition.conditions.block.BlocksActionCondition;
-import com.daqem.jobsplus.resources.job.action.condition.conditions.block.ExpDropActionCondition;
 import com.daqem.jobsplus.resources.job.action.condition.conditions.block.crop.CropAgeActionCondition;
 import com.daqem.jobsplus.resources.job.action.condition.conditions.block.crop.CropFullyGrownActionCondition;
 import com.daqem.jobsplus.resources.job.action.condition.conditions.entity.EntityTypeActionCondition;
 import com.daqem.jobsplus.resources.job.action.condition.conditions.entity.EntityTypesActionCondition;
+import com.daqem.jobsplus.resources.job.action.condition.conditions.entity.ReadyForShearingActionCondition;
+import com.daqem.jobsplus.resources.job.action.condition.conditions.experience.ExpDropActionCondition;
+import com.daqem.jobsplus.resources.job.action.condition.conditions.experience.ExpLevelActionCondition;
 import com.daqem.jobsplus.resources.job.action.condition.conditions.item.*;
 import com.daqem.jobsplus.resources.job.action.condition.conditions.job.JobExperiencePercentageActionCondition;
 import com.daqem.jobsplus.resources.job.action.condition.conditions.job.JobLevelActionCondition;
@@ -43,7 +45,6 @@ public class ActionConditions {
     public static final ActionConditionType ENTITY_TYPE = register(JobsPlus.getId("entity_type"), EntityTypeActionCondition.class, new EntityTypeActionCondition.Deserializer());
     public static final ActionConditionType ENTITY_TYPES = register(JobsPlus.getId("entity_types"), EntityTypesActionCondition.class, new EntityTypesActionCondition.Deserializer());
     public static final ActionConditionType DIMENSION = register(JobsPlus.getId("dimension"), DimensionActionCondition.class, new DimensionActionCondition.Deserializer());
-    public static final ActionConditionType EXP_DROP = register(JobsPlus.getId("exp_drop"), ExpDropActionCondition.class, new ExpDropActionCondition.Deserializer());
     public static final ActionConditionType SCOREBOARD = register(JobsPlus.getId("scoreboard"), ScoreboardActionCondition.class, new ScoreboardActionCondition.Deserializer());
     public static final ActionConditionType TEAM = register(JobsPlus.getId("team"), TeamActionCondition.class, new TeamActionCondition.Deserializer());
     public static final ActionConditionType ITEM_IN_HAND = register(JobsPlus.getId("item_in_hand"), ItemInHandActionCondition.class, new ItemInHandActionCondition.Deserializer());
@@ -51,6 +52,9 @@ public class ActionConditions {
     public static final ActionConditionType ITEM_EQUIPPED = register(JobsPlus.getId("item_equipped"), ItemEquippedActionCondition.class, new ItemEquippedActionCondition.Deserializer());
     public static final ActionConditionType ITEM = register(JobsPlus.getId("item"), ItemActionCondition.class, new ItemActionCondition.Deserializer());
     public static final ActionConditionType ITEMS = register(JobsPlus.getId("items"), ItemsActionCondition.class, new ItemsActionCondition.Deserializer());
+    public static final ActionConditionType EXP_DROP = register(JobsPlus.getId("exp_drop"), ExpDropActionCondition.class, new ExpDropActionCondition.Deserializer());
+    public static final ActionConditionType EXP_LEVEL = register(JobsPlus.getId("exp_level"), ExpLevelActionCondition.class, new ExpLevelActionCondition.Deserializer());
+    public static final ActionConditionType READY_FOR_SHEARING = register(JobsPlus.getId("ready_for_shearing"), ReadyForShearingActionCondition.class, new ReadyForShearingActionCondition.Deserializer());
 
     private static ActionConditionType register(ResourceLocation location, Class<? extends ActionCondition> clazz, JsonDeserializer<? extends ActionCondition> deserializer) {
         ActionConditionType actionConditionType = new ActionConditionType(clazz, location, deserializer);

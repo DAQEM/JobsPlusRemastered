@@ -17,7 +17,7 @@ public class ActionDataBuilder {
         this.specifications = new HashMap<>();
     }
 
-    public ActionDataBuilder withSpecification(ActionSpecification<?> specification, Object value) {
+    public <T> ActionDataBuilder withSpecification(ActionSpecification<T> specification, T value) {
         this.specifications.put(specification, value);
         return this;
     }

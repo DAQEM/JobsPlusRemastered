@@ -22,7 +22,7 @@ public class DeathAction extends Action {
                 '}';
     }
 
-    public static class Serializer implements JsonDeserializer<DeathAction> {
+    public static class Deserializer implements JsonDeserializer<DeathAction> {
 
 
         @Override

@@ -5,6 +5,58 @@
   "color": "#663399",
   "icon_item": "minecraft:enchanted_book",
   "description": "Enchanting is a skill that allows you to enchant items with magical abilities. You can enchant items by placing them in an enchanting table and using experience levels to enchant them. You can also enchant items with an anvil, but this is much more expensive. You can also enchant items with an anvil, but this is much more expensive.",
-  "actions": [],
+  "actions": [
+    {
+      "type": "jobsplus:on_enchant_item",
+      "rewards": [
+        {
+          "type": "jobsplus:job_exp",
+          "chance": 100,
+          "min_exp": 30,
+          "max_exp": 50
+        }
+      ],
+      "conditions": [
+        {
+          "type": "jobsplus:exp_level",
+          "exp_level": 1
+        }
+      ]
+    },
+    {
+      "type": "jobsplus:on_enchant_item",
+      "rewards": [
+        {
+          "type": "jobsplus:job_exp",
+          "chance": 100,
+          "min_exp": 50,
+          "max_exp": 70
+        }
+      ],
+      "conditions": [
+        {
+          "type": "jobsplus:exp_level",
+          "exp_level": 2
+        }
+      ]
+    },
+    {
+      "type": "jobsplus:on_enchant_item",
+      "rewards": [
+        {
+          "type": "jobsplus:job_exp",
+          "chance": 100,
+          "min_exp": 70,
+          "max_exp": 100
+        }
+      ],
+      "conditions": [
+        {
+          "type": "jobsplus:exp_level",
+          "exp_level": 3
+        }
+      ]
+    }
+  ],
   "powerups": []
 }

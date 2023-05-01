@@ -397,4 +397,9 @@ public abstract class MixinServerPlayer extends Player implements JobsServerPlay
         this.coins = jobsTag.getInt(Constants.COINS);
 //        JobsPlus.LOGGER.error("Loaded jobs: {}. For player {}", this.jobs, getServerPlayer().getDisplayName().getString());
     }
+
+    @Inject(at = @At("TAIL"), method = "onEnchantmentPerformed(Lnet/minecraft/world/item/ItemStack;I)V")
+    public void onEnchantmentPerformed(ItemStack itemStack, int level, CallbackInfo ci) {
+        PlayerEvents.onEnchantItem(this, itemStack, level);
+    }
 }
