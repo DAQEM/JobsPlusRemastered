@@ -8,6 +8,7 @@
   ],
   "mixins": [
     "MixinAbstractFurnaceBlockEntity",
+    "MixinAnimal",
     "MixinBlockStateBase",
     "MixinBrewingStandBlockEntity",
     "MixinItemStack",
