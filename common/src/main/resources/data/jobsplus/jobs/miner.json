@@ -5,6 +5,108 @@
   "color": "#FFA500",
   "icon_item": "minecraft:diamond_pickaxe",
   "description": "A Miner is a player who has mined 1000 blocks.",
-  "actions": [],
+  "actions": [
+    {
+      "type": "jobsplus:on_break_block",
+      "rewards": [
+        {
+          "type": "jobsplus:job_exp",
+          "chance": 100,
+          "min_exp": 0,
+          "max_exp": 2
+        }
+      ],
+      "conditions": [
+        {
+          "type": "jobsplus:blocks",
+          "blocks": [
+            "minecraft:stone",
+            "minecraft:cobblestone",
+            "minecraft:granite",
+            "minecraft:andesite",
+            "minecraft:diorite",
+            "minecraft:deepslate",
+            "minecraft:netherrack",
+            "minecraft:end_stone"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "jobsplus:on_break_block",
+      "rewards": [
+        {
+          "type": "jobsplus:job_exp",
+          "chance": 100,
+          "min_exp": 2,
+          "max_exp": 4
+        }
+      ],
+      "conditions": [
+        {
+          "type": "jobsplus:blocks",
+          "blocks": [
+            "#minecraft:mineable/pickaxe"
+          ]
+        },
+        {
+          "type": "jobsplus:not",
+          "conditions": [
+            {
+              "type": "jobsplus:is_ore"
+            }
+          ]
+        },
+        {
+          "type": "jobsplus:banned_blocks",
+          "banned_blocks": [
+            "minecraft:stone",
+            "minecraft:cobblestone",
+            "minecraft:granite",
+            "minecraft:andesite",
+            "minecraft:diorite",
+            "minecraft:deepslate",
+            "minecraft:netherrack",
+            "minecraft:end_stone"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "jobsplus:on_break_block",
+      "rewards": [
+        {
+          "type": "jobsplus:job_exp",
+          "chance": 100,
+          "min_exp": 4,
+          "max_exp": 6
+        }
+      ],
+      "conditions": [
+        {
+          "type": "jobsplus:blocks",
+          "blocks": [
+            "#minecraft:mineable/pickaxe"
+          ]
+        },
+        {
+          "type": "jobsplus:is_ore"
+        },
+        {
+          "type": "jobsplus:banned_blocks",
+          "banned_blocks": [
+            "minecraft:stone",
+            "minecraft:cobblestone",
+            "minecraft:granite",
+            "minecraft:andesite",
+            "minecraft:diorite",
+            "minecraft:deepslate",
+            "minecraft:netherrack",
+            "minecraft:end_stone"
+          ]
+        }
+      ]
+    }
+  ],
   "powerups": []
 }

@@ -89,4 +89,13 @@ public class PlayerEvents {
                 .build()
                 .sendToAction();
     }
+
+    public static void onStripLog(JobsServerPlayer player, BlockPos pos, Level level) {
+        new ActionDataBuilder(player, Actions.STRIP_LOG)
+                .withSpecification(ActionSpecification.BLOCK_STATE, level.getBlockState(pos))
+                .withSpecification(ActionSpecification.BLOCK_POSITION, pos)
+                .withSpecification(ActionSpecification.WORLD, level)
+                .build()
+                .sendToAction();
+    }
 }

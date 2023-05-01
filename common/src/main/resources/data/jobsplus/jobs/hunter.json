@@ -7,6 +7,17 @@
   "description": "The Hunter is a class that focuses on ranged combat and stealth. They are able to use a bow and arrow to deal damage from a distance, and can also use a variety of traps to deal damage to enemies and protect themselves. They also have a variety of stealth abilities, allowing them to sneak up on enemies and deal damage from behind.",
   "actions": [
     {
+      "type": "jobsplus:on_kill_entity",
+      "rewards": [
+        {
+          "type": "jobsplus:job_exp",
+          "chance": 100,
+          "min_exp": 4,
+          "max_exp": 6
+        }
+      ]
+    },
+    {
       "type": "jobsplus:on_smelt_item",
       "rewards": [
         {

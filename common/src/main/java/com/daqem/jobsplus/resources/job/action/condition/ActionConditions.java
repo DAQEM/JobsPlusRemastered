@@ -3,12 +3,14 @@ package com.daqem.jobsplus.resources.job.action.condition;
 import com.daqem.jobsplus.JobsPlus;
 import com.daqem.jobsplus.exception.UnknownConditionTypeException;
 import com.daqem.jobsplus.registry.JobsPlusRegistry;
+import com.daqem.jobsplus.resources.job.action.condition.conditions.NotActionCondition;
 import com.daqem.jobsplus.resources.job.action.condition.conditions.OrActionCondition;
 import com.daqem.jobsplus.resources.job.action.condition.conditions.block.BannedBlocksActionCondition;
 import com.daqem.jobsplus.resources.job.action.condition.conditions.block.BlockActionCondition;
 import com.daqem.jobsplus.resources.job.action.condition.conditions.block.BlocksActionCondition;
 import com.daqem.jobsplus.resources.job.action.condition.conditions.block.crop.CropAgeActionCondition;
 import com.daqem.jobsplus.resources.job.action.condition.conditions.block.crop.CropFullyGrownActionCondition;
+import com.daqem.jobsplus.resources.job.action.condition.conditions.block.ore.IsOreActionCondition;
 import com.daqem.jobsplus.resources.job.action.condition.conditions.entity.EntityTypeActionCondition;
 import com.daqem.jobsplus.resources.job.action.condition.conditions.entity.EntityTypesActionCondition;
 import com.daqem.jobsplus.resources.job.action.condition.conditions.entity.ReadyForShearingActionCondition;
@@ -35,6 +37,7 @@ public class ActionConditions {
     public static final List<ActionConditionType> ACTION_CONDITION_TYPES = new ArrayList<>();
 
     public static final ActionConditionType OR = register(JobsPlus.getId("or"), OrActionCondition.class, new OrActionCondition.Deserializer());
+    public static final ActionConditionType NOT = register(JobsPlus.getId("not"), NotActionCondition.class, new NotActionCondition.Deserializer());
 
     public static final ActionConditionType CROP_FULLY_GROWN = register(JobsPlus.getId("crop_fully_grown"), CropFullyGrownActionCondition.class, new CropFullyGrownActionCondition.Deserializer());
     public static final ActionConditionType CROP_AGE = register(JobsPlus.getId("crop_age"), CropAgeActionCondition.class, new CropAgeActionCondition.Deserializer());
@@ -60,6 +63,7 @@ public class ActionConditions {
     public static final ActionConditionType BANNED_ITEMS = register(JobsPlus.getId("banned_items"), BannedItemsActionCondition.class, new BannedItemsActionCondition.Deserializer());
     public static final ActionConditionType IS_BLASTING_RECIPE = register(JobsPlus.getId("is_blasting_recipe"), IsBlastingRecipeActionCondition.class, new IsBlastingRecipeActionCondition.Deserializer());
     public static final ActionConditionType IS_SMOKING_RECIPE = register(JobsPlus.getId("is_smoking_recipe"), IsSmokingRecipeActionCondition.class, new IsSmokingRecipeActionCondition.Deserializer());
+    public static final ActionConditionType IS_ORE = register(JobsPlus.getId("is_ore"), IsOreActionCondition.class, new IsOreActionCondition.Deserializer());
 
     private static ActionConditionType register(ResourceLocation location, Class<? extends ActionCondition> clazz, JsonDeserializer<? extends ActionCondition> deserializer) {
         ActionConditionType actionConditionType = new ActionConditionType(clazz, location, deserializer);

@@ -5,6 +5,43 @@
   "color": "#228B22",
   "icon_item": "minecraft:golden_axe",
   "description": "You have a 1% chance to get a log when you break a log.",
-  "actions": [],
+  "actions": [
+    {
+      "type": "jobsplus:on_break_block",
+      "rewards": [
+        {
+          "type": "jobsplus:job_exp",
+          "chance": 100,
+          "min_exp": 2,
+          "max_exp": 4
+        }
+      ],
+      "conditions": [
+        {
+          "type": "jobsplus:blocks",
+          "blocks": [
+            "#minecraft:logs",
+            "#minecraft:planks",
+            "#minecraft:wooden_slabs",
+            "#minecraft:wooden_stairs",
+            "#minecraft:wooden_trapdoors",
+            "#minecraft:wooden_fences",
+            "#minecraft:wooden_doors"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "jobsplus:on_strip_log",
+      "rewards": [
+        {
+          "type": "jobsplus:job_exp",
+          "chance": 100,
+          "min_exp": 2,
+          "max_exp": 4
+        }
+      ]
+    }
+  ],
   "powerups": []
 }
