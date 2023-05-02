@@ -108,7 +108,7 @@ public class JobInstance {
 
     @Override
     public String toString() {
-        return "Job{" +
+        return "JobInstance{" +
                 "name='" + name +
                 ", price=" + price +
                 ", maxLevel=" + maxLevel +

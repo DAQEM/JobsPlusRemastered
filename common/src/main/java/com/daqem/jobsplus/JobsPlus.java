@@ -1,6 +1,5 @@
 package com.daqem.jobsplus;
 
-import com.daqem.jobsplus.config.JobsPlusCommonConfig;
 import com.daqem.jobsplus.event.command.EventRegisterCommands;
 import com.daqem.jobsplus.event.triggers.AdvancementEvents;
 import com.daqem.jobsplus.event.triggers.BlockEvents;
@@ -21,13 +20,6 @@ public class JobsPlus {
     public static void init() {
         registerEvents();
         JobsPlusNetworking.init();
-
-        LOGGER.info("JobsPlus initialized");
-        if (JobsPlusCommonConfig.isDebug.get()) {
-            LOGGER.info("JobsPlus is in debug mode");
-        } else {
-            LOGGER.info("JobsPlus is not in debug mode");
-        }
     }
 
     private static void registerEvents() {

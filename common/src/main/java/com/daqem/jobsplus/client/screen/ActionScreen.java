@@ -131,12 +131,20 @@ public class ActionScreen extends Screen {
         poseStack.scale(1.2F, 1.2F, 1.2F);
         font.draw(poseStack, ChatColor.bold() + action.getName().getString(), (startX + 7) / 1.2F, (startY + 30) / 1.2F, new Color(jobInstance.getColorDecimal()).darker().getRGB());
         poseStack.popPose();
-        drawActionDescription(poseStack);
+
+        try {
+            drawActionDescription(poseStack);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void drawActionDescription(PoseStack poseStack) {
         float scale = 1.0F;
+        int tries = 0;
         while (getTextHeightForDescription(poseStack, scale) > 112) {
+            if (tries > 1000) break;
+            tries++;
             scale -= 0.025F;
         }
         poseStack.pushPose();
@@ -144,9 +152,15 @@ public class ActionScreen extends Screen {
         String description = action.getDescription().getString();
         String[] descriptionSplit = description.split(" ");
         int lineCount = 0;
+        tries = 0;
         while (descriptionSplit.length > 0) {
+            if (tries > 1000) break;
+            tries++;
             StringBuilder line = new StringBuilder();
+            int tries2 = 0;
             while (font.width(line + descriptionSplit[0]) < (130 / scale)) {
+                if (tries2 > 1000) break;
+                tries2++;
                 line.append(descriptionSplit[0]).append(" ");
                 descriptionSplit = Arrays.copyOfRange(descriptionSplit, 1, descriptionSplit.length);
                 if (descriptionSplit.length == 0) break;
@@ -163,9 +177,15 @@ public class ActionScreen extends Screen {
         String description = action.getDescription().getString();
         String[] descriptionSplit = description.split(" ");
         int lineCount = 0;
+        int tries = 0;
         while (descriptionSplit.length > 0) {
+            if (tries > 1000) break;
+            tries++;
             StringBuilder line = new StringBuilder();
+            int tries2 = 0;
             while (font.width(line + descriptionSplit[0]) < (130 / scale)) {
+                if (tries2 > 1000) break;
+                tries2++;
                 line.append(descriptionSplit[0]).append(" ");
                 descriptionSplit = Arrays.copyOfRange(descriptionSplit, 1, descriptionSplit.length);
                 if (descriptionSplit.length == 0) break;

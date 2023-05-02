@@ -42,6 +42,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Mixin(ServerPlayer.class)
 public abstract class MixinServerPlayer extends Player implements JobsServerPlayer {
@@ -105,7 +106,8 @@ public abstract class MixinServerPlayer extends Player implements JobsServerPlay
                 .ifPresent(job -> {
                     throw new IllegalArgumentException("Player already has this job");
                 });
-        jobs.add(new Job(this, jobLocation, 1, 0, Map.of()));
+        Job job = new Job(this, jobLocation, 1, 0, Map.of());
+        jobs.add(job);
     }
 
     @Override
@@ -435,7 +437,7 @@ public abstract class MixinServerPlayer extends Player implements JobsServerPlay
         CompoundTag jobsTag = compoundTag.getCompound(Constants.JOBS_DATA);
         this.jobs = JobSerializer.fromNBT(this, jobsTag).stream()
                 .filter(job -> job.getJobInstance() != null)
-                .toList();
+                .collect(Collectors.toCollection(ArrayList::new));
         this.coins = jobsTag.getInt(Constants.COINS);
 //        JobsPlus.LOGGER.error("Loaded jobs: {}. For player {}", this.jobs, getServerPlayer().getDisplayName().getString());
     }
