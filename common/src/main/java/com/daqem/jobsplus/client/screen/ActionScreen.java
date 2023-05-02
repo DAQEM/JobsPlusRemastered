@@ -12,6 +12,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.glfw.GLFW;
@@ -19,7 +20,7 @@ import org.lwjgl.glfw.GLFW;
 import java.awt.*;
 import java.util.Arrays;
 
-public class ActionScreen extends Screen {
+public class ActionScreen extends AbstractScreen {
 
     private static final ResourceLocation BACKGROUND = JobsPlus.getId("textures/gui/action_screen.png");
     private static final int IMAGE_WIDTH = 326;
@@ -129,7 +130,7 @@ public class ActionScreen extends Screen {
 
         poseStack.pushPose();
         poseStack.scale(1.2F, 1.2F, 1.2F);
-        font.draw(poseStack, ChatColor.bold() + action.getName().getString(), (startX + 7) / 1.2F, (startY + 30) / 1.2F, new Color(jobInstance.getColorDecimal()).darker().getRGB());
+        drawDynamicComponent(poseStack, action.getName().copy().withStyle(Style.EMPTY.withBold(true)), (startX + 7) / 1.2F, (startY + 30) / 1.2F, 110, new Color(jobInstance.getColorDecimal()).darker().getRGB());
         poseStack.popPose();
 
         try {
@@ -267,24 +268,24 @@ public class ActionScreen extends Screen {
     }
 
     private void showRewards() {
-        ScreenHelper.playClientGUIClick();
+        playClientGUIClick();
         this.activeTopButton = TopButtonType.REWARDS;
 
     }
 
     private void showConditions() {
-        ScreenHelper.playClientGUIClick();
+        playClientGUIClick();
         this.activeTopButton = TopButtonType.CONDITIONS;
     }
 
     private void toggleTopButtons(int offset) {
-        ScreenHelper.playClientGUIClick();
+        playClientGUIClick();
         int nextOrdinal = (activeTopButton.ordinal() + offset) % TopButtonType.values().length;
         activeTopButton = TopButtonType.values()[nextOrdinal];
     }
 
     private void switchActionScreen(int lastIndex, int fistIndex, int nextIndex) {
-        ScreenHelper.playClientGUIClick();
+        playClientGUIClick();
         Action action;
         if (nextIndex == lastIndex) {
             action = this.jobInstance.getActions().get(fistIndex);

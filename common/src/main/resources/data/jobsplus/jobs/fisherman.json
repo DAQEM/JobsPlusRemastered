@@ -9,6 +9,8 @@
   "actions": [
     {
       "type": "jobsplus:on_swim",
+      "short_description": "Swim 10 blocks",
+      "description": "As a Fisherman, you can earn job experience by swimming a distance of 10 blocks. This will improve your fitness and stamina, making you a better angler in the long run. Keep practicing, and you'll soon be swimming like a pro!",
       "rewards": [
         {
           "type": "jobsplus:job_exp",
@@ -26,6 +28,8 @@
     },
     {
       "type": "jobsplus:on_fished_up_item",
+      "short_description": "Catch a fish",
+      "description": "Fishing is a key part of the Fisherman job, and catching fish is a great way to earn job experience points. Keep your eyes on the water and your fishing rod at the ready!",
       "rewards": [
         {
           "type": "jobsplus:job_exp",
@@ -45,6 +49,8 @@
     },
     {
       "type": "jobsplus:on_fished_up_item",
+      "short_description": "Catch a non-fish item",
+      "description": "Sometimes, as a Fisherman, you might catch items that aren't fish - like treasure, boots, or even junk! While these items might not be as valuable as fish, they still earn you valuable job experience points. Cast your line far and wide, and you never know what you might catch!",
       "rewards": [
         {
           "type": "jobsplus:job_exp",

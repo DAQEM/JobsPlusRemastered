@@ -9,6 +9,8 @@
   "actions": [
     {
       "type": "jobsplus:on_place_block",
+      "short_description": "Place hard blocks",
+      "description": "Use your building skills to place sturdy blocks such as obsidian or netherite, gaining job experience points to increase your Builder level.",
       "rewards": [
         {
           "type": "jobsplus:job_exp",
@@ -37,6 +39,8 @@
     },
     {
       "type": "jobsplus:on_place_block",
+      "short_description": "Place semi-hard blocks",
+      "description": "Practice placing blocks like deepslate or iron, earning job experience points to improve your building abilities as a Builder.",
       "rewards": [
         {
           "type": "jobsplus:job_exp",
@@ -162,6 +166,8 @@
     },
     {
       "type": "jobsplus:on_place_block",
+      "short_description": "Place other blocks",
+      "description": "Use your creativity to place any other types of blocks, such as wood or sand, to gain job experience points and advance your Builder level.",
       "rewards": [
         {
           "type": "jobsplus:job_exp",

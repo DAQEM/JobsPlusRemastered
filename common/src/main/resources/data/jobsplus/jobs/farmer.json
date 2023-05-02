@@ -9,6 +9,8 @@
   "actions": [
     {
       "type": "jobsplus:on_harvest_crop",
+      "short_description": "Harvest a crop",
+      "description": "As a Farmer, you can earn job experience by harvesting fully grown crops. When you harvest a crop, you'll gain valuable experience points that can help you level up in the Farmer job.",
       "rewards": [
         {
           "type": "jobsplus:job_exp",
@@ -25,6 +27,8 @@
     },
     {
       "type": "jobsplus:on_plant_crop",
+      "short_description": "Plant a crop",
+      "description": "Planting crops is a crucial part of being a Farmer. With every seed you plant, you'll get a chance to earn job experience points. While planting crops isn't as rewarding as harvesting them, it's still an essential task that can help you progress in your career.",
       "rewards": [
         {
           "type": "jobsplus:job_exp",
@@ -36,6 +40,8 @@
     },
     {
       "type": "jobsplus:on_interact_entity",
+      "short_description": "Shear a sheep",
+      "description": "If you're a Farmer who likes to raise livestock, then shearing sheep is a great way to earn job experience. When you successfully shear a sheep, you'll earn valuable experience points that can help you level up in the Farmer job.",
       "rewards": [
         {
           "type": "jobsplus:job_exp",
@@ -56,6 +62,8 @@
     },
     {
       "type": "jobsplus:on_tame_animal",
+      "short_description": "Tame an animal",
+      "description": "Taming animals requires a lot of patience and skill, but it can be a rewarding task for Farmers. When you successfully tame an animal, you'll earn a significant amount of job experience points that can help you level up quickly.",
       "rewards": [
         {
           "type": "jobsplus:job_exp",
@@ -67,6 +75,8 @@
     },
     {
       "type": "jobsplus:on_breed_animal",
+      "short_description": "Breed an animal",
+      "description": "Breeding animals is an important task for Farmers who want to increase their livestock. When you successfully breed two animals, you'll earn valuable experience points that can help you progress in the Farmer job.",
       "rewards": [
         {
           "type": "jobsplus:job_exp",

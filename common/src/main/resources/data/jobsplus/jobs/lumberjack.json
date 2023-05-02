@@ -9,6 +9,8 @@
   "actions": [
     {
       "type": "jobsplus:on_break_block",
+      "short_description": "Break wooden blocks",
+      "description": "As a Lumberjack, you'll earn job experience by breaking wooden blocks like logs, planks, and doors with your trusty axe or by hand. The more blocks you break, the more experience you'll earn and the closer you'll get to leveling up in the Lumberjack job.",
       "rewards": [
         {
           "type": "jobsplus:job_exp",
@@ -34,6 +36,8 @@
     },
     {
       "type": "jobsplus:on_strip_log",
+      "short_description": "Strip logs",
+      "description": "Experienced Lumberjacks can also earn job experience by stripping logs. By using your axe to strip the bark from logs, you'll earn valuable job experience. Keep at it, and you'll soon become a master Lumberjack with the skills and knowledge to tackle any forest.",
       "rewards": [
         {
           "type": "jobsplus:job_exp",

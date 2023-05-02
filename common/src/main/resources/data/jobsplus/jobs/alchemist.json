@@ -9,6 +9,8 @@
   "actions": [
     {
       "type": "jobsplus:on_brew_potion",
+      "short_description": "Brew a potion",
+      "description": "As an alchemist, you can brew a potion to gain job experience. Collect ingredients, combine them in a brewing stand and watch as the potion takes shape.",
       "rewards": [
         {
           "type": "jobsplus:job_exp",
@@ -19,6 +21,8 @@
     },
     {
       "type": "jobsplus:on_drink",
+      "short_description": "Drink a potion",
+      "description": "Alchemists who drink a potion will receive job experience points. This action requires a potion to be in your inventory.",
       "rewards": [
         {
           "type": "jobsplus:job_exp",
@@ -35,6 +39,8 @@
     },
     {
       "type": "jobsplus:on_throw_item",
+      "short_description": "Throw a potion",
+      "description": "As an alchemist, throwing a splash or lingering potion will reward you with job experience points. This action requires either a splash or lingering potion, depending on which one you want to throw.",
       "rewards": [
         {
           "type": "jobsplus:job_exp",
@@ -54,6 +60,8 @@
     },
     {
       "type": "jobsplus:on_craft_item",
+      "short_description": "Craft alchemy items",
+      "description": "To earn job experience points, craft various alchemy items such as a brewing stand, glistering melon slice, sugar, rabbit foot, blaze powder, fermented spider eye, magma cream, golden carrot, and turtle helmet.",
       "rewards": [
         {
           "type": "jobsplus:job_exp",
@@ -80,6 +88,8 @@
     },
     {
       "type": "jobsplus:on_kill_entity",
+      "short_description": "Kill alchemy mobs",
+      "description": "Alchemists can gain job experience points by killing specific mobs such as phantoms, pufferfish, magma cubes, ghasts, rabbits, spiders, cave spiders, blazes, and witches.",
       "rewards": [
         {
           "type": "jobsplus:job_exp",
@@ -106,6 +116,8 @@
     },
     {
       "type": "jobsplus:on_break_block",
+      "short_description": "Harvest Nether Wart",
+      "description": "As an alchemist, harvesting fully grown Nether Wart will reward you with job experience points. Make sure the crops have fully grown before harvesting.",
       "rewards": [
         {
           "type": "jobsplus:job_exp",

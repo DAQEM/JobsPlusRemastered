@@ -9,6 +9,8 @@
   "actions": [
     {
       "type": "jobsplus:on_break_block",
+      "short_description": "Digging common blocks",
+      "description": "As a Digger, you can earn job experience by breaking common blocks such as dirt and sand with your trusty shovel or by hand. With every block you break, you'll get closer to leveling up in the Digger job.",
       "rewards": [
         {
           "type": "jobsplus:job_exp",
@@ -29,6 +31,8 @@
     },
     {
       "type": "jobsplus:on_break_block",
+      "short_description": "Digging other blocks",
+      "description": "Diggers who want to earn more job experience can try their hand at breaking other blocks with their shovel or by hand, like clay and grass blocks. However, these blocks are more uncommon, making them more rewarding to break. Keep at it, and you'll soon become a master Digger!",
       "rewards": [
         {
           "type": "jobsplus:job_exp",
@@ -41,19 +45,14 @@
         {
           "type": "jobsplus:blocks",
           "blocks": [
-            "minecraft:grass_block",
-            "minecraft:coarse_dirt",
-            "minecraft:podzol",
-            "minecraft:rooted_dirt",
-            "minecraft:clay",
-            "minecraft:red_sand",
-            "minecraft:soul_sand",
-            "minecraft:soul_soil",
-            "minecraft:mycelium",
-            "minecraft:grass_path",
-            "minecraft:gravel",
-            "minecraft:mud",
-            "minecraft:muddy_mangrove_roots"
+            "#minecraft:mineable/shovel"
+          ]
+        },
+        {
+          "type": "jobsplus:banned_blocks",
+          "banned_blocks": [
+            "minecraft:dirt",
+            "minecraft:sand"
           ]
         }
       ]

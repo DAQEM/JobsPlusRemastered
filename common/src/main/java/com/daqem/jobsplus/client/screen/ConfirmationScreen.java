@@ -17,7 +17,7 @@ import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class ConfirmationScreen extends Screen {
+public class ConfirmationScreen extends AbstractScreen {
 
     private static final ResourceLocation BACKGROUND = JobsPlus.getId("textures/gui/confirmation_screen.png");
     private static final int BUTTON_WIDTH = 75;
@@ -35,7 +35,6 @@ public class ConfirmationScreen extends Screen {
     private static final int TEXT_COLOR = 0x333333;
     private int imageWidth;
     private final ConfirmationMessageType messageType;
-    private int messageWidth;
     private final Screen lastScreen;
     private int startX;
     private int startY;
@@ -67,8 +66,7 @@ public class ConfirmationScreen extends Screen {
         if (requiredCoins > 0) {
             messageType.withObjects(requiredCoins);
         }
-        this.messageWidth = font.width(messageType.getMessage());
-        this.imageWidth = messageWidth;
+        this.imageWidth = font.width(messageType.getMessage());
     }
 
     @Override
@@ -164,7 +162,7 @@ public class ConfirmationScreen extends Screen {
     }
 
     private void closeWithClick(boolean withPacket) {
-        ScreenHelper.playClientGUIClick();
+        playClientGUIClick();
         if (withPacket) {
             if (lastScreen instanceof JobsScreen jobsScreen) {
                 new PacketOpenMenuC2S(jobsScreen).sendToServer();
@@ -210,7 +208,7 @@ public class ConfirmationScreen extends Screen {
         CANCEL((BUTTON_WIDTH / 2) + BUTTON_SIDE_OFFSET),
         BACK(0);
 
-        int offset;
+        final int offset;
 
         ButtonType(int offset) {
             this.offset = offset;

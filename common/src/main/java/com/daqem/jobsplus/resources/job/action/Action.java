@@ -15,11 +15,19 @@ import java.util.List;
 public abstract class Action {
 
     private final ActionType type;
+    private String shortDescription;
+    private String description;
     private List<ActionReward> rewards = new ArrayList<>();
     private List<ActionCondition> conditions = new ArrayList<>();
 
     public Action(ActionType type) {
         this.type = type;
+    }
+
+    public Action withDescriptions(String shortDescription, String description) {
+        this.shortDescription = shortDescription;
+        this.description = description;
+        return this;
     }
 
     public Action withRewards(List<ActionReward> rewards) {
@@ -41,11 +49,11 @@ public abstract class Action {
     }
 
     public Component getDescription() {
-        return JobsPlus.translatable("action." + type.location().getPath() + ".description");
+        return JobsPlus.literal(this.description);
     }
 
-    public Component shortDescription() {
-        return JobsPlus.translatable("action." + type.location().getPath() + ".short_description");
+    public Component getShortDescription() {
+        return JobsPlus.literal(this.shortDescription);
     }
 
     public List<ActionReward> getRewards() {
@@ -98,6 +106,9 @@ public abstract class Action {
         public T deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
             JsonObject actionObject = json.getAsJsonObject();
 
+            String shortDescription = actionObject.has("short_description") ? actionObject.get("short_description").getAsString() : "";
+            String description = actionObject.has("description") ? actionObject.get("description").getAsString() : "";
+
             ArrayList<ActionReward> tempRewards = new ArrayList<>();
             ArrayList<ActionCondition> tempConditions = new ArrayList<>();
 
@@ -122,6 +133,7 @@ public abstract class Action {
             Class<? extends Action> clazz = Actions.getClass(new ResourceLocation(actionObject.get("type").getAsString()));
             actionObject.remove("type");
             return (T) getGson().fromJson(actionObject, clazz)
+                    .withDescriptions(shortDescription, description)
                     .withRewards(tempRewards)
                     .withConditions(tempConditions);
         }
