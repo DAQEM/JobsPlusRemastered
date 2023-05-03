@@ -285,6 +285,11 @@ public abstract class MixinServerPlayer extends Player implements JobsServerPlay
         return super.eat(level, itemStack);
     }
 
+    @Override
+    public boolean canCraftItem(ItemStack itemStack) {
+        return false; //TODO: Check if player can craft item
+    }
+
     @Inject(at = @At("TAIL"), method = "tick()V")
     public void tick(CallbackInfo ci) {
         if (this.isSwimming && this.isSwimming()) {

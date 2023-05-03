@@ -114,6 +114,7 @@
   "jobsplus.action.on_strip_log": "On strip log",
   "jobsplus.action.on_grind_item": "On grind item",
   "jobsplus.action.on_use_anvil": "On use anvil",
+  "jobsplus.inventory.cant_craft": "%s level %s is required to craft %s",
   "key.categories.jobsplus": "Jobs+",
   "key.jobsplus.open_menu": "Open Jobs+ GUI"
 }

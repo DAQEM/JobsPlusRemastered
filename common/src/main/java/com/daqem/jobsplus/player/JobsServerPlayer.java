@@ -9,6 +9,7 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
 import java.util.UUID;
@@ -66,4 +67,6 @@ public interface JobsServerPlayer {
     void setElytraFlyingDistanceInCm(float flyingDistanceInCm);
 
     void refundJob(JobInstance jobInstance);
+
+    boolean canCraftItem(ItemStack itemStack);
 }
