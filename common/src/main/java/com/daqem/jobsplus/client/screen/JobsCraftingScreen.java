@@ -13,8 +13,8 @@ public interface JobsCraftingScreen {
 
     void cantCraft(CompoundTag cantCraftData);
 
-    default void renderCantCraftMessage(PoseStack poseStack, Font font, int width, int height, int imageHeight, Item item, JobInstance job, int requiredLevel) {
-        MutableComponent component = JobsPlus.translatable("inventory.cant_craft", job.getName(), requiredLevel, item.getDefaultInstance().getDisplayName().getString());
+    default void renderCantCraftMessage(PoseStack poseStack, Font font, int width, int height, int imageHeight, Item item, JobInstance job, int requiredLevel, String cantCraftTranslation) {
+        MutableComponent component = JobsPlus.translatable("inventory." + cantCraftTranslation, job.getName(), requiredLevel, item.getDefaultInstance().getDisplayName().getString());
         font.draw(poseStack, component.withStyle(ChatFormatting.RED), (width / 2F) - (font.width(component) / 2F), (height - imageHeight) / 4F, 0xFFFFFF);
     }
 }

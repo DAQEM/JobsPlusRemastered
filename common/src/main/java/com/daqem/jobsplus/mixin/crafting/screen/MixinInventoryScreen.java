@@ -38,7 +38,7 @@ public class MixinInventoryScreen extends Screen implements JobsCraftingScreen {
     @Inject(at = @At("TAIL"), method = "render(Lcom/mojang/blaze3d/vertex/PoseStack;IIF)V")
     private void render(PoseStack poseStack, int mouseX, int mouseY, float partialTicks, CallbackInfo ci) {
         if (cantCraftItem != Items.AIR && cantCraftJob != null && cantCraftRequiredLevel != 0) {
-            renderCantCraftMessage(poseStack, font, width, height, 166, cantCraftItem, cantCraftJob, cantCraftRequiredLevel);
+            renderCantCraftMessage(poseStack, font, width, height, 166, cantCraftItem, cantCraftJob, cantCraftRequiredLevel, "cant_craft");
         }
     }
 }

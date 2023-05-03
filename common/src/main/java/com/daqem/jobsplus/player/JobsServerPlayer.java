@@ -69,4 +69,6 @@ public interface JobsServerPlayer {
     void refundJob(JobInstance jobInstance);
 
     boolean canCraftItem(ItemStack itemStack);
+
+    boolean canSmeltItem(ItemStack itemStack);
 }

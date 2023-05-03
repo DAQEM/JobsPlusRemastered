@@ -115,6 +115,8 @@
   "jobsplus.action.on_grind_item": "On grind item",
   "jobsplus.action.on_use_anvil": "On use anvil",
   "jobsplus.inventory.cant_craft": "%s level %s is required to craft %s",
+  "jobsplus.inventory.cant_smelt": "%s level %s is required to smelt %s",
+  "jobsplus.inventory.cant_bew": "%s level %s is required to brew %s",
   "key.categories.jobsplus": "Jobs+",
   "key.jobsplus.open_menu": "Open Jobs+ GUI"
 }

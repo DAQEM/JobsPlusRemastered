@@ -3,7 +3,6 @@ package com.daqem.jobsplus.mixin.crafting;
 import com.daqem.jobsplus.networking.s2c.PacketCantCraftS2C;
 import com.daqem.jobsplus.player.JobsServerPlayer;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.CraftingContainer;
@@ -25,7 +24,7 @@ public class MixinCraftingMenu {
             ItemStack itemStack = resultContainer.getItem(0);
             if (!serverPlayer.canCraftItem(itemStack)) {
                 resultContainer.setItem(0, ItemStack.EMPTY);
-                new PacketCantCraftS2C(itemStack.getItem().arch$registryName(), new ResourceLocation("jobsplus:miner"), 10).sendTo((ServerPlayer) serverPlayer);
+                new PacketCantCraftS2C(itemStack.getItem().arch$registryName(), new ResourceLocation("jobsplus:miner"), 10).sendTo(serverPlayer.getServerPlayer());
             }
         }
     }
