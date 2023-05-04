@@ -34,7 +34,7 @@ public abstract class ActionReward {
     public static class ActionRewardSerializer<T extends ActionReward> implements JsonDeserializer<T> {
 
         private static Gson getGson() {
-            GsonBuilder builder = new GsonBuilder();
+            GsonBuilder builder = new GsonBuilder().setPrettyPrinting();
 
             for (ActionRewardType type : ActionRewards.ACTION_REWARD_TYPES) {
                 builder.registerTypeAdapter(type.clazz(), type.deserializer());
@@ -46,8 +46,14 @@ public abstract class ActionReward {
         @Override
         public T deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
             JsonObject rewardObject = json.getAsJsonObject();
-            Class<? extends ActionReward> clazz = ActionRewards.getClass(new ResourceLocation(rewardObject.get("type").getAsString()));
-            rewardObject.remove("type");
+            if (!rewardObject.has("type")) {
+                throw new JsonParseException("ActionReward must have a type");
+            }
+
+            String type = rewardObject.get("type").getAsString();
+            ResourceLocation location = new ResourceLocation(type);
+            Class<? extends ActionReward> clazz = ActionRewards.getClass(location);
+
             return (T) getGson().fromJson(rewardObject, clazz);
         }
     }

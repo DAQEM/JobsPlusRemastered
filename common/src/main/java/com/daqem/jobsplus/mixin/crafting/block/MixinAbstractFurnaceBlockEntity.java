@@ -1,11 +1,9 @@
 package com.daqem.jobsplus.mixin.crafting.block;
 
-import com.daqem.jobsplus.JobsPlus;
 import com.daqem.jobsplus.level.block.JobsFurnaceBlockEntity;
 import com.daqem.jobsplus.player.JobsServerPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtUtils;
 import net.minecraft.world.Container;
 import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.entity.player.Player;
@@ -21,6 +19,7 @@ import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -44,7 +43,7 @@ public abstract class MixinAbstractFurnaceBlockEntity extends BaseContainerBlock
     int litTime;
 
     @Shadow
-    public abstract ItemStack getItem(int i);
+    public abstract @NotNull ItemStack getItem(int i);
 
     private final RecipeManager.CachedCheck<Container, ? extends AbstractCookingRecipe> quickCheck;
 
@@ -67,20 +66,18 @@ public abstract class MixinAbstractFurnaceBlockEntity extends BaseContainerBlock
     @Inject(at = @At("TAIL"), method = "saveAdditional(Lnet/minecraft/nbt/CompoundTag;)V")
     private void saveAdditional(CompoundTag compoundTag, CallbackInfo ci) {
         if (getPlayer() != null) {
-            JobsPlus.LOGGER.error("saveAdditional: " + getPlayer().getUUID().toString());
             compoundTag.putString("JobsServerPlayer", getPlayer().getUUID().toString());
+        } else {
+            if (getPlayerUUID() != null) {
+                compoundTag.putString("JobsServerPlayer", getPlayerUUID().toString());
+            }
         }
     }
 
     @Inject(at = @At("TAIL"), method = "load(Lnet/minecraft/nbt/CompoundTag;)V")
     private void load(CompoundTag compoundTag, CallbackInfo ci) {
-        JobsPlus.LOGGER.error("load");
         if (compoundTag.contains("JobsServerPlayer")) {
-            UUID uuid = UUID.fromString(compoundTag.getString("JobsServerPlayer"));
-            setPlayerUUID(uuid);
-        } else {
-            JobsPlus.LOGGER.error("load: no player");
-            JobsPlus.LOGGER.debug(NbtUtils.prettyPrint(compoundTag));
+            setPlayerUUID(UUID.fromString(compoundTag.getString("JobsServerPlayer")));
         }
     }
 
@@ -93,7 +90,6 @@ public abstract class MixinAbstractFurnaceBlockEntity extends BaseContainerBlock
                         Player player = level.getServer().getPlayerList().getPlayer(block.getPlayerUUID());
                         if (player instanceof JobsServerPlayer serverPlayer) {
                             block.setPlayer(serverPlayer);
-                            JobsPlus.LOGGER.error("serverTick: " + block.getPlayer().getUUID().toString());
                         }
                     }
                 }
@@ -119,8 +115,6 @@ public abstract class MixinAbstractFurnaceBlockEntity extends BaseContainerBlock
                         if (block.getPlayer() == null || !block.getPlayer().canSmeltItem(recipe.getResultItem())) {
                             block.setLitTime(0);
                             ci.cancel();
-                        } else {
-                            JobsPlus.LOGGER.error("serverTick: can smelt");
                         }
                     }
                 }

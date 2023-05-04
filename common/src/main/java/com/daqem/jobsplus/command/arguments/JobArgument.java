@@ -1,6 +1,5 @@
 package com.daqem.jobsplus.command.arguments;
 
-import com.daqem.jobsplus.JobsPlus;
 import com.daqem.jobsplus.resources.JobManager;
 import com.daqem.jobsplus.resources.job.JobInstance;
 import com.mojang.brigadier.StringReader;
@@ -28,7 +27,7 @@ public class JobArgument implements ArgumentType<JobInstance> {
 
     @Override
     public <S> CompletableFuture<Suggestions> listSuggestions(CommandContext<S> context, SuggestionsBuilder builder) {
-        Collection<ResourceLocation> jobs = JobsPlus.getJobManager().getJobs().keySet();
+        Collection<ResourceLocation> jobs = JobManager.getInstance().getJobs().keySet();
         return SharedSuggestionProvider.suggest(jobs.stream().map(ResourceLocation::toString), builder);
     }
 

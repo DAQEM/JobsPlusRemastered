@@ -1,6 +1,7 @@
 package com.daqem.jobsplus.client;
 
 import com.daqem.jobsplus.event.client.EventKeyPressed;
+import com.daqem.jobsplus.event.client.EventSyncRequest;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.KeyMapping;
@@ -19,5 +20,6 @@ public class JobsPlusClient {
 
     private static void registerEvents() {
         EventKeyPressed.registerEvent();
+        EventSyncRequest.registerEvent();
     }
 }

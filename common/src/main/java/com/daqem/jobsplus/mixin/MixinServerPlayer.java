@@ -1,7 +1,6 @@
 package com.daqem.jobsplus.mixin;
 
 import com.daqem.jobsplus.Constants;
-import com.daqem.jobsplus.JobsPlus;
 import com.daqem.jobsplus.config.JobsPlusCommonConfig;
 import com.daqem.jobsplus.event.triggers.MovementEvents;
 import com.daqem.jobsplus.event.triggers.PlayerEvents;
@@ -11,9 +10,11 @@ import com.daqem.jobsplus.player.job.Job;
 import com.daqem.jobsplus.player.job.JobSerializer;
 import com.daqem.jobsplus.player.job.powerup.PowerupState;
 import com.daqem.jobsplus.player.stat.StatData;
+import com.daqem.jobsplus.resources.JobManager;
 import com.daqem.jobsplus.resources.job.JobInstance;
 import com.daqem.jobsplus.resources.job.powerup.PowerupInstance;
 import com.mojang.authlib.GameProfile;
+import com.mojang.logging.LogUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
@@ -33,6 +34,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -47,6 +49,7 @@ import java.util.stream.Collectors;
 @Mixin(ServerPlayer.class)
 public abstract class MixinServerPlayer extends Player implements JobsServerPlayer {
 
+    private static final Logger LOGGER = LogUtils.getLogger();
     private final NonNullList<StatData> statData = NonNullList.create();
     private boolean isSwimming = false;
     private int swimmingDistanceInCm = 0;
@@ -80,7 +83,7 @@ public abstract class MixinServerPlayer extends Player implements JobsServerPlay
 
     @Override
     public List<Job> getInactiveJobs() {
-        return JobsPlus.getJobManager().getJobs().values().stream()
+        return JobManager.getInstance().getJobs().values().stream()
                 .filter(jobInstance ->
                         !jobs.stream()
                                 .map(Job::getJobInstance)
@@ -173,10 +176,10 @@ public abstract class MixinServerPlayer extends Player implements JobsServerPlay
             if (!job.hasPowerup(powerupInstance)) {
                 job.addPowerup(powerupInstance);
             } else {
-                JobsPlus.LOGGER.error("Player {} already has powerup {} for job {}", name(), powerupInstance.getLocation(), jobLocation);
+                LOGGER.error("Player {} already has powerup {} for job {}", name(), powerupInstance.getLocation(), jobLocation);
             }
         } else {
-            JobsPlus.LOGGER.error("Player {} does not have job {} to add powerup {}", name(), jobLocation, powerupInstance.getLocation());
+            LOGGER.error("Player {} does not have job {} to add powerup {}", name(), jobLocation, powerupInstance.getLocation());
         }
     }
 
@@ -188,7 +191,7 @@ public abstract class MixinServerPlayer extends Player implements JobsServerPlay
             Job job = getJob(jobInstance);
             job.setPowerupState(powerupInstance, powerupState);
         } else {
-            JobsPlus.LOGGER.debug("Player {} does not have job {} to set powerup {}", name(), jobLocation, powerupInstance.getLocation());
+            LOGGER.debug("Player {} does not have job {} to set powerup {}", name(), jobLocation, powerupInstance.getLocation());
         }
     }
 
@@ -201,10 +204,10 @@ public abstract class MixinServerPlayer extends Player implements JobsServerPlay
             if (job.hasPowerup(powerupInstance)) {
                 job.removePowerup(powerupInstance);
             } else {
-                JobsPlus.LOGGER.debug("Player {} does not have powerup {} for job {}", name(), powerupInstance.getLocation(), jobLocation);
+                LOGGER.debug("Player {} does not have powerup {} for job {}", name(), powerupInstance.getLocation(), jobLocation);
             }
         } else {
-            JobsPlus.LOGGER.debug("Player {} does not have this job {} to remove powerup {}", name(), jobLocation, powerupInstance.getLocation());
+            LOGGER.debug("Player {} does not have this job {} to remove powerup {}", name(), jobLocation, powerupInstance.getLocation());
         }
     }
 
@@ -439,7 +442,6 @@ public abstract class MixinServerPlayer extends Player implements JobsServerPlay
         jobsTag.put(Constants.JOBS, JobSerializer.toNBT(this.jobs));
         jobsTag.putInt(Constants.COINS, this.coins);
         compoundTag.put(Constants.JOBS_DATA, jobsTag);
-//        JobsPlus.LOGGER.error("Saved jobs: {}. For player {}", this.jobs, getServerPlayer().getDisplayName().getString());
     }
 
     @Inject(at = @At("TAIL"), method = "readAdditionalSaveData(Lnet/minecraft/nbt/CompoundTag;)V")
@@ -449,7 +451,6 @@ public abstract class MixinServerPlayer extends Player implements JobsServerPlay
                 .filter(job -> job.getJobInstance() != null)
                 .collect(Collectors.toCollection(ArrayList::new));
         this.coins = jobsTag.getInt(Constants.COINS);
-//        JobsPlus.LOGGER.error("Loaded jobs: {}. For player {}", this.jobs, getServerPlayer().getDisplayName().getString());
     }
 
     @Inject(at = @At("TAIL"), method = "onEnchantmentPerformed(Lnet/minecraft/world/item/ItemStack;I)V")

@@ -91,7 +91,7 @@ public abstract class Action {
     public static class ActionSerializer<T extends Action> implements JsonDeserializer<T> {
 
         private static Gson getGson() {
-            GsonBuilder builder = new GsonBuilder();
+            GsonBuilder builder = new GsonBuilder().setPrettyPrinting();
             builder.registerTypeHierarchyAdapter(ActionReward.class, new ActionReward.ActionRewardSerializer<>())
                     .registerTypeHierarchyAdapter(ActionCondition.class, new ActionCondition.ActionConditionSerializer<>());
 
@@ -130,8 +130,13 @@ public abstract class Action {
                 }
             }
 
-            Class<? extends Action> clazz = Actions.getClass(new ResourceLocation(actionObject.get("type").getAsString()));
-            actionObject.remove("type");
+            if (!actionObject.has("type")) {
+                throw new JsonParseException("Action must have a type");
+            }
+
+            String type = actionObject.get("type").getAsString();
+            ResourceLocation location = new ResourceLocation(type);
+            Class<? extends Action> clazz = Actions.getClass(location);
             return (T) getGson().fromJson(actionObject, clazz)
                     .withDescriptions(shortDescription, description)
                     .withRewards(tempRewards)

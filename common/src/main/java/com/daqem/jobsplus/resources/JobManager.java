@@ -25,8 +25,10 @@ public abstract class JobManager extends SimpleJsonResourceReloadListener {
             .create();
 
     public static final Logger LOGGER = LogUtils.getLogger();
-    protected Map<ResourceLocation, JobInstance> jobs = ImmutableMap.of();
-    protected Map<ResourceLocation, PowerupInstance> powerups = ImmutableMap.of();
+    protected ImmutableMap<ResourceLocation, JobInstance> jobs = ImmutableMap.of();
+    protected ImmutableMap<ResourceLocation, PowerupInstance> powerups = ImmutableMap.of();
+
+    protected ImmutableMap<ResourceLocation, JsonElement> map = ImmutableMap.of();
 
     private static JobManager instance;
 
@@ -35,10 +37,7 @@ public abstract class JobManager extends SimpleJsonResourceReloadListener {
         instance = this;
     }
 
-    @Override
-    protected void apply(@NotNull Map<ResourceLocation, JsonElement> map, @NotNull ResourceManager resourceManager, @NotNull ProfilerFiller profilerFiller) {
-        jobs = null;
-
+    public void apply(Map<ResourceLocation, JsonElement> map, boolean isServer) {
         Map<ResourceLocation, JobInstance> tempJobInstances = new HashMap<>();
         Map<ResourceLocation, PowerupInstance> tempPowerupInstances = new HashMap<>();
 
@@ -53,14 +52,37 @@ public abstract class JobManager extends SimpleJsonResourceReloadListener {
                     tempJobInstances.put(location, job);
                 }
             } catch (Exception e) {
-                LOGGER.error("Could not finish deserializing job {}, reason for failing: {}", location.toString(), e.getMessage());
+                LOGGER.error("Could not deserialize job {} because: {}", location.toString(), e.getMessage());
                 throw e;
             }
         });
-        LOGGER.info("Loaded {} jobs and {} powerups", tempJobInstances.size(), tempPowerupInstances.size());
 
-        this.jobs = ImmutableMap.copyOf(tempJobInstances);
-        this.powerups = ImmutableMap.copyOf(tempPowerupInstances);
+        if (isServer) {
+            LOGGER.info("Loaded {} jobs and {} powerups", tempJobInstances.size(), tempPowerupInstances.size());
+            this.jobs = ImmutableMap.copyOf(tempJobInstances);
+            this.powerups = ImmutableMap.copyOf(tempPowerupInstances);
+        } else {
+            tempJobInstances.forEach((location, job) -> {
+                Map<ResourceLocation, JobInstance> tempJobInstance = new HashMap<>(jobs);
+                tempJobInstance.remove(location);
+                tempJobInstance.put(location, job);
+                jobs = ImmutableMap.copyOf(tempJobInstance);
+            });
+            tempPowerupInstances.forEach((location, powerup) -> {
+                Map<ResourceLocation, PowerupInstance> tempPowerupInstance = new HashMap<>(powerups);
+                tempPowerupInstance.remove(location);
+                tempPowerupInstance.put(location, powerup);
+                powerups = ImmutableMap.copyOf(tempPowerupInstance);
+            });
+        }
+    }
+
+    @Override
+    protected void apply(@NotNull Map<ResourceLocation, JsonElement> map, @NotNull ResourceManager resourceManager, @NotNull ProfilerFiller profilerFiller) {
+        this.jobs = null;
+        this.powerups = null;
+        this.map = ImmutableMap.copyOf(map);
+        this.apply(map, true);
     }
 
     public static JobManager getInstance() {
@@ -77,5 +99,15 @@ public abstract class JobManager extends SimpleJsonResourceReloadListener {
 
     public Map<ResourceLocation, PowerupInstance> getPowerups() {
         return powerups;
+    }
+
+    public Map<ResourceLocation, JsonElement> getMap() {
+        return map;
+    }
+
+    public void clearAll() {
+        jobs = ImmutableMap.of();
+        powerups = ImmutableMap.of();
+        map = ImmutableMap.of();
     }
 }

@@ -35,8 +35,13 @@ public abstract class ActionCondition {
         @Override
         public T deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
             JsonObject conditionObject = json.getAsJsonObject();
-            Class<? extends ActionCondition> clazz = ActionConditions.getClass(new ResourceLocation(conditionObject.get("type").getAsString()));
-            conditionObject.remove("type");
+            if (!conditionObject.has("type")) {
+                throw new JsonParseException("ActionCondition must have a type");
+            }
+
+            String type = conditionObject.get("type").getAsString();
+            ResourceLocation location = new ResourceLocation(type);
+            Class<? extends ActionCondition> clazz = ActionConditions.getClass(location);
             return (T) getGson().fromJson(conditionObject, clazz);
         }
     }

@@ -6,7 +6,6 @@ import com.daqem.jobsplus.event.triggers.BlockEvents;
 import com.daqem.jobsplus.event.triggers.EntityEvents;
 import com.daqem.jobsplus.event.triggers.ItemEvents;
 import com.daqem.jobsplus.networking.JobsPlusNetworking;
-import com.daqem.jobsplus.resources.JobManager;
 import com.mojang.logging.LogUtils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -45,9 +44,5 @@ public class JobsPlus {
 
     public static MutableComponent literal(String str) {
         return Component.literal(str);
-    }
-
-    public static JobManager getJobManager() {
-        return JobsPlusExpectPlatform.getJobManager();
     }
 }
