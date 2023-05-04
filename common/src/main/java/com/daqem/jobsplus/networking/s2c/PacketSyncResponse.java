@@ -2,9 +2,9 @@ package com.daqem.jobsplus.networking.s2c;
 
 import com.daqem.jobsplus.networking.JobsPlusNetworking;
 import com.daqem.jobsplus.resources.JobManager;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.mojang.serialization.JsonOps;
 import dev.architectury.networking.NetworkManager;
 import dev.architectury.networking.simple.BaseS2CMessage;
 import dev.architectury.networking.simple.MessageType;
@@ -12,11 +12,8 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.StringTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.GsonHelper;
 
 import java.util.Map;
 
@@ -32,27 +29,8 @@ public class PacketSyncResponse extends BaseS2CMessage {
     public PacketSyncResponse(FriendlyByteBuf buffer) {
         CompoundTag tag = buffer.readAnySizeNbt();
         if (tag != null) {
-            String data = tag.getString("data");
-            ListTag actions = tag.getList("actions", ListTag.TAG_STRING);
-            JsonArray actionsJson = new JsonArray();
-            ListTag powerups = tag.getList("powerups", ListTag.TAG_STRING);
-            JsonArray powerupsJson = new JsonArray();
-
-            actions.forEach(action -> {
-                StringTag actionTag = (StringTag) action;
-                actionsJson.add(GsonHelper.parse(actionTag.getAsString()));
+            this.jobJson = CompoundTag.CODEC.encodeStart(JsonOps.INSTANCE, tag).getOrThrow(false, e -> {
             });
-
-            powerups.forEach(powerup -> {
-                StringTag powerupTag = (StringTag) powerup;
-                powerupsJson.add(GsonHelper.parse(powerupTag.getAsString()));
-            });
-
-            JsonObject jsonObject = GsonHelper.parse(data);
-            jsonObject.add("actions", actionsJson);
-            jsonObject.add("powerups", powerupsJson);
-
-            this.jobJson = jsonObject;
         } else {
             this.jobJson = new JsonObject();
         }
@@ -65,27 +43,8 @@ public class PacketSyncResponse extends BaseS2CMessage {
 
     @Override
     public void write(FriendlyByteBuf buf) {
-        CompoundTag newJobJson = new CompoundTag();
-        ListTag actions = new ListTag();
-        ListTag powerups = new ListTag();
-
-        jobJson.getAsJsonObject().get("actions").getAsJsonArray().forEach(action -> {
-            actions.add(StringTag.valueOf(action.toString()));
-        });
-
-        jobJson.getAsJsonObject().remove("actions");
-
-        jobJson.getAsJsonObject().get("powerups").getAsJsonArray().forEach(powerup -> {
-            powerups.add(StringTag.valueOf(powerup.toString()));
-        });
-
-        jobJson.getAsJsonObject().remove("powerups");
-
-        newJobJson.putString("data", jobJson.toString());
-        newJobJson.put("actions", actions);
-        newJobJson.put("powerups", powerups);
-
-        buf.writeNbt(newJobJson);
+        buf.writeNbt(CompoundTag.CODEC.decode(JsonOps.INSTANCE, jobJson).getOrThrow(false, e -> {
+        }).getFirst());
     }
 
     @Environment(EnvType.CLIENT)
