@@ -9,7 +9,6 @@
   "mixins": [
     "MixinAbstractFurnaceBlockEntity",
     "MixinAnimal",
-    "MixinAnvilMenu",
     "MixinAxeItem",
     "MixinBlockStateBase",
     "MixinBrewingStandBlockEntity",
@@ -19,9 +18,11 @@
     "MixinRecipeHolder",
     "MixinServerPlayer",
     "crafting.MixinAbstractFurnaceMenu",
+    "crafting.MixinAnvilMenu",
     "crafting.MixinCraftingMenu",
     "crafting.MixinEnchantmentMenu",
     "crafting.MixinGrindStoneMenu",
+    "crafting.MixingSmithingMenu",
     "crafting.MixinItemCombinerMenu",
     "crafting.block.MixinAbstractFurnaceBlockEntity"
   ],

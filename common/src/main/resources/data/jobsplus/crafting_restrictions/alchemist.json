@@ -83,6 +83,20 @@
       "can_item_break_block": false,
       "can_place_block": false,
       "can_hurt_entity": false
+    },
+    {
+      "item": "minecraft:netherite_pickaxe",
+      "required_level": 10,
+      "can_craft": false,
+      "can_smelt": false,
+      "can_brew": false,
+      "can_enchant": false,
+      "can_repair": false,
+      "can_use_item": false,
+      "can_break_block": false,
+      "can_item_break_block": false,
+      "can_place_block": false,
+      "can_hurt_entity": false
     }
   ]
 }

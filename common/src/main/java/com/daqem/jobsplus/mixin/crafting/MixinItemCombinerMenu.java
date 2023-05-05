@@ -4,10 +4,7 @@ import com.daqem.jobsplus.networking.s2c.PacketCantCraftS2C;
 import com.daqem.jobsplus.player.JobsServerPlayer;
 import com.daqem.jobsplus.resources.crafting.CraftingResult;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.AnvilMenu;
-import net.minecraft.world.inventory.ItemCombinerMenu;
-import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.inventory.*;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -33,7 +30,7 @@ public abstract class MixinItemCombinerMenu extends AbstractContainerMenu {
 
     @Inject(at = @At("HEAD"), method = "slotsChanged(Lnet/minecraft/world/Container;)V")
     private void slotsChanged(CallbackInfo info) {
-        if (getMenu() instanceof AnvilMenu) {
+        if (getMenu() instanceof AnvilMenu || getMenu() instanceof SmithingMenu) {
             if (this.player instanceof JobsServerPlayer serverPlayer) {
                 if (!(!getSlot(0).getItem().isEmpty() && !getSlot(1).getItem().isEmpty())) {
                     new PacketCantCraftS2C(new CraftingResult(true)).sendTo(serverPlayer.getServerPlayer());
