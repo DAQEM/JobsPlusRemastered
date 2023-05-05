@@ -8,6 +8,8 @@ import com.daqem.jobsplus.resources.crafting.CraftingType;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractFurnaceMenu;
+import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.inventory.RecipeBookMenu;
 import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -17,11 +19,15 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(AbstractFurnaceMenu.class)
-public class MixinAbstractFurnaceMenu {
+public abstract class MixinAbstractFurnaceMenu extends RecipeBookMenu<Container> {
 
     @Shadow
     @Final
     private Container container;
+
+    public MixinAbstractFurnaceMenu(MenuType<?> menuType, int i) {
+        super(menuType, i);
+    }
 
     @Inject(at = @At("HEAD"), method = "stillValid(Lnet/minecraft/world/entity/player/Player;)Z")
     private void stillValid(Player player, CallbackInfoReturnable<Boolean> cir) {

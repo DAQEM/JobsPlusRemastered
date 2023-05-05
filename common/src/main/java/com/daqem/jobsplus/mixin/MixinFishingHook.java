@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import java.util.List;
 
 @Mixin(FishingHook.class)
-public class MixinFishingHook {
+public abstract class MixinFishingHook {
 
     private Player getPlayer() {
         return ((FishingHook) (Object) this).getPlayerOwner();

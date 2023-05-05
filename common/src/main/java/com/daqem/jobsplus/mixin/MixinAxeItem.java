@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(AxeItem.class)
-public class MixinAxeItem extends DiggerItem {
+public abstract class MixinAxeItem extends DiggerItem {
 
     public MixinAxeItem(float f, float g, Tier tier, TagKey<Block> tagKey, Properties properties) {
         super(f, g, tier, tagKey, properties);

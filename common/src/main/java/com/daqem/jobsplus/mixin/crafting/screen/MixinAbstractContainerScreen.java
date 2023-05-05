@@ -4,19 +4,19 @@ import com.daqem.jobsplus.client.screen.JobsCraftingScreen;
 import com.daqem.jobsplus.resources.crafting.CraftingResult;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.gui.screens.inventory.AbstractFurnaceScreen;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(AbstractFurnaceScreen.class)
-public class MixinAbstractFurnaceScreen extends Screen implements JobsCraftingScreen {
+@Mixin(AbstractContainerScreen.class)
+public abstract class MixinAbstractContainerScreen extends Screen implements JobsCraftingScreen {
 
     private CraftingResult craftingResult;
 
-    protected MixinAbstractFurnaceScreen(Component component) {
+    protected MixinAbstractContainerScreen(Component component) {
         super(component);
     }
 

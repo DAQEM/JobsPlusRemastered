@@ -123,7 +123,7 @@
   "jobsplus.inventory.cant_break_block": "%s level %s is required to break %s",
   "jobsplus.inventory.cant_break_block_with_item": "%s level %s is required to break a block with %s",
   "jobsplus.inventory.cant_place_block": "%s level %s is required to place %s",
-  "jobsplus.inventory.cant_hurt_entity": "%s level %s is required to hurt %s",
+  "jobsplus.inventory.cant_hurt_entity": "%s level %s is required to hurt something with %s",
   "jobsplus.inventory.bypass": "Bypassing restriction because of creative mode",
   "key.categories.jobsplus": "Jobs+",
   "key.jobsplus.open_menu": "Open Jobs+ GUI"

@@ -3,6 +3,8 @@ package com.daqem.jobsplus.event.triggers;
 import com.daqem.jobsplus.player.ActionDataBuilder;
 import com.daqem.jobsplus.player.ActionSpecification;
 import com.daqem.jobsplus.player.JobsServerPlayer;
+import com.daqem.jobsplus.resources.crafting.CraftingResult;
+import com.daqem.jobsplus.resources.crafting.CraftingType;
 import com.daqem.jobsplus.resources.job.action.Actions;
 import dev.architectury.event.EventResult;
 import dev.architectury.event.events.common.EntityEvent;
@@ -35,7 +37,16 @@ public class EntityEvents {
                         .withSpecification(ActionSpecification.DAMAGE_AMOUNT, amount)
                         .build()
                         .sendToAction();
-            } else if (source.getEntity() instanceof JobsServerPlayer jobsServerPlayer) {
+            }
+
+            if (source.getEntity() instanceof JobsServerPlayer jobsServerPlayer) {
+
+                CraftingResult placeBlockResult = jobsServerPlayer.canCraft(CraftingType.HURTING_ENTITY, jobsServerPlayer.getServerPlayer().getMainHandItem());
+                if (!placeBlockResult.canCraft()) {
+                    placeBlockResult.sendHotbarMessage(jobsServerPlayer);
+                    return EventResult.interruptFalse();
+                }
+
                 new ActionDataBuilder(jobsServerPlayer, Actions.HURT_ENTITY)
                         .withSpecification(ActionSpecification.ENTITY, entity)
                         .withSpecification(ActionSpecification.DAMAGE_AMOUNT, amount)

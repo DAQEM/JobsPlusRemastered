@@ -4,9 +4,7 @@
   "package": "com.daqem.jobsplus.mixin",
   "compatibilityLevel": "JAVA_17",
   "client": [
-    "crafting.screen.MixinAbstractFurnaceScreen",
-    "crafting.screen.MixinCraftingScreen",
-    "crafting.screen.MixinInventoryScreen"
+    "crafting.screen.MixinAbstractContainerScreen"
   ],
   "mixins": [
     "MixinAbstractFurnaceBlockEntity",
@@ -22,6 +20,9 @@
     "MixinServerPlayer",
     "crafting.MixinAbstractFurnaceMenu",
     "crafting.MixinCraftingMenu",
+    "crafting.MixinEnchantmentMenu",
+    "crafting.MixinGrindStoneMenu",
+    "crafting.MixinItemCombinerMenu",
     "crafting.block.MixinAbstractFurnaceBlockEntity"
   ],
   "injectors": {
