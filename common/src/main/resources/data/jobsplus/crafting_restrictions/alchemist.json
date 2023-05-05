@@ -1,0 +1,43 @@
+{
+  "restrictions": [
+    {
+      "item": "minecraft:iron_pickaxe",
+      "required_level": 10,
+      "can_craft": false,
+      "can_smelt": false,
+      "can_brew": false,
+      "can_enchant": false,
+      "can_repair": false,
+      "can_use_item": false,
+      "can_break_block": false,
+      "can_item_break_block": false,
+      "can_place_block": false,
+      "can_hurt_entity": false
+    },
+    {
+      "item": "minecraft:stone",
+      "required_level": 10,
+      "can_craft": false,
+      "can_smelt": false,
+      "can_brew": false,
+      "can_enchant": false,
+      "can_repair": false,
+      "can_use_item": false,
+      "can_break_block": false,
+      "can_item_break_block": false,
+      "can_place_block": false,
+      "can_hurt_entity": false
+    },
+    {
+      "tag": "minecraft:fishes",
+      "required_level": 10,
+      "can_craft": false,
+      "can_smelt": true,
+      "can_brew": true,
+      "can_use_right_click": false,
+      "can_break_block": true,
+      "can_place_block": true,
+      "can_hurt_entity": true
+    }
+  ]
+}

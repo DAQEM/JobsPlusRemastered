@@ -1,6 +1,7 @@
 package com.daqem.jobsplus.mixin;
 
 import com.daqem.jobsplus.Constants;
+import com.daqem.jobsplus.JobsPlus;
 import com.daqem.jobsplus.config.JobsPlusCommonConfig;
 import com.daqem.jobsplus.event.triggers.MovementEvents;
 import com.daqem.jobsplus.event.triggers.PlayerEvents;
@@ -11,10 +12,13 @@ import com.daqem.jobsplus.player.job.JobSerializer;
 import com.daqem.jobsplus.player.job.powerup.PowerupState;
 import com.daqem.jobsplus.player.stat.StatData;
 import com.daqem.jobsplus.resources.JobManager;
+import com.daqem.jobsplus.resources.crafting.CraftingResult;
+import com.daqem.jobsplus.resources.crafting.CraftingType;
 import com.daqem.jobsplus.resources.job.JobInstance;
 import com.daqem.jobsplus.resources.job.powerup.PowerupInstance;
 import com.mojang.authlib.GameProfile;
 import com.mojang.logging.LogUtils;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
@@ -289,13 +293,23 @@ public abstract class MixinServerPlayer extends Player implements JobsServerPlay
     }
 
     @Override
-    public boolean canCraftItem(ItemStack itemStack) {
-        return false; //TODO: Check if player can craft item
-    }
-
-    @Override
-    public boolean canSmeltItem(ItemStack itemStack) {
-        return false; //TODO: Check if player can smelt item
+    public CraftingResult canCraft(CraftingType crafting, ItemStack itemStack) {
+        for (JobInstance jobInstance : JobManager.getInstance().getJobs().values()) {
+            int level = hasJob(jobInstance) ? getJob(jobInstance).getLevel() : 0;
+            CraftingResult craftingResult = jobInstance.canCraft(crafting, itemStack, level);
+            if (!craftingResult.canCraft()) {
+                if (!JobsPlusCommonConfig.restrictionsEnabledForCreative.get()) {
+                    if (getServerPlayer().isCreative()) {
+                        if (JobsPlusCommonConfig.showRestrictionMessageForCreative.get()) {
+                            getServerPlayer().sendSystemMessage(JobsPlus.translatable("inventory.bypass").withStyle(ChatFormatting.GREEN), true);
+                        }
+                        return new CraftingResult(true);
+                    }
+                }
+                return craftingResult;
+            }
+        }
+        return new CraftingResult(true);
     }
 
     @Inject(at = @At("TAIL"), method = "tick()V")

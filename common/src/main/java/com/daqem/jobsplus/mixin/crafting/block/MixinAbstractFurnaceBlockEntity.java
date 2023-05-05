@@ -2,6 +2,8 @@ package com.daqem.jobsplus.mixin.crafting.block;
 
 import com.daqem.jobsplus.level.block.JobsFurnaceBlockEntity;
 import com.daqem.jobsplus.player.JobsServerPlayer;
+import com.daqem.jobsplus.resources.crafting.CraftingResult;
+import com.daqem.jobsplus.resources.crafting.CraftingType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.Container;
@@ -112,7 +114,8 @@ public abstract class MixinAbstractFurnaceBlockEntity extends BaseContainerBlock
                         recipe = null;
                     }
                     if (recipe != null) {
-                        if (block.getPlayer() == null || !block.getPlayer().canSmeltItem(recipe.getResultItem())) {
+                        CraftingResult craftingResult = block.getPlayer().canCraft(CraftingType.SMELTING, recipe.getResultItem());
+                        if (!craftingResult.canCraft()) {
                             block.setLitTime(0);
                             ci.cancel();
                         }

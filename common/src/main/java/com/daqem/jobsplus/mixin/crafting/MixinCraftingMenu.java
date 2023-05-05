@@ -2,7 +2,8 @@ package com.daqem.jobsplus.mixin.crafting;
 
 import com.daqem.jobsplus.networking.s2c.PacketCantCraftS2C;
 import com.daqem.jobsplus.player.JobsServerPlayer;
-import net.minecraft.resources.ResourceLocation;
+import com.daqem.jobsplus.resources.crafting.CraftingResult;
+import com.daqem.jobsplus.resources.crafting.CraftingType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.CraftingContainer;
@@ -22,9 +23,12 @@ public class MixinCraftingMenu {
     private static void slotChangedCraftingGrid(AbstractContainerMenu abstractContainerMenu, Level level, Player player, CraftingContainer craftingContainer, ResultContainer resultContainer, CallbackInfo ci) {
         if (player instanceof JobsServerPlayer serverPlayer) {
             ItemStack itemStack = resultContainer.getItem(0);
-            if (!serverPlayer.canCraftItem(itemStack)) {
+            CraftingResult craftingResult = serverPlayer.canCraft(CraftingType.CRAFTING, itemStack);
+            if (!craftingResult.canCraft()) {
                 resultContainer.setItem(0, ItemStack.EMPTY);
-                new PacketCantCraftS2C(itemStack.getItem().arch$registryName(), new ResourceLocation("jobsplus:miner"), 10).sendTo(serverPlayer.getServerPlayer());
+                new PacketCantCraftS2C(craftingResult).sendTo(serverPlayer.getServerPlayer());
+            } else {
+                new PacketCantCraftS2C(new CraftingResult(true)).sendTo(serverPlayer.getServerPlayer());
             }
         }
     }

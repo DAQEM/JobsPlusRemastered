@@ -116,7 +116,15 @@
   "jobsplus.action.on_use_anvil": "On use anvil",
   "jobsplus.inventory.cant_craft": "%s level %s is required to craft %s",
   "jobsplus.inventory.cant_smelt": "%s level %s is required to smelt %s",
-  "jobsplus.inventory.cant_bew": "%s level %s is required to brew %s",
+  "jobsplus.inventory.cant_brew": "%s level %s is required to brew %s",
+  "jobsplus.inventory.cant_enchant": "%s level %s is required to enchant %s",
+  "jobsplus.inventory.cant_repair": "%s level %s is required to repair %s",
+  "jobsplus.inventory.cant_use_item": "%s level %s is required to use %s",
+  "jobsplus.inventory.cant_break_block": "%s level %s is required to break %s",
+  "jobsplus.inventory.cant_break_block_with_item": "%s level %s is required to break a block with %s",
+  "jobsplus.inventory.cant_place_block": "%s level %s is required to place %s",
+  "jobsplus.inventory.cant_hurt_entity": "%s level %s is required to hurt %s",
+  "jobsplus.inventory.bypass": "Bypassing restriction because of creative mode",
   "key.categories.jobsplus": "Jobs+",
   "key.jobsplus.open_menu": "Open Jobs+ GUI"
 }

@@ -6,6 +6,7 @@ import com.daqem.jobsplus.command.arguments.EnumArgument;
 import com.daqem.jobsplus.command.arguments.JobArgument;
 import com.daqem.jobsplus.command.arguments.PowerupArgument;
 import com.daqem.jobsplus.forge.registry.JobsPlusRegistryForge;
+import com.daqem.jobsplus.forge.resources.CraftingRestrictionManagerForge;
 import com.daqem.jobsplus.forge.resources.JobManagerForge;
 import net.minecraft.commands.synchronization.ArgumentTypeInfo;
 import net.minecraft.commands.synchronization.ArgumentTypeInfos;
@@ -19,8 +20,6 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 
 public class SideProxyForge {
-
-    private static final JobManagerForge JOB_MANAGER = new JobManagerForge();
 
     SideProxyForge() {
         IEventBus eventBus = MinecraftForge.EVENT_BUS;
@@ -40,12 +39,9 @@ public class SideProxyForge {
         argTypeRegistry.register(FMLJavaModLoadingContext.get().getModEventBus());
     }
 
-    public static JobManagerForge getJobManager() {
-        return JOB_MANAGER;
-    }
-
     public void onAddReloadListeners(AddReloadListenerEvent event) {
-        event.addListener(JOB_MANAGER);
+        event.addListener(new JobManagerForge());
+        event.addListener(new CraftingRestrictionManagerForge());
     }
 
     public static class Server extends SideProxyForge {

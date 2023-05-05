@@ -3,6 +3,8 @@ package com.daqem.jobsplus.player;
 import com.daqem.jobsplus.player.job.Job;
 import com.daqem.jobsplus.player.job.powerup.PowerupState;
 import com.daqem.jobsplus.player.stat.StatData;
+import com.daqem.jobsplus.resources.crafting.CraftingResult;
+import com.daqem.jobsplus.resources.crafting.CraftingType;
 import com.daqem.jobsplus.resources.job.JobInstance;
 import com.daqem.jobsplus.resources.job.powerup.PowerupInstance;
 import net.minecraft.core.NonNullList;
@@ -68,7 +70,5 @@ public interface JobsServerPlayer {
 
     void refundJob(JobInstance jobInstance);
 
-    boolean canCraftItem(ItemStack itemStack);
-
-    boolean canSmeltItem(ItemStack itemStack);
+    CraftingResult canCraft(CraftingType crafting, ItemStack itemStack);
 }

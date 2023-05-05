@@ -2,12 +2,16 @@ package com.daqem.jobsplus.resources.job;
 
 import com.daqem.jobsplus.config.JobsPlusCommonConfig;
 import com.daqem.jobsplus.resources.JobManager;
+import com.daqem.jobsplus.resources.crafting.CraftingResult;
+import com.daqem.jobsplus.resources.crafting.CraftingType;
+import com.daqem.jobsplus.resources.crafting.restriction.CraftingRestriction;
 import com.daqem.jobsplus.resources.job.action.Action;
 import com.daqem.jobsplus.resources.job.powerup.PowerupInstance;
 import com.google.gson.*;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Type;
@@ -27,6 +31,7 @@ public class JobInstance {
     private final boolean isDefault;
     private final List<Action> actions;
     private final List<PowerupInstance> powerupInstances;
+    private List<CraftingRestriction> craftingRestrictions = null;
 
     public JobInstance(String name, int price, int maxLevel, String color, Item iconItem, String description, boolean isDefault, List<Action> actions, List<PowerupInstance> powerupInstances) {
         this.name = name;
@@ -104,6 +109,23 @@ public class JobInstance {
 
     public List<Action> getActions() {
         return actions;
+    }
+
+    public void setCraftingRestrictions(List<CraftingRestriction> craftingRestrictions) {
+        this.craftingRestrictions = craftingRestrictions;
+    }
+
+    public CraftingResult canCraft(CraftingType craftingType, ItemStack itemStack, int level) {
+        if (craftingRestrictions == null || craftingRestrictions.isEmpty()) {
+            return new CraftingResult(true);
+        }
+        for (CraftingRestriction craftingRestriction : craftingRestrictions) {
+            CraftingResult craftingResult = craftingRestriction.canCraft(craftingType, itemStack, level, this);
+            if (!craftingResult.canCraft()) {
+                return craftingResult;
+            }
+        }
+        return new CraftingResult(true);
     }
 
     @Override

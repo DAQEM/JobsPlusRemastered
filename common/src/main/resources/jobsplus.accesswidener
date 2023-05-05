@@ -5,3 +5,5 @@ accessible method net/minecraft/core/Registry createRegistryKey (Ljava/lang/Stri
 accessible method net/minecraft/world/entity/projectile/AbstractArrow getPickupItem ()Lnet/minecraft/world/item/ItemStack;
 
 accessible field net/minecraft/client/renderer/entity/ItemRenderer textureManager Lnet/minecraft/client/renderer/texture/TextureManager;
+
+accessible method net/minecraft/core/HolderSet$Named contents ()Ljava/util/List;
