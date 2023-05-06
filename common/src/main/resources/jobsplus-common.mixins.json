@@ -24,7 +24,8 @@
     "crafting.MixinGrindStoneMenu",
     "crafting.MixingSmithingMenu",
     "crafting.MixinItemCombinerMenu",
-    "crafting.block.MixinAbstractFurnaceBlockEntity"
+    "crafting.block.MixinAbstractFurnaceBlockEntity",
+    "crafting.block.MixinBrewingStandBlockEntity"
   ],
   "injectors": {
     "defaultRequire": 1
