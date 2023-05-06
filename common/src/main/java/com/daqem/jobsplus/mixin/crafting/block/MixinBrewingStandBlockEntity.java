@@ -98,7 +98,7 @@ public abstract class MixinBrewingStandBlockEntity extends BaseContainerBlockEnt
     private static void doBrew(Level level, BlockPos blockPos, BlockState blockState, BrewingStandBlockEntity brewingStandBlockEntity, CallbackInfo ci) {
         if (brewingStandBlockEntity instanceof JobsBrewingStandBlockEntity block) {
             if (block.getPlayer() != null && !brewingStandBlockEntity.getItem(3).isEmpty()) {
-                if (!brewingStandBlockEntity.getItem(0).isEmpty() && !brewingStandBlockEntity.getItem(1).isEmpty() && !brewingStandBlockEntity.getItem(2).isEmpty()) {
+                if (!brewingStandBlockEntity.getItem(0).isEmpty() || !brewingStandBlockEntity.getItem(1).isEmpty() || !brewingStandBlockEntity.getItem(2).isEmpty()) {
                     ItemStack ingredient = brewingStandBlockEntity.getItem(3);
                     for (int i = 0; i < 3; i++) {
                         ItemStack potion = brewingStandBlockEntity.getItem(i);
@@ -132,7 +132,7 @@ public abstract class MixinBrewingStandBlockEntity extends BaseContainerBlockEnt
                             return;
                         }
                     }
-                } else {
+                } else if (brewingStandBlockEntity.getItem(0).isEmpty() && brewingStandBlockEntity.getItem(1).isEmpty() && brewingStandBlockEntity.getItem(2).isEmpty()) {
                     if (block.getPlayer().getServerPlayer().containerMenu instanceof BrewingStandMenu) {
                         new PacketCantCraftS2C(new CraftingResult(true)).sendTo(block.getPlayer().getServerPlayer());
                     }

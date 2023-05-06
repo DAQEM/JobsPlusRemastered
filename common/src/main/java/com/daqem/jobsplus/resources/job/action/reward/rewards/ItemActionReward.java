@@ -47,11 +47,11 @@ public class ItemActionReward extends ActionReward {
             JsonObject jsonObject = json.getAsJsonObject();
             ItemStack itemStack = new ItemStack(Registry.ITEM.get(new ResourceLocation(jsonObject.get("item").getAsString())));
 
-            if (jsonObject.has("nbt")) {
+            if (jsonObject.has("tag")) {
                 try {
-                    itemStack.setTag(TagParser.parseTag(jsonObject.get("nbt").getAsString()));
+                    itemStack.setTag(TagParser.parseTag(jsonObject.get("tag").getAsString()));
                 } catch (CommandSyntaxException e) {
-                    throw new JsonParseException("Failed to parse nbt ( " + jsonObject.get("nbt").getAsString() + " ) for item reward.");
+                    throw new JsonParseException("Failed to parse tag ( " + jsonObject.get("tag").getAsString() + " ) for item reward.");
                 }
             }
 

@@ -100,6 +100,7 @@
     },
     {
       "item": "minecraft:potion",
+      "tag": "{Potion:\"minecraft:long_swiftness\"}",
       "required_level": 10,
       "can_craft": false,
       "can_smelt": false,
