@@ -1,6 +1,6 @@
 modLoader = "javafml"
 loaderVersion = "[43,)"
-#issueTrackerURL = ""
+issueTrackerURL = "https://github.com/DAQEM/JobsPlusRemastered/issues"
 license = "MIT"
 
 [[mods]]
@@ -31,5 +31,12 @@ side = "BOTH"
 modId = "architectury"
 mandatory = true
 versionRange = "[6.2.43,)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.jobsplus]]
+modId = "supermartijn642configlib"
+mandatory = true
+versionRange = "[1.1.0,)"
 ordering = "AFTER"
 side = "BOTH"

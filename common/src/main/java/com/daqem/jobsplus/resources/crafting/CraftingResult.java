@@ -85,4 +85,15 @@ public class CraftingResult {
                 JobManager.getInstance().getJob(new ResourceLocation(tag.getString("jobInstance")))
         );
     }
+
+    @Override
+    public String toString() {
+        return "CraftingResult{" +
+                "canCraft=" + canCraft +
+                ", craftingType=" + craftingType +
+                ", itemStack=" + itemStack +
+                ", requiredLevel=" + requiredLevel +
+                ", jobInstance=" + jobInstance +
+                '}';
+    }
 }

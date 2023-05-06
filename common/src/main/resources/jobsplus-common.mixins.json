@@ -17,7 +17,6 @@
     "MixinProjectile",
     "MixinRecipeHolder",
     "MixinServerPlayer",
-    "crafting.MixinAbstractFurnaceMenu",
     "crafting.MixinAnvilMenu",
     "crafting.MixinCraftingMenu",
     "crafting.MixinEnchantmentMenu",

@@ -1,6 +1,7 @@
 package com.daqem.jobsplus.level.block;
 
 import com.daqem.jobsplus.player.JobsServerPlayer;
+import net.minecraft.world.level.block.entity.BrewingStandBlockEntity;
 
 import java.util.UUID;
 
@@ -21,4 +22,6 @@ public interface JobsBrewingStandBlockEntity {
     boolean[] getLastPotionCount();
 
     void setLastPotionCount(boolean[] bls);
+
+    BrewingStandBlockEntity getBrewingStandBlockEntity();
 }

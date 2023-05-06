@@ -6,4 +6,5 @@ accessible method net/minecraft/world/entity/projectile/AbstractArrow getPickupI
 
 accessible field net/minecraft/client/renderer/entity/ItemRenderer textureManager Lnet/minecraft/client/renderer/texture/TextureManager;
 
-accessible method net/minecraft/core/HolderSet$Named contents ()Ljava/util/List;
+accessible field net/minecraft/world/inventory/AbstractFurnaceMenu container Lnet/minecraft/world/Container;
+accessible field net/minecraft/world/inventory/BrewingStandMenu brewingStand Lnet/minecraft/world/Container;

@@ -1,14 +1,17 @@
 package com.daqem.jobsplus.mixin.crafting.block;
 
 import com.daqem.jobsplus.level.block.JobsFurnaceBlockEntity;
+import com.daqem.jobsplus.networking.s2c.PacketCantCraftS2C;
 import com.daqem.jobsplus.player.JobsServerPlayer;
 import com.daqem.jobsplus.resources.crafting.CraftingResult;
 import com.daqem.jobsplus.resources.crafting.CraftingType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractFurnaceMenu;
 import net.minecraft.world.inventory.RecipeHolder;
 import net.minecraft.world.inventory.StackedContentsCompatible;
 import net.minecraft.world.item.ItemStack;
@@ -17,6 +20,7 @@ import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.AbstractFurnaceBlock;
 import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -83,47 +87,46 @@ public abstract class MixinAbstractFurnaceBlockEntity extends BaseContainerBlock
         }
     }
 
-    @Inject(at = @At("TAIL"), method = "serverTick(Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity;)V")
-    private static void serverTick(Level level, BlockPos blockPos, BlockState blockState, AbstractFurnaceBlockEntity abstractFurnaceBlockEntity, CallbackInfo ci) {
+    @Inject(at = @At(value = "HEAD"), method = "serverTick(Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity;)V", cancellable = true)
+    private static void serverTickRecipe(Level level, BlockPos blockPos, BlockState blockState, AbstractFurnaceBlockEntity abstractFurnaceBlockEntity, CallbackInfo ci) {
         if (abstractFurnaceBlockEntity instanceof JobsFurnaceBlockEntity block) {
-            if (block.getPlayerUUID() != null) {
-                if (block.getPlayer() == null) {
-                    if (level.getServer() != null) {
-                        Player player = level.getServer().getPlayerList().getPlayer(block.getPlayerUUID());
-                        if (player instanceof JobsServerPlayer serverPlayer) {
-                            block.setPlayer(serverPlayer);
-                        }
-                    }
+            if (block.getPlayer() == null && block.getPlayerUUID() != null && level.getServer() != null) {
+                ServerPlayer player = level.getServer().getPlayerList().getPlayer(block.getPlayerUUID());
+                if (player instanceof JobsServerPlayer serverPlayer) {
+                    block.setPlayer(serverPlayer);
                 }
+            }
+            if (block.getPlayer() != null && !abstractFurnaceBlockEntity.getItem(0).isEmpty()) {
+                if (!abstractFurnaceBlockEntity.getItem(1).isEmpty()) {
+
+                    Recipe<?> recipe = block.getRecipe();
+
+                    CraftingResult result = block.getPlayer().canCraft(CraftingType.SMELTING, recipe.getResultItem());
+
+                    if (!result.canCraft()) {
+                        if (block.isLit()) {
+                            block.setLitTime(block.getLitTime() - 1);
+                        }
+                        blockState = blockState.setValue(AbstractFurnaceBlock.LIT, false);
+                        level.setBlock(blockPos, blockState, 3);
+                        setChanged(level, blockPos, blockState);
+                        ci.cancel();
+
+                        sendPacketCantCraft(result, block);
+                    }
+                } else {
+                    sendPacketCantCraft(new CraftingResult(true), block);
+                }
+            } else if (block.getPlayer() != null) {
+                sendPacketCantCraft(new CraftingResult(true), block);
             }
         }
     }
 
-    @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity;getBurnDuration(Lnet/minecraft/world/item/ItemStack;)I", shift = At.Shift.BEFORE), method = "serverTick(Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity;)V", cancellable = true)
-    private static void serverTickRecipe(Level level, BlockPos blockPos, BlockState blockState, AbstractFurnaceBlockEntity abstractFurnaceBlockEntity, CallbackInfo ci) {
-        if (abstractFurnaceBlockEntity instanceof JobsFurnaceBlockEntity block) {
-            if (block.getPlayer() != null) {
-                ItemStack fuelStack = abstractFurnaceBlockEntity.getItem(1);
-                boolean hasSource = !abstractFurnaceBlockEntity.getItem(0).isEmpty();
-                boolean hasFuel = !fuelStack.isEmpty();
-                if (block.isLit() || hasFuel && hasSource) {
-                    Recipe<?> recipe;
-                    if (hasSource) {
-                        recipe = block.getRecipe();
-                    } else {
-                        recipe = null;
-                    }
-                    if (recipe != null) {
-                        CraftingResult craftingResult = block.getPlayer().canCraft(CraftingType.SMELTING, recipe.getResultItem());
-                        if (!craftingResult.canCraft()) {
-                            block.setLitTime(0);
-                            ci.cancel();
-                        }
-                    }
-                }
-            } else {
-                block.setLitTime(0);
-                ci.cancel();
+    private static void sendPacketCantCraft(CraftingResult result, JobsFurnaceBlockEntity block) {
+        if (block.getPlayer().getServerPlayer().containerMenu instanceof AbstractFurnaceMenu menu) {
+            if (menu.container.equals(block.getAbstractFurnaceBlockEntity())) {
+                new PacketCantCraftS2C(result).sendTo(block.getPlayer().getServerPlayer());
             }
         }
     }

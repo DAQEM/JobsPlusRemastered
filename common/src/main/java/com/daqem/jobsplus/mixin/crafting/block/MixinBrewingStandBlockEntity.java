@@ -8,6 +8,7 @@ import com.daqem.jobsplus.resources.crafting.CraftingType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.BrewingStandMenu;
@@ -78,25 +79,15 @@ public abstract class MixinBrewingStandBlockEntity extends BaseContainerBlockEnt
         }
     }
 
-    @Inject(at = @At("TAIL"), method = "serverTick(Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/block/entity/BrewingStandBlockEntity;)V")
-    private static void serverTick(Level level, BlockPos blockPos, BlockState blockState, BrewingStandBlockEntity brewingStandBlockEntity, CallbackInfo ci) {
-        if (brewingStandBlockEntity instanceof JobsBrewingStandBlockEntity block) {
-            if (block.getPlayerUUID() != null) {
-                if (block.getPlayer() == null) {
-                    if (level.getServer() != null) {
-                        Player player = level.getServer().getPlayerList().getPlayer(block.getPlayerUUID());
-                        if (player instanceof JobsServerPlayer serverPlayer) {
-                            block.setPlayer(serverPlayer);
-                        }
-                    }
-                }
-            }
-        }
-    }
-
     @Inject(at = @At(value = "HEAD"), method = "serverTick(Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/block/entity/BrewingStandBlockEntity;)V", cancellable = true)
     private static void doBrew(Level level, BlockPos blockPos, BlockState blockState, BrewingStandBlockEntity brewingStandBlockEntity, CallbackInfo ci) {
         if (brewingStandBlockEntity instanceof JobsBrewingStandBlockEntity block) {
+            if (block.getPlayer() == null && block.getPlayerUUID() != null && level.getServer() != null) {
+                ServerPlayer player = level.getServer().getPlayerList().getPlayer(block.getPlayerUUID());
+                if (player instanceof JobsServerPlayer serverPlayer) {
+                    block.setPlayer(serverPlayer);
+                }
+            }
             if (block.getPlayer() != null && !brewingStandBlockEntity.getItem(3).isEmpty()) {
                 if (!brewingStandBlockEntity.getItem(0).isEmpty() || !brewingStandBlockEntity.getItem(1).isEmpty() || !brewingStandBlockEntity.getItem(2).isEmpty()) {
                     ItemStack ingredient = brewingStandBlockEntity.getItem(3);
@@ -110,9 +101,6 @@ public abstract class MixinBrewingStandBlockEntity extends BaseContainerBlockEnt
                             block.setBrewTime(0);
                             setChanged(level, blockPos, brewingStandBlockEntity.getBlockState());
                             ci.cancel();
-                            if (block.getPlayer().getServerPlayer().containerMenu instanceof BrewingStandMenu) {
-                                new PacketCantCraftS2C(result).sendTo(block.getPlayer().getServerPlayer());
-                            }
 
                             boolean[] bls = block.getPotionBits();
                             if (!Arrays.equals(bls, block.getLastPotionCount())) {
@@ -128,23 +116,26 @@ public abstract class MixinBrewingStandBlockEntity extends BaseContainerBlockEnt
 
                                 level.setBlock(blockPos, blockState2, 2);
                             }
-
+                            sendPacketCantCraft(result, block);
                             return;
                         }
                     }
                 } else if (brewingStandBlockEntity.getItem(0).isEmpty() && brewingStandBlockEntity.getItem(1).isEmpty() && brewingStandBlockEntity.getItem(2).isEmpty()) {
-                    if (block.getPlayer().getServerPlayer().containerMenu instanceof BrewingStandMenu) {
-                        new PacketCantCraftS2C(new CraftingResult(true)).sendTo(block.getPlayer().getServerPlayer());
-                    }
+                    sendPacketCantCraft(new CraftingResult(true), block);
                 }
             } else if (block.getPlayer() != null && brewingStandBlockEntity.getItem(3).isEmpty()) {
-                if (block.getPlayer().getServerPlayer().containerMenu instanceof BrewingStandMenu) {
-                    new PacketCantCraftS2C(new CraftingResult(true)).sendTo(block.getPlayer().getServerPlayer());
-                }
+                sendPacketCantCraft(new CraftingResult(true), block);
             }
         }
     }
 
+    private static void sendPacketCantCraft(CraftingResult result, JobsBrewingStandBlockEntity block) {
+        if (block.getPlayer().getServerPlayer().containerMenu instanceof BrewingStandMenu menu) {
+            if (menu.brewingStand.equals(block.getBrewingStandBlockEntity())) {
+                new PacketCantCraftS2C(result).sendTo(block.getPlayer().getServerPlayer());
+            }
+        }
+    }
 
     @Override
     @Nullable
@@ -194,5 +185,9 @@ public abstract class MixinBrewingStandBlockEntity extends BaseContainerBlockEnt
     @Override
     public void setLastPotionCount(boolean[] lastPotionCount) {
         this.lastPotionCount = lastPotionCount;
+    }
+
+    public BrewingStandBlockEntity getBrewingStandBlockEntity() {
+        return (BrewingStandBlockEntity) (Object) this;
     }
 }

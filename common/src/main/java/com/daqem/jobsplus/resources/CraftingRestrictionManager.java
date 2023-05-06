@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public abstract class CraftingRestrictionManager extends SimpleJsonResourceReloadListener {
 
@@ -39,6 +40,7 @@ public abstract class CraftingRestrictionManager extends SimpleJsonResourceReloa
     protected void apply(Map<ResourceLocation, JsonElement> map, @NotNull ResourceManager resourceManager, @NotNull ProfilerFiller profilerFiller) {
 
         Map<ResourceLocation, List<CraftingRestriction>> tempRestrictions = new HashMap<>();
+        AtomicInteger count = new AtomicInteger();
 
         map.forEach((location, jsonElement) -> {
             try {
@@ -48,18 +50,17 @@ public abstract class CraftingRestrictionManager extends SimpleJsonResourceReloa
                 for (JsonElement restriction : restrictions) {
                     CraftingRestriction craftingRestriction = GSON.fromJson(restriction, CraftingRestriction.class);
                     tempCraftingRestrictions.add(craftingRestriction);
-                    LOGGER.info("Loaded crafting restriction {} for job {}", craftingRestriction, location.toString());
-
                 }
 
                 tempRestrictions.put(location, tempCraftingRestrictions);
+                count.addAndGet(tempCraftingRestrictions.size());
             } catch (Exception e) {
                 LOGGER.error("Could not deserialize crafting restriction {} because: {}", location.toString(), e.getMessage());
                 throw e;
             }
         });
 
-        LOGGER.info("Loaded crafting restrictions for {} jobs", tempRestrictions.size());
+        LOGGER.info("Loaded {} crafting restrictions for {} jobs", count.get(), tempRestrictions.size());
 
         this.restrictions = ImmutableMap.copyOf(tempRestrictions);
 
