@@ -2,6 +2,7 @@ package com.daqem.jobsplus.client.screen;
 
 import com.daqem.jobsplus.JobsPlus;
 import com.daqem.jobsplus.client.render.RenderColor;
+import com.daqem.jobsplus.networking.c2s.PacketApprovedUpdateC2S;
 import com.daqem.jobsplus.networking.c2s.PacketConfirmationC2S;
 import com.daqem.jobsplus.networking.c2s.PacketOpenMenuC2S;
 import com.daqem.jobsplus.networking.utils.ConfirmationButtonType;
@@ -10,12 +11,18 @@ import com.daqem.jobsplus.resources.job.JobInstance;
 import com.daqem.jobsplus.resources.job.powerup.PowerupInstance;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.Util;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Arrays;
+import java.util.Comparator;
 
 public class ConfirmationScreen extends AbstractScreen {
 
@@ -116,6 +123,9 @@ public class ConfirmationScreen extends AbstractScreen {
     public boolean mouseClicked(double mouseX, double mouseY, int clickType) {
         if ((mouse.isHoveringButton(ButtonType.BACK) && messageType.getButtonType() == ConfirmationButtonType.BACK)
                 || mouse.isHoveringButton(ButtonType.CANCEL)) {
+            if (messageType == ConfirmationMessageType.JOBS_PLUS_UPDATE) {
+                new PacketApprovedUpdateC2S().sendToServer();
+            }
             closeWithClick(false);
             return true;
         }
@@ -132,13 +142,28 @@ public class ConfirmationScreen extends AbstractScreen {
                     new PacketConfirmationC2S(messageType, job).sendToServer();
                 }
             }
+            if (messageType == ConfirmationMessageType.JOBS_PLUS_UPDATE) {
+                try {
+                    Util.getPlatform().openUri(new URI("https://daqem.com/discord"));
+                } catch (URISyntaxException e) {
+                    throw new RuntimeException(e);
+                }
+            }
             closeWithClick(true);
         }
         return super.mouseClicked(mouseX, mouseY, clickType);
     }
 
     private void drawMessage(@NotNull PoseStack poseStack) {
-        font.draw(poseStack, messageType.getMessage(), startX, height / 2F - (font.lineHeight) / 2F, TEXT_COLOR);
+        if (messageType.getMessage().getString().contains("\n")) {
+            String[] lines = messageType.getMessage().getString().split("\n");
+            for (int i = 0; i < lines.length; i++) {
+                drawCenteredString(poseStack, lines[i], (int) (width / 2F), (int) (height / 2F - (font.lineHeight * lines.length) / 2F + (font.lineHeight * i)), TEXT_COLOR);
+            }
+            imageWidth = font.width(Arrays.stream(lines).max(Comparator.comparingInt(String::length)).orElse(""));
+        } else {
+            font.draw(poseStack, messageType.getMessage(), startX, height / 2F - (font.lineHeight) / 2F, TEXT_COLOR);
+        }
     }
 
     private void drawBackground(@NotNull PoseStack poseStack) {

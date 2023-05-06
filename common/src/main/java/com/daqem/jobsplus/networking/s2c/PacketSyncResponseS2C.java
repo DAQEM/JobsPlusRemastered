@@ -17,16 +17,16 @@ import net.minecraft.resources.ResourceLocation;
 
 import java.util.Map;
 
-public class PacketSyncResponse extends BaseS2CMessage {
+public class PacketSyncResponseS2C extends BaseS2CMessage {
 
     private final JsonElement jobJson;
 
-    public PacketSyncResponse(ResourceLocation location, JsonElement jobJson) {
+    public PacketSyncResponseS2C(ResourceLocation location, JsonElement jobJson) {
         jobJson.getAsJsonObject().addProperty("location", location.toString());
         this.jobJson = jobJson;
     }
 
-    public PacketSyncResponse(FriendlyByteBuf buffer) {
+    public PacketSyncResponseS2C(FriendlyByteBuf buffer) {
         CompoundTag tag = buffer.readAnySizeNbt();
         if (tag != null) {
             this.jobJson = CompoundTag.CODEC.encodeStart(JsonOps.INSTANCE, tag).getOrThrow(false, e -> {

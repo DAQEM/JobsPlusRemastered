@@ -8,15 +8,15 @@ import dev.architectury.networking.simple.BaseC2SMessage;
 import dev.architectury.networking.simple.MessageType;
 import net.minecraft.network.FriendlyByteBuf;
 
-public class PacketTogglePowerUp extends BaseC2SMessage {
+public class PacketTogglePowerUpC2S extends BaseC2SMessage {
 
     private final PowerupInstance powerupInstance;
 
-    public PacketTogglePowerUp(PowerupInstance powerupInstance) {
+    public PacketTogglePowerUpC2S(PowerupInstance powerupInstance) {
         this.powerupInstance = powerupInstance;
     }
 
-    public PacketTogglePowerUp(FriendlyByteBuf friendlyByteBuf) {
+    public PacketTogglePowerUpC2S(FriendlyByteBuf friendlyByteBuf) {
         this.powerupInstance = PowerupInstance.of(friendlyByteBuf.readResourceLocation());
     }
 

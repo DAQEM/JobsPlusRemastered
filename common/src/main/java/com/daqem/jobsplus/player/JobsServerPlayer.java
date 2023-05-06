@@ -71,4 +71,8 @@ public interface JobsServerPlayer {
     void refundJob(JobInstance jobInstance);
 
     CraftingResult canCraft(CraftingType crafting, ItemStack itemStack);
+
+    boolean getUpdatedFromOldJobsPlus();
+
+    void setUpdatedFromOldJobsPlus(boolean b);
 }

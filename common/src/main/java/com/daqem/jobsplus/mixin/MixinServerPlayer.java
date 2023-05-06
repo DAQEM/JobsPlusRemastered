@@ -65,6 +65,7 @@ public abstract class MixinServerPlayer extends Player implements JobsServerPlay
     private List<Job> jobs = new ArrayList<>();
     private int coins = 0;
     private boolean isGrinding = false;
+    private boolean updatedFromOldJobsPLus = false;
 
     public MixinServerPlayer(Level level, BlockPos blockPos, float yaw, GameProfile gameProfile, @Nullable ProfilePublicKey profilePublicKey) {
         super(level, blockPos, yaw, gameProfile, profilePublicKey);
@@ -309,6 +310,16 @@ public abstract class MixinServerPlayer extends Player implements JobsServerPlay
         return new CraftingResult(true);
     }
 
+    @Override
+    public boolean getUpdatedFromOldJobsPlus() {
+        return this.updatedFromOldJobsPLus;
+    }
+
+    @Override
+    public void setUpdatedFromOldJobsPlus(boolean updatedFromOldJobsPlus) {
+        this.updatedFromOldJobsPLus = updatedFromOldJobsPlus;
+    }
+
     @Inject(at = @At("TAIL"), method = "tick()V")
     public void tick(CallbackInfo ci) {
         if (this.isSwimming && this.isSwimming()) {
@@ -444,6 +455,7 @@ public abstract class MixinServerPlayer extends Player implements JobsServerPlay
         if (oldPlayer instanceof JobsServerPlayer oldJobsServerPlayer) {
             this.jobs = oldJobsServerPlayer.getJobs();
             this.coins = oldJobsServerPlayer.getCoins();
+            this.updatedFromOldJobsPLus = oldJobsServerPlayer.getUpdatedFromOldJobsPlus();
         }
     }
 
@@ -452,6 +464,8 @@ public abstract class MixinServerPlayer extends Player implements JobsServerPlay
         CompoundTag jobsTag = new CompoundTag();
         jobsTag.put(Constants.JOBS, JobSerializer.toNBT(this.jobs));
         jobsTag.putInt(Constants.COINS, this.coins);
+        jobsTag.putBoolean(Constants.JOBSPLUS_UPDATE, this.updatedFromOldJobsPLus);
+
         compoundTag.put(Constants.JOBS_DATA, jobsTag);
     }
 
@@ -462,6 +476,8 @@ public abstract class MixinServerPlayer extends Player implements JobsServerPlay
                 .filter(job -> job.getJobInstance() != null)
                 .collect(Collectors.toCollection(ArrayList::new));
         this.coins = jobsTag.getInt(Constants.COINS);
+
+        this.updatedFromOldJobsPLus = jobsTag.getBoolean(Constants.JOBSPLUS_UPDATE);
 
         CompoundTag forgeCaps = compoundTag.getCompound("ForgeCaps").getCompound("jobsplus:jobs");
         if (!forgeCaps.isEmpty()) {
@@ -498,6 +514,7 @@ public abstract class MixinServerPlayer extends Player implements JobsServerPlay
             }
         });
         this.jobs = jobs;
+        this.updatedFromOldJobsPLus = true;
     }
 
     @Inject(at = @At("TAIL"), method = "onEnchantmentPerformed(Lnet/minecraft/world/item/ItemStack;I)V")

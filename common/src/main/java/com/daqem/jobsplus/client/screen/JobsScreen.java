@@ -6,7 +6,7 @@ import com.daqem.jobsplus.client.render.ModItemRenderer;
 import com.daqem.jobsplus.client.render.RenderColor;
 import com.daqem.jobsplus.config.JobsPlusCommonConfig;
 import com.daqem.jobsplus.networking.c2s.PacketOpenMenuC2S;
-import com.daqem.jobsplus.networking.c2s.PacketTogglePowerUp;
+import com.daqem.jobsplus.networking.c2s.PacketTogglePowerUpC2S;
 import com.daqem.jobsplus.networking.utils.ConfirmationMessageType;
 import com.daqem.jobsplus.player.JobsPlayerData;
 import com.daqem.jobsplus.player.job.Job;
@@ -684,7 +684,7 @@ public class JobsScreen extends AbstractScreen {
                             if (powerupState == null) powerupState = PowerupState.NOT_OWNED;
                             switch (powerupState) {
                                 case ACTIVE, INACTIVE -> {
-                                    new PacketTogglePowerUp(powerupInstance).sendToServer();
+                                    new PacketTogglePowerUpC2S(powerupInstance).sendToServer();
                                     refreshScreen();
                                 }
                                 case NOT_OWNED -> {

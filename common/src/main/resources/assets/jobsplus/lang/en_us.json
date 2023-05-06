@@ -66,6 +66,7 @@
   "jobsplus.gui.confirmation.buy_power_up": "Are you sure you want to buy this power-up for %s coins?",
   "jobsplus.gui.confirmation.error.not_enough_coins_powerup": "You do not have enough coins (%s) to buy this power-up.",
   "jobsplus.gui.confirmation.error.job_not_enabled": "You are not performing this job.",
+  "jobsplus.gui.confirmation.jobsplus_update": "Jobs+ has had a massive update! Your power-ups have been refunded. \nFor more info, check out our Discord server.",
   "jobsplus.gui.click_for_details": "(Click for details)",
   "jobsplus.job.none": "NONE",
   "jobsplus.action.on_place_place": "On place block",
