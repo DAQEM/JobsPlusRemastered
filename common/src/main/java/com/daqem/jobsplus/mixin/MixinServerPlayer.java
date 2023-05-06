@@ -44,10 +44,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Mixin(ServerPlayer.class)
@@ -465,6 +462,42 @@ public abstract class MixinServerPlayer extends Player implements JobsServerPlay
                 .filter(job -> job.getJobInstance() != null)
                 .collect(Collectors.toCollection(ArrayList::new));
         this.coins = jobsTag.getInt(Constants.COINS);
+
+        CompoundTag forgeCaps = compoundTag.getCompound("ForgeCaps").getCompound("jobsplus:jobs");
+        if (!forgeCaps.isEmpty()) {
+            readFromOldJobsPlusData(forgeCaps);
+        }
+    }
+
+    private void readFromOldJobsPlusData(CompoundTag tag) {
+        Map<String, int[]> map = new HashMap<>();
+        List<Job> jobs = new ArrayList<>();
+
+        this.coins = tag.getInt("coins");
+
+        map.put("alchemist", tag.getIntArray("alchemist"));
+        map.put("builder", tag.getIntArray("builder"));
+        map.put("digger", tag.getIntArray("digger"));
+        map.put("enchanter", tag.getIntArray("enchanter"));
+        map.put("farmer", tag.getIntArray("farmer"));
+        map.put("fisherman", tag.getIntArray("fisherman"));
+        map.put("hunter", tag.getIntArray("hunter"));
+        map.put("lumberjack", tag.getIntArray("lumberjack"));
+        map.put("miner", tag.getIntArray("miner"));
+        map.put("smith", tag.getIntArray("smith"));
+
+        map.forEach((string, intArray) -> {
+            int level = intArray[0];
+            int experience = intArray[1];
+            List<Boolean> powerUps = List.of(intArray[2] != 0, intArray[3] != 0, intArray[4] != 0);
+
+            JobInstance jobInstance = JobManager.getInstance().getJobInstance(JobsPlus.getId(string));
+            if (jobInstance != null) {
+                jobs.add(new Job(this, jobInstance, level, experience, new HashMap<>()));
+                this.addCoins((int) (powerUps.stream().filter(b -> b).count() * 10));
+            }
+        });
+        this.jobs = jobs;
     }
 
     @Inject(at = @At("TAIL"), method = "onEnchantmentPerformed(Lnet/minecraft/world/item/ItemStack;I)V")

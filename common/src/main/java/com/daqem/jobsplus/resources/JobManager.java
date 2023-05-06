@@ -89,7 +89,7 @@ public abstract class JobManager extends SimpleJsonResourceReloadListener {
         return instance;
     }
 
-    public JobInstance getJob(ResourceLocation location) {
+    public JobInstance getJobInstance(ResourceLocation location) {
         return jobs.get(location);
     }
 

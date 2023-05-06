@@ -71,7 +71,7 @@ public abstract class CraftingRestrictionManager extends SimpleJsonResourceReloa
         for (Map.Entry<ResourceLocation, List<CraftingRestriction>> entry : restrictions.entrySet()) {
             ResourceLocation jobLocation = entry.getKey();
             List<CraftingRestriction> craftingRestrictions = entry.getValue();
-            JobInstance job = JobManager.getInstance().getJob(jobLocation);
+            JobInstance job = JobManager.getInstance().getJobInstance(jobLocation);
             if (job != null) {
                 job.setCraftingRestrictions(craftingRestrictions);
             } else {

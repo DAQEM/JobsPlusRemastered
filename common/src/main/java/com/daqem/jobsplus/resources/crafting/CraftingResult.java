@@ -82,7 +82,7 @@ public class CraftingResult {
                 craftingType,
                 ItemStack.of(tag),
                 tag.getInt("requiredLevel"),
-                JobManager.getInstance().getJob(new ResourceLocation(tag.getString("jobInstance")))
+                JobManager.getInstance().getJobInstance(new ResourceLocation(tag.getString("jobInstance")))
         );
     }
 
