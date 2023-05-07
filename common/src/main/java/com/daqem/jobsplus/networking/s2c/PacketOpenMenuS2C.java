@@ -38,7 +38,11 @@ public class PacketOpenMenuS2C extends BaseS2CMessage {
     @Override
     public void handle(NetworkManager.PacketContext context) {
         if (context.getPlayer() instanceof LocalPlayer) {
-            Minecraft.getInstance().setScreen(new JobsScreen(serverData));
+            try {
+                Minecraft.getInstance().setScreen(new JobsScreen(serverData));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 }

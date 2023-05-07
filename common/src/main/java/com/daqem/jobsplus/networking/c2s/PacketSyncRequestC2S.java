@@ -3,7 +3,9 @@ package com.daqem.jobsplus.networking.c2s;
 import com.daqem.jobsplus.networking.JobsPlusNetworking;
 import com.daqem.jobsplus.networking.s2c.PacketSyncResponseS2C;
 import com.daqem.jobsplus.player.JobsServerPlayer;
+import com.daqem.jobsplus.resources.CraftingRestrictionManager;
 import com.daqem.jobsplus.resources.JobManager;
+import com.google.gson.JsonElement;
 import dev.architectury.networking.NetworkManager;
 import dev.architectury.networking.simple.BaseC2SMessage;
 import dev.architectury.networking.simple.MessageType;
@@ -30,8 +32,10 @@ public class PacketSyncRequestC2S extends BaseC2SMessage {
     public void handle(NetworkManager.PacketContext context) {
         if (context.getPlayer() instanceof JobsServerPlayer serverPlayer) {
             try {
-                JobManager.getInstance().getMap().forEach((location, jobJson) ->
-                        new PacketSyncResponseS2C(location, jobJson).sendTo(serverPlayer.getServerPlayer()));
+                JobManager.getInstance().getMap().forEach((location, jobJson) -> {
+                    JsonElement restrictionJson = CraftingRestrictionManager.getInstance().getFromLocation(location);
+                    new PacketSyncResponseS2C(location, jobJson, restrictionJson).sendTo(serverPlayer.getServerPlayer());
+                });
             } catch (Exception e) {
                 e.printStackTrace();
             }

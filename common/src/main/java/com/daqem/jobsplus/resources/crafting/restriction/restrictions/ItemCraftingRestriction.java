@@ -27,11 +27,6 @@ public class ItemCraftingRestriction extends CraftingRestriction {
 
     @Override
     public CraftingResult canCraft(CraftingType craftingType, ItemStack itemStack, int level, JobInstance jobInstance) {
-//        try {
-//            JobsPlus.LOGGER.warn("ItemCraftingRestriction {} and {} and {} and {} and {} and {}", itemInput.test(itemStack), canCraft(craftingType, level), itemInput.createItemStack(1, false), itemStack, itemInput.createItemStack(1, false).getTag(), itemStack.getTag());
-//        } catch (Exception e) {
-//            JobsPlus.LOGGER.warn("ItemCraftingRestriction {} and {}", itemInput.test(itemStack), canCraft(craftingType, level));
-//        }
         return new CraftingResult(!itemInput.test(itemStack) || (itemInput.test(itemStack) && canCraft(craftingType, level)), craftingType, itemStack, getRequiredLevel(), jobInstance);
     }
 

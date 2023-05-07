@@ -1,5 +1,6 @@
 package com.daqem.jobsplus.resources;
 
+import com.daqem.jobsplus.JobsPlusExpectPlatform;
 import com.daqem.jobsplus.resources.crafting.restriction.CraftingRestriction;
 import com.daqem.jobsplus.resources.job.JobInstance;
 import com.google.common.collect.ImmutableMap;
@@ -32,13 +33,20 @@ public abstract class CraftingRestrictionManager extends SimpleJsonResourceReloa
 
     protected ImmutableMap<ResourceLocation, List<CraftingRestriction>> restrictions = ImmutableMap.of();
 
+    protected ImmutableMap<ResourceLocation, JsonElement> map = ImmutableMap.of();
+
+    private static CraftingRestrictionManager instance;
+
     public CraftingRestrictionManager() {
         super(GSON, "crafting_restrictions");
+        instance = this;
     }
 
-    @Override
-    protected void apply(Map<ResourceLocation, JsonElement> map, @NotNull ResourceManager resourceManager, @NotNull ProfilerFiller profilerFiller) {
+    public static CraftingRestrictionManager getInstance() {
+        return instance != null ? instance : JobsPlusExpectPlatform.getCraftingRestrictionManager();
+    }
 
+    public void apply(Map<ResourceLocation, JsonElement> map, boolean isServer) {
         Map<ResourceLocation, List<CraftingRestriction>> tempRestrictions = new HashMap<>();
         AtomicInteger count = new AtomicInteger();
 
@@ -60,23 +68,47 @@ public abstract class CraftingRestrictionManager extends SimpleJsonResourceReloa
             }
         });
 
-        LOGGER.info("Loaded {} crafting restrictions for {} jobs", count.get(), tempRestrictions.size());
+        if (isServer) {
+            LOGGER.info("Loaded {} crafting restrictions for {} jobs", count.get(), tempRestrictions.size());
+            this.restrictions = ImmutableMap.copyOf(tempRestrictions);
+            applyCraftingRestrictionsToJobs();
+        } else {
+            tempRestrictions.forEach((location, craftingRestrictions) -> {
+                Map<ResourceLocation, List<CraftingRestriction>> tempCraftingRestrictions = new HashMap<>(restrictions);
+                tempCraftingRestrictions.remove(location);
+                tempCraftingRestrictions.put(location, craftingRestrictions);
+                restrictions = ImmutableMap.copyOf(tempCraftingRestrictions);
+                applyCraftingRestrictionToJob(location, craftingRestrictions);
+            });
+        }
 
-        this.restrictions = ImmutableMap.copyOf(tempRestrictions);
-
-        applyCraftingRestrictionToJobs();
     }
 
-    private void applyCraftingRestrictionToJobs() {
+    @Override
+    protected void apply(@NotNull Map<ResourceLocation, JsonElement> map, @NotNull ResourceManager resourceManager, @NotNull ProfilerFiller profilerFiller) {
+        this.restrictions = null;
+        this.map = ImmutableMap.copyOf(map);
+        apply(map, true);
+    }
+
+    private void applyCraftingRestrictionsToJobs() {
         for (Map.Entry<ResourceLocation, List<CraftingRestriction>> entry : restrictions.entrySet()) {
             ResourceLocation jobLocation = entry.getKey();
             List<CraftingRestriction> craftingRestrictions = entry.getValue();
-            JobInstance job = JobManager.getInstance().getJobInstance(jobLocation);
-            if (job != null) {
-                job.setCraftingRestrictions(craftingRestrictions);
-            } else {
-                LOGGER.error("Could not find job {} to apply crafting restrictions to", jobLocation.toString());
-            }
+            applyCraftingRestrictionToJob(jobLocation, craftingRestrictions);
         }
+    }
+
+    private void applyCraftingRestrictionToJob(ResourceLocation jobLocation, List<CraftingRestriction> craftingRestrictions) {
+        JobInstance job = JobManager.getInstance().getJobInstance(jobLocation);
+        if (job != null) {
+            job.setCraftingRestrictions(craftingRestrictions);
+        } else {
+            LOGGER.error("Could not find job {} to apply crafting restrictions to", jobLocation.toString());
+        }
+    }
+
+    public JsonElement getFromLocation(ResourceLocation location) {
+        return map.get(location);
     }
 }

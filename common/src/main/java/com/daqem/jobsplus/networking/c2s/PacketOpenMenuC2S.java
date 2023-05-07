@@ -84,25 +84,29 @@ public class PacketOpenMenuC2S extends BaseC2SMessage {
     @Override
     public void handle(NetworkManager.PacketContext context) {
         if (context.getPlayer() instanceof JobsServerPlayer serverPlayer) {
-            CompoundTag serverData = new CompoundTag();
-            ListTag listTag = JobSerializer.toNBT(serverPlayer.getJobs());
+            try {
+                CompoundTag serverData = new CompoundTag();
+                ListTag listTag = JobSerializer.toNBT(serverPlayer.getJobs());
 
-            listTag.addAll(serverPlayer.inactiveJobsToNBT());
-            serverData.put(Constants.JOBS, listTag);
-            serverData.putInt(Constants.COINS, serverPlayer.getCoins());
+                listTag.addAll(serverPlayer.inactiveJobsToNBT());
+                serverData.put(Constants.JOBS, listTag);
+                serverData.putInt(Constants.COINS, serverPlayer.getCoins());
 
-            serverData.putInt(Constants.ACTIVE_LEFT_BUTTON, activeLeftButton);
-            serverData.putInt(Constants.ACTIVE_RIGHT_BUTTON, activeRightButton);
-            serverData.putInt(Constants.SELECTED_BUTTON, selectedButton);
-            serverData.putFloat(Constants.SCROLL_OFFSET, scrollOffset);
-            serverData.putFloat(Constants.SCROLL_OFFSET_RIGHT, scrollOffsetRight);
-            serverData.putInt(Constants.START_INDEX, startIndex);
-            serverData.putInt(Constants.START_INDEX_RIGHT, startIndexRight);
+                serverData.putInt(Constants.ACTIVE_LEFT_BUTTON, activeLeftButton);
+                serverData.putInt(Constants.ACTIVE_RIGHT_BUTTON, activeRightButton);
+                serverData.putInt(Constants.SELECTED_BUTTON, selectedButton);
+                serverData.putFloat(Constants.SCROLL_OFFSET, scrollOffset);
+                serverData.putFloat(Constants.SCROLL_OFFSET_RIGHT, scrollOffsetRight);
+                serverData.putInt(Constants.START_INDEX, startIndex);
+                serverData.putInt(Constants.START_INDEX_RIGHT, startIndexRight);
 
-            if (serverPlayer.getUpdatedFromOldJobsPlus()) {
-                new PacketOpenUpdateScreenS2C(serverData).sendTo((ServerPlayer) serverPlayer);
-            } else {
-                new PacketOpenMenuS2C(serverData).sendTo((ServerPlayer) serverPlayer);
+                if (serverPlayer.getUpdatedFromOldJobsPlus()) {
+                    new PacketOpenUpdateScreenS2C(serverData).sendTo((ServerPlayer) serverPlayer);
+                } else {
+                    new PacketOpenMenuS2C(serverData).sendTo((ServerPlayer) serverPlayer);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }

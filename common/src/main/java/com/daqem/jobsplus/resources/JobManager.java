@@ -1,5 +1,6 @@
 package com.daqem.jobsplus.resources;
 
+import com.daqem.jobsplus.JobsPlusExpectPlatform;
 import com.daqem.jobsplus.config.JobsPlusCommonConfig;
 import com.daqem.jobsplus.resources.job.JobInstance;
 import com.daqem.jobsplus.resources.job.powerup.PowerupInstance;
@@ -86,7 +87,7 @@ public abstract class JobManager extends SimpleJsonResourceReloadListener {
     }
 
     public static JobManager getInstance() {
-        return instance;
+        return instance != null ? instance : JobsPlusExpectPlatform.getJobManager();
     }
 
     public JobInstance getJobInstance(ResourceLocation location) {
