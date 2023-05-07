@@ -99,6 +99,8 @@ public abstract class CraftingRestriction {
         } || level >= this.requiredLevel;
     }
 
+    public abstract ItemStack getItemStack();
+
     public static class Deserializer<T extends CraftingRestriction> implements JsonDeserializer<T> {
 
         private Gson getGson() {

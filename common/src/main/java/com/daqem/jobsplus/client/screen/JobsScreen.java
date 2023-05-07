@@ -11,12 +11,12 @@ import com.daqem.jobsplus.networking.utils.ConfirmationMessageType;
 import com.daqem.jobsplus.player.JobsPlayerData;
 import com.daqem.jobsplus.player.job.Job;
 import com.daqem.jobsplus.player.job.powerup.PowerupState;
+import com.daqem.jobsplus.resources.crafting.restriction.restrictions.ItemCraftingRestriction;
 import com.daqem.jobsplus.resources.job.JobInstance;
 import com.daqem.jobsplus.resources.job.action.Action;
 import com.daqem.jobsplus.resources.job.powerup.PowerupInstance;
 import com.daqem.jobsplus.util.chat.ChatColor;
 import com.daqem.jobsplus.util.experience.ExperienceHandler;
-import com.google.common.collect.Sets;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.ChatFormatting;
@@ -29,12 +29,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import net.minecraft.world.effect.MobEffect;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.alchemy.PotionUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -49,7 +43,7 @@ public class JobsScreen extends AbstractScreen {
     private final int imageHeight = 166;
     private final JobsPlayerData jobsPlayerData;
     private final LinkedList<Job> jobs = new LinkedList<>();
-    private final LinkedList<ItemStack> selectedJobCraftableStacks = new LinkedList<>();
+    private final LinkedList<ItemCraftingRestriction> jobCraftingRestrictions = new LinkedList<>();
     private final LinkedList<Job> shownJobs = new LinkedList<>();
     private int activeRightButton;
     private int activeLeftButton;
@@ -114,9 +108,12 @@ public class JobsScreen extends AbstractScreen {
     @Override
     public void tick() {
         super.tick();
-        selectedJobCraftableStacks.clear();
-        addPotionsToCraftableStacks();
-        addCraftableStacks();
+
+        jobCraftingRestrictions.clear();
+        if (hasJobSelected()) {
+            jobCraftingRestrictions.addAll(getSelectedJob().getJobInstance().getItemCraftingRestrictions());
+        }
+        jobCraftingRestrictions.sort(Comparator.comparing(ItemCraftingRestriction::getRequiredLevel));
     }
 
     private void setShownJobs(int firstHiddenIndex) {
@@ -133,33 +130,6 @@ public class JobsScreen extends AbstractScreen {
                 }
             }
         }
-    }
-
-    private void addCraftableStacks() {
-//        if (Minecraft.getInstance().level == null) return;
-//        ArrayList<ConstructionCraftingRecipe> recipes = new ArrayList<>(Minecraft.getInstance().level.getRecipeManager().getAllRecipesFor(ConstructionRecipeType.INSTANCE));
-//        recipes.sort(Comparator.comparing(ConstructionCraftingRecipe::getRequiredLevel));
-//        recipes.forEach(constructionRecipe -> {
-//            if (constructionRecipe.getJob().is(getSelectedJob()))
-//                selectedJobCraftableStacks.add(constructionRecipe.getResultItem());
-//        });
-    }
-
-    private void addPotionsToCraftableStacks() {
-        if (!hasJobSelected()) return;
-
-        LinkedHashMap<MobEffect, Integer> potionMap = new LinkedHashMap<>();
-        potionMap.put(MobEffects.MOVEMENT_SPEED, 4);
-        potionMap.put(MobEffects.DIG_SPEED, 4);
-        potionMap.put(MobEffects.DAMAGE_BOOST, 4);
-        potionMap.put(MobEffects.REGENERATION, 3);
-        potionMap.put(MobEffects.LUCK, 4);
-        for (Map.Entry<MobEffect, Integer> entry : potionMap.entrySet()) {
-            for (int i = 0; i < entry.getValue(); i++) {
-                selectedJobCraftableStacks.add(PotionUtils.setCustomEffects(Items.POTION.getDefaultInstance(), Sets.newHashSet(new MobEffectInstance(entry.getKey()))));
-            }
-        }
-        selectedJobCraftableStacks.addAll(List.of(Items.STONE.getDefaultInstance(), Items.STONE.getDefaultInstance(), Items.STONE.getDefaultInstance()));
     }
 
     private void renderBackgroundImage(PoseStack poseStack) {
@@ -208,9 +178,11 @@ public class JobsScreen extends AbstractScreen {
             }
         }
         if (activeRightButton == 1) {
-            ItemStack hoveredItemStack = getHoveredItemStack(mouseX, mouseY);
-            if (hoveredItemStack != ItemStack.EMPTY) {
-                super.renderTooltip(poseStack, hoveredItemStack.copy(), mouseX + startX, mouseY + startY);
+            if (hasJobSelected()) {
+                ItemCraftingRestriction itemCraftingRestriction = getHoveredItemCraftingRestriction(mouseX, mouseY);
+                if (itemCraftingRestriction != null) {
+                    super.renderTooltip(poseStack, itemCraftingRestriction.getTooltip(getSelectedJob()), Optional.empty(), mouseX + startX, mouseY + startY);
+                }
             }
         }
     }
@@ -302,7 +274,7 @@ public class JobsScreen extends AbstractScreen {
                 // CRAFTING RECIPE BUTTONS
             } else if (activeRightButton == 1) {
                 //BUTTONS
-                for (int i = this.startIndexRight; i < firstHiddenIndexRight && i < selectedJobCraftableStacks.size(); ++i) {
+                for (int i = this.startIndexRight; i < firstHiddenIndexRight && i < jobCraftingRestrictions.size(); ++i) {
                     int j = i - this.startIndexRight;
                     int k = 158 + j % 3 * 48;
                     int l = j / 3;
@@ -436,9 +408,6 @@ public class JobsScreen extends AbstractScreen {
                 }
             } else if (activeRightButton == 1) {
                 drawCenteredString(poseStack, ChatColor.darkGray() + JobsPlus.translatable("gui.crafting").getString(), centerR, startY + 6, 16777215);
-                //CONSTRUCTION TABLE
-                font.draw(poseStack, ChatColor.darkGray() + "Craft the items using", startX + 189, startY + 171, 16777215);
-                font.draw(poseStack, ChatColor.darkGray() + "the Construction Table.", startX + 189, startY + 181, 16777215);
             } else if (activeRightButton == 2) {
                 drawCenteredString(poseStack, ChatColor.darkGray() + JobsPlus.translatable("gui.powerups.powerups").getString(), centerR, startY + 6, 16777215);
                 for (int i = this.startIndexRight; i < firstHiddenIndexRight && i < getSelectedJob().getJobInstance().getPowerups().size(); ++i) {
@@ -480,17 +449,15 @@ public class JobsScreen extends AbstractScreen {
 
         if (hasJobSelected()) {
             if (activeRightButton == 1) {
-                for (int i = this.startIndexRight; i < firstHiddenIndexRight && i < selectedJobCraftableStacks.size(); i++) {
+                for (int i = this.startIndexRight; i < firstHiddenIndexRight && i < jobCraftingRestrictions.size(); i++) {
                     int j = i - this.startIndexRight;
                     int xOffset = startX + 160 + j % 3 * 48;
                     int l = j / 3;
                     int yOffset = startY + 17 + l * 20;
-                    ModItemRenderer.renderAndDecorateItem(itemRenderer, selectedJobCraftableStacks.get(i), xOffset, yOffset, 16);
-                    int level = new Random().nextInt(0, job.getJobInstance().getMaxLevel());
+                    ModItemRenderer.renderAndDecorateItem(itemRenderer, jobCraftingRestrictions.get(i).getItemStack(), xOffset, yOffset, 16);
+                    int level = jobCraftingRestrictions.get(i).getRequiredLevel();
                     font.draw(poseStack, String.valueOf(level), xOffset + 22, yOffset + 4, job.getLevel() >= level ? 0x55FF55 : 0xFF5555);
                 }
-                //CONSTRUCTION TABLE
-                //itemRenderer.renderAndDecorateItem(ModItems.CONSTRUCTION_TABLE.get().getDefaultInstance(), startX + 166, startY + 171);
             }
         }
     }
@@ -660,14 +627,6 @@ public class JobsScreen extends AbstractScreen {
                     }
                 }
             }
-            // CRAFTING RECIPES
-            if (activeRightButton == 1) {
-                ItemStack itemStack = getHoveredItemStack(mouseX, mouseY);
-                if (itemStack != ItemStack.EMPTY) {
-                    playClientGUIClick();
-//                    JobsPlusJeiPlugin.showJEIPage(itemStack);
-                }
-            }
             // POWERUPS
             JobInstance jobInstance = getSelectedJob().getJobInstance();
             if (activeRightButton == 2) {
@@ -733,12 +692,13 @@ public class JobsScreen extends AbstractScreen {
         return job != null;
     }
 
-    private ItemStack getHoveredItemStack(double mouseX, double mouseY) {
-        if (!hasJobSelected()) return ItemStack.EMPTY;
+    @Nullable
+    private ItemCraftingRestriction getHoveredItemCraftingRestriction(double mouseX, double mouseY) {
+        if (!hasJobSelected()) return null;
 
         mouseX -= 150D;
 
-        for (int i = this.startIndexRight; i < selectedJobCraftableStacks.size(); i++) {
+        for (int i = this.startIndexRight; i < jobCraftingRestrictions.size(); i++) {
             int j = i - this.startIndexRight;
 
             int amountX = 3;
@@ -752,10 +712,10 @@ public class JobsScreen extends AbstractScreen {
             if (isBetween(mouseX, mouseY,
                     startX + (j % amountX) * buttonWidth, startY + (j / amountY) * buttonHeight,
                     startX + buttonWidth + (j % amountX) * buttonWidth - 1, startY + buttonHeight + (j / amountY) * buttonHeight - 1)) {
-                return selectedJobCraftableStacks.get(i);
+                return jobCraftingRestrictions.get(i);
             }
         }
-        return ItemStack.EMPTY;
+        return null;
     }
 
     @Override
@@ -820,7 +780,7 @@ public class JobsScreen extends AbstractScreen {
 
     protected int getOffscreenRowsRight() {
         if (getSelectedJob() == null) return 0;
-        return getActiveRightButton() == 1 ? (selectedJobCraftableStacks.size() + 3 - 1) / 3 - 7 :
+        return getActiveRightButton() == 1 ? (jobCraftingRestrictions.size() + 3 - 1) / 3 - 7 :
                 getActiveRightButton() == 2 ? getSelectedJob().getJobInstance().getPowerups().size() - 4 :
                         getActiveRightButton() == 3 ? getSelectedJob().getJobInstance().getActions().size() - 4 :
                                 0;
@@ -828,7 +788,7 @@ public class JobsScreen extends AbstractScreen {
 
     private boolean isScrollBarRightActive() {
         if (getSelectedJob() == null) return false;
-        return getActiveRightButton() == 1 ? this.selectedJobCraftableStacks.size() > 21 :
+        return getActiveRightButton() == 1 ? this.jobCraftingRestrictions.size() > 21 :
                 getActiveRightButton() == 2 ? getSelectedJob().getJobInstance().getPowerups().size() > 4 :
                         getActiveRightButton() == 3 && getSelectedJob().getJobInstance().getActions().size() > 4;
     }

@@ -5,12 +5,18 @@ import com.daqem.jobsplus.resources.crafting.CraftingType;
 import com.daqem.jobsplus.resources.crafting.restriction.CraftingRestriction;
 import com.daqem.jobsplus.resources.job.JobInstance;
 import com.google.gson.*;
+import net.minecraft.commands.arguments.item.ItemInput;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderSet;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class TagCraftingRestriction extends CraftingRestriction {
 
@@ -24,6 +30,54 @@ public class TagCraftingRestriction extends CraftingRestriction {
     @Override
     public CraftingResult canCraft(CraftingType craftingType, ItemStack itemStack, int level, JobInstance jobInstance) {
         return new CraftingResult(!itemStack.is(tag) || (itemStack.is(tag) && canCraft(craftingType, level)), craftingType, itemStack, getRequiredLevel(), jobInstance);
+    }
+
+    @Override
+    public ItemStack getItemStack() {
+        ItemStack itemStack = ItemStack.EMPTY;
+        if (Registry.ITEM.getTagOrEmpty(tag) instanceof HolderSet.Named<Item> list) {
+            if (list.get(0).unwrapKey().isPresent()) {
+                itemStack = new ItemStack(Registry.ITEM.get(list.get(0).unwrapKey().get()));
+            }
+        }
+        return itemStack;
+    }
+
+    public List<ItemStack> getItemStacks() {
+        List<ItemStack> itemStacks = new ArrayList<>();
+        if (Registry.ITEM.getTagOrEmpty(tag) instanceof HolderSet.Named<Item> list) {
+            for (Holder<Item> item : list) {
+                if (item.unwrapKey().isPresent()) {
+                    itemStacks.add(new ItemStack(Registry.ITEM.get(item.unwrapKey().get())));
+                }
+            }
+        }
+        return itemStacks;
+    }
+
+    public List<ItemCraftingRestriction> toItemCraftingRestrictions() {
+        List<ItemCraftingRestriction> itemCraftingRestrictions = new ArrayList<>();
+        if (Registry.ITEM.getTagOrEmpty(tag) instanceof HolderSet.Named<Item> list) {
+            for (Holder<Item> item : list) {
+                if (item.unwrapKey().isPresent()) {
+                    itemCraftingRestrictions.add(new ItemCraftingRestriction(
+                            getRequiredLevel(),
+                            isCanCraft(),
+                            isCanSmelt(),
+                            isCanBrew(),
+                            isCanEnchant(),
+                            isCanRepair(),
+                            isCanUseItem(),
+                            isCanBreakBlock(),
+                            isCanItemBreakBlock(),
+                            isCanPlaceBlock(),
+                            isCanHurtEntity(),
+                            new ItemInput(item, null)
+                    ));
+                }
+            }
+        }
+        return itemCraftingRestrictions;
     }
 
     @Override

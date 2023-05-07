@@ -5,6 +5,8 @@ import com.daqem.jobsplus.resources.JobManager;
 import com.daqem.jobsplus.resources.crafting.CraftingResult;
 import com.daqem.jobsplus.resources.crafting.CraftingType;
 import com.daqem.jobsplus.resources.crafting.restriction.CraftingRestriction;
+import com.daqem.jobsplus.resources.crafting.restriction.restrictions.ItemCraftingRestriction;
+import com.daqem.jobsplus.resources.crafting.restriction.restrictions.TagCraftingRestriction;
 import com.daqem.jobsplus.resources.job.action.Action;
 import com.daqem.jobsplus.resources.job.powerup.PowerupInstance;
 import com.google.gson.*;
@@ -144,6 +146,26 @@ public class JobInstance {
     @Nullable
     public static JobInstance of(ResourceLocation location) {
         return JobManager.getInstance().getJobs().get(location);
+    }
+
+    public List<CraftingRestriction> getCraftingRestrictions() {
+        return craftingRestrictions != null ? craftingRestrictions : new ArrayList<>();
+    }
+
+    public List<ItemCraftingRestriction> getItemCraftingRestrictions() {
+        if (craftingRestrictions == null) {
+            return new ArrayList<>();
+        }
+        List<ItemCraftingRestriction> itemCraftingRestrictions = new ArrayList<>();
+        for (CraftingRestriction craftingRestriction : craftingRestrictions) {
+            if (craftingRestriction instanceof ItemCraftingRestriction) {
+                itemCraftingRestrictions.add((ItemCraftingRestriction) craftingRestriction);
+            }
+            if (craftingRestriction instanceof TagCraftingRestriction tagCraftingRestriction) {
+                itemCraftingRestrictions.addAll(tagCraftingRestriction.toItemCraftingRestrictions());
+            }
+        }
+        return itemCraftingRestrictions;
     }
 
     public static class JobInstanceSerializer implements JsonDeserializer<JobInstance> {
