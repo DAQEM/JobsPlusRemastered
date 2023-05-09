@@ -112,4 +112,12 @@ public class PlayerEvents {
                 .build()
                 .sendToAction();
     }
+
+    public static void onPlayerHurtItem(JobsServerPlayer player, ItemStack itemStack) {
+        new ActionDataBuilder(player, Actions.HURT_ITEM)
+                .withSpecification(ActionSpecification.ITEM_STACK, itemStack)
+                .withSpecification(ActionSpecification.ITEM, itemStack.getItem())
+                .build()
+                .sendToAction();
+    }
 }

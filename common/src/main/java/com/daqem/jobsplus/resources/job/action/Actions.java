@@ -6,10 +6,7 @@ import com.daqem.jobsplus.registry.JobsPlusRegistry;
 import com.daqem.jobsplus.resources.job.action.actions.advancement.AdvancementAction;
 import com.daqem.jobsplus.resources.job.action.actions.block.*;
 import com.daqem.jobsplus.resources.job.action.actions.entity.*;
-import com.daqem.jobsplus.resources.job.action.actions.item.CraftItemAction;
-import com.daqem.jobsplus.resources.job.action.actions.item.DropItemAction;
-import com.daqem.jobsplus.resources.job.action.actions.item.ThrowItemAction;
-import com.daqem.jobsplus.resources.job.action.actions.item.UseItemAction;
+import com.daqem.jobsplus.resources.job.action.actions.item.*;
 import com.daqem.jobsplus.resources.job.action.actions.job.JobExpAction;
 import com.daqem.jobsplus.resources.job.action.actions.job.JobLevelUpAction;
 import com.daqem.jobsplus.resources.job.action.actions.movement.*;
@@ -71,6 +68,7 @@ public class Actions {
     public static final ActionType STRIP_LOG = register(JobsPlus.getId("on_strip_log"), StripLogAction.class, new StripLogAction.Deserializer());
     public static final ActionType GRIND_ITEM = register(JobsPlus.getId("on_grind_item"), GrindItemAction.class, new GrindItemAction.Deserializer());
     public static final ActionType USE_ANVIL = register(JobsPlus.getId("on_use_anvil"), UseAnvilAction.class, new UseAnvilAction.Deserializer());
+    public static final ActionType HURT_ITEM = register(JobsPlus.getId("on_hurt_item"), HurtItemAction.class, new HurtItemAction.Deserializer());
 
     private static <T extends Action> ActionType register(ResourceLocation location, Class<T> clazz, JsonDeserializer<? extends Action> deserializer) {
         ActionType actionType = new ActionType(clazz, location, deserializer);

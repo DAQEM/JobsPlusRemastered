@@ -4,6 +4,8 @@ import com.daqem.jobsplus.event.triggers.PlayerEvents;
 import com.daqem.jobsplus.player.JobsServerPlayer;
 import com.daqem.jobsplus.resources.crafting.CraftingResult;
 import com.daqem.jobsplus.resources.crafting.CraftingType;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
@@ -24,7 +26,6 @@ public abstract class MixinItemStack {
     @Shadow
     public abstract UseAnim getUseAnimation();
 
-
     @Shadow
     public abstract Item getItem();
 
@@ -32,7 +33,7 @@ public abstract class MixinItemStack {
     private void finishUsingItem(Level level, LivingEntity entity, CallbackInfoReturnable<ItemStack> cir) {
         if (entity instanceof JobsServerPlayer player) {
             if (this.getUseAnimation() == UseAnim.DRINK) {
-                PlayerEvents.onPlayerDrink(player, (ItemStack) (Object) this);
+                PlayerEvents.onPlayerDrink(player, getItemStack());
             }
         }
     }
@@ -40,13 +41,26 @@ public abstract class MixinItemStack {
     @Inject(at = @At("HEAD"), method = "use(Lnet/minecraft/world/level/Level;Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/world/InteractionHand;)Lnet/minecraft/world/InteractionResultHolder;", cancellable = true)
     private void use(Level level, Player player, InteractionHand interactionHand, CallbackInfoReturnable<InteractionResultHolder<ItemStack>> cir) {
         if (player instanceof JobsServerPlayer serverPlayer) {
-            CraftingResult craftingResult = serverPlayer.canCraft(CraftingType.USING_ITEM, (ItemStack) (Object) this);
+            CraftingResult craftingResult = serverPlayer.canCraft(CraftingType.USING_ITEM, getItemStack());
             if (!craftingResult.canCraft()) {
                 craftingResult.sendHotbarMessage(serverPlayer);
                 serverPlayer.getServerPlayer().inventoryMenu.sendAllDataToRemote();
-                cir.setReturnValue(InteractionResultHolder.fail((ItemStack) (Object) this));
+                cir.setReturnValue(InteractionResultHolder.fail(getItemStack());
                 cir.cancel();
             }
         }
+    }
+
+    @Inject(at = @At("HEAD"), method = "hurt(ILnet/minecraft/util/RandomSource;Lnet/minecraft/server/level/ServerPlayer;)Z")
+    private void hurt(int i, RandomSource randomSource, ServerPlayer serverPlayer, CallbackInfoReturnable<Boolean> cir) {
+        if (serverPlayer instanceof JobsServerPlayer player) {
+            if (getItemStack().isDamageableItem()) {
+                PlayerEvents.onPlayerHurtItem(player, getItemStack());
+            }
+        }
+    }
+
+    private ItemStack getItemStack() {
+        return (ItemStack) (Object) this;
     }
 }

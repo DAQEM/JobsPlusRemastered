@@ -232,13 +232,13 @@ public class JobsScreen extends AbstractScreen {
     public void renderButtons(PoseStack poseStack, int mouseX, int mouseY) {
         //SETTINGS
         if (isBetween(mouseX, mouseY, 3, height - 20, 18, height - 4))
-            RenderSystem.setShaderColor(0.8F, 0.8F, 0.8F, 1);
+            RenderColor.grayedOut();
         blit(poseStack, 3, height - 20, 276, 166, 16, 16, 362, 362);
         RenderColor.normal();
 
         //DISCORD
         if (isBetween(mouseX, mouseY, width - 19, height - 20, width - 4, height - 5))
-            RenderSystem.setShaderColor(0.8F, 0.8F, 0.8F, 1);
+            RenderColor.grayedOut();
         poseStack.pushPose();
         poseStack.scale(0.5F, 0.5F, 0.5F);
         blit(poseStack, width * 2 - 38, height * 2 - 40, 276 + 16, 166, 32, 32, 362, 362);
@@ -286,11 +286,6 @@ public class JobsScreen extends AbstractScreen {
                     blitThis(poseStack, k, i1, 26, 201, 48, 20);
                     RenderColor.normal();
                 }
-
-                //CONSTRUCTION TABLE
-                blitThis(poseStack, 158, imageHeight, 150, 136, 100, 30);
-                blitThis(poseStack, 218, imageHeight, 226, 136, 100, 30);
-
                 //POWERUP BUTTONS
             } else if (activeRightButton == 2) {
                 for (int i = this.startIndexRight; i < firstHiddenIndexRight && i < getSelectedJob().getJobInstance().getPowerups().size(); ++i) {
