@@ -45,7 +45,7 @@ public abstract class MixinItemStack {
             if (!craftingResult.canCraft()) {
                 craftingResult.sendHotbarMessage(serverPlayer);
                 serverPlayer.getServerPlayer().inventoryMenu.sendAllDataToRemote();
-                cir.setReturnValue(InteractionResultHolder.fail(getItemStack());
+                cir.setReturnValue(InteractionResultHolder.fail(getItemStack()));
                 cir.cancel();
             }
         }
