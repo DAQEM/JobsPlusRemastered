@@ -51,8 +51,9 @@ public class ConfirmationScreen extends AbstractScreen {
     private @Nullable JobInstance job;
     private @Nullable PowerupInstance powerup;
 
-    public ConfirmationScreen(Screen lastScreen, ConfirmationMessageType messageType, @Nullable PowerupInstance powerup) {
+    public ConfirmationScreen(Screen lastScreen, ConfirmationMessageType messageType, @Nullable JobInstance jobInstance, @Nullable PowerupInstance powerup) {
         this(lastScreen, messageType);
+        this.job = jobInstance;
         this.powerup = powerup;
     }
 
@@ -131,18 +132,16 @@ public class ConfirmationScreen extends AbstractScreen {
         }
         if (mouse.isHoveringButton(ButtonType.YES)) {
             if (messageType == ConfirmationMessageType.BUY_POWER_UP) {
-                if (powerup != null) {
-                    new PacketConfirmationC2S(messageType, powerup).sendToServer();
+                if (powerup != null && job != null) {
+                    new PacketConfirmationC2S(messageType, job, powerup).sendToServer();
                 }
-            }
-            if (messageType == ConfirmationMessageType.START_JOB_FREE
+            } else if (messageType == ConfirmationMessageType.START_JOB_FREE
                     || messageType == ConfirmationMessageType.START_JOB_PAID
                     || messageType == ConfirmationMessageType.STOP_JOB) {
                 if (job != null) {
                     new PacketConfirmationC2S(messageType, job).sendToServer();
                 }
-            }
-            if (messageType == ConfirmationMessageType.JOBS_PLUS_UPDATE) {
+            } else if (messageType == ConfirmationMessageType.JOBS_PLUS_UPDATE) {
                 try {
                     Util.getPlatform().openUri(new URI("https://daqem.com/discord"));
                 } catch (URISyntaxException e) {

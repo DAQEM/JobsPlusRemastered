@@ -288,7 +288,7 @@ public class JobsScreen extends AbstractScreen {
                 }
                 //POWERUP BUTTONS
             } else if (activeRightButton == 2) {
-                for (int i = this.startIndexRight; i < firstHiddenIndexRight && i < getSelectedJob().getJobInstance().getPowerups().size(); ++i) {
+                for (int i = this.startIndexRight; i < firstHiddenIndexRight && i < getSelectedJob().getJobInstance().getAllPowerups().size(); ++i) {
                     int j = i - this.startIndexRight;
                     int i1 = 15 + j * 35;
 
@@ -405,14 +405,14 @@ public class JobsScreen extends AbstractScreen {
                 drawCenteredString(poseStack, ChatColor.darkGray() + JobsPlus.translatable("gui.crafting").getString(), centerR, startY + 6, 16777215);
             } else if (activeRightButton == 2) {
                 drawCenteredString(poseStack, ChatColor.darkGray() + JobsPlus.translatable("gui.powerups.powerups").getString(), centerR, startY + 6, 16777215);
-                for (int i = this.startIndexRight; i < firstHiddenIndexRight && i < getSelectedJob().getJobInstance().getPowerups().size(); ++i) {
+                for (int i = this.startIndexRight; i < firstHiddenIndexRight && i < getSelectedJob().getJobInstance().getAllPowerups().size(); ++i) {
                     int j = i - this.startIndexRight;
                     int i1 = 18 + j * 35;
 
-                    PowerupInstance powerupInstance = getSelectedJob().getJobInstance().getPowerups().get(i);
+                    PowerupInstance powerupInstance = getSelectedJob().getJobInstance().getAllPowerups().get(i);
                     font.draw(poseStack, powerupInstance.getName(), this.startX + 164, i1 + startY + 5, 16777215);
-                    if (getSelectedJob().hasPowerup(powerupInstance)) {
-                        PowerupState state = getSelectedJob().getPowerups().get(powerupInstance.getLocation());
+                    if (getSelectedJob().getPowerupManager().getPowerup(powerupInstance) != null) {
+                        PowerupState state = getSelectedJobPowerupState(powerupInstance);
                         font.draw(poseStack, "State: " + (state == PowerupState.ACTIVE ? ChatColor.green() + state.getState() : ChatColor.red() + state.getState()), this.startX + 164, i1 + startY + 16, 16777215);
                     } else {
                         font.draw(poseStack, "Price: " + powerupInstance.getPrice(), this.startX + 164, i1 + startY + 16, 16777215);
@@ -625,7 +625,7 @@ public class JobsScreen extends AbstractScreen {
             // POWERUPS
             JobInstance jobInstance = getSelectedJob().getJobInstance();
             if (activeRightButton == 2) {
-                for (int i = this.startIndexRight; i < firstHiddenIndexRight && i < jobInstance.getPowerups().size(); ++i) {
+                for (int i = this.startIndexRight; i < firstHiddenIndexRight && i < jobInstance.getAllPowerups().size(); ++i) {
                     int j = i - this.startIndexRight;
                     int i1 = 15 + j * 35;
 
@@ -633,19 +633,19 @@ public class JobsScreen extends AbstractScreen {
                     if (isBetween(mouseX, mouseY, 158, i1, 158 + 144, i1 + 35)) {
                         playClientGUIClick();
                         if (getSelectedJobLevel() > 0) {
-                            PowerupInstance powerupInstance = jobInstance.getPowerups().get(i);
-                            PowerupState powerupState = getSelectedJob().getPowerups().get(powerupInstance.getLocation());
+                            PowerupInstance powerupInstance = jobInstance.getAllPowerups().get(i);
+                            PowerupState powerupState = getSelectedJobPowerupState(powerupInstance);
                             if (powerupState == null) powerupState = PowerupState.NOT_OWNED;
                             switch (powerupState) {
                                 case ACTIVE, INACTIVE -> {
-                                    new PacketTogglePowerUpC2S(powerupInstance).sendToServer();
+                                    new PacketTogglePowerUpC2S(jobInstance, powerupInstance).sendToServer();
                                     refreshScreen();
                                 }
                                 case NOT_OWNED -> {
-                                    if (getCoins() >= powerupInstance.getPrice())
-                                        openConfirmScreen(ConfirmationMessageType.BUY_POWER_UP, powerupInstance);
-                                    else
-                                        openConfirmScreen(ConfirmationMessageType.NOT_ENOUGH_COINS_POWERUP, powerupInstance);
+                                    ConfirmationMessageType confirmationMessageType = getCoins() >= powerupInstance.getPrice()
+                                            ? ConfirmationMessageType.BUY_POWER_UP
+                                            : ConfirmationMessageType.NOT_ENOUGH_COINS_POWERUP;
+                                    openConfirmScreen(confirmationMessageType, jobInstance, powerupInstance);
                                 }
                             }
                         } else {
@@ -776,7 +776,7 @@ public class JobsScreen extends AbstractScreen {
     protected int getOffscreenRowsRight() {
         if (getSelectedJob() == null) return 0;
         return getActiveRightButton() == 1 ? (jobCraftingRestrictions.size() + 3 - 1) / 3 - 7 :
-                getActiveRightButton() == 2 ? getSelectedJob().getJobInstance().getPowerups().size() - 4 :
+                getActiveRightButton() == 2 ? getSelectedJob().getJobInstance().getAllPowerups().size() - 4 :
                         getActiveRightButton() == 3 ? getSelectedJob().getJobInstance().getActions().size() - 4 :
                                 0;
     }
@@ -784,7 +784,7 @@ public class JobsScreen extends AbstractScreen {
     private boolean isScrollBarRightActive() {
         if (getSelectedJob() == null) return false;
         return getActiveRightButton() == 1 ? this.jobCraftingRestrictions.size() > 21 :
-                getActiveRightButton() == 2 ? getSelectedJob().getJobInstance().getPowerups().size() > 4 :
+                getActiveRightButton() == 2 ? getSelectedJob().getJobInstance().getAllPowerups().size() > 4 :
                         getActiveRightButton() == 3 && getSelectedJob().getJobInstance().getActions().size() > 4;
     }
 
@@ -820,8 +820,8 @@ public class JobsScreen extends AbstractScreen {
         Minecraft.getInstance().setScreen(new ConfirmationScreen(this, messageType, job));
     }
 
-    public void openConfirmScreen(ConfirmationMessageType messageType, PowerupInstance powerup) {
-        Minecraft.getInstance().setScreen(new ConfirmationScreen(this, messageType, powerup));
+    public void openConfirmScreen(ConfirmationMessageType messageType, JobInstance jobInstance, PowerupInstance powerup) {
+        Minecraft.getInstance().setScreen(new ConfirmationScreen(this, messageType, jobInstance, powerup));
     }
 
     private void drawNoJobSelected(PoseStack poseStack, String string) {
@@ -957,12 +957,13 @@ public class JobsScreen extends AbstractScreen {
 //        return this.dataTag.getInt("ActiveBossBar");
     }
 
-    private PowerupState getSelectedJobPowerupState(PowerupInstance powerup) {
-        return getSelectedJob().hasPowerup(powerup) ? getSelectedJob().getPowerups().get(powerup.getLocation()) : PowerupState.NOT_OWNED;
+    private PowerupState getSelectedJobPowerupState(PowerupInstance powerupInstance) {
+        if (getSelectedJob().getPowerupManager().getPowerup(powerupInstance) == null) return PowerupState.NOT_OWNED;
+        return Objects.requireNonNull(getSelectedJob().getPowerupManager().getPowerup(powerupInstance)).getPowerupState();
     }
 
     private boolean hasBoughtPowerup(PowerupInstance powerup) {
-        return getSelectedJob().hasPowerup(powerup);
+        return getSelectedJob().getPowerupManager().getPowerup(powerup) != null;
     }
 
     private boolean hasPowerupActive(PowerupInstance powerup) {

@@ -1,6 +1,7 @@
 package com.daqem.jobsplus.player;
 
 import com.daqem.jobsplus.player.job.Job;
+import com.daqem.jobsplus.resources.job.action.Action;
 import com.daqem.jobsplus.resources.job.action.ActionType;
 import org.jetbrains.annotations.Nullable;
 
@@ -46,19 +47,28 @@ public class ActionData {
         List<Job> jobs = this.player.getJobs();
         for (Job job : jobs) {
             job.getJobInstance().getActions().forEach(action -> {
-                if (action.getType() == this.actionType) {
-                    if (this.specifications.containsKey(ActionSpecification.ONLY_FOR_JOB)) {
-                        Job onlyForJob = this.getSpecification(ActionSpecification.ONLY_FOR_JOB);
-                        if (job.equals(onlyForJob)) {
-                            this.setSourceJob(job);
-                            action.perform(this);
-                        }
-                    } else {
-                        this.setSourceJob(job);
-                        action.perform(this);
-                    }
-                }
+                handleAction(job, action);
             });
+            job.getPowerupManager().getAllPowerups().forEach(powerup -> {
+                powerup.getPowerupInstance().getActions().forEach(action -> {
+                    handleAction(job, action);
+                });
+            });
+        }
+    }
+
+    private void handleAction(Job job, Action action) {
+        if (action.getType() == this.actionType) {
+            if (this.specifications.containsKey(ActionSpecification.ONLY_FOR_JOB)) {
+                Job onlyForJob = this.getSpecification(ActionSpecification.ONLY_FOR_JOB);
+                if (job.equals(onlyForJob)) {
+                    this.setSourceJob(job);
+                    action.perform(this);
+                }
+            } else {
+                this.setSourceJob(job);
+                action.perform(this);
+            }
         }
     }
 }

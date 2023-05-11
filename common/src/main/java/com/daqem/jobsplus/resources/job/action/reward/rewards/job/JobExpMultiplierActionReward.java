@@ -1,10 +1,11 @@
-package com.daqem.jobsplus.resources.job.action.reward.rewards;
+package com.daqem.jobsplus.resources.job.action.reward.rewards.job;
 
 import com.daqem.jobsplus.player.ActionData;
 import com.daqem.jobsplus.player.ActionSpecification;
 import com.daqem.jobsplus.resources.job.action.reward.ActionReward;
 import com.daqem.jobsplus.resources.job.action.reward.ActionRewards;
 import com.google.gson.*;
+import net.minecraft.util.GsonHelper;
 
 import java.lang.reflect.Type;
 
@@ -12,8 +13,8 @@ public class JobExpMultiplierActionReward extends ActionReward {
 
     private final double multiplier;
 
-    public JobExpMultiplierActionReward(double chance, double multiplier) {
-        super(ActionRewards.JOB_EXP_MULTIPLIER, chance);
+    public JobExpMultiplierActionReward(double multiplier) {
+        super(ActionRewards.JOB_EXP_MULTIPLIER);
         this.multiplier = multiplier;
     }
 
@@ -36,19 +37,13 @@ public class JobExpMultiplierActionReward extends ActionReward {
         }
     }
 
-    public static class Serializer implements JsonDeserializer<JobExpMultiplierActionReward> {
+    public static class Deserializer implements JsonDeserializer<JobExpMultiplierActionReward> {
 
         @Override
         public JobExpMultiplierActionReward deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
             JsonObject jsonObject = json.getAsJsonObject();
-
-            double chance = jsonObject.has("chance") ? jsonObject.get("chance").getAsDouble() : 100;
-
-            double multiplier = jsonObject.has("multiplier") ? jsonObject.get("multiplier").getAsDouble() : 1;
-
             return new JobExpMultiplierActionReward(
-                    chance,
-                    multiplier);
+                    GsonHelper.getAsDouble(jsonObject, "multiplier", 1));
         }
     }
 }

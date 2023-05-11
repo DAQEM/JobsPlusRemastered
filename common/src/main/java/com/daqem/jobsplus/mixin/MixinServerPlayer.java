@@ -9,21 +9,17 @@ import com.daqem.jobsplus.event.triggers.StatEvents;
 import com.daqem.jobsplus.player.JobsServerPlayer;
 import com.daqem.jobsplus.player.job.Job;
 import com.daqem.jobsplus.player.job.JobSerializer;
-import com.daqem.jobsplus.player.job.powerup.PowerupState;
 import com.daqem.jobsplus.player.stat.StatData;
 import com.daqem.jobsplus.resources.JobManager;
 import com.daqem.jobsplus.resources.crafting.CraftingResult;
 import com.daqem.jobsplus.resources.crafting.CraftingType;
 import com.daqem.jobsplus.resources.job.JobInstance;
-import com.daqem.jobsplus.resources.job.powerup.PowerupInstance;
 import com.mojang.authlib.GameProfile;
-import com.mojang.logging.LogUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stat;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -37,20 +33,22 @@ import net.minecraft.world.item.AirItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import org.slf4j.Logger;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import javax.annotation.Nullable;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Mixin(ServerPlayer.class)
 public abstract class MixinServerPlayer extends Player implements JobsServerPlayer {
 
-    private static final Logger LOGGER = LogUtils.getLogger();
+    @Shadow
+    public abstract void readAdditionalSaveData(CompoundTag compoundTag);
+
     private final NonNullList<StatData> statData = NonNullList.create();
     private boolean isSwimming = false;
     private int swimmingDistanceInCm = 0;
@@ -78,7 +76,7 @@ public abstract class MixinServerPlayer extends Player implements JobsServerPlay
 
     @Override
     public List<JobInstance> getJobInstances() {
-        return getJobs().stream()
+        return jobs.stream()
                 .map(Job::getJobInstance)
                 .toList();
     }
@@ -86,53 +84,33 @@ public abstract class MixinServerPlayer extends Player implements JobsServerPlay
     @Override
     public List<Job> getInactiveJobs() {
         return JobManager.getInstance().getJobs().values().stream()
-                .filter(jobInstance ->
-                        !jobs.stream()
-                                .map(Job::getJobInstance)
-                                .toList()
-                                .contains(jobInstance))
+                .filter(jobInstance -> !getJobInstances().contains(jobInstance))
                 .map(jobInstance -> new Job(this, jobInstance))
                 .toList();
     }
 
     @Override
-    public List<JobInstance> getInactiveJobInstances() {
-        return getInactiveJobs().stream()
-                .map(Job::getJobInstance)
-                .toList();
-    }
-
-    @Override
-    public void addNewJob(ResourceLocation jobLocation) {
-        if (jobLocation == null) return;
-        this.jobs.stream()
-                .filter(job -> job.getJobInstance().getLocation().equals(jobLocation))
-                .findFirst()
-                .ifPresent(job -> {
-                    throw new IllegalArgumentException("Player already has this job");
-                });
-        Job job = new Job(this, jobLocation, 1, 0, Map.of());
-        jobs.add(job);
-    }
-
-    @Override
-    public void addNewJob(JobInstance job) {
-        addNewJob(job.getLocation());
+    public @Nullable Job addNewJob(@NotNull JobInstance jobInstance) {
+        if (jobInstance.getLocation() == null) return null;
+        Job job = getJob(jobInstance);
+        if (job == null) {
+            job = new Job(this, jobInstance);
+            jobs.add(job);
+            return job;
+        }
+        return null;
     }
 
     @Override
     public void removeJob(JobInstance jobInstance) {
-        //Iterating over the jobs backwards to avoid ConcurrentModificationException.
-        for (int i = jobs.size() - 1; i >= 0; i--) {
-            Job job = jobs.get(i);
-            if (job.getJobInstance().getLocation().equals(jobInstance.getLocation())) {
-                jobs.remove(i);
-            }
+        Job job = getJob(jobInstance);
+        if (job != null) {
+            jobs.remove(job);
         }
     }
 
     @Override
-    public void refundJob(JobInstance jobInstance) {
+    public void refundJob(@NotNull JobInstance jobInstance) {
         int refund = jobInstance.getStopRefund();
         if (getJobs().size() > JobsPlusCommonConfig.amountOfFreeJobs.get()) {
             if (refund > 0) {
@@ -142,17 +120,18 @@ public abstract class MixinServerPlayer extends Player implements JobsServerPlay
     }
 
     @Override
-    public Job getJob(JobInstance jobLocation) {
+    public void removeAndRefundJob(@NotNull JobInstance jobInstance) {
+        removeJob(jobInstance);
+        refundJob(jobInstance);
+    }
+
+    @Override
+    public @Nullable Job getJob(@Nullable JobInstance jobLocation) {
+        if (jobLocation == null) return null;
         return this.jobs.stream()
                 .filter(job -> job.getJobInstance().getLocation().equals(jobLocation.getLocation()))
                 .findFirst()
                 .orElse(null);
-    }
-
-    @Override
-    public boolean hasJob(JobInstance jobLocation) {
-        return this.jobs.stream()
-                .anyMatch(job -> job.getJobInstance().getLocation().equals(jobLocation.getLocation()));
     }
 
     @Override
@@ -168,79 +147,6 @@ public abstract class MixinServerPlayer extends Player implements JobsServerPlay
     @Override
     public void setCoins(int coins) {
         this.coins = coins;
-    }
-
-    @Override
-    public void addPowerup(PowerupInstance powerupInstance) {
-        String jobLocation = powerupInstance.getLocation().toString().split("\\.")[0];
-        Job job = getJobForPowerup(powerupInstance);
-        if (hasJob(job.getJobInstance())) {
-            if (!job.hasPowerup(powerupInstance)) {
-                job.addPowerup(powerupInstance);
-            } else {
-                LOGGER.error("Player {} already has powerup {} for job {}", name(), powerupInstance.getLocation(), jobLocation);
-            }
-        } else {
-            LOGGER.error("Player {} does not have job {} to add powerup {}", name(), jobLocation, powerupInstance.getLocation());
-        }
-    }
-
-    @Override
-    public void setPowerup(PowerupInstance powerupInstance, PowerupState powerupState) {
-        String jobLocation = powerupInstance.getLocation().toString().split("\\.")[0];
-        JobInstance jobInstance = JobInstance.of(new ResourceLocation(jobLocation));
-        if (hasJob(jobInstance)) {
-            Job job = getJob(jobInstance);
-            job.setPowerupState(powerupInstance, powerupState);
-        } else {
-            LOGGER.debug("Player {} does not have job {} to set powerup {}", name(), jobLocation, powerupInstance.getLocation());
-        }
-    }
-
-    @Override
-    public void removePowerup(PowerupInstance powerupInstance) {
-        String jobLocation = powerupInstance.getLocation().toString().split("\\.")[0];
-        JobInstance jobInstance = JobInstance.of(new ResourceLocation(jobLocation));
-        if (hasJob(jobInstance)) {
-            Job job = getJob(jobInstance);
-            if (job.hasPowerup(powerupInstance)) {
-                job.removePowerup(powerupInstance);
-            } else {
-                LOGGER.debug("Player {} does not have powerup {} for job {}", name(), powerupInstance.getLocation(), jobLocation);
-            }
-        } else {
-            LOGGER.debug("Player {} does not have this job {} to remove powerup {}", name(), jobLocation, powerupInstance.getLocation());
-        }
-    }
-
-    @Override
-    public boolean hasPowerup(PowerupInstance powerupInstance) {
-        return getJobs().stream()
-                .anyMatch(job -> job.hasPowerup(powerupInstance));
-    }
-
-    @Override
-    public void togglePowerup(PowerupInstance powerupInstance) {
-        if (hasPowerup(powerupInstance)) {
-            PowerupState powerupState = getPowerupState(powerupInstance);
-            if (powerupState == PowerupState.ACTIVE) {
-                setPowerup(powerupInstance, PowerupState.INACTIVE);
-            } else {
-                setPowerup(powerupInstance, PowerupState.ACTIVE);
-            }
-        }
-    }
-
-    private PowerupState getPowerupState(PowerupInstance powerupInstance) {
-        Map<ResourceLocation, PowerupState> powerups = getJobForPowerup(powerupInstance).getPowerups();
-        if (powerups.containsKey(powerupInstance.getLocation())) {
-            return powerups.get(powerupInstance.getLocation());
-        }
-        return PowerupState.NOT_OWNED;
-    }
-
-    private Job getJobForPowerup(PowerupInstance powerupInstance) {
-        return getJob(JobInstance.of(new ResourceLocation(powerupInstance.getLocation().toString().split("\\.")[0])));
     }
 
     @Override
@@ -293,7 +199,8 @@ public abstract class MixinServerPlayer extends Player implements JobsServerPlay
     @Override
     public CraftingResult canCraft(CraftingType crafting, ItemStack itemStack) {
         for (JobInstance jobInstance : JobManager.getInstance().getJobs().values()) {
-            int level = hasJob(jobInstance) ? getJob(jobInstance).getLevel() : 0;
+            Job job = getJob(jobInstance);
+            int level = job == null ? 0 : job.getLevel();
             CraftingResult craftingResult = jobInstance.canCraft(crafting, itemStack, level);
             if (!craftingResult.canCraft()) {
                 if (!JobsPlusCommonConfig.restrictionsEnabledForCreative.get()) {
@@ -509,7 +416,7 @@ public abstract class MixinServerPlayer extends Player implements JobsServerPlay
 
             JobInstance jobInstance = JobManager.getInstance().getJobInstance(JobsPlus.getId(string));
             if (jobInstance != null) {
-                jobs.add(new Job(this, jobInstance, level, experience, new HashMap<>()));
+                jobs.add(new Job(this, jobInstance, level, experience, new ArrayList<>()));
                 this.addCoins((int) (powerUps.stream().filter(b -> b).count() * 10));
             }
         });

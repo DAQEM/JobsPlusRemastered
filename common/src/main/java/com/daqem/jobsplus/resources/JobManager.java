@@ -46,8 +46,10 @@ public abstract class JobManager extends SimpleJsonResourceReloadListener {
             try {
                 JobInstance job = GSON.fromJson(jsonElement.getAsJsonObject(), JobInstance.class);
                 if (!job.isDefault() || (job.isDefault() && JobsPlusCommonConfig.enableDefaultJobs.get())) {
-                    job.setLocations(location);
-                    for (PowerupInstance powerupInstance : job.getPowerups()) {
+                    job.setLocation(location);
+                    for (PowerupInstance powerupInstance : job.getAllPowerups()) {
+                        powerupInstance.setLocationFromJobLocation(location);
+                        powerupInstance.setParents();
                         tempPowerupInstances.put(powerupInstance.getLocation(), powerupInstance);
                     }
                     tempJobInstances.put(location, job);

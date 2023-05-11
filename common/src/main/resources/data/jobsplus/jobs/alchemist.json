@@ -138,5 +138,123 @@
       ]
     }
   ],
-  "powerups": []
+  "powerups": [
+    {
+      "name": "Longer potions I",
+      "description": "Potions last 20% longer when consumed.",
+      "price": 10,
+      "required_level": 0,
+      "actions": [
+        {
+          "type": "jobsplus:on_effect_added",
+          "rewards": [
+            {
+              "type": "jobsplus:effect_duration_multiplier",
+              "multiplier": 1.2
+            }
+          ],
+          "conditions": [
+            {
+              "type": "jobsplus:powerup_not_active",
+              "powerup": "jobsplus:alchemist.longer_potions_ii"
+            }
+          ]
+        }
+      ],
+      "powerups": [
+        {
+          "name": "Longer potions II",
+          "description": "Potions last 40% longer when consumed.",
+          "price": 10,
+          "required_level": 10,
+          "actions": [
+            {
+              "type": "jobsplus:on_effect_added",
+              "rewards": [
+                {
+                  "type": "jobsplus:effect_duration_multiplier",
+                  "multiplier": 1.4
+                }
+              ],
+              "conditions": [
+                {
+                  "type": "jobsplus:powerup_not_active",
+                  "powerup": "jobsplus:alchemist.longer_potions_iii"
+                }
+              ]
+            }
+          ],
+          "powerups": [
+            {
+              "name": "Longer potions III",
+              "description": "Potions last 60% longer when consumed.",
+              "price": 10,
+              "required_level": 20,
+              "actions": [
+                {
+                  "type": "jobsplus:on_effect_added",
+                  "rewards": [
+                    {
+                      "type": "jobsplus:effect_duration_multiplier",
+                      "multiplier": 1.6
+                    }
+                  ],
+                  "conditions": [
+                    {
+                      "type": "jobsplus:powerup_not_active",
+                      "powerup": "jobsplus:alchemist.longer_potions_iv"
+                    }
+                  ]
+                }
+              ],
+              "powerups": [
+                {
+                  "name": "Longer potions IV",
+                  "description": "Potions last 80% longer when consumed.",
+                  "price": 10,
+                  "required_level": 30,
+                  "actions": [
+                    {
+                      "type": "jobsplus:on_effect_added",
+                      "rewards": [
+                        {
+                          "type": "jobsplus:effect_duration_multiplier",
+                          "multiplier": 1.8
+                        }
+                      ],
+                      "conditions": [
+                        {
+                          "type": "jobsplus:powerup_not_active",
+                          "powerup": "jobsplus:alchemist.longer_potions_v"
+                        }
+                      ]
+                    }
+                  ],
+                  "powerups": [
+                    {
+                      "name": "Longer potions V",
+                      "description": "Potions last 100% longer when consumed.",
+                      "price": 10,
+                      "required_level": 40,
+                      "actions": [
+                        {
+                          "type": "jobsplus:on_effect_added",
+                          "rewards": [
+                            {
+                              "type": "jobsplus:effect_duration_multiplier",
+                              "multiplier": 2.0
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
 }

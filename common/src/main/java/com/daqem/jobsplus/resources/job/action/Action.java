@@ -7,6 +7,7 @@ import com.daqem.jobsplus.resources.job.action.reward.ActionReward;
 import com.google.gson.*;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.GsonHelper;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -106,41 +107,25 @@ public abstract class Action {
         public T deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
             JsonObject actionObject = json.getAsJsonObject();
 
-            String shortDescription = actionObject.has("short_description") ? actionObject.get("short_description").getAsString() : "";
-            String description = actionObject.has("description") ? actionObject.get("description").getAsString() : "";
+            String shortDescription = GsonHelper.getAsString(actionObject, "short_description", "");
+            String description = GsonHelper.getAsString(actionObject, "description", "");
 
-            ArrayList<ActionReward> tempRewards = new ArrayList<>();
-            ArrayList<ActionCondition> tempConditions = new ArrayList<>();
+            ArrayList<ActionReward> actionRewardsList = new ArrayList<>();
+            GsonHelper.getAsJsonArray(actionObject, "rewards")
+                    .forEach(rewardElement ->
+                            actionRewardsList.add(getGson().fromJson(rewardElement, ActionReward.class)));
 
-            JsonArray rewards = actionObject.getAsJsonArray("rewards");
-            if (rewards != null && !rewards.isEmpty()) {
-                for (JsonElement reward : rewards) {
-                    JsonObject rewardObject = reward.getAsJsonObject();
-                    ActionReward actionReward = getGson().fromJson(rewardObject, ActionReward.class);
-                    tempRewards.add(actionReward);
-                }
-            }
+            ArrayList<ActionCondition> actionConditionsList = new ArrayList<>();
+            GsonHelper.getAsJsonArray(actionObject, "conditions", new JsonArray())
+                    .forEach(condition ->
+                            actionConditionsList.add(getGson().fromJson(condition.getAsJsonObject(), ActionCondition.class)));
 
-            JsonArray conditions = actionObject.getAsJsonArray("conditions");
-            if (conditions != null && !conditions.isEmpty()) {
-                for (JsonElement condition : conditions) {
-                    JsonObject conditionObject = condition.getAsJsonObject();
-                    ActionCondition actionCondition = getGson().fromJson(conditionObject, ActionCondition.class);
-                    tempConditions.add(actionCondition);
-                }
-            }
-
-            if (!actionObject.has("type")) {
-                throw new JsonParseException("Action must have a type");
-            }
-
-            String type = actionObject.get("type").getAsString();
-            ResourceLocation location = new ResourceLocation(type);
+            ResourceLocation location = new ResourceLocation(GsonHelper.getAsString(actionObject, "type"));
             Class<? extends Action> clazz = Actions.getClass(location);
             return (T) getGson().fromJson(actionObject, clazz)
                     .withDescriptions(shortDescription, description)
-                    .withRewards(tempRewards)
-                    .withConditions(tempConditions);
+                    .withRewards(actionRewardsList)
+                    .withConditions(actionConditionsList);
         }
     }
 }

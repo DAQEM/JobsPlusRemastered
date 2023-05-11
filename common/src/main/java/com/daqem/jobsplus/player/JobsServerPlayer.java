@@ -1,18 +1,17 @@
 package com.daqem.jobsplus.player;
 
 import com.daqem.jobsplus.player.job.Job;
-import com.daqem.jobsplus.player.job.powerup.PowerupState;
 import com.daqem.jobsplus.player.stat.StatData;
 import com.daqem.jobsplus.resources.crafting.CraftingResult;
 import com.daqem.jobsplus.resources.crafting.CraftingType;
 import com.daqem.jobsplus.resources.job.JobInstance;
-import com.daqem.jobsplus.resources.job.powerup.PowerupInstance;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
@@ -24,31 +23,18 @@ public interface JobsServerPlayer {
 
     List<Job> getInactiveJobs();
 
-    List<JobInstance> getInactiveJobInstances();
-
-    void addNewJob(ResourceLocation jobLocation);
-
-    void addNewJob(JobInstance job);
+    @Nullable
+    Job addNewJob(JobInstance job);
 
     void removeJob(JobInstance job);
 
-    boolean hasJob(JobInstance jobLocation);
-
-    Job getJob(JobInstance jobLocation);
+    Job getJob(@Nullable JobInstance jobLocation);
 
     int getCoins();
 
     void addCoins(int coins);
 
     void setCoins(int coins);
-
-    void addPowerup(PowerupInstance powerupInstance);
-
-    void removePowerup(PowerupInstance powerupInstance);
-
-    void setPowerup(PowerupInstance powerupInstance, PowerupState powerupState);
-
-    boolean hasPowerup(PowerupInstance powerupInstance);
 
     UUID getUUID();
 
@@ -58,8 +44,6 @@ public interface JobsServerPlayer {
 
     ListTag inactiveJobsToNBT();
 
-    void togglePowerup(PowerupInstance powerupInstance);
-
     NonNullList<StatData> getStatData();
 
     void addStatData(StatData statData);
@@ -68,7 +52,9 @@ public interface JobsServerPlayer {
 
     void setElytraFlyingDistanceInCm(float flyingDistanceInCm);
 
-    void refundJob(JobInstance jobInstance);
+    void removeAndRefundJob(@NotNull JobInstance jobInstance);
+
+    void refundJob(@NotNull JobInstance jobInstance);
 
     CraftingResult canCraft(CraftingType crafting, ItemStack itemStack);
 

@@ -12,6 +12,7 @@ import com.daqem.jobsplus.resources.job.powerup.PowerupInstance;
 import com.google.gson.*;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
@@ -51,20 +52,6 @@ public class JobInstance {
         return location;
     }
 
-    public void setLocations(ResourceLocation jobLocation) {
-        setLocation(jobLocation);
-        setPowerupLocations(jobLocation);
-    }
-
-    public void setPowerupLocations(ResourceLocation jobLocation) {
-        for (PowerupInstance powerupInstance : powerupInstances) {
-            powerupInstance.setLocation(new ResourceLocation(jobLocation + "."
-                    + powerupInstance.getName()
-                    .toLowerCase()
-                    .replace(" ", "_")));
-        }
-    }
-
     public void setLocation(ResourceLocation location) {
         this.location = location;
     }
@@ -89,8 +76,17 @@ public class JobInstance {
         return powerupInstances;
     }
 
-    public boolean hasPowerup(PowerupInstance powerupInstance) {
-        return powerupInstances.contains(powerupInstance);
+    public List<PowerupInstance> getAllPowerups() {
+        List<PowerupInstance> powerups = new ArrayList<>();
+        getPowerupsRecursive(powerupInstances, powerups);
+        return powerups;
+    }
+
+    private void getPowerupsRecursive(List<PowerupInstance> powerups, List<PowerupInstance> powerupInstances) {
+        for (PowerupInstance powerupInstance : powerups) {
+            powerupInstances.add(powerupInstance);
+            getPowerupsRecursive(powerupInstance.getPowerups(), powerupInstances);
+        }
     }
 
     public int getColorDecimal() {
@@ -132,15 +128,22 @@ public class JobInstance {
 
     @Override
     public String toString() {
-        return "JobInstance{" +
-                "name='" + name +
-                ", price=" + price +
-                ", maxLevel=" + maxLevel +
-                ", color='" + color +
-                ", iconItem=" + iconItem +
-                ", actions=" + actions +
-                ", powerups=" + powerupInstances +
-                '}';
+        JsonObject json = new JsonObject();
+        json.addProperty("name", name);
+        json.addProperty("price", price);
+        json.addProperty("maxLevel", maxLevel);
+        json.addProperty("color", color);
+        json.addProperty("iconItem", iconItem.getDescriptionId());
+        json.add("actions", GsonHelper.parseArray(new Gson().toJson(actions)));
+        json.add("powerups", GsonHelper.parseArray(new Gson().toJson(powerupInstances)));
+        return json.toString();
+    }
+
+    public String toShortString() {
+        JsonObject json = new JsonObject();
+        json.addProperty("name", name);
+        json.addProperty("price", price);
+        return json.toString();
     }
 
     @Nullable

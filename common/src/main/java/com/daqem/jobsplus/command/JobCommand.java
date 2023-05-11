@@ -10,12 +10,14 @@ import com.daqem.jobsplus.player.job.powerup.PowerupState;
 import com.daqem.jobsplus.resources.job.JobInstance;
 import com.daqem.jobsplus.resources.job.powerup.PowerupInstance;
 import com.daqem.jobsplus.util.experience.ExperienceHandler;
+import com.google.gson.GsonBuilder;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.GsonHelper;
 
 public class JobCommand {
 
@@ -83,6 +85,13 @@ public class JobCommand {
                                                                 ))
                                                         )
                                                 )
+                                                .then(Commands.literal("clear")
+                                                        .executes(context -> clearPowerups(
+                                                                context.getSource(),
+                                                                EntityArgument.getPlayer(context, "target_player"),
+                                                                JobArgument.getJob(context, "job")
+                                                        ))
+                                                )
                                         )
                                 )
                         )
@@ -90,36 +99,52 @@ public class JobCommand {
         );
     }
 
+    private static int clearPowerups(CommandSourceStack source, ServerPlayer targetPlayer, JobInstance jobInstance) {
+        if (targetPlayer instanceof JobsServerPlayer jobsServerPlayer) {
+            Job job = jobsServerPlayer.getJob(jobInstance);
+            if (job != null) {
+                job.getPowerupManager().clearPowerups();
+                source.sendSuccess(JobsPlus.translatable(
+                        "command.set.powerup.success_clear", jobInstance.getLocation()), false);
+            }
+        }
+        return 0;
+    }
+
     private static int debug(CommandSourceStack source, ServerPlayer target) {
         if (target instanceof JobsServerPlayer jobsServerPlayer) {
-            source.sendSuccess(JobsPlus.literal("Jobs: " + jobsServerPlayer.getJobs().stream().map(Job::toShortString).toList()), false);
+            source.sendSuccess(JobsPlus.literal(new GsonBuilder().setPrettyPrinting().create().toJson(GsonHelper.parseArray(jobsServerPlayer.getJobs().stream().map(Job::toString).toList().toString()))), false);
         }
         return 0;
     }
 
     private static int setPowerup(CommandSourceStack source, ServerPlayer target, JobInstance jobInstance, PowerupInstance powerupInstance, PowerupState powerupState) {
         if (target instanceof JobsServerPlayer jobsServerPlayer) {
-            if (jobsServerPlayer.hasJob(jobInstance)) {
-                if (jobInstance.hasPowerup(powerupInstance)) {
-                    if (powerupState == PowerupState.NOT_OWNED) {
-                        jobsServerPlayer.removePowerup(powerupInstance);
-                        source.sendSuccess(JobsPlus.translatable(
-                                "command.set.powerup.success_remove", powerupInstance.getLocation(), jobInstance.getLocation()), false);
-                        return 0;
-                    }
-                    jobsServerPlayer.setPowerup(powerupInstance, powerupState);
-                    source.sendSuccess(JobsPlus.translatable(
-                            "command.set.powerup.success", target.getName().getString(), powerupInstance.getLocation()), false);
-                } else {
-                    source.sendFailure(JobsPlus.translatable(
-                            "command.set.powerup.not_available_for_job ", powerupInstance.getLocation(), jobInstance.getLocation()));
-                }
-            } else {
-                source.sendFailure(JobsPlus.translatable(
-                        "command.does_not_have_job", jobsServerPlayer.name(), jobInstance.getLocation()));
-            }
+            Job job = jobsServerPlayer.getJob(jobInstance);
+            job.getPowerupManager().forceAddPowerup(powerupInstance, powerupState);
+//            if (job != null) {
+//                PowerupManager powerupManager = ;
+//                Powerup powerup = powerupManager.getPowerup(powerupInstance);
+//                if (powerup != null) {
+////                    powerupManager.setPowerupState(powerup, powerupState);
+////                    if (powerupState == PowerupState.NOT_OWNED) {
+////                        source.sendSuccess(JobsPlus.translatable(
+////                                "command.set.powerup.success_remove", powerupInstance.getLocation(), jobInstance.getLocation()), false);
+////                    } else {
+////                        source.sendSuccess(JobsPlus.translatable(
+////                                "command.set.powerup.success", target.getName().getString(), powerupInstance.getLocation()), false);
+////                    }
+//                } else {
+//
+//                    source.sendSuccess(JobsPlus.translatable(
+//                            "command.set.powerup.success", target.getName().getString(), powerupInstance.getLocation()), false);
+//                }
+//            } else {
+//                source.sendFailure(JobsPlus.translatable(
+//                        "command.does_not_have_job", jobsServerPlayer.name(), jobInstance.getLocation()));
+//            }
         }
-        return 0;
+        return 1;
     }
 
     private static int setCoins(CommandSourceStack source, ServerPlayer target, int coins) {
@@ -133,8 +158,8 @@ public class JobCommand {
 
     private static int setExperience(CommandSourceStack source, ServerPlayer target, JobInstance jobInstance, int experience) {
         if (target instanceof JobsServerPlayer jobsServerPlayer) {
-            if (jobsServerPlayer.hasJob(jobInstance)) {
-                Job job = jobsServerPlayer.getJob(jobInstance);
+            Job job = jobsServerPlayer.getJob(jobInstance);
+            if (job != null) {
                 int maxExperienceForLevel = ExperienceHandler.getMaxExperienceForLevel(job.getLevel());
                 if (experience >= maxExperienceForLevel) {
                     source.sendFailure(JobsPlus.translatable(
@@ -157,9 +182,9 @@ public class JobCommand {
 
     private static int setLevel(CommandSourceStack source, ServerPlayer target, JobInstance jobInstance, int level) {
         if (target instanceof JobsServerPlayer jobsServerPlayer) {
-
+            Job job = jobsServerPlayer.getJob(jobInstance);
             if (level == 0) {
-                if (jobsServerPlayer.hasJob(jobInstance)) {
+                if (job != null) {
                     jobsServerPlayer.removeJob(jobInstance);
                     source.sendSuccess(JobsPlus.translatable(
                             "command.set.level.removed_job", jobInstance.getLocation(), jobsServerPlayer.name()), false);
@@ -174,15 +199,20 @@ public class JobCommand {
                 return level;
             }
 
-            if (jobsServerPlayer.hasJob(jobInstance)) {
-                jobsServerPlayer.getJob(jobInstance).setLevel(level);
+            if (job != null) {
+                job.setLevel(level);
                 source.sendSuccess(JobsPlus.translatable(
                         "command.set.level.success", jobInstance.getLocation(), level, jobsServerPlayer.name()), false);
             } else {
-                jobsServerPlayer.addNewJob(jobInstance);
-                jobsServerPlayer.getJob(jobInstance).setLevel(level);
-                source.sendSuccess(JobsPlus.translatable(
-                        "command.set.level.success_new_job", jobInstance.getLocation(), level, jobsServerPlayer.name()), false);
+                job = jobsServerPlayer.addNewJob(jobInstance);
+                if (job != null) {
+                    job.setLevel(level);
+                    source.sendSuccess(JobsPlus.translatable(
+                            "command.set.level.success_new_job", jobInstance.getLocation(), level, jobsServerPlayer.name()), false);
+                } else {
+                    source.sendFailure(JobsPlus.translatable(
+                            "command.set.level.cannot_add_job"));
+                }
             }
         } else {
             source.sendFailure(JobsPlus.translatable(

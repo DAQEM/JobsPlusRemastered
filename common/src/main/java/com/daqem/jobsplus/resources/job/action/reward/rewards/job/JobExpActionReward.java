@@ -1,4 +1,4 @@
-package com.daqem.jobsplus.resources.job.action.reward.rewards;
+package com.daqem.jobsplus.resources.job.action.reward.rewards.job;
 
 import com.daqem.jobsplus.player.ActionData;
 import com.daqem.jobsplus.player.JobsServerPlayer;
@@ -6,23 +6,24 @@ import com.daqem.jobsplus.resources.job.action.reward.ActionReward;
 import com.daqem.jobsplus.resources.job.action.reward.ActionRewards;
 import com.google.gson.*;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.GsonHelper;
 
 import java.lang.reflect.Type;
 
-public class ExpActionReward extends ActionReward {
+public class JobExpActionReward extends ActionReward {
 
     private final int minExp;
     private final int maxExp;
 
-    public ExpActionReward(double chance, int minExp, int maxExp) {
-        super(ActionRewards.EXP, chance);
+    public JobExpActionReward(int minExp, int maxExp) {
+        super(ActionRewards.JOB_EXP);
         this.minExp = minExp;
         this.maxExp = maxExp;
     }
 
     @Override
     public String toString() {
-        return "ExpActionReward{" +
+        return "JobExpActionReward{" +
                 "chance=" + this.getChance() +
                 ", type=" + this.getType() +
                 ", min_exp=" + minExp +
@@ -34,24 +35,20 @@ public class ExpActionReward extends ActionReward {
     public void apply(ActionData actionData) {
         JobsServerPlayer player = actionData.getPlayer();
         int exp = ((ServerPlayer) player).getRandom().nextInt(minExp, maxExp + 1);
-        ((ServerPlayer) player).giveExperiencePoints(exp);
+        actionData.getSourceJob().addExperience(exp);
     }
 
-    public static class Serializer implements JsonDeserializer<ExpActionReward> {
+    public static class Deserializer implements JsonDeserializer<JobExpActionReward> {
 
         @Override
-        public ExpActionReward deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+        public JobExpActionReward deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
             JsonObject jsonObject = json.getAsJsonObject();
-            int minExp = jsonObject.get("min_exp").getAsInt();
-            int maxExp = jsonObject.get("max_exp").getAsInt();
+            int minExp = GsonHelper.getAsInt(jsonObject, "min_exp");
+            int maxExp = GsonHelper.getAsInt(jsonObject, "max_exp");
             if (minExp > maxExp) {
                 throw new JsonParseException("min_exp cannot be greater than max_exp for ExpActionReward.");
             }
-
-            double chance = jsonObject.has("chance") ? jsonObject.get("chance").getAsDouble() : 100;
-
-            return new ExpActionReward(
-                    chance,
+            return new JobExpActionReward(
                     minExp,
                     maxExp);
         }

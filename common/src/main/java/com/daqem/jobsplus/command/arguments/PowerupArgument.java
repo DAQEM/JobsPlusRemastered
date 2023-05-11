@@ -12,7 +12,7 @@ import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.resources.ResourceLocation;
 
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -29,9 +29,9 @@ public class PowerupArgument implements ArgumentType<PowerupInstance> {
 
     @Override
     public <S> CompletableFuture<Suggestions> listSuggestions(CommandContext<S> context, SuggestionsBuilder builder) {
-        Collection<ResourceLocation> powerups = List.of();
+        List<ResourceLocation> powerups = new ArrayList<>();
         try {
-            powerups = context.getArgument("job", JobInstance.class).getPowerups().stream().map(PowerupInstance::getLocation).toList();
+            powerups = context.getArgument("job", JobInstance.class).getAllPowerups().stream().map(PowerupInstance::getLocation).toList();
         } catch (NullPointerException ignored) {
         }
         return SharedSuggestionProvider.suggest(powerups.stream().map(ResourceLocation::toString), builder);

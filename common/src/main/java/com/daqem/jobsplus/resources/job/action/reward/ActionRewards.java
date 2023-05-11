@@ -3,7 +3,12 @@ package com.daqem.jobsplus.resources.job.action.reward;
 import com.daqem.jobsplus.JobsPlus;
 import com.daqem.jobsplus.exception.UnknownRewardTypeException;
 import com.daqem.jobsplus.registry.JobsPlusRegistry;
-import com.daqem.jobsplus.resources.job.action.reward.rewards.*;
+import com.daqem.jobsplus.resources.job.action.reward.rewards.effect.EffectActionReward;
+import com.daqem.jobsplus.resources.job.action.reward.rewards.effect.EffectDurationMultiplierActionReward;
+import com.daqem.jobsplus.resources.job.action.reward.rewards.experience.ExpActionReward;
+import com.daqem.jobsplus.resources.job.action.reward.rewards.item.ItemActionReward;
+import com.daqem.jobsplus.resources.job.action.reward.rewards.job.JobExpActionReward;
+import com.daqem.jobsplus.resources.job.action.reward.rewards.job.JobExpMultiplierActionReward;
 import com.google.gson.JsonDeserializer;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
@@ -15,11 +20,12 @@ public class ActionRewards {
 
     public static final List<ActionRewardType> ACTION_REWARD_TYPES = new ArrayList<>();
 
-    public static final ActionRewardType JOB_EXP = register(JobsPlus.getId("job_exp"), JobExpActionReward.class, new JobExpActionReward.Serializer());
-    public static final ActionRewardType EXP = register(JobsPlus.getId("exp"), ExpActionReward.class, new ExpActionReward.Serializer());
-    public static final ActionRewardType ITEM = register(JobsPlus.getId("item"), ItemActionReward.class, new ItemActionReward.Serializer());
-    public static final ActionRewardType POTION_EFFECT = register(JobsPlus.getId("potion_effect"), PotionEffectActionReward.class, new PotionEffectActionReward.Serializer());
-    public static final ActionRewardType JOB_EXP_MULTIPLIER = register(JobsPlus.getId("job_exp_multiplier"), JobExpMultiplierActionReward.class, new JobExpMultiplierActionReward.Serializer());
+    public static final ActionRewardType JOB_EXP = register(JobsPlus.getId("job_exp"), JobExpActionReward.class, new JobExpActionReward.Deserializer());
+    public static final ActionRewardType EXP = register(JobsPlus.getId("exp"), ExpActionReward.class, new ExpActionReward.Deserializer());
+    public static final ActionRewardType ITEM = register(JobsPlus.getId("item"), ItemActionReward.class, new ItemActionReward.Deserializer());
+    public static final ActionRewardType EFFECT = register(JobsPlus.getId("effect"), EffectActionReward.class, new EffectActionReward.Deserializer());
+    public static final ActionRewardType JOB_EXP_MULTIPLIER = register(JobsPlus.getId("job_exp_multiplier"), JobExpMultiplierActionReward.class, new JobExpMultiplierActionReward.Deserializer());
+    public static final ActionRewardType EFFECT_DURATION_MULTIPLIER = register(JobsPlus.getId("effect_duration_multiplier"), EffectDurationMultiplierActionReward.class, new EffectDurationMultiplierActionReward.Deserializer());
 
     private static ActionRewardType register(ResourceLocation location, Class<? extends ActionReward> clazz, JsonDeserializer<? extends ActionReward> deserializer) {
         ActionRewardType actionRewardType = new ActionRewardType(clazz, location, deserializer);

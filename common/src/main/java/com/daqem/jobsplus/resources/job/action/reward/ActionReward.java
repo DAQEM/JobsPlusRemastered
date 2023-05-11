@@ -4,17 +4,17 @@ import com.daqem.jobsplus.player.ActionData;
 import com.google.gson.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.GsonHelper;
 
 import java.lang.reflect.Type;
 
 public abstract class ActionReward {
 
     private final ActionRewardType type;
-    private final double chance;
+    private double chance;
 
-    public ActionReward(ActionRewardType type, double chance) {
+    public ActionReward(ActionRewardType type) {
         this.type = type;
-        this.chance = chance;
     }
 
     public double getChance() {
@@ -29,6 +29,12 @@ public abstract class ActionReward {
 
     public boolean passedChance(ActionData actionData) {
         return ((ServerPlayer) actionData.getPlayer()).getRandom().nextDouble() * 100 <= chance;
+    }
+
+    //with chance
+    public ActionReward withChance(double chance) {
+        this.chance = chance;
+        return this;
     }
 
     public static class ActionRewardSerializer<T extends ActionReward> implements JsonDeserializer<T> {
@@ -46,15 +52,12 @@ public abstract class ActionReward {
         @Override
         public T deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
             JsonObject rewardObject = json.getAsJsonObject();
-            if (!rewardObject.has("type")) {
-                throw new JsonParseException("ActionReward must have a type");
-            }
-
-            String type = rewardObject.get("type").getAsString();
+            String type = GsonHelper.getAsString(rewardObject, "type");
             ResourceLocation location = new ResourceLocation(type);
             Class<? extends ActionReward> clazz = ActionRewards.getClass(location);
 
-            return (T) getGson().fromJson(rewardObject, clazz);
+            return (T) getGson().fromJson(rewardObject, clazz)
+                    .withChance(GsonHelper.getAsDouble(rewardObject, "chance", 100));
         }
     }
 }

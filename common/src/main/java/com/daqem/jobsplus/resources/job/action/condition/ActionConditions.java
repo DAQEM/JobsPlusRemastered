@@ -19,6 +19,7 @@ import com.daqem.jobsplus.resources.job.action.condition.conditions.experience.E
 import com.daqem.jobsplus.resources.job.action.condition.conditions.item.*;
 import com.daqem.jobsplus.resources.job.action.condition.conditions.job.JobExperiencePercentageActionCondition;
 import com.daqem.jobsplus.resources.job.action.condition.conditions.job.JobLevelActionCondition;
+import com.daqem.jobsplus.resources.job.action.condition.conditions.job.powerup.PowerupNotActiveActionCondition;
 import com.daqem.jobsplus.resources.job.action.condition.conditions.movement.DistanceActionCondition;
 import com.daqem.jobsplus.resources.job.action.condition.conditions.recipe.IsBlastingRecipeActionCondition;
 import com.daqem.jobsplus.resources.job.action.condition.conditions.recipe.IsSmokingRecipeActionCondition;
@@ -64,6 +65,7 @@ public class ActionConditions {
     public static final ActionConditionType IS_BLASTING_RECIPE = register(JobsPlus.getId("is_blasting_recipe"), IsBlastingRecipeActionCondition.class, new IsBlastingRecipeActionCondition.Deserializer());
     public static final ActionConditionType IS_SMOKING_RECIPE = register(JobsPlus.getId("is_smoking_recipe"), IsSmokingRecipeActionCondition.class, new IsSmokingRecipeActionCondition.Deserializer());
     public static final ActionConditionType IS_ORE = register(JobsPlus.getId("is_ore"), IsOreActionCondition.class, new IsOreActionCondition.Deserializer());
+    public static final ActionConditionType POWERUP_NOT_ACTIVE = register(JobsPlus.getId("powerup_not_active"), PowerupNotActiveActionCondition.class, new PowerupNotActiveActionCondition.Deserializer());
 
     private static ActionConditionType register(ResourceLocation location, Class<? extends ActionCondition> clazz, JsonDeserializer<? extends ActionCondition> deserializer) {
         ActionConditionType actionConditionType = new ActionConditionType(clazz, location, deserializer);

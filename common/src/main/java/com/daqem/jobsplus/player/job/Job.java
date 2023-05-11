@@ -3,44 +3,57 @@ package com.daqem.jobsplus.player.job;
 import com.daqem.jobsplus.Constants;
 import com.daqem.jobsplus.event.triggers.JobEvents;
 import com.daqem.jobsplus.player.JobsServerPlayer;
+import com.daqem.jobsplus.player.job.powerup.Powerup;
+import com.daqem.jobsplus.player.job.powerup.PowerupManager;
 import com.daqem.jobsplus.player.job.powerup.PowerupState;
 import com.daqem.jobsplus.resources.JobManager;
 import com.daqem.jobsplus.resources.job.JobInstance;
 import com.daqem.jobsplus.resources.job.powerup.PowerupInstance;
+import com.google.gson.JsonObject;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.GsonHelper;
+import org.jetbrains.annotations.NotNull;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Job {
 
     private final JobsServerPlayer player;
     private final JobInstance jobInstance;
+    private final PowerupManager powerupManager;
     private int level;
     private int experience;
-    private final Map<ResourceLocation, PowerupState> powerups;
 
     public Job(JobsServerPlayer player, JobInstance jobInstance) {
-        this(player, jobInstance, 0, 0, new HashMap<>());
+        this(player, jobInstance, 0, 0, new ArrayList<>());
     }
 
-    public Job(JobsServerPlayer player, ResourceLocation jobInstanceLocation, int level, int experience, Map<ResourceLocation, PowerupState> powerups) {
+    public Job(JobsServerPlayer player, JobInstance jobInstance, int level, int experience) {
+        this(player, jobInstance, level, experience, new ArrayList<>());
+    }
+
+    public Job(JobsServerPlayer player, ResourceLocation jobInstanceLocation, int level, int experience, @NotNull List<Powerup> powerups) {
         this(player, JobManager.getInstance().getJobs().get(jobInstanceLocation), level, experience, powerups);
     }
 
-    public Job(JobsServerPlayer player, JobInstance jobInstance, int level, int experience, Map<ResourceLocation, PowerupState> powerups) {
+    public Job(JobsServerPlayer player, JobInstance jobInstance, int level, int experience, @NotNull List<Powerup> powerups) {
         this.player = player;
         this.jobInstance = jobInstance;
+        this.powerupManager = new PowerupManager(jobInstance, powerups);
         this.level = level;
         this.experience = experience;
-        this.powerups = powerups;
     }
 
     public JobInstance getJobInstance() {
         return jobInstance;
+    }
+
+    public PowerupManager getPowerupManager() {
+        return powerupManager;
     }
 
     public int getLevel() {
@@ -85,26 +98,6 @@ public class Job {
         return (int) (100 + level * level * 0.5791);
     }
 
-    public Map<ResourceLocation, PowerupState> getPowerups() {
-        return powerups;
-    }
-
-    public void addPowerup(PowerupInstance powerupInstance) {
-        powerups.put(powerupInstance.getLocation(), PowerupState.ACTIVE);
-    }
-
-    public void removePowerup(PowerupInstance powerupInstance) {
-        powerups.remove(powerupInstance.getLocation());
-    }
-
-    public boolean hasPowerup(PowerupInstance powerupInstance) {
-        return powerups.containsKey(powerupInstance.getLocation());
-    }
-
-    public void setPowerupState(PowerupInstance powerupInstance, PowerupState powerupState) {
-        powerups.put(powerupInstance.getLocation(), powerupState);
-    }
-
     public CompoundTag toNBT() {
         CompoundTag jobTag = new CompoundTag();
 
@@ -114,11 +107,11 @@ public class Job {
 
         ListTag powerupsTag = new ListTag();
 
-        for (Map.Entry<ResourceLocation, PowerupState> powerup : getPowerups().entrySet()) {
+        for (Powerup powerup : powerupManager.getAllPowerups()) {
             CompoundTag powerupTag = new CompoundTag();
 
-            powerupTag.putString(Constants.POWERUP_LOCATION, powerup.getKey().toString());
-            powerupTag.putString(Constants.POWERUP_STATE, powerup.getValue().name());
+            powerupTag.putString(Constants.POWERUP_LOCATION, powerup.getPowerupInstance().getLocation().toString());
+            powerupTag.putString(Constants.POWERUP_STATE, powerup.getPowerupState().name());
 
             powerupsTag.add(powerupTag);
         }
@@ -135,14 +128,14 @@ public class Job {
         int exp = tag.getInt(Constants.EXPERIENCE);
         ListTag powerupsTag = tag.getList(Constants.POWERUPS, Tag.TAG_COMPOUND);
 
-        Map<ResourceLocation, PowerupState> powerups = new HashMap<>();
+        List<Powerup> powerups = new ArrayList<>();
 
         for (int i = 0; i < powerupsTag.size(); i++) {
             CompoundTag powerupTag = powerupsTag.getCompound(i);
             ResourceLocation powerupLocation = new ResourceLocation(powerupTag.getString(Constants.POWERUP_LOCATION));
             PowerupState state = PowerupState.valueOf(powerupTag.getString(Constants.POWERUP_STATE));
 
-            powerups.put(powerupLocation, state);
+            powerups.add(new Powerup(PowerupInstance.of(powerupLocation), state));
         }
 
         return new Job(player, jobInstanceLocation, level, exp, powerups);
@@ -150,23 +143,12 @@ public class Job {
 
     @Override
     public String toString() {
-        return "Job{" +
-                "jobInstance=" + jobInstance +
-                ", level=" + level +
-                ", experience=" + experience +
-                ", powerups=" + powerups +
-                '}';
-    }
-
-    public String toShortString() {
-        return """
-                Job {
-                    job: %s,
-                    level: %d,
-                    experience: %d,
-                    powerups: %s
-                }
-                """.formatted(jobInstance.getLocation(), level, experience, powerups.toString().replace(", ", ", \n"));
+        JsonObject json = new JsonObject();
+        json.add("jobInstance", GsonHelper.parse(jobInstance.toShortString()));
+        json.addProperty("level", level);
+        json.addProperty("experience", experience);
+        json.add("powerupManager", GsonHelper.parse(powerupManager.toShortString()));
+        return json.toString();
     }
 
     public double getExperiencePercentage() {

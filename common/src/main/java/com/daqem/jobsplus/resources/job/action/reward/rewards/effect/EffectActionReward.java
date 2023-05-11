@@ -1,4 +1,4 @@
-package com.daqem.jobsplus.resources.job.action.reward.rewards;
+package com.daqem.jobsplus.resources.job.action.reward.rewards.effect;
 
 import com.daqem.jobsplus.player.ActionData;
 import com.daqem.jobsplus.player.JobsServerPlayer;
@@ -8,25 +8,26 @@ import com.google.gson.*;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.GsonHelper;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 
 import java.lang.reflect.Type;
 
-public class PotionEffectActionReward extends ActionReward {
+public class EffectActionReward extends ActionReward {
 
     private final MobEffect effect;
     private final int duration;
 
-    public PotionEffectActionReward(double chance, MobEffect effect, int duration) {
-        super(ActionRewards.POTION_EFFECT, chance);
+    public EffectActionReward(MobEffect effect, int duration) {
+        super(ActionRewards.EFFECT);
         this.effect = effect;
         this.duration = duration;
     }
 
     @Override
     public String toString() {
-        return "PotionEffectActionReward{" +
+        return "EffectActionReward{" +
                 "chance=" + this.getChance() +
                 ", type=" + this.getType() +
                 ", effect=" + effect.toString() +
@@ -40,18 +41,13 @@ public class PotionEffectActionReward extends ActionReward {
         ((ServerPlayer) player).addEffect(new MobEffectInstance(effect, duration));
     }
 
-    public static class Serializer implements JsonDeserializer<PotionEffectActionReward> {
+    public static class Deserializer implements JsonDeserializer<EffectActionReward> {
         @Override
-        public PotionEffectActionReward deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+        public EffectActionReward deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
             JsonObject jsonObject = json.getAsJsonObject();
-
-            double chance = jsonObject.has("chance") ? jsonObject.get("chance").getAsDouble() : 100;
-            int duration = jsonObject.has("duration") ? jsonObject.get("duration").getAsInt() : 100;
-
-            return new PotionEffectActionReward(
-                    chance,
+            return new EffectActionReward(
                     Registry.MOB_EFFECT.get(new ResourceLocation(json.getAsJsonObject().get("effect").getAsString())),
-                    duration);
+                    GsonHelper.getAsInt(jsonObject, "duration", 100));
         }
     }
 }
