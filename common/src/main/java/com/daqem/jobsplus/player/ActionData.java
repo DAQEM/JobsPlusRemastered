@@ -1,6 +1,7 @@
 package com.daqem.jobsplus.player;
 
 import com.daqem.jobsplus.player.job.Job;
+import com.daqem.jobsplus.player.job.powerup.PowerupState;
 import com.daqem.jobsplus.resources.job.action.Action;
 import com.daqem.jobsplus.resources.job.action.ActionType;
 import org.jetbrains.annotations.Nullable;
@@ -50,9 +51,11 @@ public class ActionData {
                 handleAction(job, action);
             });
             job.getPowerupManager().getAllPowerups().forEach(powerup -> {
-                powerup.getPowerupInstance().getActions().forEach(action -> {
-                    handleAction(job, action);
-                });
+                if (powerup.getPowerupState() == PowerupState.ACTIVE) {
+                    powerup.getPowerupInstance().getActions().forEach(action -> {
+                        handleAction(job, action);
+                    });
+                }
             });
         }
     }
