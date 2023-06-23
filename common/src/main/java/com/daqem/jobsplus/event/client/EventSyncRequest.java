@@ -1,7 +1,7 @@
 package com.daqem.jobsplus.event.client;
 
 import com.daqem.jobsplus.networking.c2s.PacketSyncRequestC2S;
-import com.daqem.jobsplus.resources.JobManager;
+import com.daqem.jobsplus.resources.job.JobManager;
 import dev.architectury.event.events.client.ClientPlayerEvent;
 import net.minecraft.client.Minecraft;
 

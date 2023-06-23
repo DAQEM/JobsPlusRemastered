@@ -1,6 +1,7 @@
 package com.daqem.jobsplus;
 
 import com.daqem.jobsplus.event.command.EventRegisterCommands;
+import com.daqem.jobsplus.event.server.EventServerStart;
 import com.daqem.jobsplus.event.triggers.AdvancementEvents;
 import com.daqem.jobsplus.event.triggers.BlockEvents;
 import com.daqem.jobsplus.event.triggers.EntityEvents;
@@ -23,6 +24,8 @@ public class JobsPlus {
 
     private static void registerEvents() {
         EventRegisterCommands.registerEvent();
+
+        EventServerStart.registerEvent();
 
         BlockEvents.registerEvents();
         ItemEvents.registerEvents();

@@ -6,142 +6,10 @@
   "icon_item": "minecraft:brewing_stand",
   "description": "",
   "is_default": true,
-  "actions": [
-    {
-      "type": "jobsplus:on_brew_potion",
-      "short_description": "Brew a potion",
-      "description": "As an alchemist, you can brew a potion to gain job experience. Collect ingredients, combine them in a brewing stand and watch as the potion takes shape.",
-      "rewards": [
-        {
-          "type": "jobsplus:job_exp",
-          "min_exp": 1,
-          "max_exp": 2
-        }
-      ]
-    },
-    {
-      "type": "jobsplus:on_drink",
-      "short_description": "Drink a potion",
-      "description": "Alchemists who drink a potion will receive job experience points. This action requires a potion to be in your inventory.",
-      "rewards": [
-        {
-          "type": "jobsplus:job_exp",
-          "min_exp": 1,
-          "max_exp": 2
-        }
-      ],
-      "conditions": [
-        {
-          "type": "jobsplus:item",
-          "item": "minecraft:potion"
-        }
-      ]
-    },
-    {
-      "type": "jobsplus:on_throw_item",
-      "short_description": "Throw a potion",
-      "description": "As an alchemist, throwing a splash or lingering potion will reward you with job experience points. This action requires either a splash or lingering potion, depending on which one you want to throw.",
-      "rewards": [
-        {
-          "type": "jobsplus:job_exp",
-          "min_exp": 1,
-          "max_exp": 2
-        }
-      ],
-      "conditions": [
-        {
-          "type": "jobsplus:items",
-          "items": [
-            "minecraft:splash_potion",
-            "minecraft:lingering_potion"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "jobsplus:on_craft_item",
-      "short_description": "Craft alchemy items",
-      "description": "To earn job experience points, craft various alchemy items such as a brewing stand, glistering melon slice, sugar, rabbit foot, blaze powder, fermented spider eye, magma cream, golden carrot, and turtle helmet.",
-      "rewards": [
-        {
-          "type": "jobsplus:job_exp",
-          "min_exp": 1,
-          "max_exp": 2
-        }
-      ],
-      "conditions": [
-        {
-          "type": "jobsplus:items",
-          "items": [
-            "minecraft:brewing_stand",
-            "minecraft:glistering_melon_slice",
-            "minecraft:sugar",
-            "minecraft:rabbit_foot",
-            "minecraft:blaze_powder",
-            "minecraft:fermented_spider_eye",
-            "minecraft:magma_cream",
-            "minecraft:golden_carrot",
-            "minecraft:turtle_helmet"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "jobsplus:on_kill_entity",
-      "short_description": "Kill alchemy mobs",
-      "description": "Alchemists can gain job experience points by killing specific mobs such as phantoms, pufferfish, magma cubes, ghasts, rabbits, spiders, cave spiders, blazes, and witches.",
-      "rewards": [
-        {
-          "type": "jobsplus:job_exp",
-          "min_exp": 1,
-          "max_exp": 2
-        }
-      ],
-      "conditions": [
-        {
-          "type": "jobsplus:entity_types",
-          "entity_types": [
-            "minecraft:phantom",
-            "minecraft:pufferfish",
-            "minecraft:magma_cube",
-            "minecraft:ghast",
-            "minecraft:rabbit",
-            "minecraft:spider",
-            "minecraft:cave_spider",
-            "minecraft:blaze",
-            "minecraft:witch"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "jobsplus:on_break_block",
-      "short_description": "Harvest Nether Wart",
-      "description": "As an alchemist, harvesting fully grown Nether Wart will reward you with job experience points. Make sure the crops have fully grown before harvesting.",
-      "rewards": [
-        {
-          "type": "jobsplus:job_exp",
-          "min_exp": 1,
-          "max_exp": 2
-        }
-      ],
-      "conditions": [
-        {
-          "type": "jobsplus:blocks",
-          "blocks": [
-            "minecraft:nether_wart"
-          ]
-        },
-        {
-          "type": "jobsplus:crop_fully_grown"
-        }
-      ]
-    }
-  ],
   "powerups": [
     {
       "name": "Longer potions I",
-      "description": "Potions last 20% longer when consumed.",
+      "description": "Potions last 20% longer.",
       "price": 10,
       "required_level": 0,
       "actions": [
@@ -157,6 +25,18 @@
             {
               "type": "jobsplus:powerup_not_active",
               "powerup": "jobsplus:alchemist.longer_potions_ii"
+            },
+            {
+              "type": "jobsplus:powerup_not_active",
+              "powerup": "jobsplus:alchemist.longer_potions_iii"
+            },
+            {
+              "type": "jobsplus:powerup_not_active",
+              "powerup": "jobsplus:alchemist.longer_potions_iv"
+            },
+            {
+              "type": "jobsplus:powerup_not_active",
+              "powerup": "jobsplus:alchemist.longer_potions_v"
             }
           ]
         }
@@ -164,7 +44,7 @@
       "powerups": [
         {
           "name": "Longer potions II",
-          "description": "Potions last 40% longer when consumed.",
+          "description": "Potions last 40% longer.",
           "price": 10,
           "required_level": 10,
           "actions": [
@@ -180,6 +60,14 @@
                 {
                   "type": "jobsplus:powerup_not_active",
                   "powerup": "jobsplus:alchemist.longer_potions_iii"
+                },
+                {
+                  "type": "jobsplus:powerup_not_active",
+                  "powerup": "jobsplus:alchemist.longer_potions_iv"
+                },
+                {
+                  "type": "jobsplus:powerup_not_active",
+                  "powerup": "jobsplus:alchemist.longer_potions_v"
                 }
               ]
             }
@@ -187,7 +75,7 @@
           "powerups": [
             {
               "name": "Longer potions III",
-              "description": "Potions last 60% longer when consumed.",
+              "description": "Potions last 60% longer.",
               "price": 10,
               "required_level": 20,
               "actions": [
@@ -203,6 +91,10 @@
                     {
                       "type": "jobsplus:powerup_not_active",
                       "powerup": "jobsplus:alchemist.longer_potions_iv"
+                    },
+                    {
+                      "type": "jobsplus:powerup_not_active",
+                      "powerup": "jobsplus:alchemist.longer_potions_v"
                     }
                   ]
                 }
@@ -210,7 +102,7 @@
               "powerups": [
                 {
                   "name": "Longer potions IV",
-                  "description": "Potions last 80% longer when consumed.",
+                  "description": "Potions last 80% longer.",
                   "price": 10,
                   "required_level": 30,
                   "actions": [
@@ -233,7 +125,7 @@
                   "powerups": [
                     {
                       "name": "Longer potions V",
-                      "description": "Potions last 100% longer when consumed.",
+                      "description": "Potions last 2 times as long.",
                       "price": 10,
                       "required_level": 40,
                       "actions": [
@@ -247,6 +139,449 @@
                           ]
                         }
                       ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Stronger potions I",
+      "description": "Potions have a 20% change to become stronger.",
+      "price": 10,
+      "required_level": 0,
+      "actions": [
+        {
+          "type": "jobsplus:on_effect_added",
+          "rewards": [
+            {
+              "type": "jobsplus:effect_amplifier_addition",
+              "addition": 1,
+              "chance": 20
+            }
+          ],
+          "conditions": [
+            {
+              "type": "jobsplus:powerup_not_active",
+              "powerup": "jobsplus:alchemist.stronger_potions_ii"
+            },
+            {
+              "type": "jobsplus:powerup_not_active",
+              "powerup": "jobsplus:alchemist.stronger_potions_iii"
+            },
+            {
+              "type": "jobsplus:powerup_not_active",
+              "powerup": "jobsplus:alchemist.stronger_potions_iv"
+            },
+            {
+              "type": "jobsplus:powerup_not_active",
+              "powerup": "jobsplus:alchemist.stronger_potions_v"
+            }
+          ]
+        }
+      ],
+      "powerups": [
+        {
+          "name": "Stronger potions II",
+          "description": "Potions have a 40% change to become stronger.",
+          "price": 12,
+          "required_level": 10,
+          "actions": [
+            {
+              "type": "jobsplus:on_effect_added",
+              "rewards": [
+                {
+                  "type": "jobsplus:effect_amplifier_addition",
+                  "addition": 1,
+                  "chance": 40
+                }
+              ],
+              "conditions": [
+                {
+                  "type": "jobsplus:powerup_not_active",
+                  "powerup": "jobsplus:alchemist.stronger_potions_iii"
+                },
+                {
+                  "type": "jobsplus:powerup_not_active",
+                  "powerup": "jobsplus:alchemist.stronger_potions_iv"
+                },
+                {
+                  "type": "jobsplus:powerup_not_active",
+                  "powerup": "jobsplus:alchemist.stronger_potions_v"
+                }
+              ]
+            }
+          ],
+          "powerups": [
+            {
+              "name": "Stronger potions III",
+              "description": "Potions have a 60% change to become stronger.",
+              "price": 14,
+              "required_level": 25,
+              "actions": [
+                {
+                  "type": "jobsplus:on_effect_added",
+                  "rewards": [
+                    {
+                      "type": "jobsplus:effect_amplifier_addition",
+                      "addition": 1,
+                      "chance": 60
+                    }
+                  ],
+                  "conditions": [
+                    {
+                      "type": "jobsplus:powerup_not_active",
+                      "powerup": "jobsplus:alchemist.stronger_potions_iv"
+                    },
+                    {
+                      "type": "jobsplus:powerup_not_active",
+                      "powerup": "jobsplus:alchemist.stronger_potions_v"
+                    }
+                  ]
+                }
+              ],
+              "powerups": [
+                {
+                  "name": "Stronger potions IV",
+                  "description": "Potions have a 80% change to become stronger.",
+                  "price": 16,
+                  "required_level": 35,
+                  "actions": [
+                    {
+                      "type": "jobsplus:on_effect_added",
+                      "rewards": [
+                        {
+                          "type": "jobsplus:effect_amplifier_addition",
+                          "addition": 1,
+                          "chance": 80
+                        }
+                      ],
+                      "conditions": [
+                        {
+                          "type": "jobsplus:powerup_not_active",
+                          "powerup": "jobsplus:alchemist.stronger_potions_v"
+                        }
+                      ]
+                    }
+                  ],
+                  "powerups": [
+                    {
+                      "name": "Stronger potions V",
+                      "description": "Potions always become stronger.",
+                      "price": 18,
+                      "required_level": 50,
+                      "actions": [
+                        {
+                          "type": "jobsplus:on_effect_added",
+                          "rewards": [
+                            {
+                              "type": "jobsplus:effect_amplifier_addition",
+                              "addition": 1
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Harmful Potion Immunity I",
+      "description": "Become 20% immune to harmful potions.",
+      "price": 10,
+      "required_level": 0,
+      "actions": [
+        {
+          "type": "jobsplus:on_effect_added",
+          "rewards": [
+            {
+              "type": "jobsplus:remove_effect",
+              "chance": 20
+            }
+          ],
+          "conditions": [
+            {
+              "type": "jobsplus:or",
+              "conditions": [
+                {
+                  "type": "jobsplus:effect_category",
+                  "category": "HARMFUL"
+                },
+                {
+                  "type": "jobsplus:effect",
+                  "effect": "minecraft:bad_omen"
+                },
+                {
+                  "type": "jobsplus:effect",
+                  "effect": "minecraft:glowing"
+                }
+              ]
+            },
+            {
+              "type": "jobsplus:powerup_not_active",
+              "powerup": "jobsplus:alchemist.harmful_potion_immunity_ii"
+            },
+            {
+              "type": "jobsplus:powerup_not_active",
+              "powerup": "jobsplus:alchemist.harmful_potion_immunity_iii"
+            },
+            {
+              "type": "jobsplus:powerup_not_active",
+              "powerup": "jobsplus:alchemist.harmful_potion_immunity_iv"
+            },
+            {
+              "type": "jobsplus:powerup_not_active",
+              "powerup": "jobsplus:alchemist.harmful_potion_immunity_v"
+            }
+          ]
+        }
+      ],
+      "powerups": [
+        {
+          "name": "Harmful Potion Immunity II",
+          "description": "Become 40% immune to harmful potions.",
+          "price": 12,
+          "required_level": 10,
+          "actions": [
+            {
+              "type": "jobsplus:on_effect_added",
+              "rewards": [
+                {
+                  "type": "jobsplus:remove_effect",
+                  "chance": 40
+                }
+              ],
+              "conditions": [
+                {
+                  "type": "jobsplus:or",
+                  "conditions": [
+                    {
+                      "type": "jobsplus:effect_category",
+                      "category": "HARMFUL"
+                    },
+                    {
+                      "type": "jobsplus:effect",
+                      "effect": "minecraft:bad_omen"
+                    },
+                    {
+                      "type": "jobsplus:effect",
+                      "effect": "minecraft:glowing"
+                    }
+                  ]
+                },
+                {
+                  "type": "jobsplus:powerup_not_active",
+                  "powerup": "jobsplus:alchemist.harmful_potion_immunity_iii"
+                },
+                {
+                  "type": "jobsplus:powerup_not_active",
+                  "powerup": "jobsplus:alchemist.harmful_potion_immunity_iv"
+                },
+                {
+                  "type": "jobsplus:powerup_not_active",
+                  "powerup": "jobsplus:alchemist.harmful_potion_immunity_v"
+                }
+              ]
+            }
+          ],
+          "powerups": [
+            {
+              "name": "Harmful Potion Immunity III",
+              "description": "Become 60% immune to harmful potions.",
+              "price": 14,
+              "required_level": 25,
+              "actions": [
+                {
+                  "type": "jobsplus:on_effect_added",
+                  "rewards": [
+                    {
+                      "type": "jobsplus:remove_effect",
+                      "chance": 60
+                    }
+                  ],
+                  "conditions": [
+                    {
+                      "type": "jobsplus:or",
+                      "conditions": [
+                        {
+                          "type": "jobsplus:effect_category",
+                          "category": "HARMFUL"
+                        },
+                        {
+                          "type": "jobsplus:effect",
+                          "effect": "minecraft:bad_omen"
+                        },
+                        {
+                          "type": "jobsplus:effect",
+                          "effect": "minecraft:glowing"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "jobsplus:powerup_not_active",
+                      "powerup": "jobsplus:alchemist.harmful_potion_immunity_iv"
+                    },
+                    {
+                      "type": "jobsplus:powerup_not_active",
+                      "powerup": "jobsplus:alchemist.harmful_potion_immunity_v"
+                    }
+                  ]
+                }
+              ],
+              "powerups": [
+                {
+                  "name": "Harmful Potion Immunity IV",
+                  "description": "Become 80% immune to harmful potions.",
+                  "price": 16,
+                  "required_level": 35,
+                  "actions": [
+                    {
+                      "type": "jobsplus:on_effect_added",
+                      "rewards": [
+                        {
+                          "type": "jobsplus:remove_effect",
+                          "chance": 80
+                        }
+                      ],
+                      "conditions": [
+                        {
+                          "type": "jobsplus:or",
+                          "conditions": [
+                            {
+                              "type": "jobsplus:effect_category",
+                              "category": "HARMFUL"
+                            },
+                            {
+                              "type": "jobsplus:effect",
+                              "effect": "minecraft:bad_omen"
+                            },
+                            {
+                              "type": "jobsplus:effect",
+                              "effect": "minecraft:glowing"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "jobsplus:powerup_not_active",
+                          "powerup": "jobsplus:alchemist.harmful_potion_immunity_v"
+                        }
+                      ]
+                    }
+                  ],
+                  "powerups": [
+                    {
+                      "name": "Harmful Potion Immunity V",
+                      "description": "Become completely immune to harmful potions.",
+                      "price": 18,
+                      "required_level": 50,
+                      "actions": [
+                        {
+                          "type": "jobsplus:on_effect_added",
+                          "rewards": [
+                            {
+                              "type": "jobsplus:remove_effect"
+                            }
+                          ],
+                          "conditions": [
+                            {
+                              "type": "jobsplus:or",
+                              "conditions": [
+                                {
+                                  "type": "jobsplus:effect_category",
+                                  "category": "HARMFUL"
+                                },
+                                {
+                                  "type": "jobsplus:effect",
+                                  "effect": "minecraft:bad_omen"
+                                },
+                                {
+                                  "type": "jobsplus:effect",
+                                  "effect": "minecraft:glowing"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Job Experience Boost I",
+      "description": "Boosts your job experience by 50%.",
+      "price": 10,
+      "required_level": 10,
+      "actions": [
+        {
+          "type": "jobsplus:on_job_exp",
+          "rewards": [
+            {
+              "type": "jobsplus:job_exp_multiplier",
+              "multiplier": 1.5
+            }
+          ],
+          "conditions": [
+            {
+              "type": "jobsplus:powerup_not_active",
+              "powerup": "jobsplus:alchemist.job_experience_boost_ii"
+            },
+            {
+              "type": "jobsplus:powerup_not_active",
+              "powerup": "jobsplus:alchemist.job_experience_boost_iii"
+            }
+          ]
+        }
+      ],
+      "powerups": [
+        {
+          "name": "Job Experience Boost II",
+          "description": "Boosts your job experience by 100%.",
+          "price": 15,
+          "required_level": 35,
+          "actions": [
+            {
+              "type": "jobsplus:on_job_exp",
+              "rewards": [
+                {
+                  "type": "jobsplus:job_exp_multiplier",
+                  "multiplier": 2
+                }
+              ],
+              "conditions": [
+                {
+                  "type": "jobsplus:powerup_not_active",
+                  "powerup": "jobsplus:alchemist.job_experience_boost_iii"
+                }
+              ]
+            }
+          ],
+          "powerups": [
+            {
+              "name": "Job Experience Boost III",
+              "description": "Boosts your job experience by 150%.",
+              "price": 20,
+              "required_level": 65,
+              "actions": [
+                {
+                  "type": "jobsplus:on_job_exp",
+                  "rewards": [
+                    {
+                      "type": "jobsplus:job_exp_multiplier",
+                      "multiplier": 2.5
                     }
                   ]
                 }

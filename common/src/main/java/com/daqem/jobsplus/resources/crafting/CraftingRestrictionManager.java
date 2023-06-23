@@ -1,8 +1,9 @@
-package com.daqem.jobsplus.resources;
+package com.daqem.jobsplus.resources.crafting;
 
 import com.daqem.jobsplus.JobsPlusExpectPlatform;
 import com.daqem.jobsplus.resources.crafting.restriction.CraftingRestriction;
 import com.daqem.jobsplus.resources.job.JobInstance;
+import com.daqem.jobsplus.resources.job.JobManager;
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

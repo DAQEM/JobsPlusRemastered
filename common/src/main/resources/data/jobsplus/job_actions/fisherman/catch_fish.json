@@ -1,0 +1,21 @@
+{
+  "job": "jobsplus:fisherman",
+  "type": "jobsplus:on_fished_up_item",
+  "short_description": "Catch a fish",
+  "description": "Fishing is a key part of the Fisherman job, and catching fish is a great way to earn job experience points. Keep your eyes on the water and your fishing rod at the ready!",
+  "rewards": [
+    {
+      "type": "jobsplus:job_exp",
+      "min_exp": 5,
+      "max_exp": 10
+    }
+  ],
+  "conditions": [
+    {
+      "type": "jobsplus:items",
+      "items": [
+        "#minecraft:fishes"
+      ]
+    }
+  ]
+}

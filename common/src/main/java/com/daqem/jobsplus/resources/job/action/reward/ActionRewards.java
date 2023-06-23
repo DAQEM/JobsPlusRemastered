@@ -4,7 +4,9 @@ import com.daqem.jobsplus.JobsPlus;
 import com.daqem.jobsplus.exception.UnknownRewardTypeException;
 import com.daqem.jobsplus.registry.JobsPlusRegistry;
 import com.daqem.jobsplus.resources.job.action.reward.rewards.effect.EffectActionReward;
+import com.daqem.jobsplus.resources.job.action.reward.rewards.effect.EffectAmplifierAdditionActionReward;
 import com.daqem.jobsplus.resources.job.action.reward.rewards.effect.EffectDurationMultiplierActionReward;
+import com.daqem.jobsplus.resources.job.action.reward.rewards.effect.RemoveEffectActionReward;
 import com.daqem.jobsplus.resources.job.action.reward.rewards.experience.ExpActionReward;
 import com.daqem.jobsplus.resources.job.action.reward.rewards.item.ItemActionReward;
 import com.daqem.jobsplus.resources.job.action.reward.rewards.job.JobExpActionReward;
@@ -26,6 +28,8 @@ public class ActionRewards {
     public static final ActionRewardType EFFECT = register(JobsPlus.getId("effect"), EffectActionReward.class, new EffectActionReward.Deserializer());
     public static final ActionRewardType JOB_EXP_MULTIPLIER = register(JobsPlus.getId("job_exp_multiplier"), JobExpMultiplierActionReward.class, new JobExpMultiplierActionReward.Deserializer());
     public static final ActionRewardType EFFECT_DURATION_MULTIPLIER = register(JobsPlus.getId("effect_duration_multiplier"), EffectDurationMultiplierActionReward.class, new EffectDurationMultiplierActionReward.Deserializer());
+    public static final ActionRewardType EFFECT_AMPLIFIER_ADDITION = register(JobsPlus.getId("effect_amplifier_addition"), EffectAmplifierAdditionActionReward.class, new EffectAmplifierAdditionActionReward.Deserializer());
+    public static final ActionRewardType REMOVE_EFFECT = register(JobsPlus.getId("remove_effect"), RemoveEffectActionReward.class, new RemoveEffectActionReward.Deserializer());
 
     private static ActionRewardType register(ResourceLocation location, Class<? extends ActionReward> clazz, JsonDeserializer<? extends ActionReward> deserializer) {
         ActionRewardType actionRewardType = new ActionRewardType(clazz, location, deserializer);

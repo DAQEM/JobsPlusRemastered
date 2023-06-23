@@ -1,7 +1,7 @@
 package com.daqem.jobsplus.fabric.resources;
 
 import com.daqem.jobsplus.JobsPlus;
-import com.daqem.jobsplus.resources.JobManager;
+import com.daqem.jobsplus.resources.job.JobManager;
 import com.google.gson.JsonElement;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.minecraft.resources.ResourceLocation;

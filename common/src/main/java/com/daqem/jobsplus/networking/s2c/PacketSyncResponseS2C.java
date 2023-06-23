@@ -1,8 +1,8 @@
 package com.daqem.jobsplus.networking.s2c;
 
 import com.daqem.jobsplus.networking.JobsPlusNetworking;
-import com.daqem.jobsplus.resources.CraftingRestrictionManager;
-import com.daqem.jobsplus.resources.JobManager;
+import com.daqem.jobsplus.resources.crafting.CraftingRestrictionManager;
+import com.daqem.jobsplus.resources.job.JobManager;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.serialization.JsonOps;

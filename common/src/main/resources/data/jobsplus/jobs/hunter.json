@@ -5,39 +5,5 @@
   "color": "#A52A2A",
   "icon_item": "minecraft:iron_sword",
   "description": "The Hunter is a class that focuses on ranged combat and stealth. They are able to use a bow and arrow to deal damage from a distance, and can also use a variety of traps to deal damage to enemies and protect themselves. They also have a variety of stealth abilities, allowing them to sneak up on enemies and deal damage from behind.",
-  "is_default": true,
-  "actions": [
-    {
-      "type": "jobsplus:on_kill_entity",
-      "short_description": "Kill a mob",
-      "description": "As a Hunter, you'll earn job experience by taking out mobs. Whether you're fighting off zombies, taking down creepers from a distance or killing animals for food, every successful kill will bring you closer to leveling up in the Hunter job.",
-      "rewards": [
-        {
-          "type": "jobsplus:job_exp",
-          "chance": 100,
-          "min_exp": 4,
-          "max_exp": 6
-        }
-      ]
-    },
-    {
-      "type": "jobsplus:on_smelt_item",
-      "short_description": "Cook food",
-      "description": "A skilled Hunter also knows how to cook food efficiently to stay alive in the wilderness. By smelting food items like raw beef or fish, you'll earn job experience and keep your hunger bar full. Just make sure you're using a furnace or smoker, and you'll be cooking like a pro in no time.",
-      "rewards": [
-        {
-          "type": "jobsplus:job_exp",
-          "chance": 100,
-          "min_exp": 2,
-          "max_exp": 4
-        }
-      ],
-      "conditions": [
-        {
-          "type": "jobsplus:is_smoking_recipe"
-        }
-      ]
-    }
-  ],
-  "powerups": []
+  "is_default": true
 }

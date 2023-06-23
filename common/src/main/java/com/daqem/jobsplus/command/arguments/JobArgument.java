@@ -1,7 +1,7 @@
 package com.daqem.jobsplus.command.arguments;
 
-import com.daqem.jobsplus.resources.JobManager;
 import com.daqem.jobsplus.resources.job.JobInstance;
+import com.daqem.jobsplus.resources.job.JobManager;
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.context.CommandContext;

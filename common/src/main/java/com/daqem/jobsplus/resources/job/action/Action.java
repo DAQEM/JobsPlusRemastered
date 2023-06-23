@@ -15,6 +15,8 @@ import java.util.List;
 
 public abstract class Action {
 
+    private ResourceLocation location;
+    private ResourceLocation jobLocation;
     private final ActionType type;
     private String shortDescription;
     private String description;
@@ -23,6 +25,12 @@ public abstract class Action {
 
     public Action(ActionType type) {
         this.type = type;
+    }
+
+    public Action withLocations(ResourceLocation location, ResourceLocation jobLocation) {
+        this.location = location;
+        this.jobLocation = jobLocation;
+        return this;
     }
 
     public Action withDescriptions(String shortDescription, String description) {
@@ -39,6 +47,14 @@ public abstract class Action {
     public Action withConditions(List<ActionCondition> conditions) {
         this.conditions = conditions;
         return this;
+    }
+
+    public ResourceLocation getLocation() {
+        return location;
+    }
+
+    public ResourceLocation getJobLocation() {
+        return jobLocation;
     }
 
     public ActionType getType() {
@@ -89,7 +105,26 @@ public abstract class Action {
         }
     }
 
+    @Override
+    public String toString() {
+        return "Action{" +
+                "location=" + location +
+                ", jobLocation=" + jobLocation +
+                ", type=" + type +
+                ", shortDescription='" + shortDescription + '\'' +
+                ", description='" + description + '\'' +
+                ", rewards=" + rewards +
+                ", conditions=" + conditions +
+                '}';
+    }
+
     public static class ActionSerializer<T extends Action> implements JsonDeserializer<T> {
+
+        private final ResourceLocation location;
+
+        public ActionSerializer(ResourceLocation location) {
+            this.location = location;
+        }
 
         private static Gson getGson() {
             GsonBuilder builder = new GsonBuilder().setPrettyPrinting();
@@ -122,7 +157,9 @@ public abstract class Action {
 
             ResourceLocation location = new ResourceLocation(GsonHelper.getAsString(actionObject, "type"));
             Class<? extends Action> clazz = Actions.getClass(location);
+
             return (T) getGson().fromJson(actionObject, clazz)
+                    .withLocations(this.location, new ResourceLocation(GsonHelper.getAsString(actionObject, "job")))
                     .withDescriptions(shortDescription, description)
                     .withRewards(actionRewardsList)
                     .withConditions(actionConditionsList);

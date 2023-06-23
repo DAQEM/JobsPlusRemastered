@@ -1,0 +1,19 @@
+{
+  "job": "jobsplus:enchanter",
+  "type": "jobsplus:on_enchant_item",
+  "short_description": "Enchant level 3",
+  "description": "The most skilled Enchanters can create level 3 enchantments, the most powerful enchantments available. These enchantments require three levels of experience and three lapis lazuli, but the rewards are well worth it. Keep enchanting and leveling up your Enchanter job to become a master of enchantments.",
+  "rewards": [
+    {
+      "type": "jobsplus:job_exp",
+      "min_exp": 70,
+      "max_exp": 100
+    }
+  ],
+  "conditions": [
+    {
+      "type": "jobsplus:exp_level",
+      "exp_level": 3
+    }
+  ]
+}

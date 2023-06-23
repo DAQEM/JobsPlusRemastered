@@ -1,0 +1,22 @@
+{
+  "job": "jobsplus:alchemist",
+  "type": "jobsplus:on_throw_item",
+  "short_description": "Throw a potion",
+  "description": "As an alchemist, throwing a splash or lingering potion will reward you with job experience points. This action requires either a splash or lingering potion, depending on which one you want to throw.",
+  "rewards": [
+    {
+      "type": "jobsplus:job_exp",
+      "min_exp": 1,
+      "max_exp": 2
+    }
+  ],
+  "conditions": [
+    {
+      "type": "jobsplus:items",
+      "items": [
+        "minecraft:splash_potion",
+        "minecraft:lingering_potion"
+      ]
+    }
+  ]
+}

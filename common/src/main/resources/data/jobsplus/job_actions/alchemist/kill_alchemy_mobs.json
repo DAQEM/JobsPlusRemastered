@@ -1,0 +1,29 @@
+{
+  "job": "jobsplus:alchemist",
+  "type": "jobsplus:on_kill_entity",
+  "short_description": "Kill alchemy mobs",
+  "description": "Alchemists can gain job experience points by killing specific mobs such as phantoms, pufferfish, magma cubes, ghasts, rabbits, spiders, cave spiders, blazes, and witches.",
+  "rewards": [
+    {
+      "type": "jobsplus:job_exp",
+      "min_exp": 1,
+      "max_exp": 2
+    }
+  ],
+  "conditions": [
+    {
+      "type": "jobsplus:entity_types",
+      "entity_types": [
+        "minecraft:phantom",
+        "minecraft:pufferfish",
+        "minecraft:magma_cube",
+        "minecraft:ghast",
+        "minecraft:rabbit",
+        "minecraft:spider",
+        "minecraft:cave_spider",
+        "minecraft:blaze",
+        "minecraft:witch"
+      ]
+    }
+  ]
+}

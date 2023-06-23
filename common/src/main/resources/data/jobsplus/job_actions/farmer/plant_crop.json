@@ -1,0 +1,13 @@
+{
+  "job": "jobsplus:farmer",
+  "type": "jobsplus:on_plant_crop",
+  "short_description": "Plant a crop",
+  "description": "Planting crops is a crucial part of being a Farmer. With every seed you plant, you'll get a chance to earn job experience points. While planting crops isn't as rewarding as harvesting them, it's still an essential task that can help you progress in your career.",
+  "rewards": [
+    {
+      "type": "jobsplus:job_exp",
+      "min_exp": 0,
+      "max_exp": 1
+    }
+  ]
+}

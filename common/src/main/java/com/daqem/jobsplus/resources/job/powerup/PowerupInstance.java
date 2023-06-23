@@ -1,6 +1,6 @@
 package com.daqem.jobsplus.resources.job.powerup;
 
-import com.daqem.jobsplus.resources.JobManager;
+import com.daqem.jobsplus.resources.job.JobManager;
 import com.daqem.jobsplus.resources.job.action.Action;
 import com.google.gson.*;
 import net.minecraft.resources.ResourceLocation;
@@ -106,7 +106,7 @@ public class PowerupInstance {
     public static class PowerupSerializer implements JsonDeserializer<PowerupInstance> {
 
         private static final Gson GSON = new GsonBuilder()
-                .registerTypeHierarchyAdapter(Action.class, new Action.ActionSerializer<>())
+//                .registerTypeHierarchyAdapter(Action.class, new Action.ActionSerializer<>())
                 .registerTypeHierarchyAdapter(PowerupInstance.class, new PowerupInstance.PowerupSerializer())
                 .create();
 
@@ -114,8 +114,8 @@ public class PowerupInstance {
         public PowerupInstance deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
             JsonObject jsonObject = json.getAsJsonObject();
 
-            List<Action> actions = new ArrayList<>();
-            GsonHelper.getAsJsonArray(jsonObject, "actions").forEach(jsonElement -> actions.add(GSON.fromJson(jsonElement, Action.class)));
+//            List<Action> actions = new ArrayList<>();
+//            GsonHelper.getAsJsonArray(jsonObject, "actions").forEach(jsonElement -> actions.add(GSON.fromJson(jsonElement, Action.class)));
 
             List<PowerupInstance> powerupInstances = new ArrayList<>();
             GsonHelper.getAsJsonArray(jsonObject, "powerups", new JsonArray()).forEach(jsonElement -> powerupInstances.add(GSON.fromJson(jsonElement, PowerupInstance.class)));
@@ -125,7 +125,7 @@ public class PowerupInstance {
                     GsonHelper.getAsString(jsonObject, "name"),
                     GsonHelper.getAsString(jsonObject, "description"),
                     GsonHelper.getAsInt(jsonObject, "price"),
-                    actions,
+                    new ArrayList<>(),
                     powerupInstances);
         }
     }

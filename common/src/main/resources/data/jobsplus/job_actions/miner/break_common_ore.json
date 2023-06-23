@@ -1,0 +1,26 @@
+{
+  "job": "jobsplus:miner",
+  "type": "jobsplus:on_break_block",
+  "short_description": "Break common ores",
+  "description": "Earn job experience for breaking valuable ore blocks, such as copper, gold, and iron. These blocks can be used to craft powerful tools and armor. However, they are also typically harder to find and require more effort to mine than common blocks.",
+  "rewards": [
+    {
+      "type": "jobsplus:job_exp",
+      "min_exp": 4,
+      "max_exp": 6
+    }
+  ],
+  "conditions": [
+    {
+      "type": "jobsplus:is_ore"
+    },
+    {
+      "type": "jobsplus:banned_blocks",
+      "banned_blocks": [
+        "minecraft:diamond_ore",
+        "minecraft:emerald_ore",
+        "minecraft:ancient_debris"
+      ]
+    }
+  ]
+}

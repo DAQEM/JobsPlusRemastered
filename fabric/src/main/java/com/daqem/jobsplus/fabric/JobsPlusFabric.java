@@ -5,6 +5,7 @@ import com.daqem.jobsplus.command.arguments.EnumArgument;
 import com.daqem.jobsplus.command.arguments.JobArgument;
 import com.daqem.jobsplus.command.arguments.PowerupArgument;
 import com.daqem.jobsplus.fabric.registry.JobsPlusRegistryFabric;
+import com.daqem.jobsplus.fabric.resources.ActionManagerFabric;
 import com.daqem.jobsplus.fabric.resources.CraftingRestrictionManagerFabric;
 import com.daqem.jobsplus.fabric.resources.JobManagerFabric;
 import net.fabricmc.api.ModInitializer;
@@ -20,6 +21,7 @@ public class JobsPlusFabric implements ModInitializer {
         JobsPlus.init();
         ResourceManagerHelper.get(PackType.SERVER_DATA).registerReloadListener(new JobManagerFabric());
         ResourceManagerHelper.get(PackType.SERVER_DATA).registerReloadListener(new CraftingRestrictionManagerFabric());
+        ResourceManagerHelper.get(PackType.SERVER_DATA).registerReloadListener(new ActionManagerFabric());
 
         registerCommandArgumentTypes();
     }

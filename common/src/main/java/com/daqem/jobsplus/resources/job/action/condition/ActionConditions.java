@@ -11,6 +11,10 @@ import com.daqem.jobsplus.resources.job.action.condition.conditions.block.Blocks
 import com.daqem.jobsplus.resources.job.action.condition.conditions.block.crop.CropAgeActionCondition;
 import com.daqem.jobsplus.resources.job.action.condition.conditions.block.crop.CropFullyGrownActionCondition;
 import com.daqem.jobsplus.resources.job.action.condition.conditions.block.ore.IsOreActionCondition;
+import com.daqem.jobsplus.resources.job.action.condition.conditions.block.properties.BlockHardnessActionCondition;
+import com.daqem.jobsplus.resources.job.action.condition.conditions.block.properties.BlockMaterialColorActionCondition;
+import com.daqem.jobsplus.resources.job.action.condition.conditions.effect.EffectActionCondition;
+import com.daqem.jobsplus.resources.job.action.condition.conditions.effect.EffectCategoryActionCondition;
 import com.daqem.jobsplus.resources.job.action.condition.conditions.entity.EntityTypeActionCondition;
 import com.daqem.jobsplus.resources.job.action.condition.conditions.entity.EntityTypesActionCondition;
 import com.daqem.jobsplus.resources.job.action.condition.conditions.entity.ReadyForShearingActionCondition;
@@ -66,6 +70,10 @@ public class ActionConditions {
     public static final ActionConditionType IS_SMOKING_RECIPE = register(JobsPlus.getId("is_smoking_recipe"), IsSmokingRecipeActionCondition.class, new IsSmokingRecipeActionCondition.Deserializer());
     public static final ActionConditionType IS_ORE = register(JobsPlus.getId("is_ore"), IsOreActionCondition.class, new IsOreActionCondition.Deserializer());
     public static final ActionConditionType POWERUP_NOT_ACTIVE = register(JobsPlus.getId("powerup_not_active"), PowerupNotActiveActionCondition.class, new PowerupNotActiveActionCondition.Deserializer());
+    public static final ActionConditionType EFFECT_CATEGORY = register(JobsPlus.getId("effect_category"), EffectCategoryActionCondition.class, new EffectCategoryActionCondition.Deserializer());
+    public static final ActionConditionType EFFECT = register(JobsPlus.getId("effect"), EffectActionCondition.class, new EffectActionCondition.Deserializer());
+    public static final ActionConditionType BLOCK_HARDNESS = register(JobsPlus.getId("block_hardness"), BlockHardnessActionCondition.class, new BlockHardnessActionCondition.Deserializer());
+    public static final ActionConditionType BLOCK_MATERIAL_COLOR = register(JobsPlus.getId("block_material_color"), BlockMaterialColorActionCondition.class, new BlockMaterialColorActionCondition.Deserializer());
 
     private static ActionConditionType register(ResourceLocation location, Class<? extends ActionCondition> clazz, JsonDeserializer<? extends ActionCondition> deserializer) {
         ActionConditionType actionConditionType = new ActionConditionType(clazz, location, deserializer);

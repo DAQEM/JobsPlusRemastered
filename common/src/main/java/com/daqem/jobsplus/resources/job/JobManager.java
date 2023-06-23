@@ -1,8 +1,7 @@
-package com.daqem.jobsplus.resources;
+package com.daqem.jobsplus.resources.job;
 
 import com.daqem.jobsplus.JobsPlusExpectPlatform;
 import com.daqem.jobsplus.config.JobsPlusCommonConfig;
-import com.daqem.jobsplus.resources.job.JobInstance;
 import com.daqem.jobsplus.resources.job.powerup.PowerupInstance;
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;

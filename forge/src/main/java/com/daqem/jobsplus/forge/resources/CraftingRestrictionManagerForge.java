@@ -1,6 +1,6 @@
 package com.daqem.jobsplus.forge.resources;
 
-import com.daqem.jobsplus.resources.CraftingRestrictionManager;
+import com.daqem.jobsplus.resources.crafting.CraftingRestrictionManager;
 import com.google.gson.JsonElement;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;

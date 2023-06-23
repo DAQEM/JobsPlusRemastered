@@ -1,6 +1,6 @@
 package com.daqem.jobsplus.forge.resources;
 
-import com.daqem.jobsplus.resources.JobManager;
+import com.daqem.jobsplus.resources.job.JobManager;
 import com.google.gson.JsonElement;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
