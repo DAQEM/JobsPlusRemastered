@@ -2,6 +2,7 @@ package com.daqem.jobsplus.resources.job.action;
 
 import com.daqem.jobsplus.JobsPlus;
 import com.daqem.jobsplus.JobsPlusExpectPlatform;
+import com.daqem.jobsplus.resources.job.JobManager;
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -15,16 +16,15 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public abstract class ActionManager extends SimpleJsonResourceReloadListener {
 
-    private static Gson getGson(ResourceLocation location) {
-        return new GsonBuilder()
-                .registerTypeHierarchyAdapter(Action.class, new Action.ActionSerializer<>(location))
-                .create();
-    }
+    private static final Gson GSON = new GsonBuilder()
+            .registerTypeHierarchyAdapter(Action.class, new Action.ActionSerializer<>())
+            .create();
 
     public static final Logger LOGGER = LogUtils.getLogger();
     protected ImmutableMap<ResourceLocation, Action> actions = ImmutableMap.of();
@@ -34,18 +34,18 @@ public abstract class ActionManager extends SimpleJsonResourceReloadListener {
     private static ActionManager instance;
 
     public ActionManager() {
-        super(getGson(null), "job_actions");
+        super(GSON, "job_actions");
         instance = this;
     }
 
-    @Override
-    protected void apply(Map<ResourceLocation, JsonElement> object, @NotNull ResourceManager resourceManager, @NotNull ProfilerFiller profilerFiller) {
+    public void apply(Map<ResourceLocation, JsonElement> object, boolean isServer) {
         List<Action> tempActions = new ArrayList<>();
 
         object.forEach((location, jsonElement) -> {
             JobsPlus.LOGGER.error("Loading job action {}", location.toString());
             try {
-                Action action = getGson(location).fromJson(jsonElement, Action.class);
+                Action action = GSON.fromJson(jsonElement, Action.class);
+                action.setLocation(location);
                 tempActions.add(action);
             } catch (Exception e) {
                 LOGGER.error("Could not deserialize job {} because: {}", location, e.getMessage());
@@ -53,8 +53,30 @@ public abstract class ActionManager extends SimpleJsonResourceReloadListener {
             }
         });
 
-        actions = ImmutableMap.copyOf(tempActions.stream().collect(ImmutableMap.toImmutableMap(Action::getLocation, action -> action)));
-        LOGGER.info("Loaded {} job actions", actions.size());
+        if (isServer) {
+            actions = ImmutableMap.copyOf(tempActions.stream().collect(ImmutableMap.toImmutableMap(Action::getLocation, action -> action)));
+            LOGGER.info("Loaded {} job actions", actions.size());
+            JobManager.getInstance().addActions(actions);
+        } else {
+            LOGGER.error("Client received {} job actions", tempActions.size());
+            tempActions.forEach(action -> {
+                LOGGER.error("Client received job action {}", action.getLocation().toString());
+                Map<ResourceLocation, Action> tempActionsMap = new HashMap<>(actions);
+                tempActionsMap.remove(action.getLocation());
+                tempActionsMap.put(action.getLocation(), action);
+                actions = ImmutableMap.copyOf(tempActionsMap);
+                JobManager.getInstance().addActions(actions);
+            });
+        }
+
+
+    }
+
+    @Override
+    protected void apply(@NotNull Map<ResourceLocation, JsonElement> map, @NotNull ResourceManager resourceManager, @NotNull ProfilerFiller profilerFiller) {
+        this.actions = null;
+        this.map = ImmutableMap.copyOf(map);
+        this.apply(map, true);
     }
 
     public static ActionManager getInstance() {
@@ -63,5 +85,9 @@ public abstract class ActionManager extends SimpleJsonResourceReloadListener {
 
     public Map<ResourceLocation, Action> getActions() {
         return actions;
+    }
+
+    public ImmutableMap<ResourceLocation, JsonElement> getMap() {
+        return map;
     }
 }

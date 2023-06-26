@@ -2,7 +2,10 @@ package com.daqem.jobsplus.resources.job;
 
 import com.daqem.jobsplus.JobsPlusExpectPlatform;
 import com.daqem.jobsplus.config.JobsPlusCommonConfig;
+import com.daqem.jobsplus.resources.job.action.Action;
+import com.daqem.jobsplus.resources.job.action.ActionForType;
 import com.daqem.jobsplus.resources.job.powerup.PowerupInstance;
+import com.daqem.jobsplus.resources.job.powerup.PowerupManager;
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -16,7 +19,9 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public abstract class JobManager extends SimpleJsonResourceReloadListener {
 
@@ -26,7 +31,6 @@ public abstract class JobManager extends SimpleJsonResourceReloadListener {
 
     public static final Logger LOGGER = LogUtils.getLogger();
     protected ImmutableMap<ResourceLocation, JobInstance> jobs = ImmutableMap.of();
-    protected ImmutableMap<ResourceLocation, PowerupInstance> powerups = ImmutableMap.of();
 
     protected ImmutableMap<ResourceLocation, JsonElement> map = ImmutableMap.of();
 
@@ -37,20 +41,14 @@ public abstract class JobManager extends SimpleJsonResourceReloadListener {
         instance = this;
     }
 
-    public void apply(Map<ResourceLocation, JsonElement> map, boolean isServer) {
+    public void apply(@NotNull Map<ResourceLocation, JsonElement> map, boolean isServer) {
         Map<ResourceLocation, JobInstance> tempJobInstances = new HashMap<>();
-        Map<ResourceLocation, PowerupInstance> tempPowerupInstances = new HashMap<>();
 
         map.forEach((location, jsonElement) -> {
             try {
                 JobInstance job = GSON.fromJson(jsonElement.getAsJsonObject(), JobInstance.class);
                 if (!job.isDefault() || (job.isDefault() && JobsPlusCommonConfig.enableDefaultJobs.get())) {
                     job.setLocation(location);
-                    for (PowerupInstance powerupInstance : job.getAllPowerups()) {
-                        powerupInstance.setLocationFromJobLocation(location);
-                        powerupInstance.setParents();
-                        tempPowerupInstances.put(powerupInstance.getLocation(), powerupInstance);
-                    }
                     tempJobInstances.put(location, job);
                 }
             } catch (Exception e) {
@@ -60,9 +58,8 @@ public abstract class JobManager extends SimpleJsonResourceReloadListener {
         });
 
         if (isServer) {
-            LOGGER.info("Loaded {} jobs and {} powerups", tempJobInstances.size(), tempPowerupInstances.size());
+            LOGGER.info("Loaded {} jobs", tempJobInstances.size());
             this.jobs = ImmutableMap.copyOf(tempJobInstances);
-            this.powerups = ImmutableMap.copyOf(tempPowerupInstances);
         } else {
             tempJobInstances.forEach((location, job) -> {
                 Map<ResourceLocation, JobInstance> tempJobInstance = new HashMap<>(jobs);
@@ -70,21 +67,14 @@ public abstract class JobManager extends SimpleJsonResourceReloadListener {
                 tempJobInstance.put(location, job);
                 jobs = ImmutableMap.copyOf(tempJobInstance);
             });
-            tempPowerupInstances.forEach((location, powerup) -> {
-                Map<ResourceLocation, PowerupInstance> tempPowerupInstance = new HashMap<>(powerups);
-                tempPowerupInstance.remove(location);
-                tempPowerupInstance.put(location, powerup);
-                powerups = ImmutableMap.copyOf(tempPowerupInstance);
-            });
         }
     }
 
     @Override
     protected void apply(@NotNull Map<ResourceLocation, JsonElement> map, @NotNull ResourceManager resourceManager, @NotNull ProfilerFiller profilerFiller) {
         this.jobs = null;
-        this.powerups = null;
         this.map = ImmutableMap.copyOf(map);
-        this.apply(map, true);
+        apply(map, true);
     }
 
     public static JobManager getInstance() {
@@ -99,8 +89,8 @@ public abstract class JobManager extends SimpleJsonResourceReloadListener {
         return jobs;
     }
 
-    public Map<ResourceLocation, PowerupInstance> getPowerups() {
-        return powerups;
+    public void setJobs(Map<ResourceLocation, JobInstance> jobs) {
+        this.jobs = ImmutableMap.copyOf(jobs);
     }
 
     public Map<ResourceLocation, JsonElement> getMap() {
@@ -109,7 +99,53 @@ public abstract class JobManager extends SimpleJsonResourceReloadListener {
 
     public void clearAll() {
         jobs = ImmutableMap.of();
-        powerups = ImmutableMap.of();
         map = ImmutableMap.of();
     }
+
+    public void addPowerups(ImmutableMap<ResourceLocation, PowerupInstance> powerups) {
+        Map<ResourceLocation, List<PowerupInstance>> powerupsByJob = powerups.values().stream().collect(Collectors.groupingBy(PowerupInstance::getJobLocation));
+
+        powerupsByJob.forEach((jobLocation, powerupInstances) -> {
+            if (jobs.containsKey(jobLocation)) {
+                LOGGER.info("Adding {} powerups to job {}", powerupInstances.size(), jobLocation.toString());
+                jobs.get(jobLocation).setPowerups(powerupInstances);
+            } else {
+                LOGGER.error("Could not find job {} for powerups {}", jobLocation.toString(), powerupInstances.stream().map(PowerupInstance::getLocation).collect(Collectors.toList()));
+            }
+        });
+    }
+
+    public void addActions(ImmutableMap<ResourceLocation, Action> actions) {
+        addJobActions(actions.values().stream().filter(action -> action.getForType() == ActionForType.JOB).collect(Collectors.toList()));
+        addPowerupActions(actions.values().stream().filter(action -> action.getForType() == ActionForType.POWERUP).collect(Collectors.toList()));
+    }
+
+    private void addJobActions(List<Action> collect) {
+        Map<ResourceLocation, List<Action>> actionsByJob = collect.stream().collect(Collectors.groupingBy(Action::getForLocation));
+
+        actionsByJob.forEach((jobLocation, actions) -> {
+            if (jobs.containsKey(jobLocation)) {
+                LOGGER.info("Adding {} actions to job {}", actions.size(), jobLocation.toString());
+                jobs.get(jobLocation).setActions(actions);
+            } else {
+                LOGGER.error("Could not find job {} for actions {}", jobLocation.toString(), actions.stream().map(Action::getLocation).collect(Collectors.toList()));
+            }
+        });
+    }
+
+    private void addPowerupActions(List<Action> collect) {
+        Map<ResourceLocation, List<Action>> actionsByPowerup = collect.stream().collect(Collectors.groupingBy(Action::getForLocation));
+        LOGGER.info("Adding powerup actions {}", actionsByPowerup.size());
+        actionsByPowerup.forEach((powerupLocation, actions) -> {
+            LOGGER.info("{} 1 {}", actions.size(), powerupLocation.toString());
+            if (PowerupManager.getInstance().getAllPowerups().containsKey(powerupLocation)) {
+                LOGGER.info("Adding {} actions to powerup {}", actions.size(), powerupLocation.toString());
+                PowerupManager.getInstance().getAllPowerups().get(powerupLocation).setActions(actions);
+            } else {
+                LOGGER.error("Could not find powerup {} for actions {}", powerupLocation.toString(), actions.stream().map(Action::getLocation).collect(Collectors.toList()));
+            }
+        });
+    }
+
+
 }

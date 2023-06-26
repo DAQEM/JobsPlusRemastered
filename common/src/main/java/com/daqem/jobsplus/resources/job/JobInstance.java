@@ -9,11 +9,11 @@ import com.daqem.jobsplus.resources.crafting.restriction.restrictions.TagCraftin
 import com.daqem.jobsplus.resources.job.action.Action;
 import com.daqem.jobsplus.resources.job.powerup.PowerupInstance;
 import com.google.gson.*;
-import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -35,6 +35,10 @@ public class JobInstance {
     private List<Action> actions;
     private List<PowerupInstance> powerupInstances;
     private List<CraftingRestriction> craftingRestrictions = null;
+
+    public JobInstance(String name, int price, int maxLevel, String color, Item iconItem, String description, boolean isDefault) {
+        this(name, price, maxLevel, color, iconItem, description, isDefault, new ArrayList<>(), new ArrayList<>());
+    }
 
     public JobInstance(String name, int price, int maxLevel, String color, Item iconItem, String description, boolean isDefault, List<Action> actions, List<PowerupInstance> powerupInstances) {
         this.name = name;
@@ -85,7 +89,9 @@ public class JobInstance {
     private void getPowerupsRecursive(List<PowerupInstance> powerups, List<PowerupInstance> powerupInstances) {
         for (PowerupInstance powerupInstance : powerups) {
             powerupInstances.add(powerupInstance);
-            getPowerupsRecursive(powerupInstance.getPowerups(), powerupInstances);
+            if (powerupInstance.hasChildPowerups()) {
+                getPowerupsRecursive(powerupInstance.getPowerups(), powerupInstances);
+            }
         }
     }
 
@@ -175,37 +181,24 @@ public class JobInstance {
         return itemCraftingRestrictions;
     }
 
+    public void setPowerups(List<PowerupInstance> powerupInstances) {
+        this.powerupInstances = powerupInstances;
+    }
+
     public static class JobInstanceSerializer implements JsonDeserializer<JobInstance> {
 
-        private static final Gson GSON = new GsonBuilder()
-//                .registerTypeHierarchyAdapter(Action.class, new Action.ActionSerializer<>())
-                .registerTypeHierarchyAdapter(PowerupInstance.class, new PowerupInstance.PowerupSerializer())
-                .create();
-
         @Override
-        public JobInstance deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-            JsonObject jsonObject = json.getAsJsonObject();
-
-//            List<Action> actions = new ArrayList<>();
-//            JsonElement actionsElement = jsonObject.get("actions");
-//            if (actionsElement != null && actionsElement.isJsonArray())
-//                actionsElement.getAsJsonArray().forEach(jsonElement -> actions.add(GSON.fromJson(jsonElement, Action.class)));
-
-            List<PowerupInstance> powerupInstances = new ArrayList<>();
-            JsonElement powerupsElement = jsonObject.get("powerups");
-            if (powerupsElement != null && powerupsElement.isJsonArray())
-                powerupsElement.getAsJsonArray().forEach(jsonElement -> powerupInstances.add(GSON.fromJson(jsonElement, PowerupInstance.class)));
+        public JobInstance deserialize(JsonElement element, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+            JsonObject json = element.getAsJsonObject();
 
             return new JobInstance(
-                    jsonObject.get("name").getAsString(),
-                    jsonObject.get("price").getAsInt(),
-                    jsonObject.get("max_level").getAsInt(),
-                    jsonObject.get("color").getAsString(),
-                    Registry.ITEM.get(new ResourceLocation(jsonObject.get("icon_item").getAsString())),
-                    jsonObject.get("description").getAsString(),
-                    jsonObject.has("is_default") && jsonObject.get("is_default").getAsBoolean(),
-                    new ArrayList<>(),
-                    powerupInstances);
+                    GsonHelper.getAsString(json, "name"),
+                    GsonHelper.getAsInt(json, "price", 10),
+                    GsonHelper.getAsInt(json, "max_level", 100),
+                    GsonHelper.getAsString(json, "color"),
+                    GsonHelper.getAsItem(json, "icon_item", Items.BARRIER),
+                    GsonHelper.getAsString(json, "description"),
+                    GsonHelper.getAsBoolean(json, "is_default", false));
         }
     }
 }

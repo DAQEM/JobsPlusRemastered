@@ -9,6 +9,7 @@ import com.daqem.jobsplus.forge.registry.JobsPlusRegistryForge;
 import com.daqem.jobsplus.forge.resources.ActionManagerForge;
 import com.daqem.jobsplus.forge.resources.CraftingRestrictionManagerForge;
 import com.daqem.jobsplus.forge.resources.JobManagerForge;
+import com.daqem.jobsplus.forge.resources.PowerupManagerForge;
 import net.minecraft.commands.synchronization.ArgumentTypeInfo;
 import net.minecraft.commands.synchronization.ArgumentTypeInfos;
 import net.minecraft.commands.synchronization.SingletonArgumentInfo;
@@ -43,6 +44,7 @@ public class SideProxyForge {
     public void onAddReloadListeners(AddReloadListenerEvent event) {
         event.addListener(new JobManagerForge());
         event.addListener(new CraftingRestrictionManagerForge());
+        event.addListener(new PowerupManagerForge());
         event.addListener(new ActionManagerForge());
     }
 

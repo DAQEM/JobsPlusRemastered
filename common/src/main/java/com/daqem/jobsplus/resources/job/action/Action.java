@@ -16,7 +16,8 @@ import java.util.List;
 public abstract class Action {
 
     private ResourceLocation location;
-    private ResourceLocation jobLocation;
+    private ResourceLocation forLocation;
+    private ActionForType forType;
     private final ActionType type;
     private String shortDescription;
     private String description;
@@ -27,9 +28,13 @@ public abstract class Action {
         this.type = type;
     }
 
-    public Action withLocations(ResourceLocation location, ResourceLocation jobLocation) {
+    public void setLocation(ResourceLocation location) {
         this.location = location;
-        this.jobLocation = jobLocation;
+    }
+
+    public Action withForLocationAndType(ResourceLocation forLocation, ActionForType forType) {
+        this.forLocation = forLocation;
+        this.forType = forType;
         return this;
     }
 
@@ -53,8 +58,12 @@ public abstract class Action {
         return location;
     }
 
-    public ResourceLocation getJobLocation() {
-        return jobLocation;
+    public ResourceLocation getForLocation() {
+        return forLocation;
+    }
+
+    public ActionForType getForType() {
+        return forType;
     }
 
     public ActionType getType() {
@@ -89,19 +98,19 @@ public abstract class Action {
     }
 
     public boolean metConditions(ActionData actionData) {
-        for (ActionCondition condition : conditions) {
-            if (!condition.isMet(actionData)) {
-                return false;
-            }
-        }
-        return true;
+        return conditions.stream().allMatch(condition -> condition.isMet(actionData));
     }
+
 
     public void applyRewards(ActionData actionData) {
         for (ActionReward reward : rewards) {
-            if (reward.passedChance(actionData)) {
-                reward.apply(actionData);
-            }
+            applyReward(actionData, reward);
+        }
+    }
+
+    private static void applyReward(ActionData actionData, ActionReward reward) {
+        if (reward.passedChance(actionData)) {
+            reward.apply(actionData);
         }
     }
 
@@ -109,7 +118,7 @@ public abstract class Action {
     public String toString() {
         return "Action{" +
                 "location=" + location +
-                ", jobLocation=" + jobLocation +
+                ", jobLocation=" + forLocation +
                 ", type=" + type +
                 ", shortDescription='" + shortDescription + '\'' +
                 ", description='" + description + '\'' +
@@ -120,11 +129,6 @@ public abstract class Action {
 
     public static class ActionSerializer<T extends Action> implements JsonDeserializer<T> {
 
-        private final ResourceLocation location;
-
-        public ActionSerializer(ResourceLocation location) {
-            this.location = location;
-        }
 
         private static Gson getGson() {
             GsonBuilder builder = new GsonBuilder().setPrettyPrinting();
@@ -141,6 +145,17 @@ public abstract class Action {
         @Override
         public T deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
             JsonObject actionObject = json.getAsJsonObject();
+
+            ResourceLocation forLocation;
+            ActionForType forType;
+            if (!actionObject.has("powerup")) {
+                forLocation = new ResourceLocation(GsonHelper.getAsString(actionObject, "job"));
+                forType = ActionForType.JOB;
+            } else {
+                forLocation = new ResourceLocation(GsonHelper.getAsString(actionObject, "powerup"));
+                forType = ActionForType.POWERUP;
+            }
+
 
             String shortDescription = GsonHelper.getAsString(actionObject, "short_description", "");
             String description = GsonHelper.getAsString(actionObject, "description", "");
@@ -159,7 +174,7 @@ public abstract class Action {
             Class<? extends Action> clazz = Actions.getClass(location);
 
             return (T) getGson().fromJson(actionObject, clazz)
-                    .withLocations(this.location, new ResourceLocation(GsonHelper.getAsString(actionObject, "job")))
+                    .withForLocationAndType(forLocation, forType)
                     .withDescriptions(shortDescription, description)
                     .withRewards(actionRewardsList)
                     .withConditions(actionConditionsList);

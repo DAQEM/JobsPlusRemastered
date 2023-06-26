@@ -1,7 +1,7 @@
 package com.daqem.jobsplus.fabric.resources;
 
 import com.daqem.jobsplus.JobsPlus;
-import com.daqem.jobsplus.resources.job.action.ActionManager;
+import com.daqem.jobsplus.resources.job.powerup.PowerupManager;
 import com.google.gson.JsonElement;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.minecraft.resources.ResourceLocation;
@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
-public class ActionManagerFabric extends ActionManager implements IdentifiableResourceReloadListener {
+public class PowerupManagerFabric extends PowerupManager implements IdentifiableResourceReloadListener {
 
     @Override
     protected void apply(@NotNull Map<ResourceLocation, JsonElement> map, @NotNull ResourceManager resourceManager, @NotNull ProfilerFiller profilerFiller) {
@@ -20,6 +20,6 @@ public class ActionManagerFabric extends ActionManager implements IdentifiableRe
 
     @Override
     public ResourceLocation getFabricId() {
-        return JobsPlus.getId("job_actions");
+        return JobsPlus.getId("job_powerups");
     }
 }

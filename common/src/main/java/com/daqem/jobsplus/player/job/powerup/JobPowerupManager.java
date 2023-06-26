@@ -12,12 +12,12 @@ import org.jetbrains.annotations.NotNull;
 import javax.annotation.Nullable;
 import java.util.*;
 
-public class PowerupManager {
+public class JobPowerupManager {
 
     private final JobInstance job;
     private List<Powerup> powerups;
 
-    public PowerupManager(JobInstance job, @NotNull List<Powerup> powerups) {
+    public JobPowerupManager(JobInstance job, @NotNull List<Powerup> powerups) {
         this.job = job;
         this.powerups = sortPowerups(powerups);
     }
@@ -175,15 +175,18 @@ public class PowerupManager {
         }
 
         for (Powerup powerup : powerups) {
-            PowerupInstance parentInstance = powerup.getPowerupInstance().getParent();
-            if (parentInstance != null) {
-                Powerup parentPowerup = powerupMap.get(parentInstance);
-                if (parentPowerup != null) {
-                    parentPowerup.getChildren().add(powerup);
-                    powerup.setParent(parentPowerup);
+            PowerupInstance powerupInstance = powerup.getPowerupInstance();
+            if (powerupInstance != null) {
+                PowerupInstance parentInstance = powerupInstance.getParent();
+                if (parentInstance != null) {
+                    Powerup parentPowerup = powerupMap.get(parentInstance);
+                    if (parentPowerup != null) {
+                        parentPowerup.getChildren().add(powerup);
+                        powerup.setParent(parentPowerup);
+                    }
+                } else {
+                    rootPowerups.add(powerup);
                 }
-            } else {
-                rootPowerups.add(powerup);
             }
         }
 

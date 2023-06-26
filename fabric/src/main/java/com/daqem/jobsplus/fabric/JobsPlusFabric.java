@@ -8,6 +8,7 @@ import com.daqem.jobsplus.fabric.registry.JobsPlusRegistryFabric;
 import com.daqem.jobsplus.fabric.resources.ActionManagerFabric;
 import com.daqem.jobsplus.fabric.resources.CraftingRestrictionManagerFabric;
 import com.daqem.jobsplus.fabric.resources.JobManagerFabric;
+import com.daqem.jobsplus.fabric.resources.PowerupManagerFabric;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.ArgumentTypeRegistry;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
@@ -21,6 +22,7 @@ public class JobsPlusFabric implements ModInitializer {
         JobsPlus.init();
         ResourceManagerHelper.get(PackType.SERVER_DATA).registerReloadListener(new JobManagerFabric());
         ResourceManagerHelper.get(PackType.SERVER_DATA).registerReloadListener(new CraftingRestrictionManagerFabric());
+        ResourceManagerHelper.get(PackType.SERVER_DATA).registerReloadListener(new PowerupManagerFabric());
         ResourceManagerHelper.get(PackType.SERVER_DATA).registerReloadListener(new ActionManagerFabric());
 
         registerCommandArgumentTypes();

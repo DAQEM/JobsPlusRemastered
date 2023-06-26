@@ -61,4 +61,6 @@ public interface JobsServerPlayer {
     boolean getUpdatedFromOldJobsPlus();
 
     void setUpdatedFromOldJobsPlus(boolean b);
+
+    double nextRandomDouble();
 }

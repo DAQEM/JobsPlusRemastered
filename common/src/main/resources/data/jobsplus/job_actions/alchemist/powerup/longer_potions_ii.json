@@ -1,0 +1,15 @@
+{
+  "powerup": "jobsplus:alchemist/longer_potions_ii",
+  "type": "jobsplus:on_effect_added",
+  "rewards": [
+    {
+      "type": "jobsplus:effect_duration_multiplier",
+      "multiplier": 1.4
+    }
+  ],
+  "conditions": [
+    {
+      "type": "jobsplus:powerup_no_children_active"
+    }
+  ]
+}

@@ -1,6 +1,7 @@
 package com.daqem.jobsplus.player;
 
 import com.daqem.jobsplus.player.job.Job;
+import com.daqem.jobsplus.player.job.powerup.Powerup;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
@@ -33,6 +34,7 @@ public record ActionSpecification<T>(ResourceLocation location) {
     public static final ActionSpecification<Advancement> ADVANCEMENT = create("advancement");
     public static final ActionSpecification<MobEffectInstance> MOB_EFFECT_INSTANCE = create("mob_effect_instance");
     public static final ActionSpecification<Recipe<?>> RECIPE = create("recipe");
+    public static final ActionSpecification<Powerup> POWERUP = create("powerup");
 
     private static <T> ActionSpecification<T> create(String location) {
         return new ActionSpecification<>(new ResourceLocation(location));

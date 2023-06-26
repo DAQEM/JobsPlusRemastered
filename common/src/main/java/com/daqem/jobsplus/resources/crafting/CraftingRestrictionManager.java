@@ -112,4 +112,8 @@ public abstract class CraftingRestrictionManager extends SimpleJsonResourceReloa
     public JsonElement getFromLocation(ResourceLocation location) {
         return map.get(location);
     }
+
+    public ImmutableMap<ResourceLocation, JsonElement> getMap() {
+        return map;
+    }
 }

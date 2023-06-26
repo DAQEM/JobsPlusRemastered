@@ -1,10 +1,10 @@
 package com.daqem.jobsplus.resources.job.powerup;
 
-import com.daqem.jobsplus.resources.job.JobManager;
 import com.daqem.jobsplus.resources.job.action.Action;
 import com.google.gson.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Type;
@@ -14,19 +14,23 @@ import java.util.List;
 public class PowerupInstance {
 
     private ResourceLocation location;
+    private final ResourceLocation jobLocation;
+    private final @Nullable ResourceLocation parentLocation;
     private final String name;
     private final String description;
     private final int price;
-    private final List<Action> actions;
+    private final int requiredLevel;
+    private List<Action> actions = new ArrayList<>();
     private @Nullable PowerupInstance parent;
-    private final List<PowerupInstance> children;
+    private List<PowerupInstance> children = new ArrayList<>();
 
-    public PowerupInstance(String name, String description, int price, List<Action> actions, List<PowerupInstance> children) {
+    public PowerupInstance(ResourceLocation jobLocation, @Nullable ResourceLocation parentLocation, String name, String description, int price, int requiredLevel) {
+        this.jobLocation = jobLocation;
+        this.parentLocation = parentLocation;
         this.name = name;
         this.description = description;
         this.price = price;
-        this.actions = actions;
-        this.children = children;
+        this.requiredLevel = requiredLevel;
     }
 
     public String getName() {
@@ -37,18 +41,24 @@ public class PowerupInstance {
         this.location = location;
     }
 
-    public void setLocationFromJobLocation(ResourceLocation jobLocation) {
-        setLocation(new ResourceLocation(jobLocation + "."
-                + getName().toLowerCase()
-                .replace(" ", "_")));
-    }
-
     public ResourceLocation getLocation() {
         return location;
     }
 
+    public ResourceLocation getJobLocation() {
+        return jobLocation;
+    }
+
+    public @Nullable ResourceLocation getParentLocation() {
+        return parentLocation;
+    }
+
     public int getPrice() {
         return price;
+    }
+
+    public int getRequiredLevel() {
+        return requiredLevel;
     }
 
     public List<PowerupInstance> getPowerups() {
@@ -70,29 +80,9 @@ public class PowerupInstance {
         }
     }
 
-    @Override
-    public String toString() {
-        JsonObject json = new JsonObject();
-        json.addProperty("name", name);
-        json.addProperty("description", description);
-        json.addProperty("price", price);
-        json.add("actions", GsonHelper.parseArray(new Gson().toJson(actions)));
-        json.add("powerups", GsonHelper.parseArray(new Gson().toJson(children)));
-        return json.toString();
-    }
-
-
-    public String toShortString() {
-        JsonObject json = new JsonObject();
-        json.addProperty("name", name);
-        json.addProperty("price", price);
-        return json.toString();
-    }
-
-
     @Nullable
     public static PowerupInstance of(ResourceLocation location) {
-        return JobManager.getInstance().getPowerups().get(location);
+        return PowerupManager.getInstance().getAllPowerups().get(location);
     }
 
     public @Nullable PowerupInstance getParent() {
@@ -103,30 +93,33 @@ public class PowerupInstance {
         return children;
     }
 
-    public static class PowerupSerializer implements JsonDeserializer<PowerupInstance> {
+    public void setActions(@NotNull List<Action> actions) {
+        this.actions = actions;
+    }
 
-        private static final Gson GSON = new GsonBuilder()
-//                .registerTypeHierarchyAdapter(Action.class, new Action.ActionSerializer<>())
-                .registerTypeHierarchyAdapter(PowerupInstance.class, new PowerupInstance.PowerupSerializer())
-                .create();
+    public boolean hasChildPowerups() {
+        return children != null && !children.isEmpty();
+    }
+
+    public void addChild(PowerupInstance powerupInstance) {
+        children.add(powerupInstance);
+    }
+
+    public static class PowerupSerializer implements JsonDeserializer<PowerupInstance> {
 
         @Override
         public PowerupInstance deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
             JsonObject jsonObject = json.getAsJsonObject();
 
-//            List<Action> actions = new ArrayList<>();
-//            GsonHelper.getAsJsonArray(jsonObject, "actions").forEach(jsonElement -> actions.add(GSON.fromJson(jsonElement, Action.class)));
-
-            List<PowerupInstance> powerupInstances = new ArrayList<>();
-            GsonHelper.getAsJsonArray(jsonObject, "powerups", new JsonArray()).forEach(jsonElement -> powerupInstances.add(GSON.fromJson(jsonElement, PowerupInstance.class)));
-
+            String parentLocation = GsonHelper.getAsString(jsonObject, "parent", null);
 
             return new PowerupInstance(
+                    new ResourceLocation(GsonHelper.getAsString(jsonObject, "job")),
+                    parentLocation == null ? null : new ResourceLocation(parentLocation),
                     GsonHelper.getAsString(jsonObject, "name"),
                     GsonHelper.getAsString(jsonObject, "description"),
                     GsonHelper.getAsInt(jsonObject, "price"),
-                    new ArrayList<>(),
-                    powerupInstances);
+                    GsonHelper.getAsInt(jsonObject, "required_level"));
         }
     }
 }

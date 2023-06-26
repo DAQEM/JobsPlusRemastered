@@ -1,7 +1,7 @@
 package com.daqem.jobsplus.test;
 
+import com.daqem.jobsplus.player.job.powerup.JobPowerupManager;
 import com.daqem.jobsplus.player.job.powerup.Powerup;
-import com.daqem.jobsplus.player.job.powerup.PowerupManager;
 import com.daqem.jobsplus.player.job.powerup.PowerupState;
 import com.daqem.jobsplus.resources.job.powerup.PowerupInstance;
 import net.minecraft.resources.ResourceLocation;
@@ -13,16 +13,16 @@ import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class PowerupManagerAddTest {
-    private PowerupManager powerupManager;
+    private JobPowerupManager powerupManager;
 
     @BeforeEach
     public void setUp() {
-        powerupManager = new PowerupManager(null, new ArrayList<>());
+        powerupManager = new JobPowerupManager(null, new ArrayList<>());
     }
 
     @Test
     public void testAddRootPowerup() {
-        PowerupInstance rootInstance = new PowerupInstance("root", "", 0, new ArrayList<>(), new ArrayList<>());
+        PowerupInstance rootInstance = new PowerupInstance(new ResourceLocation(""), new ResourceLocation(""), "root", "", 0, 10);
         rootInstance.setLocation(new ResourceLocation("test", "root"));
         PowerupState rootState = PowerupState.ACTIVE;
         powerupManager.addPowerup(rootInstance, rootState);
@@ -35,9 +35,9 @@ public class PowerupManagerAddTest {
 
     @Test
     public void testAddChildPowerupAfterRootPowerup() {
-        PowerupInstance rootInstance = new PowerupInstance("root", "", 0, new ArrayList<>(), new ArrayList<>());
+        PowerupInstance rootInstance = new PowerupInstance(new ResourceLocation(""), new ResourceLocation(""), "root", "", 0, 10);
         rootInstance.setLocation(new ResourceLocation("test", "root"));
-        PowerupInstance childInstance = new PowerupInstance("child", "", 0, new ArrayList<>(), new ArrayList<>());
+        PowerupInstance childInstance = new PowerupInstance(new ResourceLocation(""), new ResourceLocation(""), "child", "", 0, 10);
         childInstance.setLocation(new ResourceLocation("test", "child"));
         rootInstance.getChildren().add(childInstance);
         childInstance.setParent(rootInstance);
@@ -62,9 +62,9 @@ public class PowerupManagerAddTest {
 
     @Test
     public void testAddChildPowerupBeforeRootPowerup() {
-        PowerupInstance rootInstance = new PowerupInstance("root", "", 0, new ArrayList<>(), new ArrayList<>());
+        PowerupInstance rootInstance = new PowerupInstance(new ResourceLocation(""), new ResourceLocation(""), "root", "", 0, 10);
         rootInstance.setLocation(new ResourceLocation("test", "root"));
-        PowerupInstance childInstance = new PowerupInstance("child", "", 0, new ArrayList<>(), new ArrayList<>());
+        PowerupInstance childInstance = new PowerupInstance(new ResourceLocation(""), new ResourceLocation(""), "child", "", 0, 10);
         childInstance.setLocation(new ResourceLocation("test", "child"));
         rootInstance.getChildren().add(childInstance);
         childInstance.setParent(rootInstance);
@@ -88,17 +88,17 @@ public class PowerupManagerAddTest {
 
     @Test
     public void testAddMultiplePowerups() {
-        PowerupInstance rootInstance = new PowerupInstance("root", "", 0, new ArrayList<>(), new ArrayList<>());
+        PowerupInstance rootInstance = new PowerupInstance(new ResourceLocation(""), new ResourceLocation(""), "root", "", 0, 10);
         rootInstance.setLocation(new ResourceLocation("test", "root"));
-        PowerupInstance child1Instance = new PowerupInstance("child1", "", 0, new ArrayList<>(), new ArrayList<>());
+        PowerupInstance child1Instance = new PowerupInstance(new ResourceLocation(""), new ResourceLocation(""), "child1", "", 0, 10);
         child1Instance.setLocation(new ResourceLocation("test", "child1"));
         rootInstance.getChildren().add(child1Instance);
         child1Instance.setParent(rootInstance);
-        PowerupInstance child2Instance = new PowerupInstance("child2", "", 0, new ArrayList<>(), new ArrayList<>());
+        PowerupInstance child2Instance = new PowerupInstance(new ResourceLocation(""), new ResourceLocation(""), "child2", "", 0, 10);
         child2Instance.setLocation(new ResourceLocation("test", "child2"));
         rootInstance.getChildren().add(child2Instance);
         child2Instance.setParent(rootInstance);
-        PowerupInstance grandchildInstance = new PowerupInstance("grandchild", "", 0, new ArrayList<>(), new ArrayList<>());
+        PowerupInstance grandchildInstance = new PowerupInstance(new ResourceLocation(""), new ResourceLocation(""), "grandchild", "", 0, 10);
         grandchildInstance.setLocation(new ResourceLocation("test", "grandchild"));
         child1Instance.getChildren().add(grandchildInstance);
         grandchildInstance.setParent(child1Instance);

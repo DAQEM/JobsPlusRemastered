@@ -3,7 +3,6 @@ package com.daqem.jobsplus.resources.job.action.reward;
 import com.daqem.jobsplus.player.ActionData;
 import com.google.gson.*;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.GsonHelper;
 
 import java.lang.reflect.Type;
@@ -28,7 +27,7 @@ public abstract class ActionReward {
     public abstract void apply(ActionData actionData);
 
     public boolean passedChance(ActionData actionData) {
-        return ((ServerPlayer) actionData.getPlayer()).getRandom().nextDouble() * 100 <= chance;
+        return chance == 100 || actionData.getPlayer().nextRandomDouble() * 100 <= chance;
     }
 
     //with chance

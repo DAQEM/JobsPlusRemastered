@@ -227,6 +227,11 @@ public abstract class MixinServerPlayer extends Player implements JobsServerPlay
         this.updatedFromOldJobsPLus = updatedFromOldJobsPlus;
     }
 
+    @Override
+    public double nextRandomDouble() {
+        return this.getServerPlayer().getRandom().nextDouble();
+    }
+
     @Inject(at = @At("TAIL"), method = "tick()V")
     public void tick(CallbackInfo ci) {
         if (this.isSwimming && this.isSwimming()) {

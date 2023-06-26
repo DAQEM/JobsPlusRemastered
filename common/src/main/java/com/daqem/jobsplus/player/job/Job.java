@@ -3,8 +3,8 @@ package com.daqem.jobsplus.player.job;
 import com.daqem.jobsplus.Constants;
 import com.daqem.jobsplus.event.triggers.JobEvents;
 import com.daqem.jobsplus.player.JobsServerPlayer;
+import com.daqem.jobsplus.player.job.powerup.JobPowerupManager;
 import com.daqem.jobsplus.player.job.powerup.Powerup;
-import com.daqem.jobsplus.player.job.powerup.PowerupManager;
 import com.daqem.jobsplus.player.job.powerup.PowerupState;
 import com.daqem.jobsplus.resources.job.JobInstance;
 import com.daqem.jobsplus.resources.job.JobManager;
@@ -24,7 +24,7 @@ public class Job {
 
     private final JobsServerPlayer player;
     private final JobInstance jobInstance;
-    private final PowerupManager powerupManager;
+    private final JobPowerupManager powerupManager;
     private int level;
     private int experience;
 
@@ -43,7 +43,7 @@ public class Job {
     public Job(JobsServerPlayer player, JobInstance jobInstance, int level, int experience, @NotNull List<Powerup> powerups) {
         this.player = player;
         this.jobInstance = jobInstance;
-        this.powerupManager = new PowerupManager(jobInstance, powerups);
+        this.powerupManager = new JobPowerupManager(jobInstance, powerups);
         this.level = level;
         this.experience = experience;
     }
@@ -52,7 +52,7 @@ public class Job {
         return jobInstance;
     }
 
-    public PowerupManager getPowerupManager() {
+    public JobPowerupManager getPowerupManager() {
         return powerupManager;
     }
 

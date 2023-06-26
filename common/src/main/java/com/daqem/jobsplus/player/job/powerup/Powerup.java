@@ -58,7 +58,7 @@ public class Powerup {
     @Override
     public String toString() {
         JsonObject json = new JsonObject();
-        json.add("powerupInstance", GsonHelper.parse(powerupInstance.toShortString()));
+//        json.add("powerupInstance", GsonHelper.parse(powerupInstance.toShortString()));
         json.addProperty("powerupState", powerupState.name());
         json.addProperty("parent", parent == null ? "null" : parent.getPowerupInstance().getLocation().toString());
         JsonArray children = new JsonArray();
@@ -69,4 +69,12 @@ public class Powerup {
         return json.toString();
     }
 
+    public boolean hasActiveChildren() {
+        for (Powerup child : children) {
+            if (child.getPowerupState() == PowerupState.ACTIVE || child.hasActiveChildren()) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

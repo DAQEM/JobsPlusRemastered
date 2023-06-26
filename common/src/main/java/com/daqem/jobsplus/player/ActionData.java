@@ -53,6 +53,7 @@ public class ActionData {
             job.getPowerupManager().getAllPowerups().forEach(powerup -> {
                 if (powerup.getPowerupState() == PowerupState.ACTIVE) {
                     powerup.getPowerupInstance().getActions().forEach(action -> {
+                        this.specifications.put(ActionSpecification.POWERUP, powerup);
                         handleAction(job, action);
                     });
                 }

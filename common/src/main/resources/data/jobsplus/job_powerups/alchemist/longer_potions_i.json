@@ -1,0 +1,7 @@
+{
+  "job": "jobsplus:alchemist",
+  "name": "Longer potions I",
+  "description": "Potions last 20% longer.",
+  "price": 10,
+  "required_level": 0
+}

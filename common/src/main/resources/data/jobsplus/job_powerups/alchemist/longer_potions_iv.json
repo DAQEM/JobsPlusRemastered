@@ -1,0 +1,8 @@
+{
+  "job": "jobsplus:alchemist",
+  "parent": "jobsplus:alchemist/longer_potions_iii",
+  "name": "Longer potions IV",
+  "description": "Potions last 80% longer.",
+  "price": 10,
+  "required_level": 30
+}

@@ -1,8 +1,8 @@
 package com.daqem.jobsplus.command.arguments;
 
 import com.daqem.jobsplus.resources.job.JobInstance;
-import com.daqem.jobsplus.resources.job.JobManager;
 import com.daqem.jobsplus.resources.job.powerup.PowerupInstance;
+import com.daqem.jobsplus.resources.job.powerup.PowerupManager;
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.context.CommandContext;
@@ -24,7 +24,7 @@ public class PowerupArgument implements ArgumentType<PowerupInstance> {
 
     @Override
     public PowerupInstance parse(StringReader reader) throws CommandSyntaxException {
-        return JobManager.getInstance().getPowerups().get(ResourceLocation.read(reader));
+        return PowerupManager.getInstance().getAllPowerups().get(ResourceLocation.read(reader));
     }
 
     @Override
