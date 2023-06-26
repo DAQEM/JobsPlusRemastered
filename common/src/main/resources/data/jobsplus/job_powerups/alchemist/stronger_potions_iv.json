@@ -1,0 +1,7 @@
+{
+  "job": "jobsplus:alchemist",
+  "name": "Stronger potions IV",
+  "description": "Potions have a 80% change to become stronger.",
+  "price": 16,
+  "required_level": 35
+}

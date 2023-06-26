@@ -1,0 +1,32 @@
+{
+  "powerup": "jobsplus:alchemist/harmful_potion_immunity_iv",
+  "type": "jobsplus:on_effect_added",
+  "rewards": [
+    {
+      "type": "jobsplus:remove_effect",
+      "chance": 80
+    }
+  ],
+  "conditions": [
+    {
+      "type": "jobsplus:or",
+      "conditions": [
+        {
+          "type": "jobsplus:effect_category",
+          "category": "HARMFUL"
+        },
+        {
+          "type": "jobsplus:effect",
+          "effect": "minecraft:bad_omen"
+        },
+        {
+          "type": "jobsplus:effect",
+          "effect": "minecraft:glowing"
+        }
+      ]
+    },
+    {
+      "type": "jobsplus:powerup_no_children_active"
+    }
+  ]
+}

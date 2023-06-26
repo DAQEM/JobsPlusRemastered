@@ -26,7 +26,7 @@ public abstract class PowerupManager extends SimpleJsonResourceReloadListener {
             .registerTypeHierarchyAdapter(PowerupInstance.class, new PowerupInstance.PowerupSerializer())
             .create();
 
-    public static final Logger LOGGER = LogUtils.getLogger();
+    private static final Logger LOGGER = LogUtils.getLogger();
     protected ImmutableMap<ResourceLocation, PowerupInstance> powerups = ImmutableMap.of();
 
     protected ImmutableMap<ResourceLocation, JsonElement> map = ImmutableMap.of();

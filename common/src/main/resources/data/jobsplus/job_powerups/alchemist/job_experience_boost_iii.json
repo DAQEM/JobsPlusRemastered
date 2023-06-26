@@ -1,0 +1,7 @@
+{
+  "job": "jobsplus:alchemist",
+  "name": "Job Experience Boost III",
+  "description": "Boosts your job experience by 150%.",
+  "price": 20,
+  "required_level": 65
+}

@@ -1,0 +1,16 @@
+{
+  "powerup": "jobsplus:alchemist/stronger_potions_ii",
+  "type": "jobsplus:on_effect_added",
+  "rewards": [
+    {
+      "type": "jobsplus:effect_amplifier_addition",
+      "addition": 1,
+      "chance": 40
+    }
+  ],
+  "conditions": [
+    {
+      "type": "jobsplus:powerup_no_children_active"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "powerup": "jobsplus:alchemist/job_experience_boost_i",
+  "type": "jobsplus:on_job_exp",
+  "rewards": [
+    {
+      "type": "jobsplus:job_exp_multiplier",
+      "multiplier": 1.5
+    }
+  ],
+  "conditions": [
+    {
+      "type": "jobsplus:powerup_no_children_active"
+    }
+  ]
+}

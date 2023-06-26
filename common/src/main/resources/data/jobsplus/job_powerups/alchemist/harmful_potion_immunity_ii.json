@@ -1,0 +1,7 @@
+{
+  "job": "jobsplus:alchemist",
+  "name": "Harmful Potion Immunity II",
+  "description": "Become 40% immune to harmful potions.",
+  "price": 12,
+  "required_level": 10
+}

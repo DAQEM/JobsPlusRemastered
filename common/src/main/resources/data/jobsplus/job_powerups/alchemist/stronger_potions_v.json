@@ -1,0 +1,7 @@
+{
+  "job": "jobsplus:alchemist",
+  "name": "Stronger potions V",
+  "description": "Potions always become stronger.",
+  "price": 18,
+  "required_level": 50
+}
