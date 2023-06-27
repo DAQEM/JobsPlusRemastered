@@ -1,5 +1,6 @@
 {
   "job": "jobsplus:alchemist",
+  "parent": "jobsplus:alchemist/stronger_potions_iii",
   "name": "Stronger potions IV",
   "description": "Potions have a 80% change to become stronger.",
   "price": 16,

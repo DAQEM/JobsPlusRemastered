@@ -15,6 +15,7 @@ import com.daqem.jobsplus.resources.crafting.restriction.restrictions.ItemCrafti
 import com.daqem.jobsplus.resources.job.JobInstance;
 import com.daqem.jobsplus.resources.job.action.Action;
 import com.daqem.jobsplus.resources.job.powerup.PowerupInstance;
+import com.daqem.jobsplus.resources.job.powerup.PowerupManager;
 import com.daqem.jobsplus.util.chat.ChatColor;
 import com.daqem.jobsplus.util.experience.ExperienceHandler;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -590,10 +591,11 @@ public class JobsScreen extends AbstractScreen {
         }
         // POWERUPS BUTTON
         else if (isBetween(mouseX, mouseY, 6 + 28 + 28 + 150, -22, 32 + 28 + 28 + 150, 0)) {
-            playClientGUIClick();
-            activeRightButton = 2;
-            scrollOffsetRight = 0;
-            startIndexRight = 0;
+//            playClientGUIClick();
+//            activeRightButton = 2;
+//            scrollOffsetRight = 0;
+//            startIndexRight = 0;
+            minecraft.setScreen(new PowerUpsScreen(this, PowerupManager.getInstance().getRootPowerups().values().stream().toList(), getSelectedJob().getPowerupManager().getAllPowerups()));
         }
         // HOW TO GET EXP BUTTON
         else if (isBetween(mouseX, mouseY, 6 + 28 + 28 + 28 + 150, -22, 32 + 28 + 28 + 28 + 150, 0)) {

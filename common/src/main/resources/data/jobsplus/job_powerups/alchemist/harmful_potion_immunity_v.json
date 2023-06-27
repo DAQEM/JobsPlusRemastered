@@ -1,5 +1,6 @@
 {
   "job": "jobsplus:alchemist",
+  "parent": "jobsplus:alchemist/harmful_potion_immunity_iv",
   "name": "Harmful Potion Immunity V",
   "description": "Become completely immune to harmful potions.",
   "price": 18,

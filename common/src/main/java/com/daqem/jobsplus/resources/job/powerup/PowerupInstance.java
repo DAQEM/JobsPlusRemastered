@@ -37,6 +37,10 @@ public class PowerupInstance {
         return name;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
     public void setLocation(ResourceLocation location) {
         this.location = location;
     }

@@ -1,5 +1,6 @@
 {
   "job": "jobsplus:alchemist",
+  "parent": "jobsplus:alchemist/job_experience_boost_ii",
   "name": "Job Experience Boost III",
   "description": "Boosts your job experience by 150%.",
   "price": 20,
