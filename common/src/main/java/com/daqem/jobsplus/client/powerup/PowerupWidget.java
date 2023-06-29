@@ -1,8 +1,10 @@
 package com.daqem.jobsplus.client.powerup;
 
 import com.daqem.jobsplus.JobsPlus;
+import com.daqem.jobsplus.client.screen.PowerUpsScreen;
 import com.daqem.jobsplus.player.job.powerup.Powerup;
 import com.daqem.jobsplus.player.job.powerup.PowerupState;
+import com.daqem.jobsplus.resources.job.JobInstance;
 import com.daqem.jobsplus.resources.job.powerup.PowerupInstance;
 import com.google.common.collect.Lists;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -32,7 +34,8 @@ public class PowerupWidget extends GuiComponent {
     private static final ResourceLocation WIDGETS_LOCATION = new ResourceLocation("textures/gui/advancements/widgets.png");
     public final static int HEIGHT = 29;
     public final static int WIDTH = 28;
-    
+
+    private final JobInstance jobInstance;
     private final PowerupInstance powerupInstance;
     private final Powerup powerup;
     private final List<Powerup> allPowerups;
@@ -51,7 +54,8 @@ public class PowerupWidget extends GuiComponent {
     private float change;
     private float shift;
 
-    public PowerupWidget(PowerupInstance powerupInstance, @Nullable Powerup powerup, List<Powerup> allPowerups, @Nullable PowerupWidget treeNodePosition, @Nullable PowerupWidget treeNodePosition2, int i, int j) {
+    public PowerupWidget(JobInstance jobInstance, PowerupInstance powerupInstance, @Nullable Powerup powerup, List<Powerup> allPowerups, @Nullable PowerupWidget treeNodePosition, @Nullable PowerupWidget treeNodePosition2, int i, int j) {
+        this.jobInstance = jobInstance;
         this.powerupInstance = powerupInstance;
         this.powerup = powerup;
         this.allPowerups = allPowerups;
@@ -107,7 +111,7 @@ public class PowerupWidget extends GuiComponent {
 
         if (this.powerupInstance.getChildren().contains(powerupInstance)) {
             Powerup powerupForPowerupInstance = getPowerupForPowerupInstance(powerupInstance, allPowerups);
-            treeNodePosition = new PowerupWidget(powerupInstance, powerupForPowerupInstance, allPowerups, this, treeNodePosition, this.children.size() + 1, this.x + 1);
+            treeNodePosition = new PowerupWidget(jobInstance, powerupInstance, powerupForPowerupInstance, allPowerups, this, treeNodePosition, this.children.size() + 1, this.x + 1);
             this.children.add(treeNodePosition);
         }
 
@@ -273,10 +277,9 @@ public class PowerupWidget extends GuiComponent {
                 treeNodePosition.finalizePosition();
             }
         }
-
     }
-    public static PowerupWidget run(PowerupInstance powerupInstance, List<Powerup> allPowerups) {
-        PowerupWidget treeNodePosition = new PowerupWidget(powerupInstance, null, allPowerups, null, null, 1, 0);
+    public static PowerupWidget run(JobInstance jobInstance, PowerupInstance powerupInstance, List<Powerup> allPowerups) {
+        PowerupWidget treeNodePosition = new PowerupWidget(jobInstance, powerupInstance, null, allPowerups, null, null, 1, 0);
         treeNodePosition.firstWalk();
         float f = treeNodePosition.secondWalk(0.0F, 0, treeNodePosition.y);
         if (f < 0.0F) {
@@ -310,8 +313,8 @@ public class PowerupWidget extends GuiComponent {
     public boolean isHovered(int mouseX, int mouseY, int offsetX, int offsetY) {
         int xPosition = Mth.floor(this.x * WIDTH) + offsetX;
         int yPosition = Mth.floor(this.y * HEIGHT) + offsetY;
-        int iconWidth = 24;
-        int iconHeight = 24;
+        int iconWidth = 23;
+        int iconHeight = 23;
 
         return mouseX >= xPosition && mouseX <= xPosition + iconWidth
                 && mouseY >= yPosition && mouseY <= yPosition + iconHeight;
@@ -359,8 +362,13 @@ public class PowerupWidget extends GuiComponent {
         int lines = 32 + var10001 * 9;
 
         this.render9Sprite(poseStack, x - 4, y + 2, totalWidth, lines, 10, 200, 26, 0, 52);
-        blit(poseStack, x - 4, y + 2, 0, 29, totalWidth - 4, 20);
-        blit(poseStack, x, y + 2, 200 - totalWidth + 4, 29, totalWidth - 4, 20);
+        if (this.getPowerupState() == PowerupState.LOCKED || this.getPowerupState() == PowerupState.NOT_OWNED) {
+            blit(poseStack, x - 4, y + 2, 0, 29, totalWidth - 4, 20);
+            blit(poseStack, x, y + 2, 200 - totalWidth + 4, 29, totalWidth - 4, 20);
+        } else {
+            blit(poseStack, x - 4, y + 2, 0, 3, totalWidth - 4, 20);
+            blit(poseStack, x, y + 2, 200 - totalWidth + 4, 3, totalWidth - 4, 20);
+        }
 
         drawPowerupIcon(poseStack, powerupInstance, this.getPowerupState(), x, y);
 
@@ -430,27 +438,27 @@ public class PowerupWidget extends GuiComponent {
 
     private void drawPowerupIcon(PoseStack poseStack, PowerupInstance powerup, PowerupState state, int x, int y) {
         switch (state) {
-            case ACTIVE -> drawActivePowerupIcon(poseStack, powerup, x, y);
-            case INACTIVE -> drawInactivePowerupIcon(poseStack, powerup, x, y);
-            case NOT_OWNED -> drawNotOwnedPowerupIcon(poseStack, powerup, x, y);
-            case LOCKED -> drawLockedPowerupIcon(poseStack, powerup, x, y);
+            case ACTIVE -> drawActivePowerupIcon(poseStack, powerup, x, y, 24, 24);
+            case INACTIVE -> drawInactivePowerupIcon(poseStack, powerup, x, y, 24, 24);
+            case NOT_OWNED -> drawNotOwnedPowerupIcon(poseStack, powerup, x, y, 24, 24);
+            case LOCKED -> drawLockedPowerupIcon(poseStack, powerup, x, y, 24, 24);
         }
     }
 
-    private void drawActivePowerupIcon(PoseStack poseStack, PowerupInstance powerup, int x, int y) {
-        blit(poseStack, x, y, 1, 129, 24, 24);
+    private void drawActivePowerupIcon(PoseStack poseStack, PowerupInstance powerup, int x, int y, int width, int height) {
+        blit(poseStack, x, y, 1, 129, width, height);
     }
 
-    private void drawInactivePowerupIcon(PoseStack poseStack, PowerupInstance powerup, int x, int y) {
-        blit(poseStack, x, y, 1, 129, 24, 24);
+    private void drawInactivePowerupIcon(PoseStack poseStack, PowerupInstance powerup, int x, int y, int width, int height) {
+        blit(poseStack, x, y, 1, 129, width, height);
     }
 
-    private void drawNotOwnedPowerupIcon(PoseStack poseStack, PowerupInstance powerup, int x, int y) {
-        blit(poseStack, x, y, 1, 155, 24, 24);
+    private void drawNotOwnedPowerupIcon(PoseStack poseStack, PowerupInstance powerup, int x, int y, int width, int height) {
+        blit(poseStack, x, y, 1, 155, width, height);
     }
 
-    private void drawLockedPowerupIcon(PoseStack poseStack, PowerupInstance powerup, int x, int y) {
-        blit(poseStack, x, y, 1, 155, 24, 24);
+    private void drawLockedPowerupIcon(PoseStack poseStack, PowerupInstance powerup, int x, int y, int width, int height) {
+        blit(poseStack, x, y, 1, 155, width, height);
     }
 
     public PowerupWidget getHoveredWidget(int mouseX, int mouseY, int offsetX, int offsetY) {
@@ -496,5 +504,10 @@ public class PowerupWidget extends GuiComponent {
         Stream<FormattedText> var10000 = list.stream();
         Objects.requireNonNull(stringSplitter);
         return (float)var10000.mapToDouble(stringSplitter::stringWidth).max().orElse(0.0);
+    }
+
+    public void setMinMaxXY(PowerUpsScreen screen) {
+        this.children.forEach(child -> child.setMinMaxXY(screen));
+        screen.setMinMaxXY(Mth.floor(this.x * WIDTH), Mth.floor(this.y * HEIGHT), Mth.floor(this.x * WIDTH) + 24, Mth.floor(this.y * HEIGHT) + 24);
     }
 }

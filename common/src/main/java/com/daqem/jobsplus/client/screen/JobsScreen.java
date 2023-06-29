@@ -595,7 +595,7 @@ public class JobsScreen extends AbstractScreen {
 //            activeRightButton = 2;
 //            scrollOffsetRight = 0;
 //            startIndexRight = 0;
-            minecraft.setScreen(new PowerUpsScreen(this, PowerupManager.getInstance().getRootPowerups().values().stream().toList(), getSelectedJob().getPowerupManager().getAllPowerups()));
+            Minecraft.getInstance().setScreen(new PowerUpsScreen(this, getSelectedJob().getJobInstance(), PowerupManager.getInstance().getRootPowerups().values().stream().toList(), getSelectedJob().getPowerupManager().getAllPowerups()));
         }
         // HOW TO GET EXP BUTTON
         else if (isBetween(mouseX, mouseY, 6 + 28 + 28 + 28 + 150, -22, 32 + 28 + 28 + 28 + 150, 0)) {
