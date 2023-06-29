@@ -34,22 +34,24 @@ public class JobInstance {
     private final String color;
     private final ItemStack iconItem;
     private final String description;
+    private final ResourceLocation powerupBackground;
     private final boolean isDefault;
     private List<Action> actions;
     private List<PowerupInstance> powerupInstances;
     private List<CraftingRestriction> craftingRestrictions = null;
 
-    public JobInstance(String name, int price, int maxLevel, String color, ItemStack iconItem, String description, boolean isDefault) {
-        this(name, price, maxLevel, color, iconItem, description, isDefault, new ArrayList<>(), new ArrayList<>());
+    public JobInstance(String name, int price, int maxLevel, String color, ItemStack iconItem, String description, ResourceLocation powerupBackground, boolean isDefault) {
+        this(name, price, maxLevel, color, iconItem, description, powerupBackground, isDefault, new ArrayList<>(), new ArrayList<>());
     }
 
-    public JobInstance(String name, int price, int maxLevel, String color, ItemStack iconItem, String description, boolean isDefault, List<Action> actions, List<PowerupInstance> powerupInstances) {
+    public JobInstance(String name, int price, int maxLevel, String color, ItemStack iconItem, String description, ResourceLocation powerupBackground, boolean isDefault, List<Action> actions, List<PowerupInstance> powerupInstances) {
         this.name = name;
         this.price = price;
         this.maxLevel = maxLevel;
         this.color = color;
         this.iconItem = iconItem;
         this.description = description;
+        this.powerupBackground = powerupBackground;
         this.isDefault = isDefault;
         this.actions = actions;
         this.powerupInstances = powerupInstances;
@@ -108,6 +110,10 @@ public class JobInstance {
 
     public String getDescription() {
         return description;
+    }
+
+    public ResourceLocation getPowerupBackground() {
+        return powerupBackground;
     }
 
     public boolean isDefault() {
@@ -212,6 +218,7 @@ public class JobInstance {
                     GsonHelper.getAsString(json, "color"),
                     iconStack,
                     GsonHelper.getAsString(json, "description"),
+                    new ResourceLocation(GsonHelper.getAsString(json, "background", "minecraft:textures/block/stone.png")),
                     GsonHelper.getAsBoolean(json, "is_default", false));
         }
     }

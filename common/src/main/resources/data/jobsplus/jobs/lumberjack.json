@@ -7,5 +7,6 @@
     "item": "minecraft:golden_axe"
   },
   "description": "You have a 1% chance to get a log when you break a log.",
+  "background": "minecraft:textures/block/oak_planks.png",
   "is_default": true
 }

@@ -3,6 +3,7 @@ package com.daqem.jobsplus.client.powerup;
 import com.daqem.jobsplus.JobsPlus;
 import com.daqem.jobsplus.client.render.RenderColor;
 import com.daqem.jobsplus.client.screen.PowerUpsScreen;
+import com.daqem.jobsplus.player.job.Job;
 import com.daqem.jobsplus.player.job.powerup.Powerup;
 import com.daqem.jobsplus.player.job.powerup.PowerupState;
 import com.daqem.jobsplus.resources.job.JobInstance;
@@ -36,6 +37,7 @@ public class PowerupWidget extends GuiComponent {
     public final static int HEIGHT = 29;
     public final static int WIDTH = 28;
 
+    private final Job job;
     private final JobInstance jobInstance;
     private final PowerupInstance powerupInstance;
     private final Powerup powerup;
@@ -55,8 +57,9 @@ public class PowerupWidget extends GuiComponent {
     private float change;
     private float shift;
 
-    public PowerupWidget(JobInstance jobInstance, PowerupInstance powerupInstance, @Nullable Powerup powerup, List<Powerup> allPowerups, @Nullable PowerupWidget treeNodePosition, @Nullable PowerupWidget treeNodePosition2, int i, int j) {
-        this.jobInstance = jobInstance;
+    public PowerupWidget(Job job, PowerupInstance powerupInstance, @Nullable Powerup powerup, List<Powerup> allPowerups, @Nullable PowerupWidget treeNodePosition, @Nullable PowerupWidget treeNodePosition2, int i, int j) {
+        this.job = job;
+        this.jobInstance = job.getJobInstance();
         this.powerupInstance = powerupInstance;
         this.powerup = powerup;
         this.allPowerups = allPowerups;
@@ -82,7 +85,7 @@ public class PowerupWidget extends GuiComponent {
                 return PowerupState.ACTIVE;
             } else {
                 if (this.parent.getPowerupState() == PowerupState.ACTIVE || this.parent.getPowerupState() == PowerupState.INACTIVE) {
-                    return PowerupState.NOT_OWNED;
+                    return job.getLevel() >= powerupInstance.getRequiredLevel() ? PowerupState.NOT_OWNED : PowerupState.LOCKED;
                 } else {
                     return PowerupState.LOCKED;
                 }
@@ -112,7 +115,7 @@ public class PowerupWidget extends GuiComponent {
 
         if (this.powerupInstance.getChildren().contains(powerupInstance)) {
             Powerup powerupForPowerupInstance = getPowerupForPowerupInstance(powerupInstance, allPowerups);
-            treeNodePosition = new PowerupWidget(jobInstance, powerupInstance, powerupForPowerupInstance, allPowerups, this, treeNodePosition, this.children.size() + 1, this.x + 1);
+            treeNodePosition = new PowerupWidget(job, powerupInstance, powerupForPowerupInstance, allPowerups, this, treeNodePosition, this.children.size() + 1, this.x + 1);
             this.children.add(treeNodePosition);
         }
 
@@ -279,8 +282,8 @@ public class PowerupWidget extends GuiComponent {
             }
         }
     }
-    public static PowerupWidget run(JobInstance jobInstance, PowerupInstance powerupInstance, List<Powerup> allPowerups) {
-        PowerupWidget treeNodePosition = new PowerupWidget(jobInstance, powerupInstance, null, allPowerups, null, null, 1, 0);
+    public static PowerupWidget run(Job job, PowerupInstance powerupInstance, List<Powerup> allPowerups) {
+        PowerupWidget treeNodePosition = new PowerupWidget(job, powerupInstance, null, allPowerups, null, null, 1, 0);
         treeNodePosition.firstWalk();
         float f = treeNodePosition.secondWalk(0.0F, 0, treeNodePosition.y);
         if (f < 0.0F) {
@@ -321,7 +324,7 @@ public class PowerupWidget extends GuiComponent {
                 && mouseY >= yPosition && mouseY <= yPosition + iconHeight;
     }
     
-    public void draw(PoseStack poseStack, int offsetX, int offsetY) {
+    public void draw(PoseStack poseStack, int offsetX, int offsetY, double startX, double startY) {
         this.getChildren().forEach(child -> {
             if (child.getParent() != null) {
                 if (child.getPowerupState() == PowerupState.LOCKED) {
@@ -346,9 +349,16 @@ public class PowerupWidget extends GuiComponent {
         });
         RenderSystem.setShaderTexture(0, WIDGETS_LOCATION);
         drawPowerupIcon(poseStack, null, this.getPowerupState(), Mth.floor(this.x * WIDTH) + offsetX, Mth.floor(this.y * HEIGHT) + offsetY);
-        Minecraft.getInstance().getItemRenderer().renderAndDecorateFakeItem(powerupInstance.getIcon(), Mth.floor(this.x * WIDTH) + offsetX + 4, Mth.floor(this.y * HEIGHT) + offsetY + 4);
 
-        this.getChildren().forEach(child -> child.draw(poseStack, offsetX, offsetY));
+        if (Mth.floor(this.x * WIDTH) + offsetX < startX + 246
+                && Mth.floor(this.x * WIDTH) + offsetX > startX - 31
+                && Mth.floor(this.y * HEIGHT) + offsetY < startY + 134
+                && Mth.floor(this.y * HEIGHT) + offsetY > startY - 40
+        ) {
+            Minecraft.getInstance().getItemRenderer().renderAndDecorateFakeItem(powerupInstance.getIcon(), Mth.floor(this.x * WIDTH) + offsetX + 4, Mth.floor(this.y * HEIGHT) + offsetY + 4);
+        }
+
+        this.getChildren().forEach(child -> child.draw(poseStack, offsetX, offsetY, startX, startY));
     }
 
     public void drawHovered(PoseStack poseStack, int offsetX, int offsetY) {
@@ -374,14 +384,19 @@ public class PowerupWidget extends GuiComponent {
             totalWidth = Math.max(totalWidth, minecraftFont.width(descriptionLine) + 7);
         }
 
+        totalWidth = Math.max(totalWidth, minecraftFont.width("Required level: " + powerupInstance.getRequiredLevel()) + 7);
+        totalWidth = Math.max(totalWidth, minecraftFont.width("Price: " + powerupInstance.getPrice()) + 7);
+
         int var10001 = descriptions.size();
         int textHeight = 7;
-        int priceExtraHeight = 6;
+        int heightBetweenText = 3;
+        int priceExtraHeight = 7;
         if (this.getPowerupState() == PowerupState.ACTIVE || this.getPowerupState() == PowerupState.INACTIVE) {
             textHeight = 0;
+            heightBetweenText = 0;
             priceExtraHeight = 0;
         }
-        int lines = 32 + var10001 * 9 + priceExtraHeight + textHeight;
+        int lines = 32 + var10001 * 9 + priceExtraHeight + textHeight + heightBetweenText + textHeight;
 
         this.render9Sprite(poseStack, x - 4, y + 2, totalWidth, lines, 10, 200, 26, 0, 52);
         if (this.getPowerupState() == PowerupState.LOCKED || this.getPowerupState() == PowerupState.NOT_OWNED) {
@@ -400,7 +415,8 @@ public class PowerupWidget extends GuiComponent {
             Minecraft.getInstance().font.draw(poseStack, line, x, y + 27 + i1 * 9, 0xFFAAAAAA);
         }
         if (this.getPowerupState() == PowerupState.NOT_OWNED || this.getPowerupState() == PowerupState.LOCKED) {
-            Minecraft.getInstance().font.draw(poseStack, "Price: " + powerupInstance.getPrice(), x, y + 27 + descriptions.size() * 9 + priceExtraHeight, 0xFFAAAAAA);
+            Minecraft.getInstance().font.draw(poseStack, "Required level: " + powerupInstance.getRequiredLevel(), x, y + 27 + descriptions.size() * 9 + priceExtraHeight, 0xFFAAAAAA);
+            Minecraft.getInstance().font.draw(poseStack, "Price: " + powerupInstance.getPrice(), x, y + 27 + descriptions.size() * 9 + textHeight + heightBetweenText + priceExtraHeight, 0xFFAAAAAA);
         }
 
         Minecraft.getInstance().getItemRenderer().renderAndDecorateFakeItem(powerupInstance.getIcon(), x + 4, y + 4);
@@ -418,7 +434,7 @@ public class PowerupWidget extends GuiComponent {
         this.renderRepeating(poseStack, i + k - m, j + m, m, l - m - m, p + n - m, q + m, n, o - m - m);
 
         if (this.getPowerupState() == PowerupState.NOT_OWNED || this.getPowerupState() == PowerupState.LOCKED) {
-            this.blit(poseStack, i + 2, j + l - 17, p + 2, q + o - m + 5, k - 4, 1);
+            this.blit(poseStack, i + 2, j + l - 28, p + 2, q + o - m + 5, k - 4, 1);
         }
     }
 

@@ -7,5 +7,6 @@
     "item": "minecraft:scaffolding"
   },
   "description": "Builds structures.",
+  "background": "minecraft:textures/block/stone_bricks.png",
   "is_default": true
 }

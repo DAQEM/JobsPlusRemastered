@@ -18,6 +18,8 @@ import com.daqem.jobsplus.resources.job.powerup.PowerupInstance;
 import com.daqem.jobsplus.resources.job.powerup.PowerupManager;
 import com.daqem.jobsplus.util.chat.ChatColor;
 import com.daqem.jobsplus.util.experience.ExperienceHandler;
+import com.google.common.collect.ImmutableCollection;
+import com.google.common.collect.ImmutableMap;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.ChatFormatting;
@@ -676,7 +678,15 @@ public class JobsScreen extends AbstractScreen {
     }
 
     public void openPowerupsScreenForJobInstance(JobInstance jobInstance) {
-        Minecraft.getInstance().setScreen(new PowerUpsScreen(this, jobInstance, PowerupManager.getInstance().getRootPowerups().values().stream().toList(), getSelectedJob().getPowerupManager().getAllPowerups(), getCoins()));
+        ImmutableCollection<PowerupInstance> rootPowerups = PowerupManager.getInstance().getRootPowerups().values();
+        ResourceLocation jobLocation = jobInstance.getLocation();
+        Minecraft.getInstance().setScreen(new PowerUpsScreen(this, Objects.requireNonNull(jobs.stream().filter(j -> j.getJobInstance() == jobInstance).findFirst().orElse(null)),
+                rootPowerups.stream()
+                        .filter(
+                                p -> p.getJobLocation().equals(jobLocation))
+                        .toList(),
+                getSelectedJob().getPowerupManager().getAllPowerups(),
+                getCoins()));
     }
 
     private void openActionScreen(JobInstance jobInstance, Action action) {

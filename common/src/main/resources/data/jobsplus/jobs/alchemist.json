@@ -7,5 +7,6 @@
     "item": "minecraft:brewing_stand"
   },
   "description": "",
+  "background": "minecraft:textures/block/nether_bricks.png",
   "is_default": true
 }

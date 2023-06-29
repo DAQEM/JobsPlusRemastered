@@ -6,6 +6,7 @@ import com.daqem.jobsplus.client.render.RenderColor;
 import com.daqem.jobsplus.networking.c2s.PacketOpenPowerupsMenuC2S;
 import com.daqem.jobsplus.networking.c2s.PacketTogglePowerUpC2S;
 import com.daqem.jobsplus.networking.utils.ConfirmationMessageType;
+import com.daqem.jobsplus.player.job.Job;
 import com.daqem.jobsplus.player.job.powerup.Powerup;
 import com.daqem.jobsplus.resources.job.JobInstance;
 import com.daqem.jobsplus.resources.job.powerup.PowerupInstance;
@@ -26,6 +27,7 @@ public class PowerUpsScreen extends AbstractScreen {
     private static final int WINDOW_HEIGHT = 16 * 8;
 
     private final JobsScreen previousScreen;
+    private final Job job;
     private final JobInstance jobInstance;
     private final List<PowerupInstance> rootPowerups;
     private final List<Powerup> allPowerups;
@@ -47,10 +49,11 @@ public class PowerUpsScreen extends AbstractScreen {
     private int lastWidth = 0;
     private int lastHeight = 0;
 
-    public PowerUpsScreen(JobsScreen previousScreen, JobInstance jobInstance, List<PowerupInstance> rootPowerups, List<Powerup> allPowerups, int coins) {
+    public PowerUpsScreen(JobsScreen previousScreen, Job job, List<PowerupInstance> rootPowerups, List<Powerup> allPowerups, int coins) {
         super(JobsPlus.literal("Power-ups"));
         this.previousScreen = previousScreen;
-        this.jobInstance = jobInstance;
+        this.job = job;
+        this.jobInstance = job.getJobInstance();
         this.rootPowerups = rootPowerups;
         this.allPowerups = allPowerups;
         this.coins = coins;
@@ -58,7 +61,7 @@ public class PowerUpsScreen extends AbstractScreen {
         PowerupInstance rootInstance = new PowerupInstance(null, null, jobInstance.getName() + " Power-ups", "Choose a power-up you want to buy.", jobInstance.getIconItem(), 0, 0);
         rootPowerups.forEach(rootInstance::addChild);
 
-        this.rootWidget = PowerupWidget.run(jobInstance, rootInstance, allPowerups);
+        this.rootWidget = PowerupWidget.run(job, rootInstance, allPowerups);
         this.rootWidget.setMinMaxXY(this);
     }
 
@@ -108,7 +111,7 @@ public class PowerUpsScreen extends AbstractScreen {
 
 
         if (jobInstance != null) {
-            font.draw(poseStack, jobInstance.getName() + " Power-ups", (float) this.startX - 16, (float) this.startY - 16 - 12, 0x404040);
+            font.draw(poseStack, jobInstance.getName() + " (level " + job.getLevel() + ") Power-ups", (float) this.startX - 16, (float) this.startY - 16 - 12, 0x404040);
             drawRightAlignedString(poseStack, "Coins: " + coins, (int) ((float) this.startX + WINDOW_WIDTH + 16), (int) ((float) this.startY - 16 - 12), 0x404040);
         }
 
@@ -142,7 +145,7 @@ public class PowerUpsScreen extends AbstractScreen {
     }
 
     public void renderBackground(@NotNull PoseStack poseStack, int windowX, int windowY) {
-        RenderSystem.setShaderTexture(0, new ResourceLocation("textures/block/stone.png"));
+        RenderSystem.setShaderTexture(0, jobInstance.getPowerupBackground());
 
         for(int m = -1; m <= WINDOW_WIDTH / 16; ++m) {
             for(int n = -1; n <= WINDOW_HEIGHT / 16; ++n) {
@@ -151,7 +154,14 @@ public class PowerUpsScreen extends AbstractScreen {
         }
 
         RenderSystem.setShaderTexture(0, BACKGROUND);
-        this.rootWidget.draw(poseStack, windowX, windowY);
+        this.rootWidget.draw(poseStack, windowX, windowY, this.startX, this.startY);
+        RenderSystem.depthFunc(518);
+        poseStack.translate(0.0, 0.0, -950.0);
+        RenderSystem.colorMask(false, false, false, false);
+        fill(poseStack, 4680, 2260, -4680, -2260, -16777216);
+        RenderSystem.colorMask(true, true, true, true);
+        RenderSystem.depthFunc(515);
+        poseStack.popPose();
 
         //Border
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);

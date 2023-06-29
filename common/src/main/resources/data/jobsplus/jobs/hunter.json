@@ -7,5 +7,6 @@
     "item": "minecraft:iron_sword"
   },
   "description": "The Hunter is a class that focuses on ranged combat and stealth. They are able to use a bow and arrow to deal damage from a distance, and can also use a variety of traps to deal damage to enemies and protect themselves. They also have a variety of stealth abilities, allowing them to sneak up on enemies and deal damage from behind.",
+  "background": "textures/block/mossy_cobblestone.png",
   "is_default": true
 }
