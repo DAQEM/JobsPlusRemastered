@@ -3,13 +3,15 @@ package com.daqem.jobsplus.client.screen;
 import com.daqem.jobsplus.JobsPlus;
 import com.daqem.jobsplus.client.powerup.PowerupWidget;
 import com.daqem.jobsplus.client.render.RenderColor;
+import com.daqem.jobsplus.networking.c2s.PacketOpenPowerupsMenuC2S;
+import com.daqem.jobsplus.networking.c2s.PacketTogglePowerUpC2S;
+import com.daqem.jobsplus.networking.utils.ConfirmationMessageType;
 import com.daqem.jobsplus.player.job.powerup.Powerup;
 import com.daqem.jobsplus.resources.job.JobInstance;
 import com.daqem.jobsplus.resources.job.powerup.PowerupInstance;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -23,10 +25,11 @@ public class PowerUpsScreen extends AbstractScreen {
     private static final int WINDOW_WIDTH = 16 * 15;
     private static final int WINDOW_HEIGHT = 16 * 8;
 
-    private final Screen previousScreen;
+    private final JobsScreen previousScreen;
     private final JobInstance jobInstance;
     private final List<PowerupInstance> rootPowerups;
     private final List<Powerup> allPowerups;
+    private final int coins;
 
     private final PowerupWidget rootWidget;
 
@@ -41,14 +44,18 @@ public class PowerUpsScreen extends AbstractScreen {
     private double maxY = Double.MIN_VALUE;
     private boolean centered = false;
 
-    public PowerUpsScreen(Screen previousScreen, JobInstance jobInstance, List<PowerupInstance> rootPowerups, List<Powerup> allPowerups) {
+    private int lastWidth = 0;
+    private int lastHeight = 0;
+
+    public PowerUpsScreen(JobsScreen previousScreen, JobInstance jobInstance, List<PowerupInstance> rootPowerups, List<Powerup> allPowerups, int coins) {
         super(JobsPlus.literal("Power-ups"));
         this.previousScreen = previousScreen;
         this.jobInstance = jobInstance;
         this.rootPowerups = rootPowerups;
         this.allPowerups = allPowerups;
+        this.coins = coins;
 
-        PowerupInstance rootInstance = new PowerupInstance(null, null, jobInstance.getName() + " Power-ups", "Choose a power-up you want to buy.", 0, 0);
+        PowerupInstance rootInstance = new PowerupInstance(null, null, jobInstance.getName() + " Power-ups", "Choose a power-up you want to buy.", jobInstance.getIconItem(), 0, 0);
         rootPowerups.forEach(rootInstance::addChild);
 
         this.rootWidget = PowerupWidget.run(jobInstance, rootInstance, allPowerups);
@@ -61,16 +68,16 @@ public class PowerUpsScreen extends AbstractScreen {
         this.startX = (double) (this.width - WINDOW_WIDTH) / 2;
         this.startY = (double) (this.height - WINDOW_HEIGHT) / 2;
 
-        if (this.scrollX > this.startX || this.scrollX < -(this.maxX - WINDOW_WIDTH - this.startX)) {
+        if ((this.scrollX > this.startX || this.scrollX < -(this.maxX - WINDOW_WIDTH - this.startX)) && this.maxX > WINDOW_WIDTH) {
             this.scrollX = Mth.clamp(this.scrollX, -(this.maxX - WINDOW_WIDTH - this.startX), this.startX);
         }
-        if (this.scrollY > this.startY || this.scrollY < -(this.maxY - WINDOW_HEIGHT - this.startY)) {
+        if ((this.scrollY > this.startY || this.scrollY < -(this.maxY - WINDOW_HEIGHT - this.startY)) && this.maxY > WINDOW_HEIGHT) {
             this.scrollY = Mth.clamp(this.scrollY, -(this.maxY - WINDOW_HEIGHT - this.startY), this.startY);
         }
 
         if (!this.centered) {
-            this.scrollX = this.startX;
-            this.scrollY = this.startY - (this.maxY / 4);
+            this.scrollX = this.startX + (WINDOW_WIDTH - this.maxX) / 2;
+            this.scrollY = this.startY + (WINDOW_HEIGHT - this.maxY) / 2;
             this.centered = true;
         }
 
@@ -102,11 +109,29 @@ public class PowerUpsScreen extends AbstractScreen {
 
         if (jobInstance != null) {
             font.draw(poseStack, jobInstance.getName() + " Power-ups", (float) this.startX - 16, (float) this.startY - 16 - 12, 0x404040);
+            drawRightAlignedString(poseStack, "Coins: " + coins, (int) ((float) this.startX + WINDOW_WIDTH + 16), (int) ((float) this.startY - 16 - 12), 0x404040);
         }
 
+        poseStack.pushPose();
         if (isHoveringInWindow(mouseX, mouseY)) {
+            PoseStack poseStack2 = RenderSystem.getModelViewStack();
+            poseStack2.pushPose();
+            poseStack2.translate(0, 0, 400.0);
+            RenderSystem.applyModelViewMatrix();
+            RenderSystem.enableDepthTest();
             this.renderTooltip(poseStack, mouseX, mouseY, windowX, windowY, ticks);
+            RenderSystem.disableDepthTest();
+            poseStack2.popPose();
+            RenderSystem.applyModelViewMatrix();
         }
+        poseStack.popPose();
+
+        if (this.width != this.lastWidth || this.height != this.lastHeight) {
+            this.centered = false;
+        }
+
+        this.lastWidth = this.width;
+        this.lastHeight = this.height;
     }
 
     private boolean isHoveringInWindow(int mouseX, int mouseY) {
@@ -146,6 +171,41 @@ public class PowerUpsScreen extends AbstractScreen {
 
         blit(poseStack, (int) this.startX - 16 - borderSize, (int) this.startY - 16 - borderSize + height / 2 + borderSize, 0.0F, (float) textureHeight / 2 - borderSize * 2, width / 2 + borderSize, textureHeight / 2 + borderSizeTop, 256, 256);
         blit(poseStack, (int) this.startX - 16 - borderSize + (width / 2 + borderSize), (int) this.startY - 16 - borderSize + height / 2 + borderSize, (float) textureWidth / 2 - borderSize * 2, (float) textureHeight / 2 - borderSize * 2, width / 2 + borderSize, textureHeight / 2 + borderSizeTop, 256, 256);
+    }
+
+    @Override
+    public boolean mouseClicked(double mouseX, double mouseY, int clickType) {
+
+        PowerupWidget widget = this.getHoveredWidget((int) mouseX, (int) mouseY, Mth.floor(this.scrollX), Mth.floor(this.scrollY));
+        if (widget != null) {
+            playClientGUIClick();
+            if (widget != rootWidget) {
+                switch (widget.getPowerupState()) {
+                    case ACTIVE -> {
+                        new PacketTogglePowerUpC2S(jobInstance, widget.getPowerupInstance()).sendToServer();
+                        new PacketOpenPowerupsMenuC2S(jobInstance).sendToServer();
+                        JobsPlus.LOGGER.info("Attempting to deactivate powerup: " + widget.getPowerupInstance().getName());
+                    }
+                    case INACTIVE -> {
+                        new PacketTogglePowerUpC2S(jobInstance, widget.getPowerupInstance()).sendToServer();
+                        new PacketOpenPowerupsMenuC2S(jobInstance).sendToServer();
+                        JobsPlus.LOGGER.info("Attempting to activate powerup: " + widget.getPowerupInstance().getName());
+                    }
+                    case NOT_OWNED -> {
+                        JobsPlus.LOGGER.info("Attempting to purchase powerup: " + widget.getPowerupInstance().getName());
+                        ConfirmationMessageType confirmationMessageType = coins >= widget.getPowerupInstance().getPrice()
+                                ? ConfirmationMessageType.BUY_POWER_UP
+                                : ConfirmationMessageType.NOT_ENOUGH_COINS_POWERUP;
+                        openConfirmScreen(confirmationMessageType, jobInstance, widget.getPowerupInstance());
+                    }
+                    case LOCKED -> {
+                        JobsPlus.LOGGER.info("Attempting to unlock powerup: " + widget.getPowerupInstance().getName());
+                    }
+                }
+            }
+        }
+
+        return true;
     }
 
     @Override
@@ -197,6 +257,10 @@ public class PowerUpsScreen extends AbstractScreen {
 
     private PowerupWidget getHoveredWidget(int mouseX, int mouseY, int windowX, int windowY) {
         return this.rootWidget.getHoveredWidget(mouseX, mouseY, windowX, windowY);
+    }
+
+    public void openConfirmScreen(ConfirmationMessageType messageType, JobInstance jobInstance, PowerupInstance powerup) {
+        Minecraft.getInstance().setScreen(new ConfirmationScreen(this, messageType, jobInstance, powerup));
     }
 
     @Override

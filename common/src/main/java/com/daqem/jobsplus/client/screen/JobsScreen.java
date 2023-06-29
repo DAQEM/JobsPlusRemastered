@@ -591,11 +591,13 @@ public class JobsScreen extends AbstractScreen {
         }
         // POWERUPS BUTTON
         else if (isBetween(mouseX, mouseY, 6 + 28 + 28 + 150, -22, 32 + 28 + 28 + 150, 0)) {
-//            playClientGUIClick();
-//            activeRightButton = 2;
-//            scrollOffsetRight = 0;
-//            startIndexRight = 0;
-            Minecraft.getInstance().setScreen(new PowerUpsScreen(this, getSelectedJob().getJobInstance(), PowerupManager.getInstance().getRootPowerups().values().stream().toList(), getSelectedJob().getPowerupManager().getAllPowerups()));
+            playClientGUIClick();
+            activeRightButton = 2;
+            scrollOffsetRight = 0;
+            startIndexRight = 0;
+            if (hasJobSelected()) {
+                openPowerupsScreenForJobInstance(getSelectedJob().getJobInstance());
+            }
         }
         // HOW TO GET EXP BUTTON
         else if (isBetween(mouseX, mouseY, 6 + 28 + 28 + 28 + 150, -22, 32 + 28 + 28 + 28 + 150, 0)) {
@@ -671,6 +673,10 @@ public class JobsScreen extends AbstractScreen {
             }
         }
         return super.mouseClicked(mouseX, mouseY, clickType);
+    }
+
+    public void openPowerupsScreenForJobInstance(JobInstance jobInstance) {
+        Minecraft.getInstance().setScreen(new PowerUpsScreen(this, jobInstance, PowerupManager.getInstance().getRootPowerups().values().stream().toList(), getSelectedJob().getPowerupManager().getAllPowerups(), getCoins()));
     }
 
     private void openActionScreen(JobInstance jobInstance, Action action) {
@@ -930,7 +936,7 @@ public class JobsScreen extends AbstractScreen {
         return false;
     }
 
-    private int getCoins() {
+    public int getCoins() {
         return this.jobsPlayerData.coins();
     }
 

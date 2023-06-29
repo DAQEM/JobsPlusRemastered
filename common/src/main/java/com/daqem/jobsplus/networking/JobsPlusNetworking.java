@@ -11,6 +11,7 @@ public interface JobsPlusNetworking {
     SimpleNetworkManager NETWORK = SimpleNetworkManager.create(JobsPlus.MOD_ID);
 
     MessageType S2C_OPEN_MENU = NETWORK.registerS2C("s2c_open_menu", PacketOpenMenuS2C::new);
+    MessageType S2C_OPEN_POWERUPS_MENU = NETWORK.registerS2C("s2c_open_powerups_menu", PacketOpenPowerupsMenuS2C::new);
     MessageType S2C_CANT_CRAFT = NETWORK.registerS2C("s2c_cant_craft", PacketCantCraftS2C::new);
     MessageType S2C_SYNC_JOB = NETWORK.registerS2C("s2c_sync_jobs", PacketSyncJobS2C::new);
     MessageType S2C_SYNC_POWERUP = NETWORK.registerS2C("s2c_sync_powerup", PacketSyncPowerupS2C::new);
@@ -19,6 +20,7 @@ public interface JobsPlusNetworking {
     MessageType S2C_OPEN_UPDATE_SCREEN = NETWORK.registerS2C("s2c_open_update_screen", PacketOpenUpdateScreenS2C::new);
 
     MessageType C2S_OPEN_MENU = NETWORK.registerC2S("c2s_open_menu", PacketOpenMenuC2S::new);
+    MessageType C2S_OPEN_POWERUPS_MENU = NETWORK.registerC2S("c2s_open_powerups_menu", PacketOpenPowerupsMenuC2S::new);
     MessageType C2S_CONFIRMATION = NETWORK.registerC2S("c2s_confirmation", PacketConfirmationC2S::new);
     MessageType C2S_TOGGLE_POWER_UP = NETWORK.registerC2S("c2s_toggle_power_up", PacketTogglePowerUpC2S::new);
     MessageType C2S_SYNC_REQUEST = NETWORK.registerC2S("c2s_sync_request", PacketSyncRequestC2S::new);

@@ -1,6 +1,7 @@
 package com.daqem.jobsplus.client.powerup;
 
 import com.daqem.jobsplus.JobsPlus;
+import com.daqem.jobsplus.client.render.RenderColor;
 import com.daqem.jobsplus.client.screen.PowerUpsScreen;
 import com.daqem.jobsplus.player.job.powerup.Powerup;
 import com.daqem.jobsplus.player.job.powerup.PowerupState;
@@ -323,16 +324,31 @@ public class PowerupWidget extends GuiComponent {
     public void draw(PoseStack poseStack, int offsetX, int offsetY) {
         this.getChildren().forEach(child -> {
             if (child.getParent() != null) {
+                if (child.getPowerupState() == PowerupState.LOCKED) {
+                    RenderColor.grayedOut();
+                }
                 drawConnectivity(poseStack, Mth.floor(child.getParent().getX() * WIDTH) + offsetX, Mth.floor(child.getParent().getY() * HEIGHT) + offsetY, Mth.floor(child.getX() * WIDTH) + offsetX, Mth.floor(child.getY() * HEIGHT) + offsetY, false);
+                if (child.getPowerupState() == PowerupState.LOCKED) {
+                    RenderColor.normal();
+                }
             }
         });
         this.getChildren().forEach(child -> {
             if (child.getParent() != null) {
+                if (child.getPowerupState() == PowerupState.LOCKED) {
+                    RenderColor.grayedOut();
+                }
                 drawConnectivity(poseStack, Mth.floor(child.getParent().getX() * WIDTH) + offsetX, Mth.floor(child.getParent().getY() * HEIGHT) + offsetY, Mth.floor(child.getX() * WIDTH) + offsetX, Mth.floor(child.getY() * HEIGHT) + offsetY, true);
+                if (child.getPowerupState() == PowerupState.LOCKED) {
+                    RenderColor.normal();
+                }
             }
-            child.draw(poseStack, offsetX, offsetY);
         });
+        RenderSystem.setShaderTexture(0, WIDGETS_LOCATION);
         drawPowerupIcon(poseStack, null, this.getPowerupState(), Mth.floor(this.x * WIDTH) + offsetX, Mth.floor(this.y * HEIGHT) + offsetY);
+        Minecraft.getInstance().getItemRenderer().renderAndDecorateFakeItem(powerupInstance.getIcon(), Mth.floor(this.x * WIDTH) + offsetX + 4, Mth.floor(this.y * HEIGHT) + offsetY + 4);
+
+        this.getChildren().forEach(child -> child.draw(poseStack, offsetX, offsetY));
     }
 
     public void drawHovered(PoseStack poseStack, int offsetX, int offsetY) {
@@ -359,7 +375,13 @@ public class PowerupWidget extends GuiComponent {
         }
 
         int var10001 = descriptions.size();
-        int lines = 32 + var10001 * 9;
+        int textHeight = 7;
+        int priceExtraHeight = 6;
+        if (this.getPowerupState() == PowerupState.ACTIVE || this.getPowerupState() == PowerupState.INACTIVE) {
+            textHeight = 0;
+            priceExtraHeight = 0;
+        }
+        int lines = 32 + var10001 * 9 + priceExtraHeight + textHeight;
 
         this.render9Sprite(poseStack, x - 4, y + 2, totalWidth, lines, 10, 200, 26, 0, 52);
         if (this.getPowerupState() == PowerupState.LOCKED || this.getPowerupState() == PowerupState.NOT_OWNED) {
@@ -377,9 +399,11 @@ public class PowerupWidget extends GuiComponent {
             FormattedCharSequence line = descriptions.get(i1);
             Minecraft.getInstance().font.draw(poseStack, line, x, y + 27 + i1 * 9, 0xFFAAAAAA);
         }
-//        Minecraft.getInstance().font.draw(poseStack, powerupInstance.getDescription(), x, y + 25, 0xFFAAAAAA);
+        if (this.getPowerupState() == PowerupState.NOT_OWNED || this.getPowerupState() == PowerupState.LOCKED) {
+            Minecraft.getInstance().font.draw(poseStack, "Price: " + powerupInstance.getPrice(), x, y + 27 + descriptions.size() * 9 + priceExtraHeight, 0xFFAAAAAA);
+        }
 
-        Minecraft.getInstance().getItemRenderer().renderAndDecorateFakeItem(Items.BREWING_STAND.getDefaultInstance(), x + 4, y + 4);
+        Minecraft.getInstance().getItemRenderer().renderAndDecorateFakeItem(powerupInstance.getIcon(), x + 4, y + 4);
     }
 
     protected void render9Sprite(PoseStack poseStack, int i, int j, int k, int l, int m, int n, int o, int p, int q) {
@@ -392,6 +416,10 @@ public class PowerupWidget extends GuiComponent {
         this.renderRepeating(poseStack, i, j + m, m, l - m - m, p, q + m, n, o - m - m);
         this.renderRepeating(poseStack, i + m, j + m, k - m - m, l - m - m, p + m, q + m, n - m - m, o - m - m);
         this.renderRepeating(poseStack, i + k - m, j + m, m, l - m - m, p + n - m, q + m, n, o - m - m);
+
+        if (this.getPowerupState() == PowerupState.NOT_OWNED || this.getPowerupState() == PowerupState.LOCKED) {
+            this.blit(poseStack, i + 2, j + l - 17, p + 2, q + o - m + 5, k - 4, 1);
+        }
     }
 
     protected void renderRepeating(PoseStack poseStack, int i, int j, int k, int l, int m, int n, int o, int p) {
@@ -450,7 +478,9 @@ public class PowerupWidget extends GuiComponent {
     }
 
     private void drawInactivePowerupIcon(PoseStack poseStack, PowerupInstance powerup, int x, int y, int width, int height) {
+        RenderColor.red();
         blit(poseStack, x, y, 1, 129, width, height);
+        RenderColor.normal();
     }
 
     private void drawNotOwnedPowerupIcon(PoseStack poseStack, PowerupInstance powerup, int x, int y, int width, int height) {
@@ -458,7 +488,9 @@ public class PowerupWidget extends GuiComponent {
     }
 
     private void drawLockedPowerupIcon(PoseStack poseStack, PowerupInstance powerup, int x, int y, int width, int height) {
+        RenderColor.grayedOut();
         blit(poseStack, x, y, 1, 155, width, height);
+        RenderColor.normal();
     }
 
     public PowerupWidget getHoveredWidget(int mouseX, int mouseY, int offsetX, int offsetY) {

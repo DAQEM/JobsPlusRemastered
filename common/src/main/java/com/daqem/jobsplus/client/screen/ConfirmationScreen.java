@@ -5,6 +5,7 @@ import com.daqem.jobsplus.client.render.RenderColor;
 import com.daqem.jobsplus.networking.c2s.PacketApprovedUpdateC2S;
 import com.daqem.jobsplus.networking.c2s.PacketConfirmationC2S;
 import com.daqem.jobsplus.networking.c2s.PacketOpenMenuC2S;
+import com.daqem.jobsplus.networking.c2s.PacketOpenPowerupsMenuC2S;
 import com.daqem.jobsplus.networking.utils.ConfirmationButtonType;
 import com.daqem.jobsplus.networking.utils.ConfirmationMessageType;
 import com.daqem.jobsplus.resources.job.JobInstance;
@@ -190,6 +191,8 @@ public class ConfirmationScreen extends AbstractScreen {
         if (withPacket) {
             if (lastScreen instanceof JobsScreen jobsScreen) {
                 new PacketOpenMenuC2S(jobsScreen).sendToServer();
+            } else if (lastScreen instanceof PowerUpsScreen powerUpsScreen) {
+                new PacketOpenPowerupsMenuC2S(job).sendToServer();
             } else {
                 new PacketOpenMenuC2S().sendToServer();
             }
