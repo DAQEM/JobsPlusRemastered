@@ -3,6 +3,9 @@
   "parent": "jobsplus:alchemist/longer_potions_i",
   "name": "Longer potions II",
   "description": "Potions last 40% longer.",
+  "icon": {
+    "item": "minecraft:brewing_stand"
+  },
   "price": 10,
   "required_level": 10
 }

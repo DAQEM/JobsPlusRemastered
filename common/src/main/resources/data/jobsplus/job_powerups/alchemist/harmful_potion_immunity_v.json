@@ -3,6 +3,9 @@
   "parent": "jobsplus:alchemist/harmful_potion_immunity_iv",
   "name": "Harmful Potion Immunity V",
   "description": "Become completely immune to harmful potions.",
+  "icon": {
+    "item": "minecraft:brewing_stand"
+  },
   "price": 18,
   "required_level": 50
 }

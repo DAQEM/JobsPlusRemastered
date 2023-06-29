@@ -2,6 +2,9 @@
   "job": "jobsplus:alchemist",
   "name": "Stronger potions I",
   "description": "Potions have a 20% change to become stronger.",
+  "icon": {
+    "item": "minecraft:brewing_stand"
+  },
   "price": 10,
   "required_level": 0
 }

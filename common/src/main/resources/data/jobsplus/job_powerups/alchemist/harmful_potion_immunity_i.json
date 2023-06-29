@@ -2,6 +2,10 @@
   "job": "jobsplus:alchemist",
   "name": "Harmful Potion Immunity I",
   "description": "Become 20% immune to harmful potions.",
+  "icon": {
+    "item": "minecraft:potion",
+    "tag": "{Potion:\"minecraft:swiftness\"}"
+  },
   "price": 10,
   "required_level": 0
 }

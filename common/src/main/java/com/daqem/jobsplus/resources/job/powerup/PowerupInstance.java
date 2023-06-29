@@ -1,9 +1,15 @@
 package com.daqem.jobsplus.resources.job.powerup;
 
+import com.daqem.jobsplus.JobsPlus;
 import com.daqem.jobsplus.resources.job.action.Action;
 import com.google.gson.*;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.TagParser;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -18,17 +24,20 @@ public class PowerupInstance {
     private final @Nullable ResourceLocation parentLocation;
     private final String name;
     private final String description;
+    private final ItemStack icon;
     private final int price;
     private final int requiredLevel;
+
     private List<Action> actions = new ArrayList<>();
     private @Nullable PowerupInstance parent;
     private List<PowerupInstance> children = new ArrayList<>();
 
-    public PowerupInstance(ResourceLocation jobLocation, @Nullable ResourceLocation parentLocation, String name, String description, int price, int requiredLevel) {
+    public PowerupInstance(ResourceLocation jobLocation, @Nullable ResourceLocation parentLocation, String name, String description, ItemStack icon, int price, int requiredLevel) {
         this.jobLocation = jobLocation;
         this.parentLocation = parentLocation;
         this.name = name;
         this.description = description;
+        this.icon = icon;
         this.price = price;
         this.requiredLevel = requiredLevel;
     }
@@ -55,6 +64,10 @@ public class PowerupInstance {
 
     public @Nullable ResourceLocation getParentLocation() {
         return parentLocation;
+    }
+
+    public ItemStack getIcon() {
+        return icon;
     }
 
     public int getPrice() {
@@ -117,11 +130,23 @@ public class PowerupInstance {
 
             String parentLocation = GsonHelper.getAsString(jsonObject, "parent", null);
 
+            JsonObject iconObject = GsonHelper.getAsJsonObject(jsonObject, "icon");
+            Item icon = GsonHelper.getAsItem(iconObject, "item");
+            ItemStack iconStack = new ItemStack(icon);
+            if (iconObject.has("tag")) {
+                try {
+                    iconStack.setTag(TagParser.parseTag(GsonHelper.getAsString(iconObject, "tag")));
+                } catch (CommandSyntaxException e) {
+                    JobsPlus.LOGGER.error("Error parsing tag for PowerupInstance icon {}: {}", GsonHelper.getAsString(iconObject, "item"), e.getMessage());
+                }
+            }
+
             return new PowerupInstance(
                     new ResourceLocation(GsonHelper.getAsString(jsonObject, "job")),
                     parentLocation == null ? null : new ResourceLocation(parentLocation),
                     GsonHelper.getAsString(jsonObject, "name"),
                     GsonHelper.getAsString(jsonObject, "description"),
+                    iconStack,
                     GsonHelper.getAsInt(jsonObject, "price"),
                     GsonHelper.getAsInt(jsonObject, "required_level"));
         }

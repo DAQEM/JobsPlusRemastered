@@ -3,6 +3,9 @@
   "parent": "jobsplus:alchemist/harmful_potion_immunity_i",
   "name": "Harmful Potion Immunity II",
   "description": "Become 40% immune to harmful potions.",
+  "icon": {
+    "item": "minecraft:brewing_stand"
+  },
   "price": 12,
   "required_level": 10
 }

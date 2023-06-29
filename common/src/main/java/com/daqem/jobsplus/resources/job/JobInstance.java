@@ -1,5 +1,6 @@
 package com.daqem.jobsplus.resources.job;
 
+import com.daqem.jobsplus.JobsPlus;
 import com.daqem.jobsplus.config.JobsPlusCommonConfig;
 import com.daqem.jobsplus.resources.crafting.CraftingResult;
 import com.daqem.jobsplus.resources.crafting.CraftingType;
@@ -9,6 +10,8 @@ import com.daqem.jobsplus.resources.crafting.restriction.restrictions.TagCraftin
 import com.daqem.jobsplus.resources.job.action.Action;
 import com.daqem.jobsplus.resources.job.powerup.PowerupInstance;
 import com.google.gson.*;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import net.minecraft.nbt.TagParser;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.Item;
@@ -29,18 +32,18 @@ public class JobInstance {
     private final int price;
     private final int maxLevel;
     private final String color;
-    private final Item iconItem;
+    private final ItemStack iconItem;
     private final String description;
     private final boolean isDefault;
     private List<Action> actions;
     private List<PowerupInstance> powerupInstances;
     private List<CraftingRestriction> craftingRestrictions = null;
 
-    public JobInstance(String name, int price, int maxLevel, String color, Item iconItem, String description, boolean isDefault) {
+    public JobInstance(String name, int price, int maxLevel, String color, ItemStack iconItem, String description, boolean isDefault) {
         this(name, price, maxLevel, color, iconItem, description, isDefault, new ArrayList<>(), new ArrayList<>());
     }
 
-    public JobInstance(String name, int price, int maxLevel, String color, Item iconItem, String description, boolean isDefault, List<Action> actions, List<PowerupInstance> powerupInstances) {
+    public JobInstance(String name, int price, int maxLevel, String color, ItemStack iconItem, String description, boolean isDefault, List<Action> actions, List<PowerupInstance> powerupInstances) {
         this.name = name;
         this.price = price;
         this.maxLevel = maxLevel;
@@ -99,7 +102,7 @@ public class JobInstance {
         return Integer.parseInt(color.replace("#", ""), 16);
     }
 
-    public Item getIconItem() {
+    public ItemStack getIconItem() {
         return iconItem;
     }
 
@@ -191,12 +194,23 @@ public class JobInstance {
         public JobInstance deserialize(JsonElement element, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
             JsonObject json = element.getAsJsonObject();
 
+            JsonObject iconObject = GsonHelper.getAsJsonObject(json, "icon");
+            Item icon = GsonHelper.getAsItem(iconObject, "item");
+            ItemStack iconStack = new ItemStack(icon);
+            if (iconObject.has("tag")) {
+                try {
+                    iconStack.setTag(TagParser.parseTag(GsonHelper.getAsString(iconObject, "tag")));
+                } catch (CommandSyntaxException e) {
+                    JobsPlus.LOGGER.error("Error parsing tag for PowerupInstance icon {}: {}", GsonHelper.getAsString(iconObject, "item"), e.getMessage());
+                }
+            }
+
             return new JobInstance(
                     GsonHelper.getAsString(json, "name"),
                     GsonHelper.getAsInt(json, "price", 10),
                     GsonHelper.getAsInt(json, "max_level", 100),
                     GsonHelper.getAsString(json, "color"),
-                    GsonHelper.getAsItem(json, "icon_item", Items.BARRIER),
+                    iconStack,
                     GsonHelper.getAsString(json, "description"),
                     GsonHelper.getAsBoolean(json, "is_default", false));
         }

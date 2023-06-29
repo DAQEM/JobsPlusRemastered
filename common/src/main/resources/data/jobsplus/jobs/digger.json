@@ -3,7 +3,9 @@
   "price": 10,
   "max_level": 100,
   "color": "#9B7653",
-  "icon_item": "minecraft:wooden_shovel",
+  "icon": {
+    "item": "minecraft:wooden_shovel"
+  },
   "description": "Digging is a skill that allows you to dig faster and more efficiently. It is also used to determine the chance of finding ores and other items when mining.",
   "is_default": true
 }

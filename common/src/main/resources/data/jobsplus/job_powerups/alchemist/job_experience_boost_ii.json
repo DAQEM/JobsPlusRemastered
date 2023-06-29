@@ -3,6 +3,9 @@
   "parent": "jobsplus:alchemist/job_experience_boost_i",
   "name": "Job Experience Boost II",
   "description": "Boosts your job experience by 100%.",
+  "icon": {
+    "item": "minecraft:brewing_stand"
+  },
   "price": 15,
   "required_level": 35
 }

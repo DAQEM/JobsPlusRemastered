@@ -130,7 +130,9 @@ public abstract class Action {
     public static class ActionSerializer<T extends Action> implements JsonDeserializer<T> {
 
 
-        private static Gson getGson() {
+        private static final Gson GSON = createGson();
+
+        private static Gson createGson() {
             GsonBuilder builder = new GsonBuilder().setPrettyPrinting();
             builder.registerTypeHierarchyAdapter(ActionReward.class, new ActionReward.ActionRewardSerializer<>())
                     .registerTypeHierarchyAdapter(ActionCondition.class, new ActionCondition.ActionConditionSerializer<>());
@@ -163,17 +165,17 @@ public abstract class Action {
             ArrayList<ActionReward> actionRewardsList = new ArrayList<>();
             GsonHelper.getAsJsonArray(actionObject, "rewards")
                     .forEach(rewardElement ->
-                            actionRewardsList.add(getGson().fromJson(rewardElement, ActionReward.class)));
+                            actionRewardsList.add(GSON.fromJson(rewardElement, ActionReward.class)));
 
             ArrayList<ActionCondition> actionConditionsList = new ArrayList<>();
             GsonHelper.getAsJsonArray(actionObject, "conditions", new JsonArray())
                     .forEach(condition ->
-                            actionConditionsList.add(getGson().fromJson(condition.getAsJsonObject(), ActionCondition.class)));
+                            actionConditionsList.add(GSON.fromJson(condition.getAsJsonObject(), ActionCondition.class)));
 
             ResourceLocation location = new ResourceLocation(GsonHelper.getAsString(actionObject, "type"));
             Class<? extends Action> clazz = Actions.getClass(location);
 
-            return (T) getGson().fromJson(actionObject, clazz)
+            return (T) GSON.fromJson(actionObject, clazz)
                     .withForLocationAndType(forLocation, forType)
                     .withDescriptions(shortDescription, description)
                     .withRewards(actionRewardsList)

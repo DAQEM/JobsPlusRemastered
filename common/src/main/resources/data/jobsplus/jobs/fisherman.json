@@ -3,7 +3,9 @@
   "price": 10,
   "max_level": 100,
   "color": "#007FFF",
-  "icon_item": "minecraft:fishing_rod",
+  "icon": {
+    "item": "minecraft:fishing_rod"
+  },
   "description": "Fishing is a great way to earn money and experience. You can also catch some rare items from fishing.",
   "is_default": true
 }

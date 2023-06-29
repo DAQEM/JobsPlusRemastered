@@ -463,7 +463,7 @@ public class JobsScreen extends AbstractScreen {
             int originalSpot = i - startIndex;
             if (shownJobs.size() > originalSpot) {
                 itemRenderer.renderAndDecorateItem(
-                        shownJobs.get(originalSpot).getJobInstance().getIconItem().getDefaultInstance(),
+                        shownJobs.get(originalSpot).getJobInstance().getIconItem(),
                         startX + 17, startY + 25 + originalSpot * 35);
             }
         }

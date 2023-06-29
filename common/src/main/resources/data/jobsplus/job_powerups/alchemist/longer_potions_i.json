@@ -2,6 +2,9 @@
   "job": "jobsplus:alchemist",
   "name": "Longer potions I",
   "description": "Potions last 20% longer.",
+  "icon": {
+    "item": "minecraft:brewing_stand"
+  },
   "price": 10,
   "required_level": 0
 }

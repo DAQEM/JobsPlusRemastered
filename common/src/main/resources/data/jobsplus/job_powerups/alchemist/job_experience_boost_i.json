@@ -2,6 +2,9 @@
   "job": "jobsplus:alchemist",
   "name": "Job Experience Boost I",
   "description": "Boosts your job experience by 50%.",
+  "icon": {
+    "item": "minecraft:brewing_stand"
+  },
   "price": 10,
   "required_level": 10
 }

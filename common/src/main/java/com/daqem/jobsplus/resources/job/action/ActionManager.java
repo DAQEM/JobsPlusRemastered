@@ -45,12 +45,14 @@ public abstract class ActionManager extends SimpleJsonResourceReloadListener {
             JobsPlus.LOGGER.error("Loading job action {}", location.toString());
             try {
                 Action action = GSON.fromJson(jsonElement, Action.class);
+                JobsPlus.LOGGER.error("1 Loaded job action {}", location.toString());
                 action.setLocation(location);
                 tempActions.add(action);
             } catch (Exception e) {
                 LOGGER.error("Could not deserialize job {} because: {}", location, e.getMessage());
                 throw e;
             }
+            JobsPlus.LOGGER.error("2 Loaded job action {}", location.toString());
         });
 
         if (isServer) {

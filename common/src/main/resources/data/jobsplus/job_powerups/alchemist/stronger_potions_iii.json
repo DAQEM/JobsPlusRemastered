@@ -3,6 +3,9 @@
   "parent": "jobsplus:alchemist/stronger_potions_ii",
   "name": "Stronger potions III",
   "description": "Potions have a 60% change to become stronger.",
+  "icon": {
+    "item": "minecraft:brewing_stand"
+  },
   "price": 14,
   "required_level": 25
 }

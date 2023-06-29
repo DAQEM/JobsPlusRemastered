@@ -3,6 +3,9 @@
   "parent": "jobsplus:alchemist/stronger_potions_iv",
   "name": "Stronger potions V",
   "description": "Potions always become stronger.",
+  "icon": {
+    "item": "minecraft:brewing_stand"
+  },
   "price": 18,
   "required_level": 50
 }
