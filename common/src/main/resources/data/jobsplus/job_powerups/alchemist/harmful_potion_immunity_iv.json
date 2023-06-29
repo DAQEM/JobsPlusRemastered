@@ -4,7 +4,9 @@
   "name": "Harmful Potion Immunity IV",
   "description": "Become 80% immune to harmful potions.",
   "icon": {
-    "item": "minecraft:brewing_stand"
+    "item": "minecraft:potion",
+    "tag": "{Potion:\"minecraft:poison\"}",
+    "count": 4
   },
   "price": 16,
   "required_level": 35

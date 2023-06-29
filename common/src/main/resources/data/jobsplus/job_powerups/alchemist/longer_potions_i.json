@@ -1,9 +1,11 @@
 {
   "job": "jobsplus:alchemist",
+  "parent": "jobsplus:alchemist/harmful_potion_immunity_i",
   "name": "Longer potions I",
   "description": "Potions last 20% longer.",
   "icon": {
-    "item": "minecraft:brewing_stand"
+    "item": "minecraft:potion",
+    "tag": "{Potion:\"minecraft:swiftness\"}"
   },
   "price": 10,
   "required_level": 0

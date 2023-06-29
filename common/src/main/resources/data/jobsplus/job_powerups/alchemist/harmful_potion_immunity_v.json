@@ -4,7 +4,9 @@
   "name": "Harmful Potion Immunity V",
   "description": "Become completely immune to harmful potions.",
   "icon": {
-    "item": "minecraft:brewing_stand"
+    "item": "minecraft:potion",
+    "tag": "{Potion:\"minecraft:poison\"}",
+    "count": 5
   },
   "price": 18,
   "required_level": 50

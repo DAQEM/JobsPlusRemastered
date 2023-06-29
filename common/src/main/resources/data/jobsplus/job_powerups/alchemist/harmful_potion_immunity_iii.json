@@ -4,7 +4,9 @@
   "name": "Harmful Potion Immunity III",
   "description": "Become 60% immune to harmful potions.",
   "icon": {
-    "item": "minecraft:brewing_stand"
+    "item": "minecraft:potion",
+    "tag": "{Potion:\"minecraft:poison\"}",
+    "count": 3
   },
   "price": 14,
   "required_level": 25

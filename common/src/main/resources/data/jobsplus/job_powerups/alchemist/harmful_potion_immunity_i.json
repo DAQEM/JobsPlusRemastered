@@ -4,7 +4,7 @@
   "description": "Become 20% immune to harmful potions.",
   "icon": {
     "item": "minecraft:potion",
-    "tag": "{Potion:\"minecraft:swiftness\"}"
+    "tag": "{Potion:\"minecraft:poison\"}"
   },
   "price": 10,
   "required_level": 0

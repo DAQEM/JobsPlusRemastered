@@ -79,7 +79,7 @@ public class PowerUpsScreen extends AbstractScreen {
         }
 
         if (!this.centered) {
-            this.scrollX = this.startX + (WINDOW_WIDTH - this.maxX) / 2;
+            this.scrollX = this.maxX < WINDOW_WIDTH ? this.startX + (WINDOW_WIDTH - this.maxX) / 2 : Mth.clamp(Double.MAX_VALUE, -(this.maxX - WINDOW_WIDTH - this.startX), this.startX);
             this.scrollY = this.startY + (WINDOW_HEIGHT - this.maxY) / 2;
             this.centered = true;
         }

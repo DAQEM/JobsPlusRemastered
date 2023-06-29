@@ -1,5 +1,6 @@
 {
   "job": "jobsplus:alchemist",
+  "parent": "jobsplus:alchemist/harmful_potion_immunity_i",
   "name": "Job Experience Boost I",
   "description": "Boosts your job experience by 50%.",
   "icon": {

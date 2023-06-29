@@ -356,6 +356,7 @@ public class PowerupWidget extends GuiComponent {
                 && Mth.floor(this.y * HEIGHT) + offsetY > startY - 40
         ) {
             Minecraft.getInstance().getItemRenderer().renderAndDecorateFakeItem(powerupInstance.getIcon(), Mth.floor(this.x * WIDTH) + offsetX + 4, Mth.floor(this.y * HEIGHT) + offsetY + 4);
+            Minecraft.getInstance().getItemRenderer().renderGuiItemDecorations(Minecraft.getInstance().font, powerupInstance.getIcon(), Mth.floor(this.x * WIDTH) + offsetX + 3, Mth.floor(this.y * HEIGHT) + offsetY + 2);
         }
 
         this.getChildren().forEach(child -> child.draw(poseStack, offsetX, offsetY, startX, startY));
@@ -420,6 +421,7 @@ public class PowerupWidget extends GuiComponent {
         }
 
         Minecraft.getInstance().getItemRenderer().renderAndDecorateFakeItem(powerupInstance.getIcon(), x + 4, y + 4);
+        Minecraft.getInstance().getItemRenderer().renderGuiItemDecorations(Minecraft.getInstance().font, powerupInstance.getIcon(), x + 3, y + 2);
     }
 
     protected void render9Sprite(PoseStack poseStack, int i, int j, int k, int l, int m, int n, int o, int p, int q) {

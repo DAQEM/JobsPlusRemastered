@@ -4,7 +4,9 @@
   "name": "Longer potions V",
   "description": "Potions last 2 times as long.",
   "icon": {
-    "item": "minecraft:brewing_stand"
+    "item": "minecraft:potion",
+    "tag": "{Potion:\"minecraft:swiftness\"}",
+    "count": 5
   },
   "price": 10,
   "required_level": 40

@@ -133,6 +133,7 @@ public class PowerupInstance {
             JsonObject iconObject = GsonHelper.getAsJsonObject(jsonObject, "icon");
             Item icon = GsonHelper.getAsItem(iconObject, "item");
             ItemStack iconStack = new ItemStack(icon);
+            iconStack.setCount(GsonHelper.getAsInt(iconObject, "count", 1));
             if (iconObject.has("tag")) {
                 try {
                     iconStack.setTag(TagParser.parseTag(GsonHelper.getAsString(iconObject, "tag")));

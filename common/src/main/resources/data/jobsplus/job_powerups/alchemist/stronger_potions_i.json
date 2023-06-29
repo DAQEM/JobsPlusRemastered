@@ -3,7 +3,8 @@
   "name": "Stronger potions I",
   "description": "Potions have a 20% change to become stronger.",
   "icon": {
-    "item": "minecraft:brewing_stand"
+    "item": "minecraft:potion",
+    "tag": "{Potion:\"minecraft:strength\"}"
   },
   "price": 10,
   "required_level": 0

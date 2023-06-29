@@ -4,7 +4,9 @@
   "name": "Longer potions IV",
   "description": "Potions last 80% longer.",
   "icon": {
-    "item": "minecraft:brewing_stand"
+    "item": "minecraft:potion",
+    "tag": "{Potion:\"minecraft:swiftness\"}",
+    "count": 4
   },
   "price": 10,
   "required_level": 30

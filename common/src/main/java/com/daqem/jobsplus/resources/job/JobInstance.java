@@ -203,6 +203,7 @@ public class JobInstance {
             JsonObject iconObject = GsonHelper.getAsJsonObject(json, "icon");
             Item icon = GsonHelper.getAsItem(iconObject, "item");
             ItemStack iconStack = new ItemStack(icon);
+            iconStack.setCount(GsonHelper.getAsInt(iconObject, "count", 1));
             if (iconObject.has("tag")) {
                 try {
                     iconStack.setTag(TagParser.parseTag(GsonHelper.getAsString(iconObject, "tag")));
