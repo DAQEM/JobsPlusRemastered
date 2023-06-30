@@ -10,7 +10,8 @@
   ],
   "conditions": [
     {
-      "type": "jobsplus:powerup_no_children_active"
+      "type": "jobsplus:powerup_not_active",
+      "powerup": "jobsplus:alchemist/stronger_potions_v"
     }
   ]
 }

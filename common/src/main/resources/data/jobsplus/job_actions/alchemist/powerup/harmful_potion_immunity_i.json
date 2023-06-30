@@ -26,7 +26,20 @@
       ]
     },
     {
-      "type": "jobsplus:powerup_no_children_active"
+      "type": "jobsplus:powerup_not_active",
+      "powerup": "jobsplus:alchemist/harmful_potion_immunity_ii"
+    },
+    {
+      "type": "jobsplus:powerup_not_active",
+      "powerup": "jobsplus:alchemist/harmful_potion_immunity_iii"
+    },
+    {
+      "type": "jobsplus:powerup_not_active",
+      "powerup": "jobsplus:alchemist/harmful_potion_immunity_iv"
+    },
+    {
+      "type": "jobsplus:powerup_not_active",
+      "powerup": "jobsplus:alchemist/harmful_potion_immunity_v"
     }
   ]
 }

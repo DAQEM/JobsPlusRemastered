@@ -9,7 +9,12 @@
   ],
   "conditions": [
     {
-      "type": "jobsplus:powerup_no_children_active"
+      "type": "jobsplus:powerup_not_active",
+      "powerup": "jobsplus:alchemist/job_experience_boost_ii"
+    },
+    {
+    "type": "jobsplus:powerup_not_active",
+    "powerup": "jobsplus:alchemist/job_experience_boost_iii"
     }
   ]
 }

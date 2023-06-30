@@ -9,7 +9,12 @@
   ],
   "conditions": [
     {
-      "type": "jobsplus:powerup_no_children_active"
+      "type": "jobsplus:powerup_not_active",
+      "powerup": "jobsplus:alchemist/longer_potions_iv"
+    },
+    {
+      "type": "jobsplus:powerup_not_active",
+      "powerup": "jobsplus:alchemist/longer_potions_v"
     }
   ]
 }
