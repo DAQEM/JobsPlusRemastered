@@ -161,7 +161,6 @@ public class PowerUpsScreen extends AbstractScreen {
         fill(poseStack, 4680, 2260, -4680, -2260, -16777216);
         RenderSystem.colorMask(true, true, true, true);
         RenderSystem.depthFunc(515);
-        poseStack.popPose();
 
         //Border
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);

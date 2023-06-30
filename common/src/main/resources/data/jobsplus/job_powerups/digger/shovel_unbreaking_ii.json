@@ -1,0 +1,11 @@
+{
+  "job": "jobsplus:digger",
+  "parent": "jobsplus:digger/shovel_unbreaking_i",
+  "name": "Shovel Unbreaking II",
+  "description": "Shovels are 20% less likely to take damage when used.",
+  "icon": {
+    "item": "minecraft:stone_shovel"
+  },
+  "price": 8,
+  "required_level": 15
+}

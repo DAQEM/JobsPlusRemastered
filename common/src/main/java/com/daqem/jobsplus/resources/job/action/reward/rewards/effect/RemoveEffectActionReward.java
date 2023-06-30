@@ -21,12 +21,13 @@ public class RemoveEffectActionReward extends ActionReward {
     }
 
     @Override
-    public void apply(ActionData actionData) {
+    public boolean apply(ActionData actionData) {
         MobEffectInstance effect = actionData.getSpecification(ActionSpecification.MOB_EFFECT_INSTANCE);
         if (effect != null) {
             ServerPlayer serverPlayer = actionData.getPlayer().getServerPlayer();
             serverPlayer.removeEffect(effect.getEffect());
         }
+        return false;
     }
 
     public static class Deserializer implements JsonDeserializer<RemoveEffectActionReward> {

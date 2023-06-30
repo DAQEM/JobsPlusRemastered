@@ -8,6 +8,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ActionData {
 
@@ -44,35 +45,41 @@ public class ActionData {
         this.sourceJob = sourceJob;
     }
 
-    public void sendToAction() {
+    public boolean sendToAction() {
+        AtomicBoolean shouldCancel = new AtomicBoolean(false);
+
         List<Job> jobs = this.player.getJobs();
         for (Job job : jobs) {
             job.getJobInstance().getActions().forEach(action -> {
-                handleAction(job, action);
+                shouldCancel.set(handleAction(job, action));
             });
             job.getPowerupManager().getAllPowerups().forEach(powerup -> {
                 if (powerup.getPowerupState() == PowerupState.ACTIVE) {
                     powerup.getPowerupInstance().getActions().forEach(action -> {
                         this.specifications.put(ActionSpecification.POWERUP, powerup);
-                        handleAction(job, action);
+                         shouldCancel.set(handleAction(job, action));
                     });
                 }
             });
         }
+        return shouldCancel.get();
     }
 
-    private void handleAction(Job job, Action action) {
+    private boolean handleAction(Job job, Action action) {
+        AtomicBoolean shouldCancel = new AtomicBoolean(false);
+
         if (action.getType() == this.actionType) {
             if (this.specifications.containsKey(ActionSpecification.ONLY_FOR_JOB)) {
                 Job onlyForJob = this.getSpecification(ActionSpecification.ONLY_FOR_JOB);
                 if (job.equals(onlyForJob)) {
                     this.setSourceJob(job);
-                    action.perform(this);
+                    shouldCancel.set(action.perform(this));
                 }
             } else {
                 this.setSourceJob(job);
-                action.perform(this);
+                shouldCancel.set(action.perform(this));
             }
         }
+        return shouldCancel.get();
     }
 }

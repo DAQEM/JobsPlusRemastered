@@ -34,9 +34,10 @@ public class ItemActionReward extends ActionReward {
     }
 
     @Override
-    public void apply(ActionData actionData) {
+    public boolean apply(ActionData actionData) {
         JobsServerPlayer player = actionData.getPlayer();
         ((ServerPlayer) player).addItem(itemStack.copy());
+        return false;
     }
 
     public static class Deserializer implements JsonDeserializer<ItemActionReward> {

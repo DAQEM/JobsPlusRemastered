@@ -113,8 +113,8 @@ public class PlayerEvents {
                 .sendToAction();
     }
 
-    public static void onPlayerHurtItem(JobsServerPlayer player, ItemStack itemStack) {
-        new ActionDataBuilder(player, Actions.HURT_ITEM)
+    public static boolean onPlayerHurtItem(JobsServerPlayer player, ItemStack itemStack) {
+        return new ActionDataBuilder(player, Actions.HURT_ITEM)
                 .withSpecification(ActionSpecification.ITEM_STACK, itemStack)
                 .withSpecification(ActionSpecification.ITEM, itemStack.getItem())
                 .build()

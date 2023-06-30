@@ -36,9 +36,10 @@ public class EffectActionReward extends ActionReward {
     }
 
     @Override
-    public void apply(ActionData actionData) {
+    public boolean apply(ActionData actionData) {
         JobsServerPlayer player = actionData.getPlayer();
         ((ServerPlayer) player).addEffect(new MobEffectInstance(effect, duration));
+        return false;
     }
 
     public static class Deserializer implements JsonDeserializer<EffectActionReward> {

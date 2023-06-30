@@ -94,7 +94,7 @@ public abstract class MixinServerPlayer extends Player implements JobsServerPlay
         if (jobInstance.getLocation() == null) return null;
         Job job = getJob(jobInstance);
         if (job == null) {
-            job = new Job(this, jobInstance);
+            job = new Job(this, jobInstance, 1, 0);
             jobs.add(job);
             return job;
         }

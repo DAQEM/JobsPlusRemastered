@@ -24,7 +24,7 @@ public abstract class ActionReward {
         return type;
     }
 
-    public abstract void apply(ActionData actionData);
+    public abstract boolean apply(ActionData actionData);
 
     public boolean passedChance(ActionData actionData) {
         return chance == 100 || actionData.getPlayer().nextRandomDouble() * 100 <= chance;

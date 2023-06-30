@@ -90,11 +90,15 @@ public abstract class Action {
         return conditions;
     }
 
-    public void perform(ActionData actionData) {
+    public boolean perform(ActionData actionData) {
+        boolean shouldCancel = false;
+
         if (metConditions(actionData)) {
             JobsPlus.LOGGER.info("Action {} passed conditions for job {}", type.location(), actionData.getSourceJob().getJobInstance().getName());
-            applyRewards(actionData);
+            shouldCancel = applyRewards(actionData);
         }
+
+        return shouldCancel;
     }
 
     public boolean metConditions(ActionData actionData) {
@@ -102,16 +106,22 @@ public abstract class Action {
     }
 
 
-    public void applyRewards(ActionData actionData) {
+    public boolean applyRewards(ActionData actionData) {
+        boolean shouldCancel = false;
+
         for (ActionReward reward : rewards) {
-            applyReward(actionData, reward);
+            if (applyReward(actionData, reward)) shouldCancel = true;
         }
+
+        return shouldCancel;
     }
 
-    private static void applyReward(ActionData actionData, ActionReward reward) {
+    private static boolean applyReward(ActionData actionData, ActionReward reward) {
         if (reward.passedChance(actionData)) {
-            reward.apply(actionData);
+            return reward.apply(actionData);
         }
+
+        return false;
     }
 
     @Override

@@ -32,10 +32,11 @@ public class JobExpActionReward extends ActionReward {
     }
 
     @Override
-    public void apply(ActionData actionData) {
+    public boolean apply(ActionData actionData) {
         JobsServerPlayer player = actionData.getPlayer();
         int exp = ((ServerPlayer) player).getRandom().nextInt(minExp, maxExp + 1);
         actionData.getSourceJob().addExperience(exp);
+        return false;
     }
 
     public static class Deserializer implements JsonDeserializer<JobExpActionReward> {

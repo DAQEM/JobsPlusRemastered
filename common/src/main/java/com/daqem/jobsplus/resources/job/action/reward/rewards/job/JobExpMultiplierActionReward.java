@@ -28,13 +28,14 @@ public class JobExpMultiplierActionReward extends ActionReward {
     }
 
     @Override
-    public void apply(ActionData actionData) {
+    public boolean apply(ActionData actionData) {
         Integer specification = actionData.getSpecification(ActionSpecification.JOB_EXP);
         if (specification != null) {
             int exp = specification;
             int experience = (int) (exp * this.multiplier) - exp;
             actionData.getSourceJob().addExperienceWithoutEvent(experience);
         }
+        return false;
     }
 
     public static class Deserializer implements JsonDeserializer<JobExpMultiplierActionReward> {

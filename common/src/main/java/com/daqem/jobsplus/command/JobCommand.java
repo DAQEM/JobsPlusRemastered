@@ -16,8 +16,12 @@ import com.mojang.brigadier.arguments.IntegerArgumentType;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
+import net.minecraft.core.Registry;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.util.GsonHelper;
+
+import java.util.stream.Collectors;
 
 public class JobCommand {
 
@@ -95,6 +99,17 @@ public class JobCommand {
                                         )
                                 )
                         )
+                )
+                .then(Commands.literal("itemtag")
+                        .executes(context -> {
+                            ServerPlayer serverPlayer = context.getSource().getPlayer();
+                            if (serverPlayer != null) {
+                                serverPlayer.sendSystemMessage(JobsPlus.literal(
+                                        serverPlayer.getMainHandItem().getTags().map(itemTagKey -> itemTagKey.location().toString()).collect(Collectors.joining(", "))
+                                ));
+                            }
+                            return 0;
+                        })
                 )
         );
     }

@@ -18,7 +18,10 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import java.util.function.Consumer;
 
 @Mixin(ItemStack.class)
 public abstract class MixinItemStack {
@@ -51,11 +54,15 @@ public abstract class MixinItemStack {
         }
     }
 
-    @Inject(at = @At("HEAD"), method = "hurt(ILnet/minecraft/util/RandomSource;Lnet/minecraft/server/level/ServerPlayer;)Z")
+    @Inject(at = @At("HEAD"), method = "hurt(ILnet/minecraft/util/RandomSource;Lnet/minecraft/server/level/ServerPlayer;)Z", cancellable = true)
     private void hurt(int i, RandomSource randomSource, ServerPlayer serverPlayer, CallbackInfoReturnable<Boolean> cir) {
         if (serverPlayer instanceof JobsServerPlayer player) {
             if (getItemStack().isDamageableItem()) {
-                PlayerEvents.onPlayerHurtItem(player, getItemStack());
+                boolean shouldCancel = PlayerEvents.onPlayerHurtItem(player, getItemStack());
+                if (shouldCancel) {
+                    cir.setReturnValue(false);
+                    cir.cancel();
+                }
             }
         }
     }

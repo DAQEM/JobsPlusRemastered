@@ -1,0 +1,27 @@
+{
+  "powerup": "jobsplus:digger/shovel_unbreaking_iii",
+  "type": "jobsplus:on_hurt_item",
+  "rewards": [
+    {
+      "type": "jobsplus:cancel_action",
+      "chance": 30
+    }
+  ],
+  "conditions": [
+    {
+      "type": "jobsplus:items",
+      "items": [
+        "#forge:tools/shovels",
+        "#c:shovels"
+      ]
+    },
+    {
+      "type": "jobsplus:powerup_not_active",
+      "powerup": "jobsplus:digger/shovel_unbreaking_iv"
+    },
+    {
+      "type": "jobsplus:powerup_not_active",
+      "powerup": "jobsplus:digger/shovel_unbreaking_v"
+    }
+  ]
+}

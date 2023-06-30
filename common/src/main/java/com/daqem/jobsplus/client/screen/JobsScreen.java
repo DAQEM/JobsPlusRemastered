@@ -639,13 +639,14 @@ public class JobsScreen extends AbstractScreen {
     public void openPowerupsScreenForJobInstance(JobInstance jobInstance) {
         ImmutableCollection<PowerupInstance> rootPowerups = PowerupManager.getInstance().getRootPowerups().values();
         ResourceLocation jobLocation = jobInstance.getLocation();
-        Minecraft.getInstance().setScreen(new PowerUpsScreen(this, Objects.requireNonNull(jobs.stream().filter(j -> j.getJobInstance() == jobInstance).findFirst().orElse(null)),
+        jobs.stream().filter(j -> j.getJobInstance() == jobInstance).findFirst()
+                .ifPresent(job -> Minecraft.getInstance().setScreen(new PowerUpsScreen(this, job,
                 rootPowerups.stream()
                         .filter(
                                 p -> p.getJobLocation().equals(jobLocation))
                         .toList(),
-                getSelectedJob().getPowerupManager().getAllPowerups(),
-                getCoins()));
+                job.getPowerupManager().getAllPowerups(),
+                getCoins())));
     }
 
     private void openActionScreen(JobInstance jobInstance, Action action) {

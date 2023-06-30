@@ -25,13 +25,14 @@ public class EffectDurationMultiplierActionReward extends ActionReward {
     }
 
     @Override
-    public void apply(ActionData actionData) {
+    public boolean apply(ActionData actionData) {
         MobEffectInstance effect = actionData.getSpecification(ActionSpecification.MOB_EFFECT_INSTANCE);
         if (effect != null) {
             ServerPlayer serverPlayer = actionData.getPlayer().getServerPlayer();
             MobEffectInstance newEffect = new MobEffectInstance(effect.getEffect(), Mth.floor(effect.getDuration() * multiplier), effect.getAmplifier(), effect.isAmbient(), effect.isVisible());
             serverPlayer.addEffect(newEffect, new ServerPlayer(Objects.requireNonNull(serverPlayer.getServer()), serverPlayer.getLevel(), new GameProfile(UUID.randomUUID(), "Jobs+Powerup"), null));
         }
+        return false;
     }
 
     public static class Deserializer implements JsonDeserializer<EffectDurationMultiplierActionReward> {

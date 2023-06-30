@@ -1,0 +1,11 @@
+{
+  "job": "jobsplus:digger",
+  "parent": "jobsplus:digger/shovel_unbreaking_iv",
+  "name": "Shovel Unbreaking V",
+  "description": "Shovels are 50% less likely to take damage when used.",
+  "icon": {
+    "item": "minecraft:netherite_shovel"
+  },
+  "price": 15,
+  "required_level": 80
+}

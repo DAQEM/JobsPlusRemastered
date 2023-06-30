@@ -3,6 +3,7 @@ package com.daqem.jobsplus.resources.job.action.reward;
 import com.daqem.jobsplus.JobsPlus;
 import com.daqem.jobsplus.exception.UnknownRewardTypeException;
 import com.daqem.jobsplus.registry.JobsPlusRegistry;
+import com.daqem.jobsplus.resources.job.action.reward.rewards.CancelActionActionReward;
 import com.daqem.jobsplus.resources.job.action.reward.rewards.effect.EffectActionReward;
 import com.daqem.jobsplus.resources.job.action.reward.rewards.effect.EffectAmplifierAdditionActionReward;
 import com.daqem.jobsplus.resources.job.action.reward.rewards.effect.EffectDurationMultiplierActionReward;
@@ -30,6 +31,7 @@ public class ActionRewards {
     public static final ActionRewardType EFFECT_DURATION_MULTIPLIER = register(JobsPlus.getId("effect_duration_multiplier"), EffectDurationMultiplierActionReward.class, new EffectDurationMultiplierActionReward.Deserializer());
     public static final ActionRewardType EFFECT_AMPLIFIER_ADDITION = register(JobsPlus.getId("effect_amplifier_addition"), EffectAmplifierAdditionActionReward.class, new EffectAmplifierAdditionActionReward.Deserializer());
     public static final ActionRewardType REMOVE_EFFECT = register(JobsPlus.getId("remove_effect"), RemoveEffectActionReward.class, new RemoveEffectActionReward.Deserializer());
+    public static final ActionRewardType CANCEL_ACTION = register(JobsPlus.getId("cancel_action"), CancelActionActionReward.class, new CancelActionActionReward.Deserializer());
 
     private static ActionRewardType register(ResourceLocation location, Class<? extends ActionReward> clazz, JsonDeserializer<? extends ActionReward> deserializer) {
         ActionRewardType actionRewardType = new ActionRewardType(clazz, location, deserializer);
