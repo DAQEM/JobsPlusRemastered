@@ -1,7 +1,7 @@
 package com.daqem.jobsplus.resources.job.action.condition.conditions.world;
 
-import com.daqem.jobsplus.player.ActionData;
-import com.daqem.jobsplus.player.ActionSpecification;
+import com.daqem.jobsplus.player.action.ActionData;
+import com.daqem.jobsplus.player.action.ActionSpecification;
 import com.daqem.jobsplus.resources.job.action.condition.ActionCondition;
 import com.daqem.jobsplus.resources.job.action.condition.ActionConditions;
 import com.google.gson.*;
@@ -25,7 +25,7 @@ public class DimensionActionCondition extends ActionCondition {
     public boolean isMet(ActionData actionData) {
         Level world = actionData.getSpecification(ActionSpecification.WORLD);
         if (world == null)
-            world = actionData.getPlayer().getServerPlayer().getLevel();
+            world = actionData.getPlayer().level();
         return world.dimension().location().equals(dimension.location());
     }
 

@@ -43,7 +43,6 @@ public abstract class PowerupManager extends SimpleJsonResourceReloadListener {
         List<PowerupInstance> tempPowerups = new ArrayList<>();
 
         map.forEach((location, jsonElement) -> {
-            JobsPlus.LOGGER.error("Loading job powerup {}", location.toString());
             try {
                 PowerupInstance powerup = GSON.fromJson(jsonElement, PowerupInstance.class);
                 powerup.setLocation(location);
@@ -54,20 +53,9 @@ public abstract class PowerupManager extends SimpleJsonResourceReloadListener {
             }
         });
 
-        if (isServer) {
-            powerups = ImmutableMap.copyOf(sortPowerups(tempPowerups));
-            LOGGER.info("Loaded {} job powerups", powerups.size());
-            JobManager.getInstance().addPowerups(powerups);
-        } else {
-            tempPowerups.forEach(powerup -> {
-                Map<ResourceLocation, PowerupInstance> tempPowerupInstance = new HashMap<>(powerups);
-                tempPowerupInstance.remove(powerup.getLocation());
-                tempPowerupInstance.put(powerup.getLocation(), powerup);
-                tempPowerupInstance = sortPowerups(new ArrayList<>(tempPowerupInstance.values()));
-                powerups = ImmutableMap.copyOf(tempPowerupInstance);
-                JobManager.getInstance().addPowerups(powerups);
-            });
-        }
+        powerups = ImmutableMap.copyOf(sortPowerups(tempPowerups));
+        JobManager.getInstance().addPowerups(powerups);
+        LOGGER.info("Loaded {} job powerups", powerups.size());
     }
 
     @Override
@@ -120,5 +108,16 @@ public abstract class PowerupManager extends SimpleJsonResourceReloadListener {
             allPowerups.putAll(getAllPowerupsRecursive(powerup.getChildren().stream().collect(ImmutableMap.toImmutableMap(PowerupInstance::getLocation, powerupInstance -> powerupInstance))));
         });
         return allPowerups;
+    }
+
+    public void clearAll() {
+        powerups = ImmutableMap.of();
+        map = ImmutableMap.of();
+    }
+
+    public void add(ResourceLocation location, JsonElement powerupJson) {
+        Map<ResourceLocation, JsonElement> tempMap = new HashMap<>(map);
+        tempMap.put(location, powerupJson);
+        map = ImmutableMap.copyOf(tempMap);
     }
 }

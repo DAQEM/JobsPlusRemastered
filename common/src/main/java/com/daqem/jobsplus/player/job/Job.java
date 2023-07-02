@@ -2,7 +2,7 @@ package com.daqem.jobsplus.player.job;
 
 import com.daqem.jobsplus.Constants;
 import com.daqem.jobsplus.event.triggers.JobEvents;
-import com.daqem.jobsplus.player.JobsServerPlayer;
+import com.daqem.jobsplus.player.JobsPlayer;
 import com.daqem.jobsplus.player.job.powerup.JobPowerupManager;
 import com.daqem.jobsplus.player.job.powerup.Powerup;
 import com.daqem.jobsplus.player.job.powerup.PowerupState;
@@ -22,25 +22,25 @@ import java.util.List;
 
 public class Job {
 
-    private final JobsServerPlayer player;
+    private final JobsPlayer player;
     private final JobInstance jobInstance;
     private final JobPowerupManager powerupManager;
     private int level;
     private int experience;
 
-    public Job(JobsServerPlayer player, JobInstance jobInstance) {
+    public Job(JobsPlayer player, JobInstance jobInstance) {
         this(player, jobInstance, 0, 0, new ArrayList<>());
     }
 
-    public Job(JobsServerPlayer player, JobInstance jobInstance, int level, int experience) {
+    public Job(JobsPlayer player, JobInstance jobInstance, int level, int experience) {
         this(player, jobInstance, level, experience, new ArrayList<>());
     }
 
-    public Job(JobsServerPlayer player, ResourceLocation jobInstanceLocation, int level, int experience, @NotNull List<Powerup> powerups) {
+    public Job(JobsPlayer player, ResourceLocation jobInstanceLocation, int level, int experience, @NotNull List<Powerup> powerups) {
         this(player, JobManager.getInstance().getJobs().get(jobInstanceLocation), level, experience, powerups);
     }
 
-    public Job(JobsServerPlayer player, JobInstance jobInstance, int level, int experience, @NotNull List<Powerup> powerups) {
+    public Job(JobsPlayer player, JobInstance jobInstance, int level, int experience, @NotNull List<Powerup> powerups) {
         this.player = player;
         this.jobInstance = jobInstance;
         this.powerupManager = new JobPowerupManager(jobInstance, powerups);
@@ -121,7 +121,7 @@ public class Job {
         return jobTag;
     }
 
-    public static Job fromNBT(JobsServerPlayer player, CompoundTag tag) {
+    public static Job fromNBT(JobsPlayer player, CompoundTag tag) {
 
         ResourceLocation jobInstanceLocation = new ResourceLocation(tag.getString(Constants.JOB_INSTANCE_LOCATION));
         int level = tag.getInt(Constants.LEVEL);

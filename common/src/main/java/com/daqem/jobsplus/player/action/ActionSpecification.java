@@ -1,4 +1,4 @@
-package com.daqem.jobsplus.player;
+package com.daqem.jobsplus.player.action;
 
 import com.daqem.jobsplus.player.job.Job;
 import com.daqem.jobsplus.player.job.powerup.Powerup;
@@ -30,7 +30,6 @@ public record ActionSpecification<T>(ResourceLocation location) {
     public static final ActionSpecification<Job> ONLY_FOR_JOB = create("only_for_job");
     public static final ActionSpecification<ItemStack> ITEM_STACK = create("item_stack");
     public static final ActionSpecification<Item> ITEM = create("item");
-    public static final ActionSpecification<Container> CONTAINER = create("container");
     public static final ActionSpecification<Advancement> ADVANCEMENT = create("advancement");
     public static final ActionSpecification<MobEffectInstance> MOB_EFFECT_INSTANCE = create("mob_effect_instance");
     public static final ActionSpecification<Recipe<?>> RECIPE = create("recipe");

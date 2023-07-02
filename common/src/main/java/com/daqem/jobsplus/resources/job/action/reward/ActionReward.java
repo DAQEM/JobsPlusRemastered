@@ -1,6 +1,7 @@
 package com.daqem.jobsplus.resources.job.action.reward;
 
-import com.daqem.jobsplus.player.ActionData;
+import com.daqem.jobsplus.player.action.ActionData;
+import com.daqem.jobsplus.player.action.ActionResult;
 import com.google.gson.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
@@ -24,7 +25,7 @@ public abstract class ActionReward {
         return type;
     }
 
-    public abstract boolean apply(ActionData actionData);
+    public abstract ActionResult apply(ActionData actionData);
 
     public boolean passedChance(ActionData actionData) {
         return chance == 100 || actionData.getPlayer().nextRandomDouble() * 100 <= chance;

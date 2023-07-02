@@ -1,0 +1,10 @@
+{
+  "job": "jobsplus:digger",
+  "name": "Shovel Efficiency I",
+  "description": "Shovels dig 10% faster.",
+  "icon": {
+    "item": "minecraft:golden_shovel"
+  },
+  "price": 5,
+  "required_level": 5
+}

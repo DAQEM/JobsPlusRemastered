@@ -1,6 +1,7 @@
 package com.daqem.jobsplus.resources.job.action.reward.rewards;
 
-import com.daqem.jobsplus.player.ActionData;
+import com.daqem.jobsplus.player.action.ActionData;
+import com.daqem.jobsplus.player.action.ActionResult;
 import com.daqem.jobsplus.resources.job.action.reward.ActionReward;
 import com.daqem.jobsplus.resources.job.action.reward.ActionRewards;
 import com.google.gson.JsonDeserializationContext;
@@ -17,8 +18,8 @@ public class CancelActionActionReward extends ActionReward {
     }
 
     @Override
-    public boolean apply(ActionData actionData) {
-        return true;
+    public ActionResult apply(ActionData actionData) {
+        return new ActionResult().withCancelAction(true);
     }
 
     public static class Deserializer implements JsonDeserializer<CancelActionActionReward> {

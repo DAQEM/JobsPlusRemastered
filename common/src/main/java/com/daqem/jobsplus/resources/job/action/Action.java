@@ -1,7 +1,8 @@
 package com.daqem.jobsplus.resources.job.action;
 
 import com.daqem.jobsplus.JobsPlus;
-import com.daqem.jobsplus.player.ActionData;
+import com.daqem.jobsplus.player.action.ActionData;
+import com.daqem.jobsplus.player.action.ActionResult;
 import com.daqem.jobsplus.resources.job.action.condition.ActionCondition;
 import com.daqem.jobsplus.resources.job.action.reward.ActionReward;
 import com.google.gson.*;
@@ -15,17 +16,25 @@ import java.util.List;
 
 public abstract class Action {
 
+    private final ActionType type;
+    private final boolean performOnClient;
+
     private ResourceLocation location;
     private ResourceLocation forLocation;
     private ActionForType forType;
-    private final ActionType type;
     private String shortDescription;
     private String description;
     private List<ActionReward> rewards = new ArrayList<>();
     private List<ActionCondition> conditions = new ArrayList<>();
 
+
     public Action(ActionType type) {
+        this(type, false);
+    }
+
+    public Action(ActionType type, boolean performOnClient) {
         this.type = type;
+        this.performOnClient = performOnClient;
     }
 
     public void setLocation(ResourceLocation location) {
@@ -90,15 +99,19 @@ public abstract class Action {
         return conditions;
     }
 
-    public boolean perform(ActionData actionData) {
-        boolean shouldCancel = false;
+    public ActionResult perform(ActionData actionData) {
+        ActionResult result = new ActionResult();
+
+        if (actionData.getPlayer().level().isClientSide() && !performOnClient) {
+            return result;
+        }
 
         if (metConditions(actionData)) {
             JobsPlus.LOGGER.info("Action {} passed conditions for job {}", type.location(), actionData.getSourceJob().getJobInstance().getName());
-            shouldCancel = applyRewards(actionData);
+            result = applyRewards(actionData);
         }
 
-        return shouldCancel;
+        return result;
     }
 
     public boolean metConditions(ActionData actionData) {
@@ -106,22 +119,18 @@ public abstract class Action {
     }
 
 
-    public boolean applyRewards(ActionData actionData) {
-        boolean shouldCancel = false;
-
-        for (ActionReward reward : rewards) {
-            if (applyReward(actionData, reward)) shouldCancel = true;
-        }
-
-        return shouldCancel;
+    public ActionResult applyRewards(ActionData actionData) {
+        return rewards.stream()
+                .map(reward -> applyReward(actionData, reward))
+                .reduce(new ActionResult(), ActionResult::combine);
     }
 
-    private static boolean applyReward(ActionData actionData, ActionReward reward) {
+    private static ActionResult applyReward(ActionData actionData, ActionReward reward) {
         if (reward.passedChance(actionData)) {
             return reward.apply(actionData);
         }
 
-        return false;
+        return new ActionResult();
     }
 
     @Override

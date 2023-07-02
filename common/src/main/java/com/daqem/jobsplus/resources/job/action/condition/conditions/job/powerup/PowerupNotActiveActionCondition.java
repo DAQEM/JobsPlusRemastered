@@ -1,6 +1,6 @@
 package com.daqem.jobsplus.resources.job.action.condition.conditions.job.powerup;
 
-import com.daqem.jobsplus.player.ActionData;
+import com.daqem.jobsplus.player.action.ActionData;
 import com.daqem.jobsplus.player.job.powerup.Powerup;
 import com.daqem.jobsplus.player.job.powerup.PowerupState;
 import com.daqem.jobsplus.resources.job.action.condition.ActionCondition;

@@ -1,4 +1,4 @@
-package com.daqem.jobsplus.networking.s2c;
+package com.daqem.jobsplus.networking.sync.instances.s2c;
 
 import com.daqem.jobsplus.networking.JobsPlusNetworking;
 import com.daqem.jobsplus.resources.job.JobManager;
@@ -16,16 +16,16 @@ import net.minecraft.resources.ResourceLocation;
 
 import java.util.Map;
 
-public class PacketSyncJobS2C extends BaseS2CMessage {
+public class PacketSyncJobInstanceS2C extends BaseS2CMessage {
 
     private final JsonElement jobJson;
 
-    public PacketSyncJobS2C(ResourceLocation location, JsonElement jobJson) {
+    public PacketSyncJobInstanceS2C(ResourceLocation location, JsonElement jobJson) {
         jobJson.getAsJsonObject().addProperty("location", location.toString());
         this.jobJson = jobJson;
     }
 
-    public PacketSyncJobS2C(FriendlyByteBuf buffer) {
+    public PacketSyncJobInstanceS2C(FriendlyByteBuf buffer) {
         CompoundTag tag = buffer.readAnySizeNbt();
         this.jobJson = CompoundTag.CODEC.encodeStart(JsonOps.INSTANCE, tag).getOrThrow(false, e -> {
         });
@@ -33,7 +33,7 @@ public class PacketSyncJobS2C extends BaseS2CMessage {
 
     @Override
     public MessageType getType() {
-        return JobsPlusNetworking.S2C_SYNC_JOB;
+        return JobsPlusNetworking.S2C_SYNC_JOB_INSTANCE;
     }
 
     @Override

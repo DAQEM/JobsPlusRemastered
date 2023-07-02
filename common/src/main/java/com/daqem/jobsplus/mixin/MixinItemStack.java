@@ -2,8 +2,10 @@ package com.daqem.jobsplus.mixin;
 
 import com.daqem.jobsplus.event.triggers.PlayerEvents;
 import com.daqem.jobsplus.player.JobsServerPlayer;
+import com.daqem.jobsplus.player.action.ActionResult;
 import com.daqem.jobsplus.resources.crafting.CraftingResult;
 import com.daqem.jobsplus.resources.crafting.CraftingType;
+import com.daqem.jobsplus.resources.job.action.reward.ActionReward;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
@@ -58,8 +60,8 @@ public abstract class MixinItemStack {
     private void hurt(int i, RandomSource randomSource, ServerPlayer serverPlayer, CallbackInfoReturnable<Boolean> cir) {
         if (serverPlayer instanceof JobsServerPlayer player) {
             if (getItemStack().isDamageableItem()) {
-                boolean shouldCancel = PlayerEvents.onPlayerHurtItem(player, getItemStack());
-                if (shouldCancel) {
+                ActionResult actionResult = PlayerEvents.onPlayerHurtItem(player, getItemStack());
+                if (actionResult.shouldCancelAction()) {
                     cir.setReturnValue(false);
                     cir.cancel();
                 }

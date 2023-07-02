@@ -42,17 +42,14 @@ public abstract class ActionManager extends SimpleJsonResourceReloadListener {
         List<Action> tempActions = new ArrayList<>();
 
         object.forEach((location, jsonElement) -> {
-            JobsPlus.LOGGER.error("Loading job action {}", location.toString());
             try {
                 Action action = GSON.fromJson(jsonElement, Action.class);
-                JobsPlus.LOGGER.error("1 Loaded job action {}", location.toString());
                 action.setLocation(location);
                 tempActions.add(action);
             } catch (Exception e) {
                 LOGGER.error("Could not deserialize job {} because: {}", location, e.getMessage());
                 throw e;
             }
-            JobsPlus.LOGGER.error("2 Loaded job action {}", location.toString());
         });
 
         if (isServer) {
@@ -60,9 +57,7 @@ public abstract class ActionManager extends SimpleJsonResourceReloadListener {
             LOGGER.info("Loaded {} job actions", actions.size());
             JobManager.getInstance().addActions(actions);
         } else {
-            LOGGER.error("Client received {} job actions", tempActions.size());
             tempActions.forEach(action -> {
-                LOGGER.error("Client received job action {}", action.getLocation().toString());
                 Map<ResourceLocation, Action> tempActionsMap = new HashMap<>(actions);
                 tempActionsMap.remove(action.getLocation());
                 tempActionsMap.put(action.getLocation(), action);
@@ -91,5 +86,10 @@ public abstract class ActionManager extends SimpleJsonResourceReloadListener {
 
     public ImmutableMap<ResourceLocation, JsonElement> getMap() {
         return map;
+    }
+
+    public void clearAll() {
+        actions = ImmutableMap.of();
+        map = ImmutableMap.of();
     }
 }

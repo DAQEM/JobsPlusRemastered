@@ -1,6 +1,6 @@
 package com.daqem.jobsplus.resources.job.action.condition.conditions.scoreboard;
 
-import com.daqem.jobsplus.player.ActionData;
+import com.daqem.jobsplus.player.action.ActionData;
 import com.daqem.jobsplus.resources.job.action.condition.ActionCondition;
 import com.daqem.jobsplus.resources.job.action.condition.ActionConditions;
 import com.google.gson.*;
@@ -24,10 +24,10 @@ public class ScoreboardActionCondition extends ActionCondition {
 
     @Override
     public boolean isMet(ActionData actionData) {
-        Scoreboard scoreboard = actionData.getPlayer().getServerPlayer().getScoreboard();
+        Scoreboard scoreboard = actionData.getPlayer().getPlayer().getScoreboard();
         Objective objective = scoreboard.getObjective(this.objective);
         if (objective != null) {
-            int score = scoreboard.getOrCreatePlayerScore(actionData.getPlayer().getServerPlayer().getName().getString(), objective).getScore();
+            int score = scoreboard.getOrCreatePlayerScore(actionData.getPlayer().name(), objective).getScore();
             return score >= minScore && score <= maxScore;
         }
         return false;

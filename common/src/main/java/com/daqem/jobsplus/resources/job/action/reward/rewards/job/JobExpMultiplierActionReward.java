@@ -1,7 +1,8 @@
 package com.daqem.jobsplus.resources.job.action.reward.rewards.job;
 
-import com.daqem.jobsplus.player.ActionData;
-import com.daqem.jobsplus.player.ActionSpecification;
+import com.daqem.jobsplus.player.action.ActionData;
+import com.daqem.jobsplus.player.action.ActionResult;
+import com.daqem.jobsplus.player.action.ActionSpecification;
 import com.daqem.jobsplus.resources.job.action.reward.ActionReward;
 import com.daqem.jobsplus.resources.job.action.reward.ActionRewards;
 import com.google.gson.*;
@@ -28,14 +29,14 @@ public class JobExpMultiplierActionReward extends ActionReward {
     }
 
     @Override
-    public boolean apply(ActionData actionData) {
+    public ActionResult apply(ActionData actionData) {
         Integer specification = actionData.getSpecification(ActionSpecification.JOB_EXP);
         if (specification != null) {
             int exp = specification;
             int experience = (int) (exp * this.multiplier) - exp;
             actionData.getSourceJob().addExperienceWithoutEvent(experience);
         }
-        return false;
+        return new ActionResult();
     }
 
     public static class Deserializer implements JsonDeserializer<JobExpMultiplierActionReward> {

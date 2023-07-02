@@ -1,13 +1,13 @@
 package com.daqem.jobsplus.resources.job.action.condition.conditions.item;
 
-import com.daqem.jobsplus.player.ActionData;
+import com.daqem.jobsplus.player.action.ActionData;
 import com.daqem.jobsplus.resources.job.action.condition.ActionCondition;
 import com.daqem.jobsplus.resources.job.action.condition.ActionConditions;
 import com.google.gson.*;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 
@@ -26,7 +26,7 @@ public class ItemInHandActionCondition extends ActionCondition {
 
     @Override
     public boolean isMet(ActionData actionData) {
-        ServerPlayer player = actionData.getPlayer().getServerPlayer();
+        Player player = actionData.getPlayer().getPlayer();
         return (hand == null && player.getMainHandItem().getItem() == item || player.getOffhandItem().getItem() == item)
                 || (hand != null && player.getItemInHand(hand).getItem() == item);
     }

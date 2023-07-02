@@ -4,7 +4,8 @@
   "package": "com.daqem.jobsplus.mixin",
   "compatibilityLevel": "JAVA_17",
   "client": [
-    "crafting.screen.MixinAbstractContainerScreen"
+    "client.MixinAbstractContainerScreen",
+    "client.MixinLocalPlayer"
   ],
   "mixins": [
     "MixinAbstractFurnaceBlockEntity",
@@ -13,6 +14,7 @@
     "MixinBlockStateBase",
     "MixinBrewingStandBlockEntity",
     "MixinFishingHook",
+    "MixinInventory",
     "MixinItemStack",
     "MixinLivingEntity",
     "MixinProjectile",

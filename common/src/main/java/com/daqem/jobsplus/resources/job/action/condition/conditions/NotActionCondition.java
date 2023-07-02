@@ -1,6 +1,6 @@
 package com.daqem.jobsplus.resources.job.action.condition.conditions;
 
-import com.daqem.jobsplus.player.ActionData;
+import com.daqem.jobsplus.player.action.ActionData;
 import com.daqem.jobsplus.resources.job.action.condition.ActionCondition;
 import com.daqem.jobsplus.resources.job.action.condition.ActionConditions;
 import com.google.gson.*;

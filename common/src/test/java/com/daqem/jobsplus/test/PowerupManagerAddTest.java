@@ -25,7 +25,7 @@ public class PowerupManagerAddTest {
         PowerupInstance rootInstance = new PowerupInstance(new ResourceLocation(""), new ResourceLocation(""), "root", "", 0, 10);
         rootInstance.setLocation(new ResourceLocation("test", "root"));
         PowerupState rootState = PowerupState.ACTIVE;
-        powerupManager.addPowerup(rootInstance, rootState);
+        powerupManager.addPowerup(null, null, rootInstance, rootState);
 
         // The powerup should have been added to the powerup list.
         assertEquals(1, powerupManager.getPowerups().size());
@@ -44,10 +44,10 @@ public class PowerupManagerAddTest {
         PowerupState state = PowerupState.ACTIVE;
 
         // Add the root powerup first.
-        powerupManager.addPowerup(rootInstance, state);
+        powerupManager.addPowerup(null, null, rootInstance, state);
 
         // Add the child powerup.
-        powerupManager.addPowerup(childInstance, state);
+        powerupManager.addPowerup(null, null, childInstance, state);
 
         // Both powerups should have been added to the powerup list.
         assertEquals(1, powerupManager.getPowerups().size());
@@ -71,10 +71,10 @@ public class PowerupManagerAddTest {
         PowerupState state = PowerupState.ACTIVE;
 
         // Add the child powerup first.
-        powerupManager.addPowerup(childInstance, state);
+        powerupManager.addPowerup(null, null, childInstance, state);
 
         // Add the root powerup.
-        powerupManager.addPowerup(rootInstance, state);
+        powerupManager.addPowerup(null, null, rootInstance, state);
 
         // Both powerups should have been added to the powerup list.
         assertEquals(1, powerupManager.getPowerups().size());
@@ -105,10 +105,10 @@ public class PowerupManagerAddTest {
         PowerupState state = PowerupState.ACTIVE;
 
         // Add all powerups.
-        powerupManager.addPowerup(rootInstance, state);
-        powerupManager.addPowerup(child1Instance, state);
-        powerupManager.addPowerup(child2Instance, state);
-        powerupManager.addPowerup(grandchildInstance, state);
+        powerupManager.addPowerup(null, null, rootInstance, state);
+        powerupManager.addPowerup(null, null, child1Instance, state);
+        powerupManager.addPowerup(null, null, child2Instance, state);
+        powerupManager.addPowerup(null, null, grandchildInstance, state);
 
         // All powerups should have been added to the powerup list.
         assertEquals(1, powerupManager.getPowerups().size());

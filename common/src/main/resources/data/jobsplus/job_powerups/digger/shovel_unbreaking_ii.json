@@ -4,7 +4,8 @@
   "name": "Shovel Unbreaking II",
   "description": "Shovels are 20% less likely to take damage when used.",
   "icon": {
-    "item": "minecraft:stone_shovel"
+    "item": "minecraft:diamond_shovel",
+    "count": 2
   },
   "price": 8,
   "required_level": 15

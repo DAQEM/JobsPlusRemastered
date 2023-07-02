@@ -1,4 +1,4 @@
-package com.daqem.jobsplus.mixin.crafting.screen;
+package com.daqem.jobsplus.mixin.client;
 
 import com.daqem.jobsplus.client.screen.JobsCraftingScreen;
 import com.daqem.jobsplus.resources.crafting.CraftingResult;

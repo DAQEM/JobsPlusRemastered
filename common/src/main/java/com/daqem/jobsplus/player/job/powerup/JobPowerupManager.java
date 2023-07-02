@@ -1,5 +1,9 @@
 package com.daqem.jobsplus.player.job.powerup;
 
+import com.daqem.jobsplus.networking.sync.jobs.s2c.PacketUpdateClientsideJobS2C;
+import com.daqem.jobsplus.player.JobsPlayer;
+import com.daqem.jobsplus.player.JobsServerPlayer;
+import com.daqem.jobsplus.player.job.Job;
 import com.daqem.jobsplus.resources.job.JobInstance;
 import com.daqem.jobsplus.resources.job.powerup.PowerupInstance;
 import com.google.gson.Gson;
@@ -67,24 +71,32 @@ public class JobPowerupManager {
         return allPowerups;
     }
 
-    public boolean addPowerup(PowerupInstance powerupInstance) {
-        return addPowerup(powerupInstance, PowerupState.ACTIVE);
+    public boolean addPowerup(JobsPlayer player, Job job, PowerupInstance powerupInstance) {
+        return addPowerup(player, job, powerupInstance, PowerupState.ACTIVE);
     }
 
-    public boolean addPowerup(PowerupInstance powerupInstance, PowerupState powerupState) {
+    public boolean addPowerup(JobsPlayer player, Job job, PowerupInstance powerupInstance, PowerupState powerupState) {
         if (canAddPowerup(powerupInstance)) {
             if (powerupInstance.getParent() == null) {
                 powerups.add(new Powerup(powerupInstance, powerupState));
+                this.sendJobUpdatePacket(job, player);
                 return true;
             } else {
                 Powerup parent = getPowerup(powerupInstance.getParent());
                 if (parent != null) {
                     parent.getChildren().add(new Powerup(powerupInstance, powerupState));
+                    this.sendJobUpdatePacket(job, player);
                     return true;
                 }
             }
         }
         return false;
+    }
+
+    private void sendJobUpdatePacket(Job job, JobsPlayer player) {
+        if (player instanceof JobsServerPlayer jobsServerPlayer) {
+            new PacketUpdateClientsideJobS2C(job.toNBT()).sendTo(jobsServerPlayer.getServerPlayer());
+        }
     }
 
     public boolean canAddPowerup(PowerupInstance powerupInstance) {

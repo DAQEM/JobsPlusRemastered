@@ -1,6 +1,6 @@
 package com.daqem.jobsplus.resources.job.action.condition;
 
-import com.daqem.jobsplus.player.ActionData;
+import com.daqem.jobsplus.player.action.ActionData;
 import com.google.gson.*;
 import net.minecraft.resources.ResourceLocation;
 

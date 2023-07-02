@@ -1,0 +1,12 @@
+{
+  "job": "jobsplus:digger",
+  "parent": "jobsplus:digger/shovel_efficiency_ii",
+  "name": "Shovel Efficiency III",
+  "description": "Shovels dig 30% faster.",
+  "icon": {
+    "item": "minecraft:golden_shovel",
+    "count": 3
+  },
+  "price": 10,
+  "required_level": 30
+}

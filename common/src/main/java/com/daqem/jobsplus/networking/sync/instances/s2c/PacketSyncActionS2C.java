@@ -1,4 +1,4 @@
-package com.daqem.jobsplus.networking.s2c;
+package com.daqem.jobsplus.networking.sync.instances.s2c;
 
 import com.daqem.jobsplus.networking.JobsPlusNetworking;
 import com.daqem.jobsplus.resources.job.action.ActionManager;

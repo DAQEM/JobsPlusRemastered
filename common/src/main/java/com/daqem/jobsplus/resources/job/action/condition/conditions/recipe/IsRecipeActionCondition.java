@@ -1,6 +1,6 @@
 package com.daqem.jobsplus.resources.job.action.condition.conditions.recipe;
 
-import com.daqem.jobsplus.player.ActionData;
+import com.daqem.jobsplus.player.action.ActionData;
 import com.daqem.jobsplus.resources.job.action.condition.ActionCondition;
 import com.daqem.jobsplus.resources.job.action.condition.ActionConditionType;
 import net.minecraft.server.MinecraftServer;
@@ -18,7 +18,7 @@ public abstract class IsRecipeActionCondition<T extends Recipe<?>> extends Actio
     }
 
     protected boolean isSmeltingRecipeVersion(ActionData actionData, SmeltingRecipe smeltingRecipe, Class<? extends Recipe<?>> recipeClass) {
-        MinecraftServer server = actionData.getPlayer().getServerPlayer().getServer();
+        MinecraftServer server = actionData.getPlayer().getPlayer().getServer();
         if (server != null) {
             List<T> recipes = server.getRecipeManager().getRecipes().stream()
                     .filter(recipeClass::isInstance)

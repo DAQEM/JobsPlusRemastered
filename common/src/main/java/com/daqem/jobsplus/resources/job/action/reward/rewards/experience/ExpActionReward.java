@@ -1,7 +1,8 @@
 package com.daqem.jobsplus.resources.job.action.reward.rewards.experience;
 
-import com.daqem.jobsplus.player.ActionData;
-import com.daqem.jobsplus.player.JobsServerPlayer;
+import com.daqem.jobsplus.player.action.ActionData;
+import com.daqem.jobsplus.player.JobsPlayer;
+import com.daqem.jobsplus.player.action.ActionResult;
 import com.daqem.jobsplus.resources.job.action.reward.ActionReward;
 import com.daqem.jobsplus.resources.job.action.reward.ActionRewards;
 import com.google.gson.*;
@@ -32,11 +33,11 @@ public class ExpActionReward extends ActionReward {
     }
 
     @Override
-    public boolean apply(ActionData actionData) {
-        JobsServerPlayer player = actionData.getPlayer();
+    public ActionResult apply(ActionData actionData) {
+        JobsPlayer player = actionData.getPlayer();
         int exp = ((ServerPlayer) player).getRandom().nextInt(minExp, maxExp + 1);
         ((ServerPlayer) player).giveExperiencePoints(exp);
-        return false;
+        return new ActionResult();
     }
 
     public static class Deserializer implements JsonDeserializer<ExpActionReward> {

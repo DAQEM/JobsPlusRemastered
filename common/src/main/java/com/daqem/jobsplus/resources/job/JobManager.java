@@ -135,11 +135,8 @@ public abstract class JobManager extends SimpleJsonResourceReloadListener {
 
     private void addPowerupActions(List<Action> collect) {
         Map<ResourceLocation, List<Action>> actionsByPowerup = collect.stream().collect(Collectors.groupingBy(Action::getForLocation));
-        LOGGER.info("Adding powerup actions {}", actionsByPowerup.size());
         actionsByPowerup.forEach((powerupLocation, actions) -> {
-            LOGGER.info("{} 1 {}", actions.size(), powerupLocation.toString());
             if (PowerupManager.getInstance().getAllPowerups().containsKey(powerupLocation)) {
-                LOGGER.info("Adding {} actions to powerup {}", actions.size(), powerupLocation.toString());
                 PowerupManager.getInstance().getAllPowerups().get(powerupLocation).setActions(actions);
             } else {
                 LOGGER.error("Could not find powerup {} for actions {}", powerupLocation.toString(), actions.stream().map(Action::getLocation).collect(Collectors.toList()));

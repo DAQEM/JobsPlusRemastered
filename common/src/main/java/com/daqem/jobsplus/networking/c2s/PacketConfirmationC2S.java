@@ -70,7 +70,7 @@ public class PacketConfirmationC2S extends BaseC2SMessage {
                 if (type == ConfirmationMessageType.BUY_POWER_UP) {
                     Job job = serverPlayer.getJob(jobInstance);
                     if (job != null) {
-                        hasToPay = job.getPowerupManager().addPowerup(powerupInstance);
+                        hasToPay = job.getPowerupManager().addPowerup(serverPlayer, job, powerupInstance);
                     }
                 } else if (jobInstance != null) {
                     Job job = serverPlayer.getJob(jobInstance);

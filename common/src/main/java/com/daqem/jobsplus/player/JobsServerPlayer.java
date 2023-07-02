@@ -15,32 +15,9 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-public interface JobsServerPlayer {
-
-    List<Job> getJobs();
-
-    List<JobInstance> getJobInstances();
-
-    List<Job> getInactiveJobs();
-
-    @Nullable
-    Job addNewJob(JobInstance job);
-
-    void removeJob(JobInstance job);
-
-    Job getJob(@Nullable JobInstance jobLocation);
-
-    int getCoins();
-
-    void addCoins(int coins);
-
-    void setCoins(int coins);
-
-    UUID getUUID();
+public interface JobsServerPlayer extends JobsPlayer {
 
     ServerPlayer getServerPlayer();
-
-    String name();
 
     ListTag inactiveJobsToNBT();
 
@@ -61,6 +38,4 @@ public interface JobsServerPlayer {
     boolean getUpdatedFromOldJobsPlus();
 
     void setUpdatedFromOldJobsPlus(boolean b);
-
-    double nextRandomDouble();
 }

@@ -1,11 +1,11 @@
 package com.daqem.jobsplus.resources.job.action.reward.rewards.job;
 
-import com.daqem.jobsplus.player.ActionData;
-import com.daqem.jobsplus.player.JobsServerPlayer;
+import com.daqem.jobsplus.player.action.ActionData;
+import com.daqem.jobsplus.player.JobsPlayer;
+import com.daqem.jobsplus.player.action.ActionResult;
 import com.daqem.jobsplus.resources.job.action.reward.ActionReward;
 import com.daqem.jobsplus.resources.job.action.reward.ActionRewards;
 import com.google.gson.*;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.GsonHelper;
 
 import java.lang.reflect.Type;
@@ -32,11 +32,11 @@ public class JobExpActionReward extends ActionReward {
     }
 
     @Override
-    public boolean apply(ActionData actionData) {
-        JobsServerPlayer player = actionData.getPlayer();
-        int exp = ((ServerPlayer) player).getRandom().nextInt(minExp, maxExp + 1);
+    public ActionResult apply(ActionData actionData) {
+        JobsPlayer player = actionData.getPlayer();
+        int exp = player.getPlayer().getRandom().nextInt(minExp, maxExp + 1);
         actionData.getSourceJob().addExperience(exp);
-        return false;
+        return new ActionResult();
     }
 
     public static class Deserializer implements JsonDeserializer<JobExpActionReward> {

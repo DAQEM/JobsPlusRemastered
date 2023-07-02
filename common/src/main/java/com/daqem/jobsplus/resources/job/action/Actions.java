@@ -69,6 +69,7 @@ public class Actions {
     public static final ActionType GRIND_ITEM = register(JobsPlus.getId("on_grind_item"), GrindItemAction.class, new GrindItemAction.Deserializer());
     public static final ActionType USE_ANVIL = register(JobsPlus.getId("on_use_anvil"), UseAnvilAction.class, new UseAnvilAction.Deserializer());
     public static final ActionType HURT_ITEM = register(JobsPlus.getId("on_hurt_item"), HurtItemAction.class, new HurtItemAction.Deserializer());
+    public static final ActionType GET_DESTROY_SPEED = register(JobsPlus.getId("on_get_destroy_speed"), GetDestroySpeedAction.class, new GetDestroySpeedAction.Deserializer());
 
     private static <T extends Action> ActionType register(ResourceLocation location, Class<T> clazz, JsonDeserializer<? extends Action> deserializer) {
         ActionType actionType = new ActionType(clazz, location, deserializer);

@@ -1,13 +1,13 @@
 package com.daqem.jobsplus.resources.job.action.reward.rewards.effect;
 
-import com.daqem.jobsplus.player.ActionData;
-import com.daqem.jobsplus.player.JobsServerPlayer;
+import com.daqem.jobsplus.player.action.ActionData;
+import com.daqem.jobsplus.player.JobsPlayer;
+import com.daqem.jobsplus.player.action.ActionResult;
 import com.daqem.jobsplus.resources.job.action.reward.ActionReward;
 import com.daqem.jobsplus.resources.job.action.reward.ActionRewards;
 import com.google.gson.*;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -36,10 +36,10 @@ public class EffectActionReward extends ActionReward {
     }
 
     @Override
-    public boolean apply(ActionData actionData) {
-        JobsServerPlayer player = actionData.getPlayer();
-        ((ServerPlayer) player).addEffect(new MobEffectInstance(effect, duration));
-        return false;
+    public ActionResult apply(ActionData actionData) {
+        JobsPlayer player = actionData.getPlayer();
+        player.getPlayer().addEffect(new MobEffectInstance(effect, duration));
+        return new ActionResult();
     }
 
     public static class Deserializer implements JsonDeserializer<EffectActionReward> {

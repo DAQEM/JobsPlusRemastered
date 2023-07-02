@@ -1,7 +1,7 @@
 package com.daqem.jobsplus.resources.job.action.condition.conditions.block.properties;
 
-import com.daqem.jobsplus.player.ActionData;
-import com.daqem.jobsplus.player.ActionSpecification;
+import com.daqem.jobsplus.player.action.ActionData;
+import com.daqem.jobsplus.player.action.ActionSpecification;
 import com.daqem.jobsplus.resources.job.action.condition.ActionCondition;
 import com.daqem.jobsplus.resources.job.action.condition.ActionConditions;
 import com.google.gson.JsonDeserializationContext;
@@ -30,7 +30,7 @@ public class BlockHardnessActionCondition extends ActionCondition {
         BlockState blockState = actionData.getSpecification(ActionSpecification.BLOCK_STATE);
         BlockPos blockPos = actionData.getSpecification(ActionSpecification.BLOCK_POSITION);
         if (blockState == null || blockPos == null) return false;
-        float hardness = blockState.getDestroySpeed(actionData.getPlayer().getServerPlayer().getLevel(), blockPos);
+        float hardness = blockState.getDestroySpeed(actionData.getPlayer().level(), blockPos);
         return hardness >= minHardness && hardness <= maxHardness;
     }
 

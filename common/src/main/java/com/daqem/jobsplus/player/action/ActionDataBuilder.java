@@ -1,5 +1,6 @@
-package com.daqem.jobsplus.player;
+package com.daqem.jobsplus.player.action;
 
+import com.daqem.jobsplus.player.JobsPlayer;
 import com.daqem.jobsplus.resources.job.action.ActionType;
 
 import java.util.HashMap;
@@ -7,11 +8,11 @@ import java.util.Map;
 
 public class ActionDataBuilder {
 
-    private final JobsServerPlayer player;
+    private final JobsPlayer player;
     private final ActionType actionType;
     private final Map<ActionSpecification<?>, Object> specifications;
 
-    public ActionDataBuilder(JobsServerPlayer player, ActionType actionType) {
+    public ActionDataBuilder(JobsPlayer player, ActionType actionType) {
         this.player = player;
         this.actionType = actionType;
         this.specifications = new HashMap<>();

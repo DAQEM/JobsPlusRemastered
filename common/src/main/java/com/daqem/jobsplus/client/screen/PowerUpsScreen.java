@@ -190,25 +190,15 @@ public class PowerUpsScreen extends AbstractScreen {
             playClientGUIClick();
             if (widget != rootWidget) {
                 switch (widget.getPowerupState()) {
-                    case ACTIVE -> {
+                    case ACTIVE, INACTIVE -> {
                         new PacketTogglePowerUpC2S(jobInstance, widget.getPowerupInstance()).sendToServer();
                         new PacketOpenPowerupsMenuC2S(jobInstance).sendToServer();
-                        JobsPlus.LOGGER.info("Attempting to deactivate powerup: " + widget.getPowerupInstance().getName());
-                    }
-                    case INACTIVE -> {
-                        new PacketTogglePowerUpC2S(jobInstance, widget.getPowerupInstance()).sendToServer();
-                        new PacketOpenPowerupsMenuC2S(jobInstance).sendToServer();
-                        JobsPlus.LOGGER.info("Attempting to activate powerup: " + widget.getPowerupInstance().getName());
                     }
                     case NOT_OWNED -> {
-                        JobsPlus.LOGGER.info("Attempting to purchase powerup: " + widget.getPowerupInstance().getName());
                         ConfirmationMessageType confirmationMessageType = coins >= widget.getPowerupInstance().getPrice()
                                 ? ConfirmationMessageType.BUY_POWER_UP
                                 : ConfirmationMessageType.NOT_ENOUGH_COINS_POWERUP;
                         openConfirmScreen(confirmationMessageType, jobInstance, widget.getPowerupInstance());
-                    }
-                    case LOCKED -> {
-                        JobsPlus.LOGGER.info("Attempting to unlock powerup: " + widget.getPowerupInstance().getName());
                     }
                 }
             }

@@ -1,7 +1,7 @@
 package com.daqem.jobsplus.resources.job.action.condition.conditions.team;
 
-import com.daqem.jobsplus.player.ActionData;
-import com.daqem.jobsplus.player.JobsServerPlayer;
+import com.daqem.jobsplus.player.action.ActionData;
+import com.daqem.jobsplus.player.JobsPlayer;
 import com.daqem.jobsplus.resources.job.action.condition.ActionCondition;
 import com.daqem.jobsplus.resources.job.action.condition.ActionConditions;
 import com.google.gson.*;
@@ -20,8 +20,8 @@ public class TeamActionCondition extends ActionCondition {
 
     @Override
     public boolean isMet(ActionData actionData) {
-        JobsServerPlayer player = actionData.getPlayer();
-        Team team = player.getServerPlayer().getTeam();
+        JobsPlayer player = actionData.getPlayer();
+        Team team = player.getPlayer().getTeam();
         return team != null && team.getName().equals(teamName);
     }
 

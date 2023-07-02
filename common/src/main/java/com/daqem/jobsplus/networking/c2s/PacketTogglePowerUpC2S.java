@@ -1,6 +1,7 @@
 package com.daqem.jobsplus.networking.c2s;
 
 import com.daqem.jobsplus.networking.JobsPlusNetworking;
+import com.daqem.jobsplus.networking.sync.jobs.s2c.PacketUpdateClientsideJobS2C;
 import com.daqem.jobsplus.player.JobsServerPlayer;
 import com.daqem.jobsplus.player.job.Job;
 import com.daqem.jobsplus.player.job.powerup.Powerup;
@@ -45,6 +46,7 @@ public class PacketTogglePowerUpC2S extends BaseC2SMessage {
                 Powerup powerup = job.getPowerupManager().getPowerup(powerupInstance);
                 if (powerup != null) {
                     powerup.toggle();
+                    new PacketUpdateClientsideJobS2C(job.toNBT()).sendTo(serverPlayer.getServerPlayer());
                 }
             }
         }

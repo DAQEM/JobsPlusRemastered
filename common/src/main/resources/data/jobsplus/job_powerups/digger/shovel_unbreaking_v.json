@@ -4,7 +4,8 @@
   "name": "Shovel Unbreaking V",
   "description": "Shovels are 50% less likely to take damage when used.",
   "icon": {
-    "item": "minecraft:netherite_shovel"
+    "item": "minecraft:diamond_shovel",
+    "count": 5
   },
   "price": 15,
   "required_level": 80

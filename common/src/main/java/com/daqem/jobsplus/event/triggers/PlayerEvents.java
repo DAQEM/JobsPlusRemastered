@@ -1,7 +1,8 @@
 package com.daqem.jobsplus.event.triggers;
 
-import com.daqem.jobsplus.player.ActionDataBuilder;
-import com.daqem.jobsplus.player.ActionSpecification;
+import com.daqem.jobsplus.player.action.ActionDataBuilder;
+import com.daqem.jobsplus.player.action.ActionResult;
+import com.daqem.jobsplus.player.action.ActionSpecification;
 import com.daqem.jobsplus.player.JobsServerPlayer;
 import com.daqem.jobsplus.resources.job.action.Actions;
 import net.minecraft.core.BlockPos;
@@ -113,7 +114,7 @@ public class PlayerEvents {
                 .sendToAction();
     }
 
-    public static boolean onPlayerHurtItem(JobsServerPlayer player, ItemStack itemStack) {
+    public static ActionResult onPlayerHurtItem(JobsServerPlayer player, ItemStack itemStack) {
         return new ActionDataBuilder(player, Actions.HURT_ITEM)
                 .withSpecification(ActionSpecification.ITEM_STACK, itemStack)
                 .withSpecification(ActionSpecification.ITEM, itemStack.getItem())

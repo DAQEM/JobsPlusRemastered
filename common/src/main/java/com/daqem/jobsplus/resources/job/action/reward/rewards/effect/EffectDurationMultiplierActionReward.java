@@ -1,7 +1,8 @@
 package com.daqem.jobsplus.resources.job.action.reward.rewards.effect;
 
-import com.daqem.jobsplus.player.ActionData;
-import com.daqem.jobsplus.player.ActionSpecification;
+import com.daqem.jobsplus.player.action.ActionData;
+import com.daqem.jobsplus.player.action.ActionResult;
+import com.daqem.jobsplus.player.action.ActionSpecification;
 import com.daqem.jobsplus.resources.job.action.reward.ActionReward;
 import com.daqem.jobsplus.resources.job.action.reward.ActionRewards;
 import com.google.gson.*;
@@ -25,14 +26,15 @@ public class EffectDurationMultiplierActionReward extends ActionReward {
     }
 
     @Override
-    public boolean apply(ActionData actionData) {
+    public ActionResult apply(ActionData actionData) {
         MobEffectInstance effect = actionData.getSpecification(ActionSpecification.MOB_EFFECT_INSTANCE);
         if (effect != null) {
-            ServerPlayer serverPlayer = actionData.getPlayer().getServerPlayer();
-            MobEffectInstance newEffect = new MobEffectInstance(effect.getEffect(), Mth.floor(effect.getDuration() * multiplier), effect.getAmplifier(), effect.isAmbient(), effect.isVisible());
-            serverPlayer.addEffect(newEffect, new ServerPlayer(Objects.requireNonNull(serverPlayer.getServer()), serverPlayer.getLevel(), new GameProfile(UUID.randomUUID(), "Jobs+Powerup"), null));
+            if (actionData.getPlayer().getPlayer() instanceof ServerPlayer player){
+                MobEffectInstance newEffect = new MobEffectInstance(effect.getEffect(), Mth.floor(effect.getDuration() * multiplier), effect.getAmplifier(), effect.isAmbient(), effect.isVisible());
+                player.addEffect(newEffect, new ServerPlayer(Objects.requireNonNull(player.getServer()), player.getLevel(), new GameProfile(UUID.randomUUID(), "Jobs+Powerup"), null));
+            }
         }
-        return false;
+        return new ActionResult();
     }
 
     public static class Deserializer implements JsonDeserializer<EffectDurationMultiplierActionReward> {

@@ -6,6 +6,7 @@ import com.daqem.jobsplus.config.JobsPlusCommonConfig;
 import com.daqem.jobsplus.event.triggers.MovementEvents;
 import com.daqem.jobsplus.event.triggers.PlayerEvents;
 import com.daqem.jobsplus.event.triggers.StatEvents;
+import com.daqem.jobsplus.networking.sync.jobs.s2c.PacketUpdateClientsideJobS2C;
 import com.daqem.jobsplus.player.JobsServerPlayer;
 import com.daqem.jobsplus.player.job.Job;
 import com.daqem.jobsplus.player.job.JobSerializer;
@@ -18,6 +19,7 @@ import com.mojang.authlib.GameProfile;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.SectionPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.server.level.ServerPlayer;
@@ -46,9 +48,6 @@ import java.util.stream.Collectors;
 @Mixin(ServerPlayer.class)
 public abstract class MixinServerPlayer extends Player implements JobsServerPlayer {
 
-    @Shadow
-    public abstract void readAdditionalSaveData(CompoundTag compoundTag);
-
     private final NonNullList<StatData> statData = NonNullList.create();
     private boolean isSwimming = false;
     private int swimmingDistanceInCm = 0;
@@ -76,9 +75,7 @@ public abstract class MixinServerPlayer extends Player implements JobsServerPlay
 
     @Override
     public List<JobInstance> getJobInstances() {
-        return jobs.stream()
-                .map(Job::getJobInstance)
-                .toList();
+        return jobs.stream().map(Job::getJobInstance).toList();
     }
 
     @Override
@@ -96,6 +93,7 @@ public abstract class MixinServerPlayer extends Player implements JobsServerPlay
         if (job == null) {
             job = new Job(this, jobInstance, 1, 0);
             jobs.add(job);
+            new PacketUpdateClientsideJobS2C(job.toNBT()).sendTo(getServerPlayer());
             return job;
         }
         return null;
@@ -106,6 +104,7 @@ public abstract class MixinServerPlayer extends Player implements JobsServerPlay
         Job job = getJob(jobInstance);
         if (job != null) {
             jobs.remove(job);
+            new PacketUpdateClientsideJobS2C(job.toNBT()).sendTo(getServerPlayer());
         }
     }
 
@@ -230,6 +229,16 @@ public abstract class MixinServerPlayer extends Player implements JobsServerPlay
     @Override
     public double nextRandomDouble() {
         return this.getServerPlayer().getRandom().nextDouble();
+    }
+
+    @Override
+    public Level level() {
+        return getServerPlayer().getLevel();
+    }
+
+    @Override
+    public Player getPlayer() {
+        return getServerPlayer();
     }
 
     @Inject(at = @At("TAIL"), method = "tick()V")

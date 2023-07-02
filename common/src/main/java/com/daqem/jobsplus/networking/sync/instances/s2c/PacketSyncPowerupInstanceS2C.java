@@ -1,4 +1,4 @@
-package com.daqem.jobsplus.networking.s2c;
+package com.daqem.jobsplus.networking.sync.instances.s2c;
 
 import com.daqem.jobsplus.networking.JobsPlusNetworking;
 import com.daqem.jobsplus.resources.job.powerup.PowerupManager;
@@ -16,16 +16,16 @@ import net.minecraft.resources.ResourceLocation;
 
 import java.util.Map;
 
-public class PacketSyncPowerupS2C extends BaseS2CMessage {
+public class PacketSyncPowerupInstanceS2C extends BaseS2CMessage {
 
     private final JsonElement PowerupJson;
 
-    public PacketSyncPowerupS2C(ResourceLocation location, JsonElement powerupJson) {
+    public PacketSyncPowerupInstanceS2C(ResourceLocation location, JsonElement powerupJson) {
         powerupJson.getAsJsonObject().addProperty("location", location.toString());
         this.PowerupJson = powerupJson;
     }
 
-    public PacketSyncPowerupS2C(FriendlyByteBuf buffer) {
+    public PacketSyncPowerupInstanceS2C(FriendlyByteBuf buffer) {
         CompoundTag tag = buffer.readAnySizeNbt();
         this.PowerupJson = CompoundTag.CODEC.encodeStart(JsonOps.INSTANCE, tag).getOrThrow(false, e -> {
         });
@@ -33,7 +33,7 @@ public class PacketSyncPowerupS2C extends BaseS2CMessage {
 
     @Override
     public MessageType getType() {
-        return JobsPlusNetworking.S2C_SYNC_POWERUP;
+        return JobsPlusNetworking.S2C_SYNC_POWERUP_INSTANCE;
     }
 
     @Override
@@ -52,8 +52,7 @@ public class PacketSyncPowerupS2C extends BaseS2CMessage {
         if (!Minecraft.getInstance().isLocalServer()) {
             ResourceLocation location = new ResourceLocation(PowerupJson.getAsJsonObject().get("location").getAsString());
             PowerupJson.getAsJsonObject().remove("location");
-            PowerupManager.getInstance().apply(Map.of(location, PowerupJson), false);
-
+            PowerupManager.getInstance().add(location, PowerupJson);
         }
     }
 }

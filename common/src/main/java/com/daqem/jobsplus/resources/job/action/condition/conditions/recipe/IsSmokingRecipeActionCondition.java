@@ -1,7 +1,7 @@
 package com.daqem.jobsplus.resources.job.action.condition.conditions.recipe;
 
-import com.daqem.jobsplus.player.ActionData;
-import com.daqem.jobsplus.player.ActionSpecification;
+import com.daqem.jobsplus.player.action.ActionData;
+import com.daqem.jobsplus.player.action.ActionSpecification;
 import com.daqem.jobsplus.resources.job.action.condition.ActionConditions;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;

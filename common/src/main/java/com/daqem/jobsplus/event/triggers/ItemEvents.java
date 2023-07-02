@@ -1,7 +1,7 @@
 package com.daqem.jobsplus.event.triggers;
 
-import com.daqem.jobsplus.player.ActionDataBuilder;
-import com.daqem.jobsplus.player.ActionSpecification;
+import com.daqem.jobsplus.player.action.ActionDataBuilder;
+import com.daqem.jobsplus.player.action.ActionSpecification;
 import com.daqem.jobsplus.player.JobsServerPlayer;
 import com.daqem.jobsplus.resources.job.action.Actions;
 import dev.architectury.event.EventResult;
