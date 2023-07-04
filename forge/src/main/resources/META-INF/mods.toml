@@ -8,6 +8,7 @@ modId = "jobsplus"
 version = "${version}"
 displayName = "Jobs+"
 authors = "DAQEM"
+logoFile = "icon.png"
 description = '''
 
 '''
