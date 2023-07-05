@@ -47,8 +47,6 @@ dependencies {
     // Config library
     modImplementation "curse.maven:supermartijn642s-config-lib-438332:${project.config_library_file_forge}"
     modImplementation "curse.maven:arc-883593:${project.arc_file_forge}"
-
-
 }
 
 processResources {
