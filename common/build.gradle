@@ -24,7 +24,7 @@ dependencies {
 //source: https://github.com/Fuzss/forgeconfigapiport-fabric
 
     compileOnlyApi "curse.maven:supermartijn642s-config-lib-438332:${project.config_library_file_fabric}"
-    compileOnlyApi "curse.maven:arc-883593:${project.arc_file_fabric}"
+    compileOnlyApi "curse.maven:arc-883593:${project.arc_file_fabric}-sources-${project.arc_file_fabric_sources}"
 
     testImplementation "org.junit.jupiter:junit-jupiter-api:${rootProject.jUnitVersion}"
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${rootProject.jUnitVersion}"
