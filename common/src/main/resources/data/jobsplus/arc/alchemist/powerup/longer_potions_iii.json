@@ -1,0 +1,23 @@
+{
+  "holder": {
+    "type": "jobsplus:powerup",
+    "id": "jobsplus:alchemist/longer_potions_iii"
+  },
+  "type": "arc:on_effect_added",
+  "rewards": [
+    {
+      "type": "arc:effect_duration_multiplier",
+      "multiplier": 1.6
+    }
+  ],
+  "conditions": [
+    {
+      "type": "jobsplus:powerup_not_active",
+      "powerup": "jobsplus:alchemist/longer_potions_iv"
+    },
+    {
+      "type": "jobsplus:powerup_not_active",
+      "powerup": "jobsplus:alchemist/longer_potions_v"
+    }
+  ]
+}

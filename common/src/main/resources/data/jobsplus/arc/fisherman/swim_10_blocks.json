@@ -1,0 +1,22 @@
+{
+  "holder": {
+    "type": "jobsplus:job",
+    "id": "jobsplus:fisherman"
+  },
+  "type": "arc:on_swim",
+  "short_description": "Swim 10 blocks",
+  "description": "As a Fisherman, you can earn job experience by swimming a distance of 10 blocks. This will improve your fitness and stamina, making you a better angler in the long run. Keep practicing, and you'll soon be swimming like a pro!",
+  "rewards": [
+    {
+      "type": "jobsplus:job_exp",
+      "min": 1,
+      "max": 2
+    }
+  ],
+  "conditions": [
+    {
+      "type": "arc:swimming_distance",
+      "distance_in_blocks": 10
+    }
+  ]
+}

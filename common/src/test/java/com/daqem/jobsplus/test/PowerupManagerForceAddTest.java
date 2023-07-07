@@ -3,7 +3,7 @@ package com.daqem.jobsplus.test;
 import com.daqem.jobsplus.player.job.powerup.JobPowerupManager;
 import com.daqem.jobsplus.player.job.powerup.Powerup;
 import com.daqem.jobsplus.player.job.powerup.PowerupState;
-import com.daqem.jobsplus.resources.job.powerup.PowerupInstance;
+import com.daqem.jobsplus.interation.arc.action.holder.holders.powerup.PowerupInstance;
 import net.minecraft.resources.ResourceLocation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

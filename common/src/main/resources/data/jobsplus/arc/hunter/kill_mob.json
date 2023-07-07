@@ -1,0 +1,16 @@
+{
+  "holder": {
+    "type": "jobsplus:job",
+    "id": "jobsplus:hunter"
+  },
+  "type": "arc:on_kill_entity",
+  "short_description": "Kill a mob",
+  "description": "As a Hunter, you'll earn job experience by taking out mobs. Whether you're fighting off zombies, taking down creepers from a distance or killing animals for food, every successful kill will bring you closer to leveling up in the Hunter job.",
+  "rewards": [
+    {
+      "type": "jobsplus:job_exp",
+      "min": 4,
+      "max": 6
+    }
+  ]
+}

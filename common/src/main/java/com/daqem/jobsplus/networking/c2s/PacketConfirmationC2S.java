@@ -1,12 +1,11 @@
 package com.daqem.jobsplus.networking.c2s;
 
-import com.daqem.jobsplus.JobsPlus;
 import com.daqem.jobsplus.networking.JobsPlusNetworking;
 import com.daqem.jobsplus.networking.utils.ConfirmationMessageType;
 import com.daqem.jobsplus.player.JobsServerPlayer;
 import com.daqem.jobsplus.player.job.Job;
-import com.daqem.jobsplus.resources.job.JobInstance;
-import com.daqem.jobsplus.resources.job.powerup.PowerupInstance;
+import com.daqem.jobsplus.interation.arc.action.holder.holders.job.JobInstance;
+import com.daqem.jobsplus.interation.arc.action.holder.holders.powerup.PowerupInstance;
 import dev.architectury.networking.NetworkManager;
 import dev.architectury.networking.simple.BaseC2SMessage;
 import dev.architectury.networking.simple.MessageType;
@@ -65,36 +64,36 @@ public class PacketConfirmationC2S extends BaseC2SMessage {
     @Override
     public void handle(NetworkManager.PacketContext context) {
         if (context.getPlayer() instanceof JobsServerPlayer serverPlayer) {
-            if (serverPlayer.getCoins() >= price || type.getRequireCoinsType() == ConfirmationMessageType.RequireCoinsType.NONE) {
+            if (serverPlayer.jobsplus$getCoins() >= price || type.getRequireCoinsType() == ConfirmationMessageType.RequireCoinsType.NONE) {
                 boolean hasToPay = false;
                 if (type == ConfirmationMessageType.BUY_POWER_UP) {
-                    Job job = serverPlayer.getJob(jobInstance);
+                    Job job = serverPlayer.jobsplus$getJob(jobInstance);
                     if (job != null) {
                         hasToPay = job.getPowerupManager().addPowerup(serverPlayer, job, powerupInstance);
                     }
                 } else if (jobInstance != null) {
-                    Job job = serverPlayer.getJob(jobInstance);
+                    Job job = serverPlayer.jobsplus$getJob(jobInstance);
                     switch (type) {
                         case START_JOB_FREE -> {
                             if (job == null) {
-                                serverPlayer.addNewJob(jobInstance);
+                                serverPlayer.jobsplus$addNewJob(jobInstance);
                             }
                         }
                         case START_JOB_PAID -> {
                             if (job == null) {
-                                serverPlayer.addNewJob(jobInstance);
+                                serverPlayer.jobsplus$addNewJob(jobInstance);
                                 hasToPay = true;
                             }
                         }
                         case STOP_JOB -> {
                             if (job != null) {
-                                serverPlayer.removeAndRefundJob(jobInstance);
+                                serverPlayer.jobsplus$removeAndRefundJob(jobInstance);
                             }
                         }
                     }
                 }
                 if (hasToPay) {
-                    serverPlayer.setCoins(serverPlayer.getCoins() - price);
+                    serverPlayer.jobsplus$setCoins(serverPlayer.jobsplus$getCoins() - price);
                 }
             }
         }

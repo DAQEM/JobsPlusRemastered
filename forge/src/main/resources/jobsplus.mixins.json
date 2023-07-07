@@ -3,7 +3,6 @@
   "package": "com.daqem.jobsplus.forge.mixin",
   "compatibilityLevel": "JAVA_17",
   "client": [
-    "MixinTitleScreenForge"
   ],
   "mixins": [
   ],

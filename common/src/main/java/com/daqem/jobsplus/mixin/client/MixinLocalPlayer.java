@@ -1,9 +1,12 @@
 package com.daqem.jobsplus.mixin.client;
 
+import com.daqem.arc.api.action.holder.IActionHolder;
+import com.daqem.arc.api.player.ArcPlayer;
 import com.daqem.jobsplus.client.player.JobsClientPlayer;
 import com.daqem.jobsplus.player.job.Job;
-import com.daqem.jobsplus.resources.job.JobInstance;
-import com.daqem.jobsplus.resources.job.JobManager;
+import com.daqem.jobsplus.interation.arc.action.holder.holders.job.JobInstance;
+import com.daqem.jobsplus.interation.arc.action.holder.holders.job.JobManager;
+import com.daqem.jobsplus.player.job.powerup.Powerup;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.AbstractClientPlayer;
@@ -14,6 +17,7 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,78 +26,79 @@ import java.util.UUID;
 @Mixin(LocalPlayer.class)
 public class MixinLocalPlayer extends AbstractClientPlayer implements JobsClientPlayer {
 
-    private List<Job> jobs = new ArrayList<>();
-    private int coins = 0;
+    @Unique
+    private final List<Job> jobsplus$jobs = new ArrayList<>();
+    @Unique
+    private int jobsplus$coins = 0;
 
     public MixinLocalPlayer(ClientLevel clientLevel, GameProfile gameProfile, @Nullable ProfilePublicKey profilePublicKey) {
         super(clientLevel, gameProfile, profilePublicKey);
     }
 
-
     @Override
-    public List<Job> getJobs() {
-        return jobs;
+    public List<Job> jobsplus$getJobs() {
+        return jobsplus$jobs;
     }
 
     @Override
-    public List<JobInstance> getJobInstances() {
-        return jobs.stream().map(Job::getJobInstance).toList();
+    public List<JobInstance> jobsplus$getJobInstances() {
+        return jobsplus$jobs.stream().map(Job::getJobInstance).toList();
     }
 
     @Override
-    public List<Job> getInactiveJobs() {
+    public List<Job> jobsplus$getInactiveJobs() {
         return JobManager.getInstance().getJobs().values().stream()
-                .filter(jobInstance -> !getJobInstances().contains(jobInstance))
+                .filter(jobInstance -> !jobsplus$getJobInstances().contains(jobInstance))
                 .map(jobInstance -> new Job(this, jobInstance))
                 .toList();
     }
 
     @Nullable
     @Override
-    public Job addNewJob(JobInstance jobInstance) {
+    public Job jobsplus$addNewJob(JobInstance jobInstance) {
         if (jobInstance.getLocation() == null) return null;
-        Job job = getJob(jobInstance);
+        Job job = jobsplus$getJob(jobInstance);
         if (job == null) {
             job = new Job(this, jobInstance, 1, 0);
-            jobs.add(job);
+            jobsplus$jobs.add(job);
             return job;
         }
         return null;
     }
 
     @Override
-    public void removeJob(JobInstance job) {
-        jobs.remove(getJob(job));
+    public void jobsplus$removeJob(JobInstance job) {
+        jobsplus$jobs.remove(jobsplus$getJob(job));
     }
 
     @Override
-    public Job getJob(@Nullable JobInstance jobLocation) {
-        return jobs.stream().filter(job -> job.getJobInstance().equals(jobLocation)).findFirst().orElse(null);
+    public Job jobsplus$getJob(@Nullable JobInstance jobLocation) {
+        return jobsplus$jobs.stream().filter(job -> job.getJobInstance().equals(jobLocation)).findFirst().orElse(null);
     }
 
     @Override
-    public int getCoins() {
-        return this.coins;
+    public int jobsplus$getCoins() {
+        return this.jobsplus$coins;
     }
 
     @Override
-    public void addCoins(int coins) {
-        this.coins += coins;
+    public void jobsplus$addCoins(int coins) {
+        this.jobsplus$coins += coins;
     }
 
     @Override
-    public void setCoins(int coins) {
-        this.coins = coins;
+    public void jobsplus$setCoins(int coins) {
+        this.jobsplus$coins = coins;
     }
 
     @Override
-    public String name() {
-        return getLocalPlayer().getName().getString();
+    public String jobsplus$getName() {
+        return jobsplus$getLocalPlayer().getName().getString();
     }
 
     @Override
-    public double nextRandomDouble() {
-        return getLocalPlayer().getRandom().nextDouble();
+    public double jobsplus$nextRandomDouble() {
+        return jobsplus$getLocalPlayer().getRandom().nextDouble();
     }
 
     @Override
@@ -102,17 +107,50 @@ public class MixinLocalPlayer extends AbstractClientPlayer implements JobsClient
     }
 
     @Override
-    public Level level() {
-        return getLocalPlayer().getLevel();
+    public Player jobsplus$getPlayer() {
+        return jobsplus$getLocalPlayer();
     }
 
     @Override
-    public Player getPlayer() {
-        return getLocalPlayer();
+    public Level jobsplus$getLevel() {
+        return super.getLevel();
     }
 
     @Override
-    public LocalPlayer getLocalPlayer() {
+    public UUID jobsplus$getUUID() {
+        return super.getUUID();
+    }
+
+    @Override
+    public List<IActionHolder> jobsplus$getActionHolders() {
+        List<IActionHolder> actionHolders = new ArrayList<>(jobsplus$getJobInstances());
+        actionHolders.addAll(jobsplus$getJobs().stream()
+                .map(Job::getPowerupManager)
+                .flatMap(powerupManager -> powerupManager.getAllPowerups().stream())
+                .map(Powerup::getPowerupInstance)
+                .toList());
+        return actionHolders;
+    }
+
+    @Override
+    public LocalPlayer jobsplus$getLocalPlayer() {
         return (LocalPlayer) (Object) this;
+    }
+
+    @Override
+    public void jobsplus$replaceJobs(List<Job> jobs) {
+        jobsplus$jobs.clear();
+        jobsplus$jobs.addAll(jobs);
+    }
+
+    @Override
+    public void jobsplus$replaceJob(Job job) {
+        jobsplus$jobs.remove(jobsplus$getJob(job.getJobInstance()));
+        jobsplus$jobs.add(job);
+
+        if (jobsplus$getLocalPlayer() instanceof ArcPlayer arcPlayer) {
+            arcPlayer.arc$removeActionHolder(job.getJobInstance());
+            arcPlayer.arc$addActionHolder(job.getJobInstance());
+        }
     }
 }

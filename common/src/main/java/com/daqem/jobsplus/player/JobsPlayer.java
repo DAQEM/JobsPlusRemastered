@@ -1,7 +1,8 @@
 package com.daqem.jobsplus.player;
 
+import com.daqem.arc.api.action.holder.IActionHolder;
 import com.daqem.jobsplus.player.job.Job;
-import com.daqem.jobsplus.resources.job.JobInstance;
+import com.daqem.jobsplus.interation.arc.action.holder.holders.job.JobInstance;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
@@ -11,32 +12,34 @@ import java.util.UUID;
 
 public interface JobsPlayer {
 
-    List<Job> getJobs();
+    List<Job> jobsplus$getJobs();
 
-    List<JobInstance> getJobInstances();
+    List<JobInstance> jobsplus$getJobInstances();
 
-    List<Job> getInactiveJobs();
+    List<Job> jobsplus$getInactiveJobs();
 
     @Nullable
-    Job addNewJob(JobInstance job);
+    Job jobsplus$addNewJob(JobInstance job);
 
-    void removeJob(JobInstance job);
+    void jobsplus$removeJob(JobInstance job);
 
-    Job getJob(@Nullable JobInstance jobLocation);
+    Job jobsplus$getJob(@Nullable JobInstance jobLocation);
 
-    int getCoins();
+    int jobsplus$getCoins();
 
-    void addCoins(int coins);
+    void jobsplus$addCoins(int coins);
 
-    void setCoins(int coins);
+    void jobsplus$setCoins(int coins);
 
-    UUID getUUID();
+    String jobsplus$getName();
 
-    String name();
+    double jobsplus$nextRandomDouble();
 
-    double nextRandomDouble();
+    Player jobsplus$getPlayer();
 
-    Level level();
+    Level jobsplus$getLevel();
 
-    Player getPlayer();
+    UUID jobsplus$getUUID();
+
+    List<IActionHolder> jobsplus$getActionHolders();
 }

@@ -1,0 +1,16 @@
+{
+  "holder": {
+    "type": "jobsplus:job",
+    "id": "jobsplus:lumberjack"
+  },
+  "type": "arc:on_strip_log",
+  "short_description": "Strip logs",
+  "description": "Experienced Lumberjacks can also earn job experience by stripping logs. By using your axe to strip the bark from logs, you'll earn valuable job experience. Keep at it, and you'll soon become a master Lumberjack with the skills and knowledge to tackle any forest.",
+  "rewards": [
+    {
+      "type": "jobsplus:job_exp",
+      "min": 2,
+      "max": 4
+    }
+  ]
+}

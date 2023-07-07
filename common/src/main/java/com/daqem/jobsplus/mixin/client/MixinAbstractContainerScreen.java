@@ -1,7 +1,7 @@
 package com.daqem.jobsplus.mixin.client;
 
 import com.daqem.jobsplus.client.screen.JobsCraftingScreen;
-import com.daqem.jobsplus.resources.crafting.CraftingResult;
+import com.daqem.jobsplus.data.crafting.CraftingResult;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;

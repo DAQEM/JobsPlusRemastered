@@ -1,0 +1,22 @@
+{
+  "holder": {
+    "type": "jobsplus:job",
+    "id": "jobsplus:enchanter"
+  },
+  "type": "arc:on_enchant_item",
+  "short_description": "Enchant level 2",
+  "description": "Once you have enough experience levels, you can move on to level 2 enchantments as an Enchanter. These enchantments are more complex, requiring two experience levels and two lapis lazuli, but they also grant greater benefits to your enchanted items. Keep enchanting, and you'll become a skilled Enchanter in no time.",
+  "rewards": [
+    {
+      "type": "jobsplus:job_exp",
+      "min": 50,
+      "max": 70
+    }
+  ],
+  "conditions": [
+    {
+      "type": "arc:exp_level",
+      "level": 2
+    }
+  ]
+}

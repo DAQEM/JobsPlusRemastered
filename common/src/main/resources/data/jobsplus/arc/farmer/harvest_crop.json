@@ -1,0 +1,21 @@
+{
+  "holder": {
+    "type": "jobsplus:job",
+    "id": "jobsplus:farmer"
+  },
+  "type": "arc:on_harvest_crop",
+  "short_description": "Harvest a crop",
+  "description": "As a Farmer, you can earn job experience by harvesting fully grown crops. When you harvest a crop, you'll gain valuable experience points that can help you level up in the Farmer job.",
+  "rewards": [
+    {
+      "type": "jobsplus:job_exp",
+      "min": 1,
+      "max": 3
+    }
+  ],
+  "conditions": [
+    {
+      "type": "arc:crop_fully_grown"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "holder": {
+    "type": "jobsplus:powerup",
+    "id": "jobsplus:alchemist/stronger_potions_v"
+  },
+  "type": "arc:on_effect_added",
+  "rewards": [
+    {
+      "type": "arc:effect_amplifier_addition",
+      "addition": 1,
+      "chance": 100
+    }
+  ]
+}

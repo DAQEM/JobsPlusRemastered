@@ -17,4 +17,4 @@ include("common")
 include("fabric")
 include("forge")
 
-rootProject.name = "jobsplus-remasterd"
+rootProject.name = "jobsplus"

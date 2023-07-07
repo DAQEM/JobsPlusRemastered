@@ -1,0 +1,40 @@
+{
+  "holder": {
+    "type": "jobsplus:powerup",
+    "id": "jobsplus:alchemist/harmful_potion_immunity_iii"
+  },
+  "type": "arc:on_effect_added",
+  "rewards": [
+    {
+      "type": "arc:remove_effect",
+      "chance": 60
+    }
+  ],
+  "conditions": [
+    {
+      "type": "arc:or",
+      "conditions": [
+        {
+          "type": "arc:effect_category",
+          "category": "HARMFUL"
+        },
+        {
+          "type": "arc:effect",
+          "effect": "minecraft:bad_omen"
+        },
+        {
+          "type": "arc:effect",
+          "effect": "minecraft:glowing"
+        }
+      ]
+    },
+    {
+      "type": "jobsplus:powerup_not_active",
+      "powerup": "jobsplus:alchemist/harmful_potion_immunity_iv"
+    },
+    {
+      "type": "jobsplus:powerup_not_active",
+      "powerup": "jobsplus:alchemist/harmful_potion_immunity_v"
+    }
+  ]
+}

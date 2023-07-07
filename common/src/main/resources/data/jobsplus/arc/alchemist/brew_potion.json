@@ -1,0 +1,16 @@
+{
+  "holder": {
+    "type": "jobsplus:job",
+    "id": "jobsplus:alchemist"
+  },
+  "type": "arc:on_brew_potion",
+  "short_description": "Brew a potion",
+  "description": "As an alchemist, you can brew a potion to gain job experience. Collect ingredients, combine them in a brewing stand and watch as the potion takes shape.",
+  "rewards": [
+    {
+      "type": "jobsplus:job_exp",
+      "min": 1,
+      "max": 2
+    }
+  ]
+}

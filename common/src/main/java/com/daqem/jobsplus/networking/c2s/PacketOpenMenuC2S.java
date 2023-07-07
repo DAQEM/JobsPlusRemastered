@@ -86,11 +86,11 @@ public class PacketOpenMenuC2S extends BaseC2SMessage {
         if (context.getPlayer() instanceof JobsServerPlayer serverPlayer) {
             try {
                 CompoundTag serverData = new CompoundTag();
-                ListTag listTag = JobSerializer.toNBT(serverPlayer.getJobs());
+                ListTag listTag = JobSerializer.toNBT(serverPlayer.jobsplus$getJobs());
 
-                listTag.addAll(serverPlayer.inactiveJobsToNBT());
+                listTag.addAll(serverPlayer.jobsplus$inactiveJobsToNBT());
                 serverData.put(Constants.JOBS, listTag);
-                serverData.putInt(Constants.COINS, serverPlayer.getCoins());
+                serverData.putInt(Constants.COINS, serverPlayer.jobsplus$getCoins());
 
                 serverData.putInt(Constants.ACTIVE_LEFT_BUTTON, activeLeftButton);
                 serverData.putInt(Constants.ACTIVE_RIGHT_BUTTON, activeRightButton);
@@ -100,7 +100,7 @@ public class PacketOpenMenuC2S extends BaseC2SMessage {
                 serverData.putInt(Constants.START_INDEX, startIndex);
                 serverData.putInt(Constants.START_INDEX_RIGHT, startIndexRight);
 
-                if (serverPlayer.getUpdatedFromOldJobsPlus()) {
+                if (serverPlayer.jobsplus$getUpdatedFromOldJobsPlus()) {
                     new PacketOpenUpdateScreenS2C(serverData).sendTo((ServerPlayer) serverPlayer);
                 } else {
                     new PacketOpenMenuS2C(serverData).sendTo((ServerPlayer) serverPlayer);

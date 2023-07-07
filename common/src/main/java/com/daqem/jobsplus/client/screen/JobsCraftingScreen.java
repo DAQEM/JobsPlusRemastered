@@ -1,6 +1,6 @@
 package com.daqem.jobsplus.client.screen;
 
-import com.daqem.jobsplus.resources.crafting.CraftingResult;
+import com.daqem.jobsplus.data.crafting.CraftingResult;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.Font;
 import net.minecraft.network.chat.MutableComponent;

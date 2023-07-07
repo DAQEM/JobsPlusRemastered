@@ -5,10 +5,9 @@ import com.daqem.jobsplus.command.arguments.EnumArgument;
 import com.daqem.jobsplus.command.arguments.JobArgument;
 import com.daqem.jobsplus.command.arguments.PowerupArgument;
 import com.daqem.jobsplus.fabric.registry.JobsPlusRegistryFabric;
-import com.daqem.jobsplus.fabric.resources.ActionManagerFabric;
-import com.daqem.jobsplus.fabric.resources.CraftingRestrictionManagerFabric;
-import com.daqem.jobsplus.fabric.resources.JobManagerFabric;
-import com.daqem.jobsplus.fabric.resources.PowerupManagerFabric;
+import com.daqem.jobsplus.fabric.data.CraftingRestrictionManagerFabric;
+import com.daqem.jobsplus.fabric.data.JobManagerFabric;
+import com.daqem.jobsplus.fabric.data.PowerupManagerFabric;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.ArgumentTypeRegistry;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
@@ -20,10 +19,10 @@ public class JobsPlusFabric implements ModInitializer {
     @Override
     public void onInitialize() {
         JobsPlus.init();
+
         ResourceManagerHelper.get(PackType.SERVER_DATA).registerReloadListener(new JobManagerFabric());
-        ResourceManagerHelper.get(PackType.SERVER_DATA).registerReloadListener(new CraftingRestrictionManagerFabric());
         ResourceManagerHelper.get(PackType.SERVER_DATA).registerReloadListener(new PowerupManagerFabric());
-        ResourceManagerHelper.get(PackType.SERVER_DATA).registerReloadListener(new ActionManagerFabric());
+        ResourceManagerHelper.get(PackType.SERVER_DATA).registerReloadListener(new CraftingRestrictionManagerFabric());
 
         registerCommandArgumentTypes();
     }

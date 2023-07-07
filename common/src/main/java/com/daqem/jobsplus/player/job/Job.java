@@ -1,18 +1,22 @@
 package com.daqem.jobsplus.player.job;
 
 import com.daqem.jobsplus.Constants;
+import com.daqem.jobsplus.JobsPlus;
 import com.daqem.jobsplus.event.triggers.JobEvents;
 import com.daqem.jobsplus.player.JobsPlayer;
+import com.daqem.jobsplus.player.JobsServerPlayer;
 import com.daqem.jobsplus.player.job.powerup.JobPowerupManager;
 import com.daqem.jobsplus.player.job.powerup.Powerup;
 import com.daqem.jobsplus.player.job.powerup.PowerupState;
-import com.daqem.jobsplus.resources.job.JobInstance;
-import com.daqem.jobsplus.resources.job.JobManager;
-import com.daqem.jobsplus.resources.job.powerup.PowerupInstance;
+import com.daqem.jobsplus.interation.arc.action.holder.holders.job.JobInstance;
+import com.daqem.jobsplus.interation.arc.action.holder.holders.job.JobManager;
+import com.daqem.jobsplus.interation.arc.action.holder.holders.powerup.PowerupInstance;
 import com.google.gson.JsonObject;
+import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import org.jetbrains.annotations.NotNull;
@@ -90,6 +94,9 @@ public class Job {
             level++;
             experience -= experienceToLevelUp;
             JobEvents.onJobLevelUp(player, this);
+            if (this.player instanceof JobsServerPlayer serverPlayer) {
+                serverPlayer.jobsplus$updateJobOnClient(this);
+            }
         }
     }
 
@@ -141,17 +148,35 @@ public class Job {
         return new Job(player, jobInstanceLocation, level, exp, powerups);
     }
 
-    @Override
-    public String toString() {
-        JsonObject json = new JsonObject();
-        json.add("jobInstance", GsonHelper.parse(jobInstance.toShortString()));
-        json.addProperty("level", level);
-        json.addProperty("experience", experience);
-        json.add("powerupManager", GsonHelper.parse(powerupManager.toShortString()));
-        return json.toString();
-    }
-
     public double getExperiencePercentage() {
         return (double) experience / (double) getExperienceToLevelUp(level) * 100;
+    }
+
+    public static class Serializer {
+
+        public static Job fromNetwork(FriendlyByteBuf friendlyByteBuf, JobsPlayer player) {
+            ResourceLocation jobInstanceLocation = friendlyByteBuf.readResourceLocation();
+            int level = friendlyByteBuf.readInt();
+            int experience = friendlyByteBuf.readInt();
+            int powerupCount = friendlyByteBuf.readVarInt();
+            List<Powerup> powerups = new ArrayList<>();
+            for (int i = 0; i < powerupCount; i++) {
+                ResourceLocation powerupLocation = friendlyByteBuf.readResourceLocation();
+                PowerupState state = friendlyByteBuf.readEnum(PowerupState.class);
+                powerups.add(new Powerup(PowerupInstance.of(powerupLocation), state));
+            }
+            return new Job(player, jobInstanceLocation, level, experience, powerups);
+        }
+
+        public static void toNetwork(FriendlyByteBuf friendlyByteBuf, Job job) {
+            friendlyByteBuf.writeResourceLocation(job.getJobInstance().getLocation());
+            friendlyByteBuf.writeInt(job.getLevel());
+            friendlyByteBuf.writeInt(job.getExperience());
+            friendlyByteBuf.writeVarInt(job.getPowerupManager().getAllPowerups().size());
+            for (Powerup powerup : job.getPowerupManager().getAllPowerups()) {
+                friendlyByteBuf.writeResourceLocation(powerup.getPowerupInstance().getLocation());
+                friendlyByteBuf.writeEnum(powerup.getPowerupState());
+            }
+        }
     }
 }

@@ -1,41 +1,33 @@
 package com.daqem.jobsplus.player;
 
+import com.daqem.jobsplus.data.crafting.CraftingResult;
+import com.daqem.jobsplus.data.crafting.CraftingType;
+import com.daqem.jobsplus.interation.arc.action.holder.holders.job.JobInstance;
 import com.daqem.jobsplus.player.job.Job;
-import com.daqem.jobsplus.player.stat.StatData;
-import com.daqem.jobsplus.resources.crafting.CraftingResult;
-import com.daqem.jobsplus.resources.crafting.CraftingType;
-import com.daqem.jobsplus.resources.job.JobInstance;
-import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nullable;
-import java.util.List;
-import java.util.UUID;
-
 public interface JobsServerPlayer extends JobsPlayer {
 
-    ServerPlayer getServerPlayer();
+    ServerPlayer jobsplus$getServerPlayer();
 
-    ListTag inactiveJobsToNBT();
+    ListTag jobsplus$inactiveJobsToNBT();
 
-    NonNullList<StatData> getStatData();
+    void jobsplus$removeAndRefundJob(@NotNull JobInstance jobInstance);
 
-    void addStatData(StatData statData);
+    void jobsplus$refundJob(@NotNull JobInstance jobInstance);
 
-    void setSwimmingDistanceInCm(int swimmingDistanceInCm);
+    CraftingResult jobsplus$canCraft(CraftingType crafting, ItemStack itemStack);
 
-    void setElytraFlyingDistanceInCm(float flyingDistanceInCm);
+    boolean jobsplus$getUpdatedFromOldJobsPlus();
 
-    void removeAndRefundJob(@NotNull JobInstance jobInstance);
+    void jobsplus$setUpdatedFromOldJobsPlus(boolean b);
 
-    void refundJob(@NotNull JobInstance jobInstance);
+    void jobsplus$updateJob(Job job);
 
-    CraftingResult canCraft(CraftingType crafting, ItemStack itemStack);
+    void jobsplus$updateActionHolders(Job job);
 
-    boolean getUpdatedFromOldJobsPlus();
-
-    void setUpdatedFromOldJobsPlus(boolean b);
+    void jobsplus$updateJobOnClient(Job job);
 }

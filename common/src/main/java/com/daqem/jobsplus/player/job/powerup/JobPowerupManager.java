@@ -1,16 +1,10 @@
 package com.daqem.jobsplus.player.job.powerup;
 
-import com.daqem.jobsplus.networking.sync.jobs.s2c.PacketUpdateClientsideJobS2C;
 import com.daqem.jobsplus.player.JobsPlayer;
 import com.daqem.jobsplus.player.JobsServerPlayer;
 import com.daqem.jobsplus.player.job.Job;
-import com.daqem.jobsplus.resources.job.JobInstance;
-import com.daqem.jobsplus.resources.job.powerup.PowerupInstance;
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.reflect.TypeToken;
-import net.minecraft.util.GsonHelper;
+import com.daqem.jobsplus.interation.arc.action.holder.holders.job.JobInstance;
+import com.daqem.jobsplus.interation.arc.action.holder.holders.powerup.PowerupInstance;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
@@ -95,7 +89,7 @@ public class JobPowerupManager {
 
     private void sendJobUpdatePacket(Job job, JobsPlayer player) {
         if (player instanceof JobsServerPlayer jobsServerPlayer) {
-            new PacketUpdateClientsideJobS2C(job.toNBT()).sendTo(jobsServerPlayer.getServerPlayer());
+            jobsServerPlayer.jobsplus$updateJob(job);
         }
     }
 
@@ -106,28 +100,6 @@ public class JobPowerupManager {
         Powerup parent = getPowerup(powerupInstance.getParent());
         return parent != null;
     }
-
-    public void forceAddPowerup(PowerupInstance powerupInstance) {
-        forceAddPowerup(powerupInstance, PowerupState.ACTIVE);
-    }
-
-//    public void forceAddPowerup(PowerupInstance powerupInstance, PowerupState powerupState) {
-//        Powerup powerup = getPowerup(powerupInstance);
-//        if (powerup == null) {
-//            powerup = new Powerup(powerupInstance, powerupState);
-//            if (powerupInstance.getParent() == null) {
-//                powerups.add(powerup);
-//            } else {
-//                Powerup parent = getPowerup(powerupInstance.getParent());
-//                if (parent == null) {
-//                    parent = new Powerup(powerupInstance.getParent(), powerupState);
-//                    parent.getChildren().add(powerup);
-//                } else {
-//                    parent.getChildren().add(powerup);
-//                }
-//            }
-//        }
-//    }
 
     public void forceAddPowerup(PowerupInstance powerupInstance, PowerupState powerupState) {
         Powerup powerup = getPowerup(powerupInstance);
@@ -208,28 +180,5 @@ public class JobPowerupManager {
 
     public void clearPowerups() {
         powerups.clear();
-    }
-
-    @Override
-    public String toString() {
-        JsonObject json = new JsonObject();
-        json.addProperty("job", job.toShortString());
-        json.add("powerups", new Gson().toJsonTree(powerups, new TypeToken<List<Powerup>>() {
-        }.getType()).getAsJsonArray());
-        return json.toString();
-    }
-
-    public String toShortString() {
-        JsonObject json = new JsonObject();
-        JsonArray powerups = new JsonArray();
-        try {
-            for (Powerup powerup : this.powerups) {
-                powerups.add(GsonHelper.parse(powerup.toString()));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        json.add("powerups", powerups);
-        return json.toString();
     }
 }

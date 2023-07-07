@@ -3,8 +3,8 @@ package com.daqem.jobsplus.mixin.crafting.block;
 import com.daqem.jobsplus.level.block.JobsBrewingStandBlockEntity;
 import com.daqem.jobsplus.networking.s2c.PacketCantCraftS2C;
 import com.daqem.jobsplus.player.JobsServerPlayer;
-import com.daqem.jobsplus.resources.crafting.CraftingResult;
-import com.daqem.jobsplus.resources.crafting.CraftingType;
+import com.daqem.jobsplus.data.crafting.CraftingResult;
+import com.daqem.jobsplus.data.crafting.CraftingType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
@@ -55,7 +55,7 @@ public abstract class MixinBrewingStandBlockEntity extends BaseContainerBlockEnt
         if (player instanceof JobsServerPlayer serverPlayer) {
             if (getPlayer() != serverPlayer) {
                 setPlayer(serverPlayer);
-                setPlayerUUID(serverPlayer.getUUID());
+                setPlayerUUID(serverPlayer.jobsplus$getUUID());
                 saveWithFullMetadata();
             }
         }
@@ -64,7 +64,7 @@ public abstract class MixinBrewingStandBlockEntity extends BaseContainerBlockEnt
     @Inject(at = @At("TAIL"), method = "saveAdditional(Lnet/minecraft/nbt/CompoundTag;)V")
     private void saveAdditional(CompoundTag compoundTag, CallbackInfo ci) {
         if (getPlayer() != null) {
-            compoundTag.putString("JobsServerPlayer", getPlayer().getUUID().toString());
+            compoundTag.putString("JobsServerPlayer", getPlayer().jobsplus$getUUID().toString());
         } else {
             if (getPlayerUUID() != null) {
                 compoundTag.putString("JobsServerPlayer", getPlayerUUID().toString());
@@ -95,7 +95,7 @@ public abstract class MixinBrewingStandBlockEntity extends BaseContainerBlockEnt
                         ItemStack potion = brewingStandBlockEntity.getItem(i);
                         ItemStack mixedPotion = PotionBrewing.mix(ingredient, potion);
 
-                        CraftingResult result = block.getPlayer().canCraft(CraftingType.BREWING, mixedPotion);
+                        CraftingResult result = block.getPlayer().jobsplus$canCraft(CraftingType.BREWING, mixedPotion);
 
                         if (!result.canCraft()) {
                             block.setBrewTime(0);
@@ -130,9 +130,9 @@ public abstract class MixinBrewingStandBlockEntity extends BaseContainerBlockEnt
     }
 
     private static void sendPacketCantCraft(CraftingResult result, JobsBrewingStandBlockEntity block) {
-        if (block.getPlayer().getServerPlayer().containerMenu instanceof BrewingStandMenu menu) {
+        if (block.getPlayer().jobsplus$getServerPlayer().containerMenu instanceof BrewingStandMenu menu) {
             if (menu.brewingStand.equals(block.getBrewingStandBlockEntity())) {
-                new PacketCantCraftS2C(result).sendTo(block.getPlayer().getServerPlayer());
+                new PacketCantCraftS2C(result).sendTo(block.getPlayer().jobsplus$getServerPlayer());
             }
         }
     }

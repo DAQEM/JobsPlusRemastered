@@ -1,0 +1,25 @@
+{
+  "holder": {
+    "type": "jobsplus:job",
+    "id": "jobsplus:digger"
+  },
+  "type": "arc:on_break_block",
+  "short_description": "Digging common blocks",
+  "description": "As a Digger, you can earn job experience by breaking common blocks such as dirt and sand with your trusty shovel or by hand. With every block you break, you'll get closer to leveling up in the Digger job.",
+  "rewards": [
+    {
+      "type": "jobsplus:job_exp",
+      "min": 0,
+      "max": 2
+    }
+  ],
+  "conditions": [
+    {
+      "type": "arc:blocks",
+      "blocks": [
+        "minecraft:dirt",
+        "minecraft:sand"
+      ]
+    }
+  ]
+}

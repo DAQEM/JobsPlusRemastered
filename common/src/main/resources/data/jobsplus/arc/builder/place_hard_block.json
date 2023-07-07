@@ -1,0 +1,22 @@
+{
+  "holder": {
+    "type": "jobsplus:job",
+    "id": "jobsplus:builder"
+  },
+  "type": "arc:on_place_block",
+  "short_description": "Place hard blocks",
+  "description": "Use your building skills to place sturdy blocks such as obsidian or netherite, gaining job experience points to increase your Builder level.",
+  "rewards": [
+    {
+      "type": "jobsplus:job_exp",
+      "min": 4,
+      "max": 6
+    }
+  ],
+  "conditions": [
+    {
+      "type": "arc:block_hardness",
+      "min": 10
+    }
+  ]
+}

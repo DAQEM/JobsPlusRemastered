@@ -16,7 +16,7 @@ public class EventKeyPressed {
                 if (screen instanceof JobsScreen) screen.onClose();
                 else if (screen == null) new PacketOpenMenuC2S().sendToServer();
             }
-            return EventResult.interruptTrue();
+            return EventResult.pass();
         });
     }
 }

@@ -1,14 +1,12 @@
 package com.daqem.jobsplus.forge;
 
 import com.daqem.jobsplus.JobsPlusExpectPlatform;
-import com.daqem.jobsplus.forge.resources.ActionManagerForge;
-import com.daqem.jobsplus.forge.resources.CraftingRestrictionManagerForge;
-import com.daqem.jobsplus.forge.resources.JobManagerForge;
-import com.daqem.jobsplus.forge.resources.PowerupManagerForge;
-import com.daqem.jobsplus.resources.crafting.CraftingRestrictionManager;
-import com.daqem.jobsplus.resources.job.JobManager;
-import com.daqem.jobsplus.resources.job.action.ActionManager;
-import com.daqem.jobsplus.resources.job.powerup.PowerupManager;
+import com.daqem.jobsplus.forge.data.CraftingRestrictionManagerForge;
+import com.daqem.jobsplus.forge.data.JobManagerForge;
+import com.daqem.jobsplus.forge.data.PowerupManagerForge;
+import com.daqem.jobsplus.data.crafting.CraftingRestrictionManager;
+import com.daqem.jobsplus.interation.arc.action.holder.holders.job.JobManager;
+import com.daqem.jobsplus.interation.arc.action.holder.holders.powerup.PowerupManager;
 import net.minecraftforge.fml.loading.FMLPaths;
 
 import java.nio.file.Path;
@@ -27,10 +25,6 @@ public class JobsPlusExpectPlatformImpl {
 
     public static CraftingRestrictionManager getCraftingRestrictionManager() {
         return new CraftingRestrictionManagerForge();
-    }
-
-    public static ActionManager getActionManager() {
-        return new ActionManagerForge();
     }
 
     public static PowerupManager getPowerupManager() {

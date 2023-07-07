@@ -1,12 +1,11 @@
 package com.daqem.jobsplus.networking.c2s;
 
 import com.daqem.jobsplus.networking.JobsPlusNetworking;
-import com.daqem.jobsplus.networking.sync.jobs.s2c.PacketUpdateClientsideJobS2C;
 import com.daqem.jobsplus.player.JobsServerPlayer;
 import com.daqem.jobsplus.player.job.Job;
 import com.daqem.jobsplus.player.job.powerup.Powerup;
-import com.daqem.jobsplus.resources.job.JobInstance;
-import com.daqem.jobsplus.resources.job.powerup.PowerupInstance;
+import com.daqem.jobsplus.interation.arc.action.holder.holders.job.JobInstance;
+import com.daqem.jobsplus.interation.arc.action.holder.holders.powerup.PowerupInstance;
 import dev.architectury.networking.NetworkManager;
 import dev.architectury.networking.simple.BaseC2SMessage;
 import dev.architectury.networking.simple.MessageType;
@@ -41,12 +40,12 @@ public class PacketTogglePowerUpC2S extends BaseC2SMessage {
     @Override
     public void handle(NetworkManager.PacketContext context) {
         if (context.getPlayer() instanceof JobsServerPlayer serverPlayer) {
-            Job job = serverPlayer.getJob(jobInstance);
+            Job job = serverPlayer.jobsplus$getJob(jobInstance);
             if (job != null) {
                 Powerup powerup = job.getPowerupManager().getPowerup(powerupInstance);
                 if (powerup != null) {
                     powerup.toggle();
-                    new PacketUpdateClientsideJobS2C(job.toNBT()).sendTo(serverPlayer.getServerPlayer());
+                    serverPlayer.jobsplus$updateJob(job);
                 }
             }
         }

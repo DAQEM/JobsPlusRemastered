@@ -1,26 +1,26 @@
 package com.daqem.jobsplus.client.screen;
 
+import com.daqem.arc.api.action.IAction;
+import com.daqem.arc.client.screen.ActionScreen;
 import com.daqem.jobsplus.Constants;
 import com.daqem.jobsplus.JobsPlus;
 import com.daqem.jobsplus.client.render.ModItemRenderer;
 import com.daqem.jobsplus.client.render.RenderColor;
 import com.daqem.jobsplus.config.JobsPlusCommonConfig;
+
 import com.daqem.jobsplus.networking.c2s.PacketOpenMenuC2S;
-import com.daqem.jobsplus.networking.c2s.PacketTogglePowerUpC2S;
 import com.daqem.jobsplus.networking.utils.ConfirmationMessageType;
 import com.daqem.jobsplus.player.JobsPlayerData;
 import com.daqem.jobsplus.player.job.Job;
 import com.daqem.jobsplus.player.job.powerup.Powerup;
 import com.daqem.jobsplus.player.job.powerup.PowerupState;
-import com.daqem.jobsplus.resources.crafting.restriction.restrictions.ItemCraftingRestriction;
-import com.daqem.jobsplus.resources.job.JobInstance;
-import com.daqem.jobsplus.resources.job.action.Action;
-import com.daqem.jobsplus.resources.job.powerup.PowerupInstance;
-import com.daqem.jobsplus.resources.job.powerup.PowerupManager;
+import com.daqem.jobsplus.data.crafting.restriction.restrictions.ItemCraftingRestriction;
+import com.daqem.jobsplus.interation.arc.action.holder.holders.job.JobInstance;
+import com.daqem.jobsplus.interation.arc.action.holder.holders.powerup.PowerupInstance;
+import com.daqem.jobsplus.interation.arc.action.holder.holders.powerup.PowerupManager;
 import com.daqem.jobsplus.util.chat.ChatColor;
 import com.daqem.jobsplus.util.experience.ExperienceHandler;
 import com.google.common.collect.ImmutableCollection;
-import com.google.common.collect.ImmutableMap;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.ChatFormatting;
@@ -36,9 +36,11 @@ import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.*;
+import java.util.List;
 
 public class JobsScreen extends AbstractScreen {
 
@@ -413,7 +415,7 @@ public class JobsScreen extends AbstractScreen {
                     int j = i - this.startIndexRight;
                     int i1 = 18 + j * 35;
 
-                    Action action = getSelectedJob().getJobInstance().getActions().get(i);
+                    IAction action = getSelectedJob().getJobInstance().getActions().get(i);
                     poseStack.pushPose();
                     poseStack.scale(1.2F, 1.2F, 1.2F);
                     drawDynamicComponent(poseStack, action.getShortDescription(), (this.startX + 164) / 1.2F, (i1 + startY + 3) / 1.2F, 103, 0x55FFFF);
@@ -627,7 +629,7 @@ public class JobsScreen extends AbstractScreen {
                     //BUTTONS
                     if (isBetween(mouseX, mouseY, 158, i1, 158 + 144, i1 + 35)) {
                         playClientGUIClick();
-                        Action action = jobInstance.getActions().get(i);
+                        IAction action = jobInstance.getActions().get(i);
                         openActionScreen(jobInstance, action);
                     }
                 }
@@ -649,8 +651,8 @@ public class JobsScreen extends AbstractScreen {
                 getCoins())));
     }
 
-    private void openActionScreen(JobInstance jobInstance, Action action) {
-        Minecraft.getInstance().setScreen(new ActionScreen(this, jobInstance, action));
+    private void openActionScreen(JobInstance jobInstance, IAction action) {
+        Minecraft.getInstance().setScreen(new ActionScreen(this, jobInstance.getActions(), action, new Color(45, 32, 23, 0)));
     }
 
     private void setJob() {

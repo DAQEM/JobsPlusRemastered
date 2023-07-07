@@ -1,0 +1,22 @@
+{
+  "holder": {
+    "type": "jobsplus:job",
+    "id": "jobsplus:builder"
+  },
+  "type": "arc:on_place_block",
+  "short_description": "Place other blocks",
+  "description": "Use your creativity to place any other types of blocks, such as wood or sand, to gain job experience points and advance your Builder level.",
+  "rewards": [
+    {
+      "type": "jobsplus:job_exp",
+      "min": 0,
+      "max": 2
+    }
+  ],
+  "conditions": [
+    {
+      "type": "arc:block_hardness",
+      "max": 2.9
+    }
+  ]
+}

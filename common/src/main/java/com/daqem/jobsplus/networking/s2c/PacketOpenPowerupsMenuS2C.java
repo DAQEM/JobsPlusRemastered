@@ -2,7 +2,7 @@ package com.daqem.jobsplus.networking.s2c;
 
 import com.daqem.jobsplus.client.screen.JobsScreen;
 import com.daqem.jobsplus.networking.JobsPlusNetworking;
-import com.daqem.jobsplus.resources.job.JobInstance;
+import com.daqem.jobsplus.interation.arc.action.holder.holders.job.JobInstance;
 import dev.architectury.networking.NetworkManager;
 import dev.architectury.networking.simple.BaseS2CMessage;
 import dev.architectury.networking.simple.MessageType;

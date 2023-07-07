@@ -1,0 +1,22 @@
+{
+  "holder": {
+    "type": "jobsplus:job",
+    "id": "jobsplus:enchanter"
+  },
+  "type": "arc:on_enchant_item",
+  "short_description": "Enchant level 1",
+  "description": "As an Enchanter, you can earn job experience by enchanting items with level 1 enchantments. These enchantments are the easiest to create, requiring only one experience level and only one lapis lazuli. With each enchantment you make, you'll gain experience towards your Enchanter job.",
+  "rewards": [
+    {
+      "type": "jobsplus:job_exp",
+      "min": 30,
+      "max": 50
+    }
+  ],
+  "conditions": [
+    {
+      "type": "arc:exp_level",
+      "level": 1
+    }
+  ]
+}

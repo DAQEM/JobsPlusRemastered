@@ -1,0 +1,16 @@
+{
+  "holder": {
+    "type": "jobsplus:job",
+    "id": "jobsplus:farmer"
+  },
+  "type": "arc:on_breed_animal",
+  "short_description": "Breed an animal",
+  "description": "Breeding animals is an important task for Farmers who want to increase their livestock. When you successfully breed two animals, you'll earn valuable experience points that can help you progress in the Farmer job.",
+  "rewards": [
+    {
+      "type": "jobsplus:job_exp",
+      "min": 6,
+      "max": 10
+    }
+  ]
+}

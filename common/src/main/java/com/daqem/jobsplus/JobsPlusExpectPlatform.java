@@ -1,9 +1,9 @@
 package com.daqem.jobsplus;
 
-import com.daqem.jobsplus.resources.crafting.CraftingRestrictionManager;
-import com.daqem.jobsplus.resources.job.JobManager;
-import com.daqem.jobsplus.resources.job.action.ActionManager;
-import com.daqem.jobsplus.resources.job.powerup.PowerupManager;
+import com.daqem.jobsplus.data.crafting.CraftingRestrictionManager;
+
+import com.daqem.jobsplus.interation.arc.action.holder.holders.job.JobManager;
+import com.daqem.jobsplus.interation.arc.action.holder.holders.powerup.PowerupManager;
 import dev.architectury.injectables.annotations.ExpectPlatform;
 
 import java.nio.file.Path;
@@ -24,12 +24,6 @@ public class JobsPlusExpectPlatform {
 
     @ExpectPlatform
     public static CraftingRestrictionManager getCraftingRestrictionManager() {
-        // Just throw an error, the content should get replaced at runtime.
-        throw new AssertionError();
-    }
-
-    @ExpectPlatform
-    public static ActionManager getActionManager() {
         // Just throw an error, the content should get replaced at runtime.
         throw new AssertionError();
     }

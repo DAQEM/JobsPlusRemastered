@@ -3,8 +3,8 @@ package com.daqem.jobsplus.mixin.crafting.block;
 import com.daqem.jobsplus.level.block.JobsFurnaceBlockEntity;
 import com.daqem.jobsplus.networking.s2c.PacketCantCraftS2C;
 import com.daqem.jobsplus.player.JobsServerPlayer;
-import com.daqem.jobsplus.resources.crafting.CraftingResult;
-import com.daqem.jobsplus.resources.crafting.CraftingType;
+import com.daqem.jobsplus.data.crafting.CraftingResult;
+import com.daqem.jobsplus.data.crafting.CraftingType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
@@ -63,7 +63,7 @@ public abstract class MixinAbstractFurnaceBlockEntity extends BaseContainerBlock
         if (player instanceof JobsServerPlayer serverPlayer) {
             if (getPlayer() != serverPlayer) {
                 setPlayer(serverPlayer);
-                setPlayerUUID(serverPlayer.getUUID());
+                setPlayerUUID(serverPlayer.jobsplus$getUUID());
                 saveWithFullMetadata();
             }
         }
@@ -72,7 +72,7 @@ public abstract class MixinAbstractFurnaceBlockEntity extends BaseContainerBlock
     @Inject(at = @At("TAIL"), method = "saveAdditional(Lnet/minecraft/nbt/CompoundTag;)V")
     private void saveAdditional(CompoundTag compoundTag, CallbackInfo ci) {
         if (getPlayer() != null) {
-            compoundTag.putString("JobsServerPlayer", getPlayer().getUUID().toString());
+            compoundTag.putString("JobsServerPlayer", getPlayer().jobsplus$getUUID().toString());
         } else {
             if (getPlayerUUID() != null) {
                 compoundTag.putString("JobsServerPlayer", getPlayerUUID().toString());
@@ -101,7 +101,7 @@ public abstract class MixinAbstractFurnaceBlockEntity extends BaseContainerBlock
 
                     Recipe<?> recipe = block.getRecipe();
 
-                    CraftingResult result = block.getPlayer().canCraft(CraftingType.SMELTING, recipe.getResultItem());
+                    CraftingResult result = block.getPlayer().jobsplus$canCraft(CraftingType.SMELTING, recipe.getResultItem());
 
                     if (!result.canCraft()) {
                         if (block.isLit()) {
@@ -124,9 +124,9 @@ public abstract class MixinAbstractFurnaceBlockEntity extends BaseContainerBlock
     }
 
     private static void sendPacketCantCraft(CraftingResult result, JobsFurnaceBlockEntity block) {
-        if (block.getPlayer().getServerPlayer().containerMenu instanceof AbstractFurnaceMenu menu) {
+        if (block.getPlayer().jobsplus$getServerPlayer().containerMenu instanceof AbstractFurnaceMenu menu) {
             if (menu.container.equals(block.getAbstractFurnaceBlockEntity())) {
-                new PacketCantCraftS2C(result).sendTo(block.getPlayer().getServerPlayer());
+                new PacketCantCraftS2C(result).sendTo(block.getPlayer().jobsplus$getServerPlayer());
             }
         }
     }

@@ -1,0 +1,22 @@
+{
+  "holder": {
+    "type": "jobsplus:job",
+    "id": "jobsplus:lumberjack"
+  },
+  "type": "arc:on_break_block",
+  "short_description": "Break wooden blocks",
+  "description": "As a Lumberjack, you'll earn job experience by breaking wooden blocks like logs, planks, and doors with your trusty axe or by hand. The more blocks you break, the more experience you'll earn and the closer you'll get to leveling up in the Lumberjack job.",
+  "rewards": [
+    {
+      "type": "jobsplus:job_exp",
+      "min": 2,
+      "max": 4
+    }
+  ],
+  "conditions": [
+    {
+      "type": "arc:block_material_color",
+      "id": 13
+    }
+  ]
+}

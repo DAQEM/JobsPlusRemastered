@@ -2,7 +2,7 @@ package com.daqem.jobsplus.networking.s2c;
 
 import com.daqem.jobsplus.client.screen.JobsCraftingScreen;
 import com.daqem.jobsplus.networking.JobsPlusNetworking;
-import com.daqem.jobsplus.resources.crafting.CraftingResult;
+import com.daqem.jobsplus.data.crafting.CraftingResult;
 import dev.architectury.networking.NetworkManager;
 import dev.architectury.networking.simple.BaseS2CMessage;
 import dev.architectury.networking.simple.MessageType;

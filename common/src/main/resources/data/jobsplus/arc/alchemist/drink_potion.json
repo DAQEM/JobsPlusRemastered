@@ -1,0 +1,20 @@
+{
+  "holder": {
+    "type": "jobsplus:job",
+    "id": "jobsplus:alchemist"
+  },
+  "type": "arc:on_drink",
+  "rewards": [
+    {
+      "type": "jobsplus:job_exp",
+      "min": 1,
+      "max": 2
+    }
+  ],
+  "conditions": [
+    {
+      "type": "arc:item",
+      "item": "minecraft:potion"
+    }
+  ]
+}

@@ -28,9 +28,9 @@ public record JobsPlayerData(List<Job> activeJobs, List<Job> inactiveJobs, int c
      */
     public static JobsPlayerData fromPlayer(JobsServerPlayer jobsServerPlayer) {
         return new JobsPlayerData(
-                jobsServerPlayer.getJobs(),
-                jobsServerPlayer.getInactiveJobs(),
-                jobsServerPlayer.getCoins());
+                jobsServerPlayer.jobsplus$getJobs(),
+                jobsServerPlayer.jobsplus$getInactiveJobs(),
+                jobsServerPlayer.jobsplus$getCoins());
     }
 
     /**

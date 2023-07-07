@@ -27,7 +27,7 @@ public class PacketApprovedUpdateC2S extends BaseC2SMessage {
     @Override
     public void handle(NetworkManager.PacketContext context) {
         if (context.getPlayer() instanceof JobsServerPlayer serverPlayer) {
-            serverPlayer.setUpdatedFromOldJobsPlus(false);
+            serverPlayer.jobsplus$setUpdatedFromOldJobsPlus(false);
         }
     }
 }

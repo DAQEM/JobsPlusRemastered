@@ -6,10 +6,9 @@ import com.daqem.jobsplus.command.arguments.EnumArgument;
 import com.daqem.jobsplus.command.arguments.JobArgument;
 import com.daqem.jobsplus.command.arguments.PowerupArgument;
 import com.daqem.jobsplus.forge.registry.JobsPlusRegistryForge;
-import com.daqem.jobsplus.forge.resources.ActionManagerForge;
-import com.daqem.jobsplus.forge.resources.CraftingRestrictionManagerForge;
-import com.daqem.jobsplus.forge.resources.JobManagerForge;
-import com.daqem.jobsplus.forge.resources.PowerupManagerForge;
+import com.daqem.jobsplus.forge.data.CraftingRestrictionManagerForge;
+import com.daqem.jobsplus.forge.data.JobManagerForge;
+import com.daqem.jobsplus.forge.data.PowerupManagerForge;
 import net.minecraft.commands.synchronization.ArgumentTypeInfo;
 import net.minecraft.commands.synchronization.ArgumentTypeInfos;
 import net.minecraft.commands.synchronization.SingletonArgumentInfo;
@@ -45,7 +44,6 @@ public class SideProxyForge {
         event.addListener(new JobManagerForge());
         event.addListener(new CraftingRestrictionManagerForge());
         event.addListener(new PowerupManagerForge());
-        event.addListener(new ActionManagerForge());
     }
 
     public static class Server extends SideProxyForge {
