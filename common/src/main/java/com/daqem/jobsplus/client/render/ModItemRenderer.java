@@ -20,6 +20,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class ModItemRenderer {
 
+    @SuppressWarnings("deprecation")
     private static void renderGuiItem(ItemRenderer itemRenderer, ItemStack itemStack, int x, int y, BakedModel bakedModel, float scale) {
         itemRenderer.textureManager.getTexture(TextureAtlas.LOCATION_BLOCKS).setFilter(false, false);
         RenderSystem.setShaderTexture(0, TextureAtlas.LOCATION_BLOCKS);

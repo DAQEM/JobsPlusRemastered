@@ -32,6 +32,7 @@ dependencies {
     // Config library
     modImplementation "curse.maven:supermartijn642s-config-lib-438332:${project.config_library_file_fabric}"
     modImplementation "curse.maven:arc-883593:${project.arc_file_fabric}"
+    modImplementation "curse.maven:item-restrictions-887774:${project.item_restrictions_file_fabric}"
 }
 
 processResources {

@@ -18,16 +18,17 @@ repositories {
 dependencies {
     // We depend on fabric loader here to use the fabric @Environment annotations and get the mixin dependencies
     // Do NOT use other classes from fabric loader
-    modImplementation "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
+    modImplementation "net.fabricmc:fabric-loader:${project.fabric_loader_version}"
     // Remove the next line if you don't want to depend on the API
-    modApi "dev.architectury:architectury:${rootProject.architectury_version}"
-//source: https://github.com/Fuzss/forgeconfigapiport-fabric
+    modApi "dev.architectury:architectury:${project.architectury_version}"
+    //source: https://github.com/Fuzss/forgeconfigapiport-fabric
 
     compileOnlyApi "curse.maven:supermartijn642s-config-lib-438332:${project.config_library_file_fabric}"
     modImplementation "curse.maven:arc-883593:${project.arc_file_fabric}-sources-${project.arc_file_fabric_sources}"
+    modImplementation "curse.maven:item-restrictions-887774:${project.item_restrictions_file_fabric}-sources-${project.item_restrictions_file_fabric_sources}"
 
-    testImplementation "org.junit.jupiter:junit-jupiter-api:${rootProject.jUnitVersion}"
-    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${rootProject.jUnitVersion}"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:${project.jUnitVersion}"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${project.jUnitVersion}"
 
 }
 

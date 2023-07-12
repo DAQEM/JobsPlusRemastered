@@ -4,20 +4,10 @@
   "package": "com.daqem.jobsplus.mixin",
   "compatibilityLevel": "JAVA_17",
   "client": [
-    "client.MixinAbstractContainerScreen",
     "client.MixinLocalPlayer"
   ],
   "mixins": [
-    "crafting.item.MixinItemStack",
-    "MixinServerPlayer",
-    "crafting.menu.MixinAnvilMenu",
-    "crafting.menu.MixinCraftingMenu",
-    "crafting.menu.MixinEnchantmentMenu",
-    "crafting.menu.MixinGrindStoneMenu",
-    "crafting.menu.MixingSmithingMenu",
-    "crafting.menu.MixinItemCombinerMenu",
-    "crafting.block.MixinAbstractFurnaceBlockEntity",
-    "crafting.block.MixinBrewingStandBlockEntity"
+    "MixinServerPlayer"
   ],
   "injectors": {
     "defaultRequire": 1

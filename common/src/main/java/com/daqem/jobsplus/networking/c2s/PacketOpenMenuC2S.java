@@ -6,7 +6,7 @@ import com.daqem.jobsplus.networking.JobsPlusNetworking;
 import com.daqem.jobsplus.networking.s2c.PacketOpenMenuS2C;
 import com.daqem.jobsplus.networking.s2c.PacketOpenUpdateScreenS2C;
 import com.daqem.jobsplus.player.JobsServerPlayer;
-import com.daqem.jobsplus.player.job.JobSerializer;
+import com.daqem.jobsplus.player.job.Job;
 import dev.architectury.networking.NetworkManager;
 import dev.architectury.networking.simple.BaseC2SMessage;
 import dev.architectury.networking.simple.MessageType;
@@ -86,7 +86,7 @@ public class PacketOpenMenuC2S extends BaseC2SMessage {
         if (context.getPlayer() instanceof JobsServerPlayer serverPlayer) {
             try {
                 CompoundTag serverData = new CompoundTag();
-                ListTag listTag = JobSerializer.toNBT(serverPlayer.jobsplus$getJobs());
+                ListTag listTag = Job.Serializer.toNBT(serverPlayer.jobsplus$getJobs());
 
                 listTag.addAll(serverPlayer.jobsplus$inactiveJobsToNBT());
                 serverData.put(Constants.JOBS, listTag);

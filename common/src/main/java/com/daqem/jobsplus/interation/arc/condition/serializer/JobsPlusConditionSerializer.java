@@ -19,7 +19,5 @@ public interface JobsPlusConditionSerializer<T extends ICondition> extends Condi
     IConditionSerializer<PowerupNotActiveCondition> POWERUP_NOT_ACTIVE = ConditionSerializer.register(JobsPlus.getId("powerup_not_active"), new PowerupNotActiveCondition.Serializer());
 
     static void init() {
-        JobsPlus.LOGGER.info("Registered Arc Condition Serializers");
-        JobsPlus.LOGGER.info(ArcRegistry.ACTION.getOptional(ActionType.CRAFT_ITEM.getLocation()).get().getLocation().toString());
     }
 }

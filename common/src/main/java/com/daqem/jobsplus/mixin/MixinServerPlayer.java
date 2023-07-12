@@ -5,24 +5,19 @@ import com.daqem.arc.api.player.ArcPlayer;
 import com.daqem.jobsplus.Constants;
 import com.daqem.jobsplus.JobsPlus;
 import com.daqem.jobsplus.config.JobsPlusCommonConfig;
+import com.daqem.jobsplus.interation.arc.action.holder.holders.job.JobInstance;
+import com.daqem.jobsplus.interation.arc.action.holder.holders.job.JobManager;
 import com.daqem.jobsplus.networking.sync.jobs.ClientboundUpdateJobPacket;
 import com.daqem.jobsplus.player.JobsServerPlayer;
 import com.daqem.jobsplus.player.job.Job;
-import com.daqem.jobsplus.player.job.JobSerializer;
-import com.daqem.jobsplus.data.crafting.CraftingResult;
-import com.daqem.jobsplus.data.crafting.CraftingType;
-import com.daqem.jobsplus.interation.arc.action.holder.holders.job.JobInstance;
-import com.daqem.jobsplus.interation.arc.action.holder.holders.job.JobManager;
 import com.daqem.jobsplus.player.job.powerup.Powerup;
 import com.mojang.authlib.GameProfile;
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.player.ProfilePublicKey;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
@@ -38,9 +33,12 @@ import java.util.stream.Collectors;
 @Mixin(ServerPlayer.class)
 public abstract class MixinServerPlayer extends Player implements JobsServerPlayer {
 
-    private List<Job> jobs = new ArrayList<>();
-    private int coins = 0;
-    private boolean updatedFromOldJobsPLus = false;
+    @Unique
+    private List<Job> jobsplus$jobs = new ArrayList<>();
+    @Unique
+    private int jobsplus$coins = 0;
+    @Unique
+    private boolean jobsplus$updatedFromOldJobsPLus = false;
 
     public MixinServerPlayer(Level level, BlockPos blockPos, float yaw, GameProfile gameProfile, @Nullable ProfilePublicKey profilePublicKey) {
         super(level, blockPos, yaw, gameProfile, profilePublicKey);
@@ -48,12 +46,12 @@ public abstract class MixinServerPlayer extends Player implements JobsServerPlay
 
     @Override
     public List<Job> jobsplus$getJobs() {
-        return jobs;
+        return jobsplus$jobs;
     }
 
     @Override
     public List<JobInstance> jobsplus$getJobInstances() {
-        return jobs.stream().map(Job::getJobInstance).toList();
+        return jobsplus$jobs.stream().map(Job::getJobInstance).toList();
     }
 
     @Override
@@ -70,7 +68,7 @@ public abstract class MixinServerPlayer extends Player implements JobsServerPlay
         Job job = jobsplus$getJob(jobInstance);
         if (job == null) {
             job = new Job(this, jobInstance, 1, 0);
-            jobs.add(job);
+            jobsplus$jobs.add(job);
             jobsplus$updateJob(job);
             return job;
         }
@@ -81,7 +79,7 @@ public abstract class MixinServerPlayer extends Player implements JobsServerPlay
     public void jobsplus$removeJob(JobInstance jobInstance) {
         Job job = jobsplus$getJob(jobInstance);
         if (job != null) {
-            jobs.remove(job);
+            jobsplus$jobs.remove(job);
             jobsplus$updateJob(job);
         }
     }
@@ -105,7 +103,7 @@ public abstract class MixinServerPlayer extends Player implements JobsServerPlay
     @Override
     public @Nullable Job jobsplus$getJob(@Nullable JobInstance jobLocation) {
         if (jobLocation == null) return null;
-        return this.jobs.stream()
+        return this.jobsplus$jobs.stream()
                 .filter(job -> job.getJobInstance().getLocation().equals(jobLocation.getLocation()))
                 .findFirst()
                 .orElse(null);
@@ -113,17 +111,17 @@ public abstract class MixinServerPlayer extends Player implements JobsServerPlay
 
     @Override
     public int jobsplus$getCoins() {
-        return coins;
+        return jobsplus$coins;
     }
 
     @Override
     public void jobsplus$addCoins(int coins) {
-        this.coins += coins;
+        this.jobsplus$coins += coins;
     }
 
     @Override
     public void jobsplus$setCoins(int coins) {
-        this.coins = coins;
+        this.jobsplus$coins = coins;
     }
 
     @Override
@@ -159,34 +157,13 @@ public abstract class MixinServerPlayer extends Player implements JobsServerPlay
     }
 
     @Override
-    public CraftingResult jobsplus$canCraft(CraftingType crafting, ItemStack itemStack) {
-        for (JobInstance jobInstance : JobManager.getInstance().getJobs().values()) {
-            Job job = jobsplus$getJob(jobInstance);
-            int level = job == null ? 0 : job.getLevel();
-            CraftingResult craftingResult = jobInstance.canCraft(crafting, itemStack, level);
-            if (!craftingResult.canCraft()) {
-                if (!JobsPlusCommonConfig.restrictionsEnabledForCreative.get()) {
-                    if (jobsplus$getServerPlayer().isCreative()) {
-                        if (JobsPlusCommonConfig.showRestrictionMessageForCreative.get()) {
-                            jobsplus$getServerPlayer().sendSystemMessage(JobsPlus.translatable("inventory.bypass").withStyle(ChatFormatting.GREEN), true);
-                        }
-                        return new CraftingResult(true);
-                    }
-                }
-                return craftingResult;
-            }
-        }
-        return new CraftingResult(true);
-    }
-
-    @Override
     public boolean jobsplus$getUpdatedFromOldJobsPlus() {
-        return this.updatedFromOldJobsPLus;
+        return this.jobsplus$updatedFromOldJobsPLus;
     }
 
     @Override
     public void jobsplus$setUpdatedFromOldJobsPlus(boolean updatedFromOldJobsPlus) {
-        this.updatedFromOldJobsPLus = updatedFromOldJobsPlus;
+        this.jobsplus$updatedFromOldJobsPLus = updatedFromOldJobsPlus;
     }
 
     @Override
@@ -226,18 +203,18 @@ public abstract class MixinServerPlayer extends Player implements JobsServerPlay
     @Inject(at = @At("TAIL"), method = "restoreFrom(Lnet/minecraft/server/level/ServerPlayer;Z)V")
     public void restoreFrom(ServerPlayer oldPlayer, boolean alive, CallbackInfo ci) {
         if (oldPlayer instanceof JobsServerPlayer oldJobsServerPlayer) {
-            this.jobs = oldJobsServerPlayer.jobsplus$getJobs();
-            this.coins = oldJobsServerPlayer.jobsplus$getCoins();
-            this.updatedFromOldJobsPLus = oldJobsServerPlayer.jobsplus$getUpdatedFromOldJobsPlus();
+            this.jobsplus$jobs = oldJobsServerPlayer.jobsplus$getJobs();
+            this.jobsplus$coins = oldJobsServerPlayer.jobsplus$getCoins();
+            this.jobsplus$updatedFromOldJobsPLus = oldJobsServerPlayer.jobsplus$getUpdatedFromOldJobsPlus();
         }
     }
 
     @Inject(at = @At("TAIL"), method = "addAdditionalSaveData(Lnet/minecraft/nbt/CompoundTag;)V")
     public void addAdditionalSaveData(CompoundTag compoundTag, CallbackInfo ci) {
         CompoundTag jobsTag = new CompoundTag();
-        jobsTag.put(Constants.JOBS, JobSerializer.toNBT(this.jobs));
-        jobsTag.putInt(Constants.COINS, this.coins);
-        jobsTag.putBoolean(Constants.JOBSPLUS_UPDATE, this.updatedFromOldJobsPLus);
+        jobsTag.put(Constants.JOBS, Job.Serializer.toNBT(this.jobsplus$jobs));
+        jobsTag.putInt(Constants.COINS, this.jobsplus$coins);
+        jobsTag.putBoolean(Constants.JOBSPLUS_UPDATE, this.jobsplus$updatedFromOldJobsPLus);
 
         compoundTag.put(Constants.JOBS_DATA, jobsTag);
     }
@@ -245,16 +222,16 @@ public abstract class MixinServerPlayer extends Player implements JobsServerPlay
     @Inject(at = @At("TAIL"), method = "readAdditionalSaveData(Lnet/minecraft/nbt/CompoundTag;)V")
     public void readAdditionalSaveData(CompoundTag compoundTag, CallbackInfo ci) {
         CompoundTag jobsTag = compoundTag.getCompound(Constants.JOBS_DATA);
-        this.jobs = JobSerializer.fromNBT(this, jobsTag).stream()
+        this.jobsplus$jobs = Job.Serializer.fromNBT(this, jobsTag).stream()
                 .filter(job -> job.getJobInstance() != null)
                 .collect(Collectors.toCollection(ArrayList::new));
-        this.coins = jobsTag.getInt(Constants.COINS);
+        this.jobsplus$coins = jobsTag.getInt(Constants.COINS);
 
-        this.updatedFromOldJobsPLus = jobsTag.getBoolean(Constants.JOBSPLUS_UPDATE);
+        this.jobsplus$updatedFromOldJobsPLus = jobsTag.getBoolean(Constants.JOBSPLUS_UPDATE);
 
         CompoundTag forgeCaps = compoundTag.getCompound("ForgeCaps").getCompound("jobsplus:jobs");
         if (!forgeCaps.isEmpty()) {
-            readFromOldJobsPlusData(forgeCaps);
+            jobsplus$readFromOldJobsPlusData(forgeCaps);
         }
 
         if (jobsplus$getServerPlayer() instanceof ArcPlayer arcPlayer) {
@@ -263,11 +240,11 @@ public abstract class MixinServerPlayer extends Player implements JobsServerPlay
     }
 
     @Unique
-    private void readFromOldJobsPlusData(CompoundTag tag) {
+    private void jobsplus$readFromOldJobsPlusData(CompoundTag tag) {
         Map<String, int[]> map = new HashMap<>();
         List<Job> jobs = new ArrayList<>();
 
-        this.coins = tag.getInt("coins");
+        this.jobsplus$coins = tag.getInt("coins");
 
         map.put("alchemist", tag.getIntArray("alchemist"));
         map.put("builder", tag.getIntArray("builder"));
@@ -291,7 +268,7 @@ public abstract class MixinServerPlayer extends Player implements JobsServerPlay
                 this.jobsplus$addCoins((int) (powerUps.stream().filter(b -> b).count() * 10));
             }
         });
-        this.jobs = jobs;
-        this.updatedFromOldJobsPLus = true;
+        this.jobsplus$jobs = jobs;
+        this.jobsplus$updatedFromOldJobsPLus = true;
     }
 }

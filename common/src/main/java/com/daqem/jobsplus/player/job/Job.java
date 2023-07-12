@@ -178,5 +178,28 @@ public class Job {
                 friendlyByteBuf.writeEnum(powerup.getPowerupState());
             }
         }
+
+        public static List<Job> fromNBT(JobsServerPlayer player, CompoundTag compoundTag) {
+            ListTag listTag = compoundTag.getList(Constants.JOBS, Tag.TAG_COMPOUND);
+            List<Job> jobs = new ArrayList<>();
+
+            for (Tag jobTag : listTag) {
+                CompoundTag jobNBT = (CompoundTag) jobTag;
+                jobs.add(Job.fromNBT(player, jobNBT));
+            }
+
+            return jobs;
+        }
+
+        public static ListTag toNBT(List<Job> jobs) {
+
+            ListTag jobsListTag = new ListTag();
+            for (Job job : jobs) {
+                CompoundTag jobNBT = job.toNBT();
+                jobsListTag.add(jobNBT);
+            }
+
+            return jobsListTag;
+        }
     }
 }

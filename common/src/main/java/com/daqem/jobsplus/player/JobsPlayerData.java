@@ -2,7 +2,6 @@ package com.daqem.jobsplus.player;
 
 import com.daqem.jobsplus.Constants;
 import com.daqem.jobsplus.player.job.Job;
-import com.daqem.jobsplus.player.job.JobSerializer;
 import net.minecraft.nbt.CompoundTag;
 
 import java.util.ArrayList;
@@ -43,7 +42,7 @@ public record JobsPlayerData(List<Job> activeJobs, List<Job> inactiveJobs, int c
         int coins = compoundTag.getInt(Constants.COINS);
         List<Job> activeJobs = new ArrayList<>();
         List<Job> inactiveJobs = new ArrayList<>();
-        JobSerializer.fromNBT(null, compoundTag)
+        Job.Serializer.fromNBT(null, compoundTag)
                 .forEach(job -> {
                     if (job.getLevel() > 0) {
                         activeJobs.add(job);

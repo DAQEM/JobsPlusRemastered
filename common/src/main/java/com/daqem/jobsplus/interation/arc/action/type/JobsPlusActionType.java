@@ -13,6 +13,5 @@ public interface JobsPlusActionType<T extends IAction> extends ActionType<T> {
     ActionType<JobLevelUpAction> JOB_LEVEL_UP = ActionType.register(JobsPlus.getId("on_job_level_up"));
 
     static void init() {
-        JobsPlus.LOGGER.info("Registered Arc Action Types");
     }
 }

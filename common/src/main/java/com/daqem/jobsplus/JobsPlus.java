@@ -3,8 +3,6 @@ package com.daqem.jobsplus;
 import com.daqem.arc.registry.ArcRegistry;
 import com.daqem.jobsplus.event.EventPlayerJoin;
 import com.daqem.jobsplus.event.command.EventRegisterCommands;
-import com.daqem.jobsplus.event.triggers.BlockEvents;
-import com.daqem.jobsplus.event.triggers.EntityEvents;
 import com.daqem.jobsplus.interation.arc.action.holder.type.JobsPlusActionHolderType;
 import com.daqem.jobsplus.interation.arc.action.serializer.JobsPlusActionSerializer;
 import com.daqem.jobsplus.interation.arc.action.type.JobsPlusActionType;
@@ -44,8 +42,6 @@ public class JobsPlus {
     private static void registerEvents() {
         EventRegisterCommands.registerEvent();
 
-        BlockEvents.registerEvents();
-        EntityEvents.registerEvents();
         EventPlayerJoin.registerEvent();
     }
 

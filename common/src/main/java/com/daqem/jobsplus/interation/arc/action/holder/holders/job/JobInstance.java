@@ -3,23 +3,19 @@ package com.daqem.jobsplus.interation.arc.action.holder.holders.job;
 import com.daqem.arc.api.action.IAction;
 import com.daqem.arc.api.action.holder.IActionHolder;
 import com.daqem.arc.api.action.holder.type.IActionHolderType;
-import com.daqem.jobsplus.JobsPlus;
+import com.daqem.itemrestrictions.data.ItemRestriction;
+import com.daqem.itemrestrictions.data.ItemRestrictionManager;
 import com.daqem.jobsplus.config.JobsPlusCommonConfig;
-import com.daqem.jobsplus.data.crafting.CraftingResult;
-import com.daqem.jobsplus.data.crafting.CraftingType;
-import com.daqem.jobsplus.data.crafting.restriction.CraftingRestriction;
-import com.daqem.jobsplus.data.crafting.restriction.restrictions.ItemCraftingRestriction;
-import com.daqem.jobsplus.data.crafting.restriction.restrictions.TagCraftingRestriction;
 import com.daqem.jobsplus.data.serializer.JobsPlusSerializer;
 import com.daqem.jobsplus.interation.arc.action.holder.holders.powerup.PowerupInstance;
 import com.daqem.jobsplus.interation.arc.action.holder.type.JobsPlusActionHolderType;
-import com.google.gson.*;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import net.minecraft.nbt.TagParser;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
@@ -39,9 +35,9 @@ public class JobInstance implements IActionHolder {
     private final String description;
     private final ResourceLocation powerupBackground;
     private final boolean isDefault;
-    private List<IAction> actions;
+    private final List<IAction> actions;
     private List<PowerupInstance> powerupInstances;
-    private List<CraftingRestriction> craftingRestrictions = new ArrayList<>();
+    private List<ItemRestriction> itemRestrictions;
 
     public JobInstance(String name, int price, int maxLevel, String color, ItemStack iconItem, String description, ResourceLocation powerupBackground, boolean isDefault) {
         this(name, price, maxLevel, color, iconItem, description, powerupBackground, isDefault, new ArrayList<>(), new ArrayList<>());
@@ -119,38 +115,12 @@ public class JobInstance implements IActionHolder {
         return isDefault;
     }
 
-    public void setCraftingRestrictions(List<CraftingRestriction> craftingRestrictions) {
-        this.craftingRestrictions = craftingRestrictions;
-    }
-
-    public CraftingResult canCraft(CraftingType craftingType, ItemStack itemStack, int level) {
-        if (craftingRestrictions.isEmpty()) {
-            return new CraftingResult(true);
+    public List<ItemRestriction> getItemRestrictions() {
+        if (itemRestrictions == null) {
+            itemRestrictions = new ArrayList<>();
+            //TODO: Get item restrictions from manager based on the conditions
         }
-        for (CraftingRestriction craftingRestriction : craftingRestrictions) {
-            CraftingResult craftingResult = craftingRestriction.canCraft(craftingType, itemStack, level, this);
-            if (!craftingResult.canCraft()) {
-                return craftingResult;
-            }
-        }
-        return new CraftingResult(true);
-    }
-
-
-    public List<ItemCraftingRestriction> getItemCraftingRestrictions() {
-        if (craftingRestrictions == null) {
-            return new ArrayList<>();
-        }
-        List<ItemCraftingRestriction> itemCraftingRestrictions = new ArrayList<>();
-        for (CraftingRestriction craftingRestriction : craftingRestrictions) {
-            if (craftingRestriction instanceof ItemCraftingRestriction) {
-                itemCraftingRestrictions.add((ItemCraftingRestriction) craftingRestriction);
-            }
-            if (craftingRestriction instanceof TagCraftingRestriction tagCraftingRestriction) {
-                itemCraftingRestrictions.addAll(tagCraftingRestriction.toItemCraftingRestrictions());
-            }
-        }
-        return itemCraftingRestrictions;
+        return itemRestrictions;
     }
 
     public void setPowerups(List<PowerupInstance> powerupInstances) {
