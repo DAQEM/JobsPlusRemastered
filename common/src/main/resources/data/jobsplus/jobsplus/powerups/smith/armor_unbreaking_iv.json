@@ -1,0 +1,12 @@
+{
+  "job": "jobsplus:smith",
+  "parent": "jobsplus:smith/armor_unbreaking_iii",
+  "name": "Armor Unbreaking IV",
+  "description": "Armor is 40% less likely to take damage when attacked.",
+  "icon": {
+    "item": "minecraft:diamond_chestplate",
+    "count": 4
+  },
+  "price": 12,
+  "required_level": 50
+}

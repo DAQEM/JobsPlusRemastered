@@ -1,11 +1,17 @@
 package com.daqem.jobsplus.interation.arc.action.holder.holders.powerup;
 
 import com.daqem.arc.api.action.IAction;
+import com.daqem.arc.api.action.data.ActionData;
 import com.daqem.arc.api.action.holder.IActionHolder;
 import com.daqem.arc.api.action.holder.type.IActionHolderType;
+import com.daqem.arc.api.player.ArcPlayer;
 import com.daqem.jobsplus.JobsPlus;
 import com.daqem.jobsplus.data.serializer.JobsPlusSerializer;
 import com.daqem.jobsplus.interation.arc.action.holder.type.JobsPlusActionHolderType;
+import com.daqem.jobsplus.player.JobsPlayer;
+import com.daqem.jobsplus.player.job.Job;
+import com.daqem.jobsplus.player.job.powerup.Powerup;
+import com.daqem.jobsplus.player.job.powerup.PowerupState;
 import com.google.gson.*;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.nbt.TagParser;
@@ -124,6 +130,25 @@ public class PowerupInstance implements IActionHolder {
     @Nullable
     public static PowerupInstance of(ResourceLocation location) {
         return PowerupManager.getInstance().getAllPowerups().get(location);
+    }
+
+    public void clearActions() {
+        actions.clear();
+    }
+
+    @Override
+    public boolean passedHolderCondition(ActionData actionData) {
+        ArcPlayer arcPlayer = actionData.getPlayer();
+        if (arcPlayer instanceof JobsPlayer jobsPlayer) {
+            Job job = jobsPlayer.jobsplus$getJobs().stream().filter(job1 -> job1.getJobInstance().getLocation().equals(this.getJobLocation())).findFirst().orElse(null);
+            if (job != null) {
+                Powerup powerup = job.getPowerupManager().getAllPowerups().stream().filter(powerup1 -> powerup1.getPowerupInstance().getLocation().equals(this.getLocation())).findFirst().orElse(null);
+                if (powerup != null) {
+                    return powerup.getPowerupState() == PowerupState.ACTIVE;
+                }
+            }
+        }
+        return false;
     }
 
     public static class Serializer implements JobsPlusSerializer<PowerupInstance> {

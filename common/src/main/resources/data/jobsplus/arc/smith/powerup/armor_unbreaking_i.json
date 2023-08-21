@@ -1,0 +1,38 @@
+{
+  "holder": {
+    "type": "jobsplus:powerup",
+    "id": "jobsplus:smith/armor_unbreaking_i"
+  },
+  "type": "arc:on_hurt_item",
+  "rewards": [
+    {
+      "type": "arc:cancel_action",
+      "chance": 10
+    }
+  ],
+  "conditions": [
+    {
+      "type": "arc:items",
+      "items": [
+        "#forge:tools/armors",
+        "#c:armor"
+      ]
+    },
+    {
+      "type": "jobsplus:powerup_not_active",
+      "powerup": "jobsplus:smith/armor_unbreaking_ii"
+    },
+    {
+      "type": "jobsplus:powerup_not_active",
+      "powerup": "jobsplus:smith/armor_unbreaking_iii"
+    },
+    {
+      "type": "jobsplus:powerup_not_active",
+      "powerup": "jobsplus:smith/armor_unbreaking_iv"
+    },
+    {
+      "type": "jobsplus:powerup_not_active",
+      "powerup": "jobsplus:smith/armor_unbreaking_v"
+    }
+  ]
+}

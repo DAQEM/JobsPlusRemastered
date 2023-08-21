@@ -1,9 +1,11 @@
 package com.daqem.jobsplus.interation.arc.action.holder.holders.powerup;
 
 import com.daqem.arc.api.action.holder.ActionHolderManager;
+import com.daqem.arc.data.ActionManager;
 import com.daqem.jobsplus.JobsPlus;
 import com.daqem.jobsplus.JobsPlusExpectPlatform;
 import com.daqem.jobsplus.interation.arc.action.holder.holders.job.JobManager;
+import com.daqem.jobsplus.interation.arc.action.holder.type.JobsPlusActionHolderType;
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -47,6 +49,11 @@ public abstract class PowerupManager extends SimpleJsonResourceReloadListener {
                 powerup.setLocation(location);
                 tempPowerups.add(powerup);
                 ActionHolderManager.getInstance().registerActionHolder(powerup);
+
+                powerup.clearActions();
+                ActionManager.getInstance().getActions().stream()
+                        .filter(action -> action.getActionHolderType() == JobsPlusActionHolderType.POWERUP_INSTANCE && action.getActionHolderLocation().equals(location))
+                        .forEach(powerup::addAction);
             } catch (Exception e) {
                 LOGGER.error("Could not deserialize job {} because: {}", location, e.getMessage());
                 throw e;
@@ -55,7 +62,7 @@ public abstract class PowerupManager extends SimpleJsonResourceReloadListener {
 
         powerups = ImmutableMap.copyOf(sortPowerups(tempPowerups));
         JobManager.getInstance().addPowerups(powerups);
-        LOGGER.info("Loaded {} job powerups", powerups.size());
+        LOGGER.info("Loaded {} job powerups", getAllPowerups().size());
     }
 
     public static PowerupManager getInstance() {

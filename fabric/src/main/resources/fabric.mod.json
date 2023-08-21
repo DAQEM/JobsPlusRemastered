@@ -30,6 +30,8 @@
     "fabric": "*",
     "minecraft": ">=1.19.2",
     "architectury": ">=6.2.43",
-    "supermartijn642configlib": ">=1.1.0"
+    "supermartijn642configlib": ">=1.1.0",
+    "arc": ">=0.8.1",
+    "itemrestrictions": ">=0.2.1"
   }
 }

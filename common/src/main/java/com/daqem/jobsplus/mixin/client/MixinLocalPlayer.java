@@ -2,15 +2,18 @@ package com.daqem.jobsplus.mixin.client;
 
 import com.daqem.arc.api.action.holder.IActionHolder;
 import com.daqem.arc.api.player.ArcPlayer;
+import com.daqem.jobsplus.JobsPlus;
 import com.daqem.jobsplus.client.player.JobsClientPlayer;
 import com.daqem.jobsplus.player.job.Job;
 import com.daqem.jobsplus.interation.arc.action.holder.holders.job.JobInstance;
 import com.daqem.jobsplus.interation.arc.action.holder.holders.job.JobManager;
 import com.daqem.jobsplus.player.job.powerup.Powerup;
+import com.daqem.jobsplus.player.job.powerup.PowerupState;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.player.ProfilePublicKey;
 import net.minecraft.world.level.Level;
@@ -18,13 +21,16 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 @Mixin(LocalPlayer.class)
-public class MixinLocalPlayer extends AbstractClientPlayer implements JobsClientPlayer {
+public abstract class MixinLocalPlayer extends AbstractClientPlayer implements JobsClientPlayer {
 
     @Unique
     private final List<Job> jobsplus$jobs = new ArrayList<>();
@@ -67,8 +73,18 @@ public class MixinLocalPlayer extends AbstractClientPlayer implements JobsClient
     }
 
     @Override
-    public void jobsplus$removeJob(JobInstance job) {
-        jobsplus$jobs.remove(jobsplus$getJob(job));
+    public void jobsplus$removeJob(JobInstance jobInstance) {
+        Job jobToRemove = jobsplus$getJob(jobInstance);
+        jobsplus$jobs.remove(jobToRemove);
+        jobsplus$removeActionHolders(jobToRemove);
+    }
+
+    @Override
+    public void jobsplus$removeActionHolders(Job job) {
+        if (jobsplus$getLocalPlayer() instanceof ArcPlayer arcPlayer) {
+            arcPlayer.arc$removeActionHolder(job.getJobInstance());
+            job.getPowerupManager().getAllPowerups().forEach(powerup -> arcPlayer.arc$removeActionHolder(powerup.getPowerupInstance()));
+        }
     }
 
     @Override
@@ -141,6 +157,11 @@ public class MixinLocalPlayer extends AbstractClientPlayer implements JobsClient
     public void jobsplus$replaceJobs(List<Job> jobs) {
         jobsplus$jobs.clear();
         jobsplus$jobs.addAll(jobs);
+
+        if (jobsplus$getLocalPlayer() instanceof ArcPlayer arcPlayer) {
+            arcPlayer.arc$getActionHolders().forEach(arcPlayer::arc$removeActionHolder);
+            arcPlayer.arc$addActionHolders(jobsplus$getActionHolders());
+        }
     }
 
     @Override
@@ -150,7 +171,9 @@ public class MixinLocalPlayer extends AbstractClientPlayer implements JobsClient
 
         if (jobsplus$getLocalPlayer() instanceof ArcPlayer arcPlayer) {
             arcPlayer.arc$removeActionHolder(job.getJobInstance());
+            job.getPowerupManager().getAllPowerups().forEach(powerup -> arcPlayer.arc$removeActionHolder(powerup.getPowerupInstance()));
             arcPlayer.arc$addActionHolder(job.getJobInstance());
+            job.getPowerupManager().getAllPowerups().forEach(powerup -> arcPlayer.arc$addActionHolder(powerup.getPowerupInstance()));
         }
     }
 }

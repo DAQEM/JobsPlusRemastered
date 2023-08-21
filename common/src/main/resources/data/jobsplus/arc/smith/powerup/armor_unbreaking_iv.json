@@ -1,22 +1,26 @@
 {
   "holder": {
     "type": "jobsplus:powerup",
-    "id": "jobsplus:digger/shovel_unbreaking_v"
+    "id": "jobsplus:smith/armor_unbreaking_iv"
   },
   "type": "arc:on_hurt_item",
   "rewards": [
     {
       "type": "arc:cancel_action",
-      "chance": 50
+      "chance": 40
     }
   ],
   "conditions": [
     {
       "type": "arc:items",
       "items": [
-        "#forge:tools/shovels",
-        "#c:shovels"
+        "#forge:tools/armors",
+        "#c:armor"
       ]
+    },
+    {
+      "type": "jobsplus:powerup_not_active",
+      "powerup": "jobsplus:smith/armor_unbreaking_v"
     }
   ]
 }

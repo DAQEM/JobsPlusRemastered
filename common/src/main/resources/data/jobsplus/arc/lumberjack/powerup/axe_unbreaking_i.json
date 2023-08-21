@@ -1,7 +1,7 @@
 {
   "holder": {
     "type": "jobsplus:powerup",
-    "id": "jobsplus:digger/shovel_unbreaking_i"
+    "id": "jobsplus:lumberjack/axe_unbreaking_i"
   },
   "type": "arc:on_hurt_item",
   "rewards": [
@@ -14,25 +14,25 @@
     {
       "type": "arc:items",
       "items": [
-        "#forge:tools/shovels",
-        "#c:shovels"
+        "#forge:tools/axes",
+        "#c:axes"
       ]
     },
     {
       "type": "jobsplus:powerup_not_active",
-      "powerup": "jobsplus:digger/shovel_unbreaking_ii"
+      "powerup": "jobsplus:lumberjack/axe_unbreaking_ii"
     },
     {
       "type": "jobsplus:powerup_not_active",
-      "powerup": "jobsplus:digger/shovel_unbreaking_iii"
+      "powerup": "jobsplus:lumberjack/axe_unbreaking_iii"
     },
     {
       "type": "jobsplus:powerup_not_active",
-      "powerup": "jobsplus:digger/shovel_unbreaking_iv"
+      "powerup": "jobsplus:lumberjack/axe_unbreaking_iv"
     },
     {
       "type": "jobsplus:powerup_not_active",
-      "powerup": "jobsplus:digger/shovel_unbreaking_v"
+      "powerup": "jobsplus:lumberjack/axe_unbreaking_v"
     }
   ]
 }

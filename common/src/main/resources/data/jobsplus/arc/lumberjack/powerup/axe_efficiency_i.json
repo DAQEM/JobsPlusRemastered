@@ -1,7 +1,7 @@
  {
   "holder": {
     "type": "jobsplus:powerup",
-    "id": "jobsplus:digger/shovel_efficiency_i"
+    "id": "jobsplus:lumberjack/axe_efficiency_i"
   },
   "type": "arc:on_get_destroy_speed",
   "rewards": [
@@ -14,31 +14,31 @@
     {
       "type": "arc:items",
       "items": [
-        "#forge:tools/shovels",
-        "#c:shovels"
+        "#forge:tools/axes",
+        "#c:axes"
       ]
     },
     {
       "type": "arc:blocks",
       "blocks": [
-        "#minecraft:mineable/shovel"
+        "#minecraft:mineable/axe"
       ]
     },
     {
       "type": "jobsplus:powerup_not_active",
-      "powerup": "jobsplus:digger/shovel_efficiency_ii"
+      "powerup": "jobsplus:lumberjack/axe_efficiency_ii"
     },
     {
       "type": "jobsplus:powerup_not_active",
-      "powerup": "jobsplus:digger/shovel_efficiency_iii"
+      "powerup": "jobsplus:lumberjack/axe_efficiency_iii"
     },
     {
       "type": "jobsplus:powerup_not_active",
-      "powerup": "jobsplus:digger/shovel_efficiency_iv"
+      "powerup": "jobsplus:lumberjack/axe_efficiency_iv"
     },
     {
       "type": "jobsplus:powerup_not_active",
-      "powerup": "jobsplus:digger/shovel_efficiency_v"
+      "powerup": "jobsplus:lumberjack/axe_efficiency_v"
     }
   ]
 }

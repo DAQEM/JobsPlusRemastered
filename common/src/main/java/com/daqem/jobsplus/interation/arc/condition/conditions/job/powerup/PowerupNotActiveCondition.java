@@ -37,9 +37,9 @@ public class PowerupNotActiveCondition extends AbstractCondition {
                     .findFirst()
                     .orElse(null);
 
-            return powerup != null
+            return powerup == null || (powerup != null
                     && (powerup.getPowerupInstance().getLocation().equals(this.powerupThatShouldNotBeActiveLocation)
-                    && powerup.getPowerupState() != PowerupState.ACTIVE);
+                    && powerup.getPowerupState() != PowerupState.ACTIVE));
         }
         return false;
     }

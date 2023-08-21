@@ -1,5 +1,6 @@
 package com.daqem.jobsplus.networking.c2s;
 
+import com.daqem.arc.api.player.ArcPlayer;
 import com.daqem.jobsplus.networking.JobsPlusNetworking;
 import com.daqem.jobsplus.networking.utils.ConfirmationMessageType;
 import com.daqem.jobsplus.player.JobsServerPlayer;

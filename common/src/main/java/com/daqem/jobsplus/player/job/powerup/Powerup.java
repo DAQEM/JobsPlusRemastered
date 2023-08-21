@@ -1,6 +1,9 @@
 package com.daqem.jobsplus.player.job.powerup;
 
+import com.daqem.arc.api.player.ArcPlayer;
 import com.daqem.jobsplus.interation.arc.action.holder.holders.powerup.PowerupInstance;
+import com.daqem.jobsplus.player.JobsPlayer;
+import com.daqem.jobsplus.player.JobsServerPlayer;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import net.minecraft.util.GsonHelper;
@@ -53,20 +56,6 @@ public class Powerup {
         } else if (powerupState == PowerupState.INACTIVE) {
             powerupState = PowerupState.ACTIVE;
         }
-    }
-
-    @Override
-    public String toString() {
-        JsonObject json = new JsonObject();
-//        json.add("powerupInstance", GsonHelper.parse(powerupInstance.toShortString()));
-        json.addProperty("powerupState", powerupState.name());
-        json.addProperty("parent", parent == null ? "null" : parent.getPowerupInstance().getLocation().toString());
-        JsonArray children = new JsonArray();
-        for (Powerup powerup : getChildren()) {
-            children.add(GsonHelper.parse(powerup.toString()));
-        }
-        json.add("children", children);
-        return json.toString();
     }
 
     public boolean hasActiveChildren() {

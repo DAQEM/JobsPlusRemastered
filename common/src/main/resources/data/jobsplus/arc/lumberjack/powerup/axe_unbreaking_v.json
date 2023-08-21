@@ -1,0 +1,22 @@
+{
+  "holder": {
+    "type": "jobsplus:powerup",
+    "id": "jobsplus:lumberjack/axe_unbreaking_v"
+  },
+  "type": "arc:on_hurt_item",
+  "rewards": [
+    {
+      "type": "arc:cancel_action",
+      "chance": 50
+    }
+  ],
+  "conditions": [
+    {
+      "type": "arc:items",
+      "items": [
+        "#forge:tools/axes",
+        "#c:axes"
+      ]
+    }
+  ]
+}

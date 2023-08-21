@@ -1,0 +1,12 @@
+{
+  "job": "jobsplus:lumberjack",
+  "parent": "jobsplus:lumberjack/axe_efficiency_iii",
+  "name": "Axe Efficiency IV",
+  "description": "Axes dig 40% faster.",
+  "icon": {
+    "item": "minecraft:golden_axe",
+    "count": 4
+  },
+  "price": 12,
+  "required_level": 50
+}

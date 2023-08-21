@@ -9,6 +9,7 @@ import com.daqem.jobsplus.config.JobsPlusCommonConfig;
 import com.daqem.jobsplus.data.serializer.JobsPlusSerializer;
 import com.daqem.jobsplus.interation.arc.action.holder.holders.powerup.PowerupInstance;
 import com.daqem.jobsplus.interation.arc.action.holder.type.JobsPlusActionHolderType;
+import com.daqem.jobsplus.interation.arc.condition.conditions.job.HasJobCondition;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -117,8 +118,11 @@ public class JobInstance implements IActionHolder {
 
     public List<ItemRestriction> getItemRestrictions() {
         if (itemRestrictions == null) {
-            itemRestrictions = new ArrayList<>();
-            //TODO: Get item restrictions from manager based on the conditions
+            itemRestrictions = ItemRestrictionManager.getInstance().getItemRestrictions().stream()
+                    .filter(itemRestriction -> itemRestriction.getConditions().stream()
+                            .anyMatch(condition -> condition instanceof HasJobCondition hasJobCondition
+                                    && hasJobCondition.getJobLocation().equals(location)))
+                    .toList();
         }
         return itemRestrictions;
     }
@@ -148,6 +152,10 @@ public class JobInstance implements IActionHolder {
     @Nullable
     public static JobInstance of(ResourceLocation location) {
         return JobManager.getInstance().getJobs().get(location);
+    }
+
+    public void clearActions() {
+        actions.clear();
     }
 
     public static class Serializer implements JobsPlusSerializer<JobInstance> {

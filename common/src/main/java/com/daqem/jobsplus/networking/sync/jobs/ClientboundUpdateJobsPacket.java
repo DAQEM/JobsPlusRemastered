@@ -1,6 +1,5 @@
 package com.daqem.jobsplus.networking.sync.jobs;
 
-import com.daqem.jobsplus.JobsPlus;
 import com.daqem.jobsplus.client.player.JobsClientPlayer;
 import com.daqem.jobsplus.networking.JobsPlusNetworking;
 import com.daqem.jobsplus.player.JobsPlayer;

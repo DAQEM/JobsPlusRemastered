@@ -1,10 +1,12 @@
 package com.daqem.jobsplus.interation.arc.action.holder.holders.job;
 
 import com.daqem.arc.api.action.holder.ActionHolderManager;
+import com.daqem.arc.data.ActionManager;
 import com.daqem.jobsplus.JobsPlus;
 import com.daqem.jobsplus.JobsPlusExpectPlatform;
 import com.daqem.jobsplus.config.JobsPlusCommonConfig;
 import com.daqem.jobsplus.interation.arc.action.holder.holders.powerup.PowerupInstance;
+import com.daqem.jobsplus.interation.arc.action.holder.type.JobsPlusActionHolderType;
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -49,6 +51,11 @@ public abstract class JobManager extends SimpleJsonResourceReloadListener {
                     job.setLocation(location);
                     tempJobInstances.put(location, job);
                     ActionHolderManager.getInstance().registerActionHolder(job);
+
+                    job.clearActions();
+                    ActionManager.getInstance().getActions().stream()
+                            .filter(action -> action.getActionHolderType() == JobsPlusActionHolderType.JOB_INSTANCE && action.getActionHolderLocation().equals(location))
+                            .forEach(job::addAction);
                 }
             } catch (Exception e) {
                 LOGGER.error("Could not deserialize job {} because: {}", location.toString(), e.getMessage());

@@ -2,11 +2,13 @@ package com.daqem.jobsplus.mixin;
 
 import com.daqem.arc.api.action.holder.IActionHolder;
 import com.daqem.arc.api.player.ArcPlayer;
+import com.daqem.arc.api.player.ArcServerPlayer;
 import com.daqem.jobsplus.Constants;
 import com.daqem.jobsplus.JobsPlus;
 import com.daqem.jobsplus.config.JobsPlusCommonConfig;
 import com.daqem.jobsplus.interation.arc.action.holder.holders.job.JobInstance;
 import com.daqem.jobsplus.interation.arc.action.holder.holders.job.JobManager;
+import com.daqem.jobsplus.networking.sync.jobs.ClientboundRemoveJobPacket;
 import com.daqem.jobsplus.networking.sync.jobs.ClientboundUpdateJobPacket;
 import com.daqem.jobsplus.player.JobsServerPlayer;
 import com.daqem.jobsplus.player.job.Job;
@@ -80,7 +82,16 @@ public abstract class MixinServerPlayer extends Player implements JobsServerPlay
         Job job = jobsplus$getJob(jobInstance);
         if (job != null) {
             jobsplus$jobs.remove(job);
-            jobsplus$updateJob(job);
+            jobsplus$removeActionHolders(job);
+            jobsplus$removeJobOnClient(job);
+        }
+    }
+
+    @Override
+    public void jobsplus$removeActionHolders(Job job) {
+        if (jobsplus$getServerPlayer() instanceof ArcPlayer arcPlayer) {
+            arcPlayer.arc$removeActionHolder(job.getJobInstance());
+            job.getPowerupManager().getAllPowerups().forEach(powerup -> arcPlayer.arc$removeActionHolder(powerup.getPowerupInstance()));
         }
     }
 
@@ -135,7 +146,7 @@ public abstract class MixinServerPlayer extends Player implements JobsServerPlay
         actionHolders.addAll(jobsplus$getJobs().stream()
                 .map(Job::getPowerupManager)
                 .flatMap(powerupManager -> powerupManager.getAllPowerups().stream())
-                        .map(Powerup::getPowerupInstance)
+                .map(Powerup::getPowerupInstance)
                 .toList());
         return actionHolders;
     }
@@ -186,13 +197,20 @@ public abstract class MixinServerPlayer extends Player implements JobsServerPlay
     public void jobsplus$updateActionHolders(Job job) {
         if (jobsplus$getServerPlayer() instanceof ArcPlayer arcPlayer) {
             arcPlayer.arc$removeActionHolder(job.getJobInstance());
+            job.getPowerupManager().getAllPowerups().forEach(powerup -> arcPlayer.arc$removeActionHolder(powerup.getPowerupInstance()));
             arcPlayer.arc$addActionHolder(job.getJobInstance());
+            job.getPowerupManager().getAllPowerups().forEach(powerup -> arcPlayer.arc$addActionHolder(powerup.getPowerupInstance()));
         }
     }
 
     @Override
     public void jobsplus$updateJobOnClient(Job job) {
         new ClientboundUpdateJobPacket(job).sendTo(jobsplus$getServerPlayer());
+    }
+
+    @Override
+    public void jobsplus$removeJobOnClient(Job job) {
+        new ClientboundRemoveJobPacket(job.getJobInstance().getLocation()).sendTo(jobsplus$getServerPlayer());
     }
 
     @Override
@@ -234,8 +252,9 @@ public abstract class MixinServerPlayer extends Player implements JobsServerPlay
             jobsplus$readFromOldJobsPlusData(forgeCaps);
         }
 
-        if (jobsplus$getServerPlayer() instanceof ArcPlayer arcPlayer) {
-            arcPlayer.arc$addActionHolders(new ArrayList<>(this.jobsplus$getActionHolders()));
+        if (jobsplus$getServerPlayer() instanceof ArcServerPlayer arcServerPlayer) {
+            List<IActionHolder> iActionHolders = this.jobsplus$getActionHolders();
+            arcServerPlayer.arc$addActionHolders(new ArrayList<>(iActionHolders));
         }
     }
 

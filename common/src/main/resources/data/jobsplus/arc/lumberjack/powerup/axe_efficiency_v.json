@@ -1,7 +1,7 @@
 {
   "holder": {
     "type": "jobsplus:powerup",
-    "id": "jobsplus:digger/shovel_efficiency_v"
+    "id": "jobsplus:lumberjack/axe_efficiency_v"
   },
   "type": "arc:on_get_destroy_speed",
   "rewards": [
@@ -14,14 +14,14 @@
     {
       "type": "arc:items",
       "items": [
-        "#forge:tools/shovels",
-        "#c:shovels"
+        "#forge:tools/axes",
+        "#c:axes"
       ]
     },
     {
       "type": "arc:blocks",
       "blocks": [
-        "#minecraft:mineable/shovel"
+        "#minecraft:mineable/axe"
       ]
     }
   ]

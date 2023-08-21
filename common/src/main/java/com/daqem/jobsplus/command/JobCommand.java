@@ -1,5 +1,6 @@
 package com.daqem.jobsplus.command;
 
+import com.daqem.arc.api.player.ArcPlayer;
 import com.daqem.jobsplus.JobsPlus;
 import com.daqem.jobsplus.command.arguments.EnumArgument;
 import com.daqem.jobsplus.command.arguments.JobArgument;
@@ -17,6 +18,7 @@ import com.mojang.brigadier.arguments.IntegerArgumentType;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.GsonHelper;
 
@@ -110,6 +112,25 @@ public class JobCommand {
                             return 0;
                         })
                 )
+                .then(Commands.literal("attributes")
+                        .executes(context -> {
+                            ServerPlayer serverPlayer = context.getSource().getPlayer();
+                            if (serverPlayer != null) {
+                                serverPlayer.getAttributes().getSyncableAttributes().forEach(attribute -> {
+                                    serverPlayer.sendSystemMessage(JobsPlus.literal(
+                                            attribute.getAttribute().getDescriptionId() + ": " + attribute.getValue()
+                                    ));
+                                    attribute.getModifiers().forEach(attributeModifier -> {
+                                        serverPlayer.sendSystemMessage(JobsPlus.literal(
+                                                attributeModifier.getName() + ": " + attributeModifier.getAmount()
+                                        ));
+                                    });
+                                    serverPlayer.sendSystemMessage(JobsPlus.literal(" "));
+                                });
+                            }
+                            return 0;
+                        })
+                )
         );
     }
 
@@ -126,8 +147,12 @@ public class JobCommand {
     }
 
     private static int debug(CommandSourceStack source, ServerPlayer target) {
-        if (target instanceof JobsServerPlayer jobsServerPlayer) {
-            source.sendSuccess(JobsPlus.literal(new GsonBuilder().setPrettyPrinting().create().toJson(GsonHelper.parseArray(jobsServerPlayer.jobsplus$getJobs().stream().map(Job::toString).toList().toString()))), false);
+        if (target instanceof ArcPlayer arcPlayer) {
+            arcPlayer.arc$getActionHolders().forEach(actionHolder -> {
+                source.sendSuccess(Component.literal(actionHolder.getLocation().toString()), false);
+                source.sendSuccess(Component.literal("actions: " + actionHolder.getActions().size()), false);
+                source.sendSuccess(Component.literal(" "), false);
+            });
         }
         return 0;
     }
@@ -136,27 +161,7 @@ public class JobCommand {
         if (target instanceof JobsServerPlayer jobsServerPlayer) {
             Job job = jobsServerPlayer.jobsplus$getJob(jobInstance);
             job.getPowerupManager().forceAddPowerup(powerupInstance, powerupState);
-//            if (job != null) {
-//                PowerupManager powerupManager = ;
-//                Powerup powerup = powerupManager.getPowerup(powerupInstance);
-//                if (powerup != null) {
-////                    powerupManager.setPowerupState(powerup, powerupState);
-////                    if (powerupState == PowerupState.NOT_OWNED) {
-////                        source.sendSuccess(JobsPlus.translatable(
-////                                "command.set.powerup.success_remove", powerupInstance.getLocation(), jobInstance.getLocation()), false);
-////                    } else {
-////                        source.sendSuccess(JobsPlus.translatable(
-////                                "command.set.powerup.success", target.getName().getString(), powerupInstance.getLocation()), false);
-////                    }
-//                } else {
-//
-//                    source.sendSuccess(JobsPlus.translatable(
-//                            "command.set.powerup.success", target.getName().getString(), powerupInstance.getLocation()), false);
-//                }
-//            } else {
-//                source.sendFailure(JobsPlus.translatable(
-//                        "command.does_not_have_job", jobsServerPlayer.name(), jobInstance.getLocation()));
-//            }
+            jobsServerPlayer.jobsplus$updateJob(job);
         }
         return 1;
     }

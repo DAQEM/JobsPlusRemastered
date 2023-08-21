@@ -1,0 +1,10 @@
+{
+  "job": "jobsplus:smith",
+  "name": "Armor Unbreaking I",
+  "description": "Armor is 10% less likely to take damage when attacked.",
+  "icon": {
+    "item": "minecraft:diamond_chestplate"
+  },
+  "price": 5,
+  "required_level": 5
+}

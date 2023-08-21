@@ -48,7 +48,7 @@ public class ConfirmationScreen extends AbstractScreen {
     private int startX;
     private int startY;
 
-    private Mouse mouse;
+    private Mouse mouse = new Mouse(this, 0, 0);
 
     private @Nullable JobInstance job;
     private @Nullable PowerupInstance powerup;

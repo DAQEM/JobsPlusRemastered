@@ -1,0 +1,12 @@
+{
+  "job": "jobsplus:lumberjack",
+  "parent": "jobsplus:lumberjack/axe_unbreaking_iii",
+  "name": "Axe Unbreaking IV",
+  "description": "Axes are 40% less likely to take damage when used.",
+  "icon": {
+    "item": "minecraft:diamond_axe",
+    "count": 4
+  },
+  "price": 12,
+  "required_level": 50
+}
