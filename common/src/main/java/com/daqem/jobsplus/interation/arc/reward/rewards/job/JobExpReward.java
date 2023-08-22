@@ -21,8 +21,8 @@ public class JobExpReward extends AbstractReward {
     private final int min;
     private final int max;
 
-    public JobExpReward(double chance, int min, int max) {
-        super(chance);
+    public JobExpReward(double chance, int priority, int min, int max) {
+        super(chance, priority);
         this.min = min;
         this.max = max;
 
@@ -57,17 +57,19 @@ public class JobExpReward extends AbstractReward {
 
     public static class Serializer implements RewardSerializer<JobExpReward> {
         @Override
-        public JobExpReward fromJson(JsonObject jsonObject, double chance) {
+        public JobExpReward fromJson(JsonObject jsonObject, double chance, int priority) {
             return new JobExpReward(
                     chance,
+                    priority,
                     GsonHelper.getAsInt(jsonObject, "min"),
                     GsonHelper.getAsInt(jsonObject, "max"));
         }
 
         @Override
-        public JobExpReward fromNetwork(FriendlyByteBuf friendlyByteBuf, double chance) {
+        public JobExpReward fromNetwork(FriendlyByteBuf friendlyByteBuf, double chance, int priority) {
             return new JobExpReward(
                     chance,
+                    priority,
                     friendlyByteBuf.readInt(),
                     friendlyByteBuf.readInt());
         }

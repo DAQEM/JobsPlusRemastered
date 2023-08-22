@@ -1,0 +1,10 @@
+{
+  "job": "jobsplus:hunter",
+  "name": "Attack Speed I",
+  "description": "10% faster attack speed.",
+  "icon": {
+    "item": "minecraft:golden_sword"
+  },
+  "price": 5,
+  "required_level": 5
+}

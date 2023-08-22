@@ -1,0 +1,12 @@
+{
+  "job": "jobsplus:hunter",
+  "parent": "jobsplus:hunter/sword_unbreaking_iv",
+  "name": "Sword Unbreaking V",
+  "description": "Swords are 50% less likely to take damage when used.",
+  "icon": {
+    "item": "minecraft:diamond_sword",
+    "count": 5
+  },
+  "price": 15,
+  "required_level": 80
+}

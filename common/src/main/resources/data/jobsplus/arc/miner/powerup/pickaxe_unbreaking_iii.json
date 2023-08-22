@@ -1,0 +1,30 @@
+{
+  "holder": {
+    "type": "jobsplus:powerup",
+    "id": "jobsplus:miner/pickaxe_unbreaking_iii"
+  },
+  "type": "arc:on_hurt_item",
+  "rewards": [
+    {
+      "type": "arc:cancel_action",
+      "chance": 30
+    }
+  ],
+  "conditions": [
+    {
+      "type": "arc:items",
+      "items": [
+        "#forge:tools/pickaxes",
+        "#c:pickaxes"
+      ]
+    },
+    {
+      "type": "jobsplus:powerup_not_active",
+      "powerup": "jobsplus:miner/pickaxe_unbreaking_iv"
+    },
+    {
+      "type": "jobsplus:powerup_not_active",
+      "powerup": "jobsplus:miner/pickaxe_unbreaking_v"
+    }
+  ]
+}

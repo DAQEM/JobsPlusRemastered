@@ -1,0 +1,12 @@
+{
+  "job": "jobsplus:alchemist",
+  "parent": "jobsplus:alchemist/longer_potions_iv",
+  "name": "Job Experience III",
+  "description": "Multiply your job experience by 3x",
+  "icon": {
+    "item": "minecraft:experience_bottle",
+    "count": 3
+  },
+  "price": 12,
+  "required_level": 40
+}

@@ -1,0 +1,22 @@
+{
+  "holder": {
+    "type": "jobsplus:powerup",
+    "id": "jobsplus:lumberjack/double_drops_iii"
+  },
+  "type": "arc:on_break_block",
+  "rewards": [
+    {
+      "type": "arc:block_drop_multiplier",
+      "chance": 20,
+      "multiplier": 2
+    }
+  ],
+  "conditions": [
+    {
+      "type": "arc:blocks",
+      "blocks": [
+        "#minecraft:mineable/axe"
+      ]
+    }
+  ]
+}

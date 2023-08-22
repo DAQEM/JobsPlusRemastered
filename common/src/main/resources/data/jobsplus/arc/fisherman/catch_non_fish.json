@@ -4,8 +4,6 @@
     "id": "jobsplus:fisherman"
   },
   "type": "arc:on_fished_up_item",
-  "short_description": "Catch a non-fish item",
-  "description": "Sometimes, as a Fisherman, you might catch items that aren't fish - like treasure, boots, or even junk! While these items might not be as valuable as fish, they still earn you valuable job experience points. Cast your line far and wide, and you never know what you might catch!",
   "rewards": [
     {
       "type": "jobsplus:job_exp",
@@ -15,9 +13,14 @@
   ],
   "conditions": [
     {
-      "type": "arc:banned_items",
-      "banned_items": [
-        "#minecraft:fishes"
+      "type": "arc:not",
+      "conditions": [
+        {
+          "type": "arc:items",
+          "items": [
+            "#minecraft:fishes"
+          ]
+        }
       ]
     }
   ]

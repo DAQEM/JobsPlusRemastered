@@ -1,0 +1,30 @@
+{
+  "holder": {
+    "type": "jobsplus:powerup",
+    "id": "jobsplus:digger/double_drops_i"
+  },
+  "type": "arc:on_break_block",
+  "rewards": [
+    {
+      "type": "arc:block_drop_multiplier",
+      "chance": 5,
+      "multiplier": 2
+    }
+  ],
+  "conditions": [
+    {
+      "type": "arc:blocks",
+      "blocks": [
+        "#minecraft:mineable/shovel"
+      ]
+    },
+    {
+      "type": "jobsplus:powerup_not_active",
+      "powerup": "jobsplus:digger/double_drops_ii"
+    },
+    {
+      "type": "jobsplus:powerup_not_active",
+      "powerup": "jobsplus:digger/double_drops_iii"
+    }
+  ]
+}

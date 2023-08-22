@@ -1,0 +1,13 @@
+{
+  "holder": {
+    "type": "jobsplus:powerup",
+    "id": "jobsplus:enchanter/exp_boost_iii"
+  },
+  "type": "arc:on_break_block",
+  "rewards": [
+    {
+      "type": "arc:exp_multiplier",
+      "multiplier": 2.5
+    }
+  ]
+}

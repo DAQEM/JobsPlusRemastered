@@ -1,0 +1,23 @@
+{
+  "holder": {
+    "type": "jobsplus:powerup",
+    "id": "jobsplus:farmer/double_drops_ii"
+  },
+  "type": "arc:on_harvest_crop",
+  "rewards": [
+    {
+      "type": "arc:block_drop_multiplier",
+      "chance": 10,
+      "multiplier": 2
+    }
+  ],
+  "conditions": [
+    {
+      "type": "arc:crop_fully_grown"
+    },
+    {
+      "type": "jobsplus:powerup_not_active",
+      "powerup": "jobsplus:farmer/double_drops_iii"
+    }
+  ]
+}

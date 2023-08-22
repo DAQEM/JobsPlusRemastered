@@ -1,0 +1,12 @@
+{
+  "job": "jobsplus:hunter",
+  "parent": "jobsplus:hunter/attack_speed_i",
+  "name": "Attack Speed II",
+  "description": "20% faster attack speed.",
+  "icon": {
+    "item": "minecraft:golden_sword",
+    "count": 2
+  },
+  "price": 8,
+  "required_level": 15
+}

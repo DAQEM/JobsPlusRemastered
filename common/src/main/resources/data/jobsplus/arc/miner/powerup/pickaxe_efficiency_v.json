@@ -1,0 +1,28 @@
+{
+  "holder": {
+    "type": "jobsplus:powerup",
+    "id": "jobsplus:miner/pickaxe_efficiency_v"
+  },
+  "type": "arc:on_get_destroy_speed",
+  "rewards": [
+    {
+      "type": "arc:destroy_speed_multiplier",
+      "multiplier": 1.5
+    }
+  ],
+  "conditions": [
+    {
+      "type": "arc:items",
+      "items": [
+        "#forge:tools/pickaxes",
+        "#c:pickaxes"
+      ]
+    },
+    {
+      "type": "arc:blocks",
+      "blocks": [
+        "#minecraft:mineable/pickaxe"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "job": "jobsplus:enchanter",
+  "parent": "jobsplus:enchanter/exp_boost_ii",
+  "name": "Experience Boost III",
+  "description": "Multiply your experience from blocks and mobs by 2.5x",
+  "icon": {
+    "item": "minecraft:enchanting_table",
+    "count": 3
+  },
+  "price": 10,
+  "required_level": 50
+}

@@ -1,0 +1,10 @@
+{
+  "job": "jobsplus:digger",
+  "name": "Double Drops I",
+  "description": "Grands a 5% chance to get double drops when digging.",
+  "icon": {
+    "item": "minecraft:dirt"
+  },
+  "price": 5,
+  "required_level": 10
+}

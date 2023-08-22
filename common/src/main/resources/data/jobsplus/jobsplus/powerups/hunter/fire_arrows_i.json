@@ -1,0 +1,10 @@
+{
+  "job": "jobsplus:hunter",
+  "name": "Fire Arrows I",
+  "description": "Arrows have a 25% chance to ignite.",
+  "icon": {
+    "item": "minecraft:fire_charge"
+  },
+  "price": 5,
+  "required_level": 5
+}

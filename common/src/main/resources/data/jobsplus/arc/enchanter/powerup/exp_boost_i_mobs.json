@@ -1,0 +1,23 @@
+{
+  "holder": {
+    "type": "jobsplus:powerup",
+    "id": "jobsplus:enchanter/exp_boost_i"
+  },
+  "type": "arc:on_kill_entity",
+  "rewards": [
+    {
+      "type": "arc:exp_multiplier",
+      "multiplier": 1.5
+    }
+  ],
+  "conditions": [
+    {
+      "type": "jobsplus:powerup_not_active",
+      "powerup": "jobsplus:enchanter/exp_boost_ii"
+    },
+    {
+      "type": "jobsplus:powerup_not_active",
+      "powerup": "jobsplus:enchanter/exp_boost_iii"
+    }
+  ]
+}

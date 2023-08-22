@@ -1,0 +1,11 @@
+{
+  "job": "jobsplus:miner",
+  "parent": "jobsplus:miner/pickaxe_unbreaking_i",
+  "name": "Double Drops I",
+  "description": "Grands a 5% chance to get double drops when mining blocks.",
+  "icon": {
+    "item": "minecraft:iron_ore"
+  },
+  "price": 5,
+  "required_level": 10
+}

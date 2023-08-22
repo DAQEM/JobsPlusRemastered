@@ -1,0 +1,11 @@
+{
+  "job": "jobsplus:lumberjack",
+  "parent": "jobsplus:lumberjack/double_drops_i",
+  "name": "Double Drops II",
+  "description": "Grands a 10% chance to get double drops when harvesting wood.",
+  "icon": {
+    "item": "minecraft:spruce_log"
+  },
+  "price": 10,
+  "required_level": 25
+}

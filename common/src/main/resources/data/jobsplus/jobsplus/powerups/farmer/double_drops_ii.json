@@ -1,0 +1,11 @@
+{
+  "job": "jobsplus:farmer",
+  "parent": "jobsplus:farmer/double_drops_i",
+  "name": "Double Drops II",
+  "description": "Grands a 10% chance to get double drops when harvesting crops.",
+  "icon": {
+    "item": "minecraft:potato"
+  },
+  "price": 10,
+  "required_level": 25
+}

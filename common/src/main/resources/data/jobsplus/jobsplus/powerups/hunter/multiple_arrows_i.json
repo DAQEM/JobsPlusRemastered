@@ -1,0 +1,10 @@
+{
+  "job": "jobsplus:hunter",
+  "name": "Multiple Arrows I",
+  "description": "Bows have a 10% chance to shoot 3 arrows.",
+  "icon": {
+    "item": "minecraft:arrow"
+  },
+  "price": 5,
+  "required_level": 5
+}

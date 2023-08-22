@@ -1,0 +1,12 @@
+{
+  "job": "jobsplus:miner",
+  "parent": "jobsplus:miner/pickaxe_efficiency_iv",
+  "name": "Pickaxe Efficiency V",
+  "description": "Pickaxes dig 50% faster.",
+  "icon": {
+    "item": "minecraft:golden_pickaxe",
+    "count": 5
+  },
+  "price": 15,
+  "required_level": 80
+}

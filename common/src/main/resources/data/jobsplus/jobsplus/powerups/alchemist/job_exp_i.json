@@ -1,0 +1,11 @@
+{
+  "job": "jobsplus:alchemist",
+  "parent": "jobsplus:alchemist/harmful_potion_immunity_i",
+  "name": "Job Experience I",
+  "description": "Multiply your job experience by 1.5x",
+  "icon": {
+    "item": "minecraft:experience_bottle"
+  },
+  "price": 5,
+  "required_level": 15
+}

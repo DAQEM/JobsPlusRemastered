@@ -1,0 +1,12 @@
+{
+  "job": "jobsplus:miner",
+  "parent": "jobsplus:miner/pickaxe_unbreaking_i",
+  "name": "Pickaxe Unbreaking II",
+  "description": "Pickaxes are 20% less likely to take damage when used.",
+  "icon": {
+    "item": "minecraft:diamond_pickaxe",
+    "count": 2
+  },
+  "price": 8,
+  "required_level": 15
+}

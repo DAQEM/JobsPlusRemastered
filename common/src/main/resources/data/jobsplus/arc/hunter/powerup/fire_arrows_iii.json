@@ -1,0 +1,21 @@
+{
+  "holder": {
+    "type": "jobsplus:powerup",
+    "id": "jobsplus:hunter/fire_arrows_iii"
+  },
+  "type": "arc:on_shoot_projectile",
+  "rewards": [
+    {
+      "type": "arc:entity_on_fire",
+      "chance": 100,
+      "priority": 2,
+      "ticks": 2000
+    }
+  ],
+  "conditions": [
+    {
+      "type": "arc:entity_type",
+      "entity_type": "minecraft:arrow"
+    }
+  ]
+}
