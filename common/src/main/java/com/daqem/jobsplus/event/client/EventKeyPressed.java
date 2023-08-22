@@ -3,6 +3,7 @@ package com.daqem.jobsplus.event.client;
 import com.daqem.arc.api.player.ArcPlayer;
 import com.daqem.jobsplus.client.JobsPlusClient;
 import com.daqem.jobsplus.client.screen.JobsScreen;
+import com.daqem.jobsplus.config.JobsPlusCommonConfig;
 import com.daqem.jobsplus.networking.c2s.PacketOpenMenuC2S;
 import dev.architectury.event.EventResult;
 import dev.architectury.event.events.client.ClientRawInputEvent;
@@ -19,14 +20,16 @@ public class EventKeyPressed {
                 if (screen instanceof JobsScreen) screen.onClose();
                 else if (screen == null) new PacketOpenMenuC2S().sendToServer();
             }
-            if (keyCode == GLFW.GLFW_KEY_P && action == 1) {
-                if (client.player != null) {
-                    if (client.player instanceof ArcPlayer arcPlayer) {
-                        arcPlayer.arc$getActionHolders().forEach(actionHolder -> {
-                            client.player.sendSystemMessage(Component.literal(actionHolder.getLocation().toString()));
-                            client.player.sendSystemMessage(Component.literal("actions: " + actionHolder.getActions().size()));
-                            client.player.sendSystemMessage(Component.literal(" "));
-                        });
+            if (JobsPlusCommonConfig.isDebug.get()) {
+                if (keyCode == GLFW.GLFW_KEY_P && action == 1) {
+                    if (client.player != null) {
+                        if (client.player instanceof ArcPlayer arcPlayer) {
+                            arcPlayer.arc$getActionHolders().forEach(actionHolder -> {
+                                client.player.sendSystemMessage(Component.literal(actionHolder.getLocation().toString()));
+                                client.player.sendSystemMessage(Component.literal("actions: " + actionHolder.getActions().size()));
+                                client.player.sendSystemMessage(Component.literal(" "));
+                            });
+                        }
                     }
                 }
             }

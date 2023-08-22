@@ -2,6 +2,8 @@ plugins {
     id "com.github.johnrengelman.shadow" version "7.1.2"
 }
 
+version = "$rootProject.mod_version"
+
 architectury {
     platformSetupLoomIde()
     forge()
@@ -69,7 +71,7 @@ shadowJar {
 remapJar {
     input.set shadowJar.archiveFile
     dependsOn shadowJar
-    classifier null
+    classifier "forge"
 }
 
 jar {

@@ -3,6 +3,8 @@ plugins {
     id "com.matthewprenger.cursegradle" version "1.4.0"
 }
 
+version = "$rootProject.mod_version"
+
 architectury {
     platformSetupLoomIde()
     fabric()
@@ -54,7 +56,7 @@ remapJar {
     injectAccessWidener = true
     input.set shadowJar.archiveFile
     dependsOn shadowJar
-    classifier null
+    classifier "fabric"
 }
 
 jar {

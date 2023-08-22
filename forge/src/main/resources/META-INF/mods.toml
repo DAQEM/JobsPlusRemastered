@@ -39,5 +39,19 @@ side = "BOTH"
 modId = "supermartijn642configlib"
 mandatory = true
 versionRange = "[1.1.0,)"
-ordering = "AFTER"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.jobsplus]]
+modId = "arc"
+mandatory = true
+versionRange = "[1.0,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.jobsplus]]
+modId = "itemrestrictions"
+mandatory = true
+versionRange = "[0.2.1,)"
+ordering = "NONE"
 side = "BOTH"
