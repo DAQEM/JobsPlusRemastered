@@ -1,0 +1,10 @@
+{
+  "job": "jobsplus:builder",
+  "name": "Less Fall Damage I",
+  "description": "Take 20% less fall damage.",
+  "icon": {
+    "item": "minecraft:leather_boots"
+  },
+  "price": 5,
+  "required_level": 15
+}
