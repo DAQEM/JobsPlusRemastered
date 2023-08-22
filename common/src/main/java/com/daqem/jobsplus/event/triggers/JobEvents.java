@@ -3,6 +3,7 @@ package com.daqem.jobsplus.event.triggers;
 import com.daqem.arc.api.action.data.ActionDataBuilder;
 import com.daqem.arc.api.player.ArcPlayer;
 import com.daqem.jobsplus.JobsPlus;
+import com.daqem.jobsplus.config.JobsPlusCommonConfig;
 import com.daqem.jobsplus.interation.arc.action.data.type.JobsPlusActionDataType;
 import com.daqem.jobsplus.interation.arc.action.type.JobsPlusActionType;
 import com.daqem.jobsplus.player.JobsPlayer;
@@ -16,9 +17,8 @@ public class JobEvents {
                     .withData(JobsPlusActionDataType.ONLY_FOR_JOB, job)
                     .build()
                     .sendToAction();
-        } else {
-            JobsPlus.LOGGER.error("Player is not an ArcPlayer");
         }
+        player.jobsplus$addCoins(JobsPlusCommonConfig.coinsPerLevelUp.get());
     }
 
     public static void onJobExperience(JobsPlayer player, Job job, int experience) {
@@ -28,8 +28,6 @@ public class JobEvents {
                     .withData(JobsPlusActionDataType.ONLY_FOR_JOB, job)
                     .build()
                     .sendToAction();
-        } else {
-            JobsPlus.LOGGER.error("Player is not an ArcPlayer");
         }
     }
 }

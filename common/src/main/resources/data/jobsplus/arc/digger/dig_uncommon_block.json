@@ -21,10 +21,15 @@
       ]
     },
     {
-      "type": "arc:banned_blocks",
-      "banned_blocks": [
-        "minecraft:dirt",
-        "minecraft:sand"
+      "type": "arc:not",
+      "conditions": [
+        {
+          "type": "arc:blocks",
+          "blocks": [
+            "minecraft:dirt",
+            "minecraft:sand"
+          ]
+        }
       ]
     }
   ]

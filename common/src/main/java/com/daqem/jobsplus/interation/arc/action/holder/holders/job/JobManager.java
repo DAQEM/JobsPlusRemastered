@@ -84,7 +84,10 @@ public abstract class JobManager extends SimpleJsonResourceReloadListener {
 
     public void replaceJobs(List<JobInstance> jobs) {
         Map<ResourceLocation, JobInstance> tempJobInstances = new HashMap<>();
-        jobs.forEach(job -> tempJobInstances.put(job.getLocation(), job));
+        jobs.forEach(job -> {
+            tempJobInstances.put(job.getLocation(), job);
+            ActionHolderManager.getInstance().registerActionHolder(job);
+        });
         this.jobs = ImmutableMap.copyOf(tempJobInstances);
         JobsPlus.LOGGER.info("Updated {} jobs", tempJobInstances.size());
     }

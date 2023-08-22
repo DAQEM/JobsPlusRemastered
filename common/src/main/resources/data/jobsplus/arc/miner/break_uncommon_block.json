@@ -29,16 +29,21 @@
       ]
     },
     {
-      "type": "arc:banned_blocks",
-      "banned_blocks": [
-        "minecraft:stone",
-        "minecraft:cobblestone",
-        "minecraft:granite",
-        "minecraft:andesite",
-        "minecraft:diorite",
-        "minecraft:deepslate",
-        "minecraft:netherrack",
-        "minecraft:end_stone"
+      "type": "arc:not",
+      "conditions": [
+        {
+          "type": "arc:blocks",
+          "blocks": [
+            "minecraft:stone",
+            "minecraft:cobblestone",
+            "minecraft:granite",
+            "minecraft:andesite",
+            "minecraft:diorite",
+            "minecraft:deepslate",
+            "minecraft:netherrack",
+            "minecraft:end_stone"
+          ]
+        }
       ]
     }
   ]

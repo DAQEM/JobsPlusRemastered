@@ -18,11 +18,16 @@
       "type": "arc:is_ore"
     },
     {
-      "type": "arc:banned_blocks",
-      "banned_blocks": [
-        "minecraft:diamond_ore",
-        "minecraft:emerald_ore",
-        "minecraft:ancient_debris"
+      "type": "arc:not",
+      "conditions": [
+        {
+          "type": "arc:blocks",
+          "blocks": [
+            "minecraft:diamond_ore",
+            "minecraft:emerald_ore",
+            "minecraft:ancient_debris"
+          ]
+        }
       ]
     }
   ]

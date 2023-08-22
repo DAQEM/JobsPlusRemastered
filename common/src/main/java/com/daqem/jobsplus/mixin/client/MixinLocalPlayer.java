@@ -14,6 +14,7 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.player.ProfilePublicKey;
 import net.minecraft.world.level.Level;
@@ -99,7 +100,7 @@ public abstract class MixinLocalPlayer extends AbstractClientPlayer implements J
 
     @Override
     public void jobsplus$addCoins(int coins) {
-        this.jobsplus$coins += coins;
+        this.jobsplus$coins = Mth.clamp(this.jobsplus$coins + coins, 0, Integer.MAX_VALUE);
     }
 
     @Override

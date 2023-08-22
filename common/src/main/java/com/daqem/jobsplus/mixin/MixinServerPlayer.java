@@ -18,6 +18,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.player.ProfilePublicKey;
 import net.minecraft.world.level.Level;
@@ -127,7 +128,7 @@ public abstract class MixinServerPlayer extends Player implements JobsServerPlay
 
     @Override
     public void jobsplus$addCoins(int coins) {
-        this.jobsplus$coins += coins;
+        this.jobsplus$coins = Mth.clamp(this.jobsplus$coins + coins, 0, Integer.MAX_VALUE);
     }
 
     @Override
