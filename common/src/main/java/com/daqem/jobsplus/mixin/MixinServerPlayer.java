@@ -12,11 +12,16 @@ import com.daqem.jobsplus.networking.sync.jobs.ClientboundRemoveJobPacket;
 import com.daqem.jobsplus.networking.sync.jobs.ClientboundUpdateJobPacket;
 import com.daqem.jobsplus.player.JobsServerPlayer;
 import com.daqem.jobsplus.player.job.Job;
+import com.daqem.jobsplus.player.job.exp.ExpCollector;
 import com.daqem.jobsplus.player.job.powerup.Powerup;
 import com.mojang.authlib.GameProfile;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Style;
+import net.minecraft.network.chat.TextColor;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
@@ -31,6 +36,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import javax.annotation.Nullable;
 import java.util.*;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Mixin(ServerPlayer.class)
@@ -290,5 +296,19 @@ public abstract class MixinServerPlayer extends Player implements JobsServerPlay
         });
         this.jobsplus$jobs = jobs;
         this.jobsplus$updatedFromOldJobsPLus = true;
+    }
+
+    @Inject(at = @At("TAIL"), method = "tick()V")
+    public void tickTail(CallbackInfo ci) {
+        jobsplus$jobs.forEach((job) -> {
+            JobInstance jobInstance = job.getJobInstance();
+            ExpCollector expCollector = job.getExpCollector();
+            int exp = expCollector.getExp();
+            if (exp > 0) {
+                MutableComponent component = JobsPlus.translatable("job.exp.gain", exp, jobInstance.getName()).withStyle(Style.EMPTY.withColor(TextColor.fromRgb(jobInstance.getColorDecimal()))).withStyle(ChatFormatting.BOLD);
+                jobsplus$getServerPlayer().sendSystemMessage(component, true);
+            }
+            expCollector.clear();
+        });
     }
 }

@@ -5,9 +5,11 @@ import com.daqem.arc.api.player.ArcPlayer;
 import com.daqem.jobsplus.JobsPlus;
 import com.daqem.jobsplus.config.JobsPlusCommonConfig;
 import com.daqem.jobsplus.interation.arc.action.data.type.JobsPlusActionDataType;
+import com.daqem.jobsplus.interation.arc.action.holder.holders.job.JobInstance;
 import com.daqem.jobsplus.interation.arc.action.type.JobsPlusActionType;
 import com.daqem.jobsplus.player.JobsPlayer;
 import com.daqem.jobsplus.player.job.Job;
+import net.minecraft.server.level.ServerPlayer;
 
 public class JobEvents {
 
@@ -19,6 +21,11 @@ public class JobEvents {
                     .sendToAction();
         }
         player.jobsplus$addCoins(JobsPlusCommonConfig.coinsPerLevelUp.get());
+        if (player.jobsplus$getPlayer() instanceof ServerPlayer serverPlayer) {
+
+            JobInstance jobInstance = job.getJobInstance();
+            serverPlayer.sendSystemMessage(JobsPlus.translatable("job.level_up", serverPlayer.getName().copy().withStyle(style -> style.withColor(jobInstance.getColorDecimal())), JobsPlus.literal(String.valueOf(job.getLevel())).withStyle(style -> style.withColor(jobInstance.getColorDecimal())), jobInstance.getNameComponent()), false);
+        }
     }
 
     public static void onJobExperience(JobsPlayer player, Job job, int experience) {

@@ -11,7 +11,7 @@ libs/
 
 .classpath
 .project
-.idea/
+.idea/runConfigurations
 classes/
 .metadata
 .vscode

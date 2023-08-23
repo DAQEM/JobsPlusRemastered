@@ -5,6 +5,7 @@ import com.daqem.jobsplus.JobsPlus;
 import com.daqem.jobsplus.event.triggers.JobEvents;
 import com.daqem.jobsplus.player.JobsPlayer;
 import com.daqem.jobsplus.player.JobsServerPlayer;
+import com.daqem.jobsplus.player.job.exp.ExpCollector;
 import com.daqem.jobsplus.player.job.powerup.JobPowerupManager;
 import com.daqem.jobsplus.player.job.powerup.Powerup;
 import com.daqem.jobsplus.player.job.powerup.PowerupState;
@@ -31,6 +32,7 @@ public class Job {
     private final JobPowerupManager powerupManager;
     private int level;
     private int experience;
+    private ExpCollector expCollector = new ExpCollector();
 
     public Job(JobsPlayer player, JobInstance jobInstance) {
         this(player, jobInstance, 0, 0, new ArrayList<>());
@@ -73,6 +75,7 @@ public class Job {
     }
 
     public void setExperience(int experience) {
+        expCollector.addExp(experience - this.experience);
         this.experience = experience;
         while (this.experience >= getExperienceToLevelUp(level)) {
             checkForLevelUp();
@@ -150,6 +153,10 @@ public class Job {
 
     public double getExperiencePercentage() {
         return (double) experience / (double) getExperienceToLevelUp(level) * 100;
+    }
+
+    public ExpCollector getExpCollector() {
+        return expCollector;
     }
 
     public static class Serializer {

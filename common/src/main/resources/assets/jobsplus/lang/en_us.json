@@ -147,5 +147,7 @@
   "jobsplus.inventory.cant_hurt_entity": "%s level %s is required to hurt something with %s",
   "jobsplus.inventory.bypass": "Bypassing restriction because of creative mode",
   "key.categories.jobsplus": "Jobs+",
-  "key.jobsplus.open_menu": "Open Jobs+ GUI"
+  "key.jobsplus.open_menu": "Open Jobs+ GUI",
+  "jobsplus.job.exp.gain": "+%s %s",
+  "jobsplus.job.level_up": "%s has reached level %s as a %s!"
 }

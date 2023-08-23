@@ -5,6 +5,7 @@ import com.daqem.arc.api.action.holder.IActionHolder;
 import com.daqem.arc.api.action.holder.type.IActionHolderType;
 import com.daqem.itemrestrictions.data.ItemRestriction;
 import com.daqem.itemrestrictions.data.ItemRestrictionManager;
+import com.daqem.jobsplus.JobsPlus;
 import com.daqem.jobsplus.config.JobsPlusCommonConfig;
 import com.daqem.jobsplus.data.serializer.JobsPlusSerializer;
 import com.daqem.jobsplus.interation.arc.action.holder.holders.powerup.PowerupInstance;
@@ -15,6 +16,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.ItemStack;
@@ -75,6 +77,10 @@ public class JobInstance implements IActionHolder {
 
     public String getName() {
         return name;
+    }
+
+    public MutableComponent getNameComponent() {
+        return JobsPlus.literal(name).withStyle(style -> style.withColor(getColorDecimal()));
     }
 
     public List<PowerupInstance> getPowerups() {

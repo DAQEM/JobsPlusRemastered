@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/common/jobsplus.common.iml" filepath="$PROJECT_DIR$/.idea/modules/common/jobsplus.common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/common/jobsplus.common.main.iml" filepath="$PROJECT_DIR$/.idea/modules/common/jobsplus.common.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/common/jobsplus.common.test.iml" filepath="$PROJECT_DIR$/.idea/modules/common/jobsplus.common.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/fabric/jobsplus.fabric.main.iml" filepath="$PROJECT_DIR$/.idea/modules/fabric/jobsplus.fabric.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/fabric/jobsplus.fabric.test.iml" filepath="$PROJECT_DIR$/.idea/modules/fabric/jobsplus.fabric.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/forge/jobsplus.forge.main.iml" filepath="$PROJECT_DIR$/.idea/modules/forge/jobsplus.forge.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/forge/jobsplus.forge.test.iml" filepath="$PROJECT_DIR$/.idea/modules/forge/jobsplus.forge.test.iml" />
+    </modules>
+  </component>
+</project>
