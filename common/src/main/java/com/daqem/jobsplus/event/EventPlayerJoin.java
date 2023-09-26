@@ -1,8 +1,8 @@
 package com.daqem.jobsplus.event;
 
 import com.daqem.jobsplus.JobsPlus;
-import com.daqem.jobsplus.interation.arc.action.holder.holders.job.JobManager;
-import com.daqem.jobsplus.interation.arc.action.holder.holders.powerup.PowerupManager;
+import com.daqem.jobsplus.integration.arc.holder.holders.job.JobManager;
+import com.daqem.jobsplus.integration.arc.holder.holders.powerup.PowerupManager;
 import com.daqem.jobsplus.networking.sync.ClientboundUpdateJobInstancesPacket;
 import com.daqem.jobsplus.networking.sync.ClientboundUpdatePowerupInstancesPacket;
 import com.daqem.jobsplus.networking.sync.jobs.ClientboundUpdateJobsPacket;

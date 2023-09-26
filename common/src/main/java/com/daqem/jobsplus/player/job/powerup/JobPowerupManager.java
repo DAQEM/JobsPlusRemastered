@@ -3,8 +3,8 @@ package com.daqem.jobsplus.player.job.powerup;
 import com.daqem.jobsplus.player.JobsPlayer;
 import com.daqem.jobsplus.player.JobsServerPlayer;
 import com.daqem.jobsplus.player.job.Job;
-import com.daqem.jobsplus.interation.arc.action.holder.holders.job.JobInstance;
-import com.daqem.jobsplus.interation.arc.action.holder.holders.powerup.PowerupInstance;
+import com.daqem.jobsplus.integration.arc.holder.holders.job.JobInstance;
+import com.daqem.jobsplus.integration.arc.holder.holders.powerup.PowerupInstance;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;

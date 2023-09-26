@@ -1,19 +1,15 @@
 package com.daqem.jobsplus.client.screen;
 
-import com.daqem.arc.api.player.ArcPlayer;
 import com.daqem.jobsplus.JobsPlus;
-import com.daqem.jobsplus.client.player.JobsClientPlayer;
 import com.daqem.jobsplus.client.powerup.PowerupWidget;
 import com.daqem.jobsplus.client.render.RenderColor;
 import com.daqem.jobsplus.networking.c2s.PacketOpenPowerupsMenuC2S;
 import com.daqem.jobsplus.networking.c2s.PacketTogglePowerUpC2S;
 import com.daqem.jobsplus.networking.utils.ConfirmationMessageType;
-import com.daqem.jobsplus.player.JobsPlayer;
 import com.daqem.jobsplus.player.job.Job;
 import com.daqem.jobsplus.player.job.powerup.Powerup;
-import com.daqem.jobsplus.interation.arc.action.holder.holders.job.JobInstance;
-import com.daqem.jobsplus.interation.arc.action.holder.holders.powerup.PowerupInstance;
-import com.daqem.jobsplus.player.job.powerup.PowerupState;
+import com.daqem.jobsplus.integration.arc.holder.holders.job.JobInstance;
+import com.daqem.jobsplus.integration.arc.holder.holders.powerup.PowerupInstance;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;

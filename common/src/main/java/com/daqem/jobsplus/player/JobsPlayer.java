@@ -2,7 +2,7 @@ package com.daqem.jobsplus.player;
 
 import com.daqem.arc.api.action.holder.IActionHolder;
 import com.daqem.jobsplus.player.job.Job;
-import com.daqem.jobsplus.interation.arc.action.holder.holders.job.JobInstance;
+import com.daqem.jobsplus.integration.arc.holder.holders.job.JobInstance;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 

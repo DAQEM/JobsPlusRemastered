@@ -1,6 +1,6 @@
 package com.daqem.jobsplus.forge.data;
 
-import com.daqem.jobsplus.interation.arc.action.holder.holders.powerup.PowerupManager;
+import com.daqem.jobsplus.integration.arc.holder.holders.powerup.PowerupManager;
 import com.google.gson.JsonElement;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;

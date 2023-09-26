@@ -1,7 +1,7 @@
 package com.daqem.jobsplus;
 
-import com.daqem.jobsplus.interation.arc.action.holder.holders.job.JobManager;
-import com.daqem.jobsplus.interation.arc.action.holder.holders.powerup.PowerupManager;
+import com.daqem.jobsplus.integration.arc.holder.holders.job.JobManager;
+import com.daqem.jobsplus.integration.arc.holder.holders.powerup.PowerupManager;
 import dev.architectury.injectables.annotations.ExpectPlatform;
 
 import java.nio.file.Path;

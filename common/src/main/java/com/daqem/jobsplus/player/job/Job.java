@@ -1,7 +1,6 @@
 package com.daqem.jobsplus.player.job;
 
 import com.daqem.jobsplus.Constants;
-import com.daqem.jobsplus.JobsPlus;
 import com.daqem.jobsplus.event.triggers.JobEvents;
 import com.daqem.jobsplus.player.JobsPlayer;
 import com.daqem.jobsplus.player.JobsServerPlayer;
@@ -9,17 +8,14 @@ import com.daqem.jobsplus.player.job.exp.ExpCollector;
 import com.daqem.jobsplus.player.job.powerup.JobPowerupManager;
 import com.daqem.jobsplus.player.job.powerup.Powerup;
 import com.daqem.jobsplus.player.job.powerup.PowerupState;
-import com.daqem.jobsplus.interation.arc.action.holder.holders.job.JobInstance;
-import com.daqem.jobsplus.interation.arc.action.holder.holders.job.JobManager;
-import com.daqem.jobsplus.interation.arc.action.holder.holders.powerup.PowerupInstance;
-import com.google.gson.JsonObject;
-import net.minecraft.core.Registry;
+import com.daqem.jobsplus.integration.arc.holder.holders.job.JobInstance;
+import com.daqem.jobsplus.integration.arc.holder.holders.job.JobManager;
+import com.daqem.jobsplus.integration.arc.holder.holders.powerup.PowerupInstance;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.GsonHelper;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;

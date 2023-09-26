@@ -1,8 +1,7 @@
 package com.daqem.jobsplus.networking.sync;
 
-import com.daqem.jobsplus.JobsPlus;
-import com.daqem.jobsplus.interation.arc.action.holder.holders.job.JobInstance;
-import com.daqem.jobsplus.interation.arc.action.holder.holders.job.JobManager;
+import com.daqem.jobsplus.integration.arc.holder.holders.job.JobInstance;
+import com.daqem.jobsplus.integration.arc.holder.holders.job.JobManager;
 import com.daqem.jobsplus.networking.JobsPlusNetworking;
 import dev.architectury.networking.NetworkManager;
 import dev.architectury.networking.simple.BaseS2CMessage;

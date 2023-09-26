@@ -1,9 +1,9 @@
 package com.daqem.jobsplus.command.arguments;
 
 
-import com.daqem.jobsplus.interation.arc.action.holder.holders.job.JobInstance;
-import com.daqem.jobsplus.interation.arc.action.holder.holders.powerup.PowerupInstance;
-import com.daqem.jobsplus.interation.arc.action.holder.holders.powerup.PowerupManager;
+import com.daqem.jobsplus.integration.arc.holder.holders.job.JobInstance;
+import com.daqem.jobsplus.integration.arc.holder.holders.powerup.PowerupInstance;
+import com.daqem.jobsplus.integration.arc.holder.holders.powerup.PowerupManager;
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.context.CommandContext;

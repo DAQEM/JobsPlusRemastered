@@ -24,7 +24,8 @@
         {
           "type": "arc:blocks",
           "blocks": [
-            "#minecraft:beacon_base_blocks"
+            "#minecraft:beacon_base_blocks",
+            "minecraft:beacon"
           ]
         }
       ]

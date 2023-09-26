@@ -4,8 +4,6 @@
     "id": "jobsplus:smith"
   },
   "type": "arc:on_craft_item",
-  "short_description": "Craft tools and armor",
-  "description": "As a Smith, you can earn job experience by crafting tools and armor. From swords to hoes, all types of tools and armor will help you level up in the Smith job and become a better craftsman.",
   "rewards": [
     {
       "type": "jobsplus:job_exp",
@@ -19,6 +17,7 @@
       "type": "arc:items",
       "items": [
         "#forge:tools",
+        "#c:tools",
         "#c:swords",
         "#c:axes",
         "#c:pickaxes",

@@ -3,8 +3,8 @@ package com.daqem.jobsplus.fabric;
 import com.daqem.jobsplus.JobsPlusExpectPlatform;
 import com.daqem.jobsplus.fabric.data.JobManagerFabric;
 import com.daqem.jobsplus.fabric.data.PowerupManagerFabric;
-import com.daqem.jobsplus.interation.arc.action.holder.holders.job.JobManager;
-import com.daqem.jobsplus.interation.arc.action.holder.holders.powerup.PowerupManager;
+import com.daqem.jobsplus.integration.arc.holder.holders.job.JobManager;
+import com.daqem.jobsplus.integration.arc.holder.holders.powerup.PowerupManager;
 import net.fabricmc.loader.api.FabricLoader;
 
 import java.nio.file.Path;

@@ -1,7 +1,7 @@
 package com.daqem.jobsplus.fabric.data;
 
 import com.daqem.jobsplus.JobsPlus;
-import com.daqem.jobsplus.interation.arc.action.holder.holders.powerup.PowerupManager;
+import com.daqem.jobsplus.integration.arc.holder.holders.powerup.PowerupManager;
 import com.google.gson.JsonElement;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.minecraft.resources.ResourceLocation;

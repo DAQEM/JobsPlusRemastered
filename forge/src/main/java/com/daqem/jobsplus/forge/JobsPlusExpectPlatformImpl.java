@@ -3,8 +3,8 @@ package com.daqem.jobsplus.forge;
 import com.daqem.jobsplus.JobsPlusExpectPlatform;
 import com.daqem.jobsplus.forge.data.JobManagerForge;
 import com.daqem.jobsplus.forge.data.PowerupManagerForge;
-import com.daqem.jobsplus.interation.arc.action.holder.holders.job.JobManager;
-import com.daqem.jobsplus.interation.arc.action.holder.holders.powerup.PowerupManager;
+import com.daqem.jobsplus.integration.arc.holder.holders.job.JobManager;
+import com.daqem.jobsplus.integration.arc.holder.holders.powerup.PowerupManager;
 import net.minecraftforge.fml.loading.FMLPaths;
 
 import java.nio.file.Path;
