@@ -24,7 +24,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class JobInstance implements IActionHolder {
 
@@ -38,15 +40,15 @@ public class JobInstance implements IActionHolder {
     private final String description;
     private final ResourceLocation powerupBackground;
     private final boolean isDefault;
-    private final List<IAction> actions;
+    private final Map<ResourceLocation, IAction> actions = new HashMap<>();
     private List<PowerupInstance> powerupInstances;
     private List<ItemRestriction> itemRestrictions;
 
     public JobInstance(String name, int price, int maxLevel, String color, ItemStack iconItem, String description, ResourceLocation powerupBackground, boolean isDefault) {
-        this(name, price, maxLevel, color, iconItem, description, powerupBackground, isDefault, new ArrayList<>(), new ArrayList<>());
+        this(name, price, maxLevel, color, iconItem, description, powerupBackground, isDefault, new ArrayList<>());
     }
 
-    public JobInstance(String name, int price, int maxLevel, String color, ItemStack iconItem, String description, ResourceLocation powerupBackground, boolean isDefault, List<IAction> actions, List<PowerupInstance> powerupInstances) {
+    public JobInstance(String name, int price, int maxLevel, String color, ItemStack iconItem, String description, ResourceLocation powerupBackground, boolean isDefault, List<PowerupInstance> powerupInstances) {
         this.name = name;
         this.price = price;
         this.maxLevel = maxLevel;
@@ -55,7 +57,6 @@ public class JobInstance implements IActionHolder {
         this.description = description;
         this.powerupBackground = powerupBackground;
         this.isDefault = isDefault;
-        this.actions = actions;
         this.powerupInstances = powerupInstances;
     }
 
@@ -142,12 +143,12 @@ public class JobInstance implements IActionHolder {
     }
 
     public List<IAction> getActions() {
-        return actions;
+        return actions.values().stream().toList();
     }
 
     @Override
     public void addAction(IAction action) {
-        actions.add(action);
+        actions.put(action.getLocation(), action);
     }
 
     @Override

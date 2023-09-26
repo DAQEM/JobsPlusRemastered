@@ -20,7 +20,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class PowerupInstance implements IActionHolder {
 
@@ -33,7 +35,7 @@ public class PowerupInstance implements IActionHolder {
     private final int price;
     private final int requiredLevel;
 
-    private final List<IAction> actions = new ArrayList<>();
+    private final Map<ResourceLocation, IAction> actions = new HashMap<>();
     private @Nullable PowerupInstance parent;
     private final List<PowerupInstance> children = new ArrayList<>();
 
@@ -110,12 +112,12 @@ public class PowerupInstance implements IActionHolder {
 
     @Override
     public List<IAction> getActions() {
-        return actions;
+        return actions.values().stream().toList();
     }
 
     @Override
     public void addAction(IAction action) {
-        actions.add(action);
+        actions.put(action.getLocation(), action);
     }
 
     @Override
