@@ -4,9 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bcc74ef4-f9a7-4e60-b152-b758c7331e58" name="Changes" comment="Changed package name from interation to integration.">
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/integration/arc/holder/holders/job/JobInstance.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/integration/arc/holder/holders/job/JobInstance.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/integration/arc/holder/holders/powerup/PowerupInstance.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/integration/arc/holder/holders/powerup/PowerupInstance.java" afterDir="false" />
+    <list default="true" id="bcc74ef4-f9a7-4e60-b152-b758c7331e58" name="Changes" comment="Changed actions list to actions map.">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fabric/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/fabric/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/forge/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/forge/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -73,26 +75,26 @@
   <component name="ProjectViewState">
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;1.19.2&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;G:/root/Minecraft Projects/Arc/Arc 1.20.1/Arc&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.project.gradle&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "1.19.2",
+    "ignore.virus.scanning.warn.message": "true",
+    "last_opened_file_path": "G:/root/Minecraft Projects/Arc/Arc 1.20.1/Arc",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="G:\root\Minecraft Projects\JobsPlus\Remastered\JobsPlusRemastered 1.19.2\JobsPlusRemastered\common\src\main\resources\data\jobsplus\arc\hunter\powerup" />
@@ -109,7 +111,7 @@
       <recent name="G:\root\Minecraft Projects\JobsPlus\Remastered\JobsPlusRemastered 1.19.2\JobsPlusRemastered\fabric\src\main\resources" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Minecraft Client (:fabric)">
+  <component name="RunManager" selected="Gradle.JobsPlusRemastered [curseforge]">
     <configuration name="JobsPlusRemastered [build]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -122,6 +124,28 @@
         <option name="taskNames">
           <list>
             <option value="build" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="JobsPlusRemastered [curseforge]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="curseforge" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -198,28 +222,6 @@
       <RunAsTest>false</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="JobsPlusRemastered:forge [genSources]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$/forge" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value="genSources" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <RunAsTest>false</RunAsTest>
-      <method v="2" />
-    </configuration>
     <configuration default="true" type="JetRunConfigurationType">
       <method v="2">
         <option name="Make" enabled="true" />
@@ -233,11 +235,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.JobsPlusRemastered [curseforge]" />
         <item itemvalue="Gradle.JobsPlusRemastered [build]" />
         <item itemvalue="Gradle.JobsPlusRemastered:fabric [runClient]" />
         <item itemvalue="Gradle.JobsPlusRemastered [genSources]" />
         <item itemvalue="Gradle.JobsPlusRemastered:fabric [build]" />
-        <item itemvalue="Gradle.JobsPlusRemastered:forge [genSources]" />
       </list>
     </recent_temporary>
   </component>
@@ -305,7 +307,7 @@
       <workItem from="1694862599959" duration="7994000" />
       <workItem from="1694981321726" duration="599000" />
       <workItem from="1695031643319" duration="615000" />
-      <workItem from="1695758316412" duration="1793000" />
+      <workItem from="1695758316412" duration="3108000" />
     </task>
     <task id="LOCAL-00001" summary="Added alchemist powerups">
       <option name="closed" value="true" />
@@ -499,7 +501,15 @@
       <option name="project" value="LOCAL" />
       <updated>1695762064678</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary="Changed actions list to actions map.">
+      <option name="closed" value="true" />
+      <created>1695762408168</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1695762408168</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -541,7 +551,8 @@
     <MESSAGE value="Removed old tests" />
     <MESSAGE value="Added exp and level up message." />
     <MESSAGE value="Changed package name from interation to integration." />
-    <option name="LAST_COMMIT_MESSAGE" value="Changed package name from interation to integration." />
+    <MESSAGE value="Changed actions list to actions map." />
+    <option name="LAST_COMMIT_MESSAGE" value="Changed actions list to actions map." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

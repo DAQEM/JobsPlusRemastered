@@ -1,6 +1,7 @@
 plugins {
     id "com.github.johnrengelman.shadow" version "7.1.2"
     id "com.matthewprenger.cursegradle" version "1.4.0"
+    id "com.modrinth.minotaur" version "2.+"
 }
 
 version = "$rootProject.mod_version"
@@ -87,4 +88,35 @@ publishing {
     repositories {
         // Add repositories to publish to here.
     }
+}
+
+curseforge {
+    apiKey = System.getenv('CURSEFORGE_API_KEY')
+    project {
+        id = rootProject.curse_forge_project_id
+        releaseType = rootProject.curse_forge_release_type
+        addGameVersion "$rootProject.minecraft_version"
+        addGameVersion "Java 17"
+        addGameVersion "Fabric"
+
+        relations {
+            requiredDependency("architectury-api")
+            requiredDependency("item-restrictions")
+            requiredDependency("supermartijn642s-config-lib")
+        }
+
+        mainArtifact(remapJar) {
+            displayName = "Jobs+ Fabric $rootProject.minecraft_version - $rootProject.mod_version"
+        }
+
+        addArtifact(sourcesJar) {
+        }
+    }
+    options {
+        forgeGradleIntegration = false
+    }
+}
+
+afterEvaluate {
+    tasks.curseforge916985.dependsOn remapJar
 }
