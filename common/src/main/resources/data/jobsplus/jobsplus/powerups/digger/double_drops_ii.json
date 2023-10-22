@@ -2,7 +2,7 @@
   "job": "jobsplus:digger",
   "parent": "jobsplus:digger/double_drops_i",
   "name": "Double Drops II",
-  "description": "Grands a 10% chance to get double drops when digging.",
+  "description": "Grants a 10% chance to get double drops when digging.",
   "icon": {
     "item": "minecraft:grass_block"
   },

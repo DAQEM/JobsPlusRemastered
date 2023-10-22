@@ -1,7 +1,7 @@
 {
   "job": "jobsplus:farmer",
   "name": "Double Drops I",
-  "description": "Grands a 5% chance to get double drops when harvesting crops.",
+  "description": "Grants a 5% chance to get double drops when harvesting crops.",
   "icon": {
     "item": "minecraft:wheat"
   },

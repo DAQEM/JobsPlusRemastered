@@ -2,7 +2,7 @@
   "job": "jobsplus:digger",
   "parent": "jobsplus:digger/double_drops_ii",
   "name": "Double Drops III",
-  "description": "Grands a 20% chance to get double drops when digging.",
+  "description": "Grants a 20% chance to get double drops when digging.",
   "icon": {
     "item": "minecraft:podzol"
   },
