@@ -4,29 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5316e986-2bbe-4484-934c-c6ad4cd49949" name="Changes" comment="Removed testing powerups">
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+    <list default="true" id="5316e986-2bbe-4484-934c-c6ad4cd49949" name="Changes" comment="Fixed lumberjack getting exp from mining stone.&#10;Fixed Job EXP Multiplier reward.&#10;Fixed Job EXP visual glitch">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/integration/arc/condition/conditions/job/HasJobCondition.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/integration/arc/condition/conditions/job/HasJobCondition.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/integration/arc/condition/conditions/job/JobLevelCondition.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/integration/arc/condition/conditions/job/JobLevelCondition.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/integration/arc/reward/rewards/job/JobExpMultiplierReward.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/integration/arc/reward/rewards/job/JobExpMultiplierReward.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/arc/alchemist/powerup/job_exp_i.json" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/arc/alchemist/powerup/job_exp_i.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/arc/alchemist/powerup/job_exp_ii.json" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/arc/alchemist/powerup/job_exp_ii.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/arc/alchemist/powerup/job_exp_iii.json" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/arc/alchemist/powerup/job_exp_iii.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/arc/enchanter/powerup/job_exp_i.json" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/arc/enchanter/powerup/job_exp_i.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/arc/enchanter/powerup/job_exp_ii.json" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/arc/enchanter/powerup/job_exp_ii.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/arc/enchanter/powerup/job_exp_iii.json" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/arc/enchanter/powerup/job_exp_iii.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/arc/farmer/powerup/job_exp_i.json" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/arc/farmer/powerup/job_exp_i.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/arc/farmer/powerup/job_exp_ii.json" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/arc/farmer/powerup/job_exp_ii.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/arc/farmer/powerup/job_exp_iii.json" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/arc/farmer/powerup/job_exp_iii.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/arc/fisherman/powerup/job_exp_i.json" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/arc/fisherman/powerup/job_exp_i.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/arc/fisherman/powerup/job_exp_ii.json" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/arc/fisherman/powerup/job_exp_ii.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/arc/fisherman/powerup/job_exp_iii.json" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/arc/fisherman/powerup/job_exp_iii.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/arc/lumberjack/break_wood.json" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/arc/lumberjack/break_wood.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/arc/smith/powerup/job_exp_i.json" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/arc/smith/powerup/job_exp_i.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/arc/smith/powerup/job_exp_ii.json" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/arc/smith/powerup/job_exp_ii.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/arc/smith/powerup/job_exp_iii.json" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/arc/smith/powerup/job_exp_iii.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/forge/src/main/java/com/daqem/jobsplus/forge/SideProxyForge.java" beforeDir="false" afterPath="$PROJECT_DIR$/forge/src/main/java/com/daqem/jobsplus/forge/SideProxyForge.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -155,7 +136,7 @@
       <updated>1697978943438</updated>
       <workItem from="1697978946211" duration="9162000" />
       <workItem from="1697993615660" duration="1889000" />
-      <workItem from="1697997880585" duration="3159000" />
+      <workItem from="1697997880585" duration="6644000" />
     </task>
     <task id="LOCAL-00001" summary="Ported to 1.20.1">
       <option name="closed" value="true" />
@@ -173,7 +154,15 @@
       <option name="project" value="LOCAL" />
       <updated>1697987756929</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Fixed lumberjack getting exp from mining stone.&#10;Fixed Job EXP Multiplier reward.&#10;Fixed Job EXP visual glitch">
+      <option name="closed" value="true" />
+      <created>1698001365204</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1698001365204</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -182,6 +171,23 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Ported to 1.20.1" />
     <MESSAGE value="Removed testing powerups" />
-    <option name="LAST_COMMIT_MESSAGE" value="Removed testing powerups" />
+    <MESSAGE value="Fixed lumberjack getting exp from mining stone.&#10;Fixed Job EXP Multiplier reward.&#10;Fixed Job EXP visual glitch" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed lumberjack getting exp from mining stone.&#10;Fixed Job EXP Multiplier reward.&#10;Fixed Job EXP visual glitch" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>jar://$PROJECT_DIR$/.gradle/loom-cache/remapped_mods/loom_mappings_1_20_1_layered_hash_40359_v2/curse/maven/arc-883593/4770424-sources-4770425/arc-883593-4770424-sources-4770425-sources.jar!/com/daqem/arc/data/reward/effect/EffectAmplifierAdditionReward.java</url>
+          <line>32</line>
+          <option name="timeStamp" value="9" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>jar://$PROJECT_DIR$/.gradle/loom-cache/remapped_mods/loom_mappings_1_20_1_layered_hash_40359_v2/curse/maven/arc-883593/4811635-sources-4811636/arc-883593-4811635-sources-4811636-sources.jar!/com/daqem/arc/data/reward/effect/RemoveEffectReward.java</url>
+          <line>24</line>
+          <option name="timeStamp" value="11" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

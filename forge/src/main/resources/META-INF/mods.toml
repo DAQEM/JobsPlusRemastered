@@ -24,34 +24,34 @@ side = "BOTH"
 [[dependencies.jobsplus]]
 modId = "minecraft"
 mandatory = true
-versionRange = "[1.19.2,)"
+versionRange = "[1.20.1,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.jobsplus]]
 modId = "architectury"
 mandatory = true
-versionRange = "[6.2.43,)"
+versionRange = "[9.1.12,)"
 ordering = "AFTER"
 side = "BOTH"
 
 [[dependencies.jobsplus]]
 modId = "supermartijn642configlib"
 mandatory = true
-versionRange = "[1.1.0,)"
+versionRange = "[1.1.8,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.jobsplus]]
 modId = "arc"
 mandatory = true
-versionRange = "[1.0,)"
+versionRange = "[1.3.1,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.jobsplus]]
 modId = "itemrestrictions"
 mandatory = true
-versionRange = "[0.2.1,)"
+versionRange = "[1.0,)"
 ordering = "NONE"
 side = "BOTH"
