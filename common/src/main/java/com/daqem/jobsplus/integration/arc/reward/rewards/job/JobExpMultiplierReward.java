@@ -18,14 +18,17 @@ import com.daqem.jobsplus.player.JobsServerPlayer;
 import com.daqem.jobsplus.player.job.Job;
 import com.google.gson.JsonObject;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 
 public class JobExpMultiplierReward extends AbstractReward {
 
+    private final ResourceLocation jobLocation;
     private final double multiplier;
 
-    public JobExpMultiplierReward(double chance, int priority, double multiplier) {
+    public JobExpMultiplierReward(double chance, int priority, ResourceLocation jobLocation, double multiplier) {
         super(chance, priority);
+        this.jobLocation = jobLocation;
         this.multiplier = multiplier;
     }
 
@@ -46,8 +49,10 @@ public class JobExpMultiplierReward extends AbstractReward {
         if (player instanceof JobsServerPlayer jobsServerPlayer) {
             Job job = null;
             if (sourceActionHolder instanceof JobInstance jobInstance) {
+                if (!jobInstance.getLocation().equals(jobLocation)) return new ActionResult();
                 job = jobsServerPlayer.jobsplus$getJob(jobInstance);
             } else if (sourceActionHolder instanceof PowerupInstance powerupInstance) {
+                if (!powerupInstance.getJobLocation().equals(jobLocation)) return new ActionResult();
                 job = jobsServerPlayer.jobsplus$getJob(JobInstance.of(powerupInstance.getJobLocation()));
             }
             if (job != null) {
@@ -68,6 +73,7 @@ public class JobExpMultiplierReward extends AbstractReward {
             return new JobExpMultiplierReward(
                     chance,
                     priority,
+                    new ResourceLocation(GsonHelper.getAsString(jsonObject, "job")),
                     GsonHelper.getAsDouble(jsonObject, "multiplier"));
         }
 
@@ -76,12 +82,14 @@ public class JobExpMultiplierReward extends AbstractReward {
             return new JobExpMultiplierReward(
                     chance,
                     priority,
+                    friendlyByteBuf.readResourceLocation(),
                     friendlyByteBuf.readDouble());
         }
 
         @Override
         public void toNetwork(FriendlyByteBuf friendlyByteBuf, JobExpMultiplierReward type) {
             RewardSerializer.super.toNetwork(friendlyByteBuf, type);
+            friendlyByteBuf.writeResourceLocation(type.jobLocation);
             friendlyByteBuf.writeDouble(type.multiplier);
         }
     }

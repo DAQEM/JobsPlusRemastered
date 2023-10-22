@@ -6,6 +6,7 @@ import com.daqem.arc.api.condition.ICondition;
 import com.daqem.arc.api.condition.serializer.ConditionSerializer;
 import com.daqem.arc.api.condition.serializer.IConditionSerializer;
 import com.daqem.arc.api.condition.type.IConditionType;
+import com.daqem.jobsplus.JobsPlus;
 import com.daqem.jobsplus.integration.arc.holder.holders.job.JobInstance;
 import com.daqem.jobsplus.integration.arc.condition.serializer.JobsPlusConditionSerializer;
 import com.daqem.jobsplus.integration.arc.condition.type.JobsPlusConditionType;
@@ -36,6 +37,8 @@ public class HasJobCondition extends AbstractCondition {
                     }
                 }
             }
+        } else {
+            JobsPlus.LOGGER.error("Job " + jobLocation + " does not exist! Trying to use it in the condition has_job.");
         }
         return false;
     }

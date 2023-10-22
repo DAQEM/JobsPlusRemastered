@@ -7,6 +7,7 @@
   "rewards": [
     {
       "type": "jobsplus:job_exp_multiplier",
+      "job": "jobsplus:enchanter",
       "multiplier": 2
     }
   ],

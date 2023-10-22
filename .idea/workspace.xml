@@ -4,32 +4,29 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5316e986-2bbe-4484-934c-c6ad4cd49949" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/jobsplus/powerups/alchemist/longer_potions_vi.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/jobsplus/powerups/alchemist/longer_potions_vii.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/jobsplus/powerups/alchemist/longer_potions_viii.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/jobsplus/powerups/alchemist/longer_potions_viiii.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/jobsplus/powerups/alchemist/longer_potions_vv.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/jobsplus/powerups/alchemist/longer_potions_vvi.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/jobsplus/powerups/alchemist/longer_potions_xii.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/discord.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/discord.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/git_toolbox_prj.xml" beforeDir="false" />
+    <list default="true" id="5316e986-2bbe-4484-934c-c6ad4cd49949" name="Changes" comment="Removed testing powerups">
       <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/client/powerup/PowerupWidget.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/client/powerup/PowerupWidget.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/client/render/ModItemRenderer.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/client/screen/AbstractScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/client/screen/AbstractScreen.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/client/screen/ConfirmationScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/client/screen/ConfirmationScreen.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/client/screen/JobsScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/client/screen/JobsScreen.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/client/screen/PowerUpsScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/client/screen/PowerUpsScreen.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/command/JobCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/command/JobCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/mixin/MixinServerPlayer.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/mixin/MixinServerPlayer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/mixin/client/MixinLocalPlayer.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/mixin/client/MixinLocalPlayer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/resources/jobsplus.accesswidener" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/resources/jobsplus.accesswidener" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/integration/arc/condition/conditions/job/HasJobCondition.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/integration/arc/condition/conditions/job/HasJobCondition.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/integration/arc/condition/conditions/job/JobLevelCondition.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/integration/arc/condition/conditions/job/JobLevelCondition.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/integration/arc/reward/rewards/job/JobExpMultiplierReward.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/integration/arc/reward/rewards/job/JobExpMultiplierReward.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/arc/alchemist/powerup/job_exp_i.json" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/arc/alchemist/powerup/job_exp_i.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/arc/alchemist/powerup/job_exp_ii.json" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/arc/alchemist/powerup/job_exp_ii.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/arc/alchemist/powerup/job_exp_iii.json" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/arc/alchemist/powerup/job_exp_iii.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/arc/enchanter/powerup/job_exp_i.json" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/arc/enchanter/powerup/job_exp_i.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/arc/enchanter/powerup/job_exp_ii.json" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/arc/enchanter/powerup/job_exp_ii.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/arc/enchanter/powerup/job_exp_iii.json" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/arc/enchanter/powerup/job_exp_iii.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/arc/farmer/powerup/job_exp_i.json" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/arc/farmer/powerup/job_exp_i.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/arc/farmer/powerup/job_exp_ii.json" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/arc/farmer/powerup/job_exp_ii.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/arc/farmer/powerup/job_exp_iii.json" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/arc/farmer/powerup/job_exp_iii.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/arc/fisherman/powerup/job_exp_i.json" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/arc/fisherman/powerup/job_exp_i.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/arc/fisherman/powerup/job_exp_ii.json" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/arc/fisherman/powerup/job_exp_ii.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/arc/fisherman/powerup/job_exp_iii.json" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/arc/fisherman/powerup/job_exp_iii.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/arc/lumberjack/break_wood.json" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/arc/lumberjack/break_wood.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/arc/smith/powerup/job_exp_i.json" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/arc/smith/powerup/job_exp_i.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/arc/smith/powerup/job_exp_ii.json" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/arc/smith/powerup/job_exp_ii.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/arc/smith/powerup/job_exp_iii.json" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/arc/smith/powerup/job_exp_iii.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/forge/src/main/java/com/daqem/jobsplus/forge/SideProxyForge.java" beforeDir="false" afterPath="$PROJECT_DIR$/forge/src/main/java/com/daqem/jobsplus/forge/SideProxyForge.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -62,38 +59,63 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "customColor": "",
-  "associatedIndex": 7
-}]]></component>
+  <component name="GitToolBoxStore">
+    <option name="projectConfigVersion" value="5" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 7
+}</component>
   <component name="ProjectId" id="2X7T63MRkND6bARheGEyzOOCWQO" />
   <component name="ProjectViewState">
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "1.20.1",
-    "last_opened_file_path": "G:/root/Minecraft Projects/JobsPlus/Remastered/JobsPlusRemastered 1.20.1/common/src/main/resources/data/jobsplus/jobsplus/powerups/alchemist",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;1.20.1&quot;,
+    &quot;last_opened_file_path&quot;: &quot;G:/root/Minecraft Projects/JobsPlus/Remastered/JobsPlusRemastered 1.20.1/common/src/main/resources/data/jobsplus/jobsplus/powerups/alchemist&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.project.gradle&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="G:\root\Minecraft Projects\JobsPlus\Remastered\JobsPlusRemastered 1.20.1\common\src\main\resources\data\jobsplus\jobsplus\powerups\alchemist" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Application.Minecraft Client (:fabric)">
+    <configuration name="JobsPlusRemastered 1.20.1 [curseforge]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="curseforge" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <method v="2" />
+    </configuration>
     <configuration name="JobsPlusRemastered 1.20.1:fabric [runClient]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -118,6 +140,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.JobsPlusRemastered 1.20.1 [curseforge]" />
         <item itemvalue="Gradle.JobsPlusRemastered 1.20.1:fabric [runClient]" />
       </list>
     </recent_temporary>
@@ -130,11 +153,35 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1697978943438</updated>
-      <workItem from="1697978946211" duration="8470000" />
+      <workItem from="1697978946211" duration="9162000" />
+      <workItem from="1697993615660" duration="1889000" />
+      <workItem from="1697997880585" duration="3159000" />
     </task>
+    <task id="LOCAL-00001" summary="Ported to 1.20.1">
+      <option name="closed" value="true" />
+      <created>1697987734838</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1697987734838</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Removed testing powerups">
+      <option name="closed" value="true" />
+      <created>1697987756929</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1697987756929</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Ported to 1.20.1" />
+    <MESSAGE value="Removed testing powerups" />
+    <option name="LAST_COMMIT_MESSAGE" value="Removed testing powerups" />
   </component>
 </project>

@@ -18,25 +18,37 @@ import net.minecraft.util.GsonHelper;
 
 public class JobLevelCondition extends AbstractCondition {
 
+    private static final String EMPTY_JOB_LOCATION = "jobsplus:empty";
+
+    private final ResourceLocation jobLocation;
     private final int min;
     private final int max;
 
-    public JobLevelCondition(boolean inverted, int min, int max) {
+    public JobLevelCondition(boolean inverted, ResourceLocation jobLocation, int min, int max) {
         super(inverted);
+        this.jobLocation = jobLocation;
         this.min = min;
         this.max = max;
     }
 
     @Override
     public boolean isMet(ActionData actionData) {
-        if (actionData.getSourceActionHolder() instanceof JobInstance jobInstance) {
-            if (actionData.getPlayer() instanceof JobsServerPlayer jobsServerPlayer) {
-                Job job = jobsServerPlayer.jobsplus$getJob(jobInstance);
-                if (job != null) {
-                    return job.getLevel() >= min && job.getLevel() <= max;
-                }
+        JobInstance jobInstance;
+        if (!jobLocation.equals(new ResourceLocation(EMPTY_JOB_LOCATION))) {
+            jobInstance = JobInstance.of(jobLocation);
+        } else if (actionData.getSourceActionHolder() instanceof JobInstance jobInstance2) {
+            jobInstance = jobInstance2;
+        } else {
+            return false;
+        }
+
+        if (actionData.getPlayer() instanceof JobsServerPlayer jobsServerPlayer) {
+            Job job = jobsServerPlayer.jobsplus$getJob(jobInstance);
+            if (job != null) {
+                return job.getLevel() >= min && job.getLevel() <= max;
             }
         }
+
         return false;
     }
 
@@ -56,14 +68,16 @@ public class JobLevelCondition extends AbstractCondition {
         public JobLevelCondition fromJson(ResourceLocation location, JsonObject jsonObject, boolean inverted) {
             return new JobLevelCondition(
                     inverted,
-                    GsonHelper.getAsInt(jsonObject, "min"),
-                    GsonHelper.getAsInt(jsonObject, "max"));
+                    new ResourceLocation(GsonHelper.getAsString(jsonObject, "job", EMPTY_JOB_LOCATION)),
+                    GsonHelper.getAsInt(jsonObject, "min", 0),
+                    GsonHelper.getAsInt(jsonObject, "max", Integer.MAX_VALUE));
         }
 
         @Override
         public JobLevelCondition fromNetwork(ResourceLocation location, FriendlyByteBuf friendlyByteBuf, boolean inverted) {
             return new JobLevelCondition(
                     inverted,
+                    friendlyByteBuf.readResourceLocation(),
                     friendlyByteBuf.readInt(),
                     friendlyByteBuf.readInt());
         }
@@ -71,6 +85,7 @@ public class JobLevelCondition extends AbstractCondition {
         @Override
         public void toNetwork(FriendlyByteBuf friendlyByteBuf, JobLevelCondition type) {
             ConditionSerializer.super.toNetwork(friendlyByteBuf, type);
+            friendlyByteBuf.writeResourceLocation(type.jobLocation);
             friendlyByteBuf.writeInt(type.min);
             friendlyByteBuf.writeInt(type.max);
         }

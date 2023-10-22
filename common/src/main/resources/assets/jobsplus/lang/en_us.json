@@ -27,7 +27,7 @@
   "jobsplus.gui.toggle_boss_bar": "Toggle Boss Bar",
   "jobsplus.gui.active": "Active: ",
   "jobsplus.gui.jobs": "Jobs",
-  "jobsplus.gui.exp": "EXP: %s%s%s",
+  "jobsplus.gui.exp": "EXP: %s%s",
   "jobsplus.gui.level": "Level: %s%s",
   "jobsplus.gui.coins": "Coins",
   "jobsplus.gui.coins.top": "Coins: %s",
