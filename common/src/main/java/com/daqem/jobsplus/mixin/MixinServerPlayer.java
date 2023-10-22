@@ -49,8 +49,8 @@ public abstract class MixinServerPlayer extends Player implements JobsServerPlay
     @Unique
     private boolean jobsplus$updatedFromOldJobsPLus = false;
 
-    public MixinServerPlayer(Level level, BlockPos blockPos, float yaw, GameProfile gameProfile, @Nullable ProfilePublicKey profilePublicKey) {
-        super(level, blockPos, yaw, gameProfile, profilePublicKey);
+    public MixinServerPlayer(Level level, BlockPos blockPos, float yaw, GameProfile gameProfile) {
+        super(level, blockPos, yaw, gameProfile);
     }
 
     @Override
@@ -191,7 +191,7 @@ public abstract class MixinServerPlayer extends Player implements JobsServerPlay
 
     @Override
     public Level jobsplus$getLevel() {
-        return super.getLevel();
+        return super.level();
     }
 
     @Override

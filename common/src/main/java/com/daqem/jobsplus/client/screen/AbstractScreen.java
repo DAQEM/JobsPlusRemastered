@@ -2,6 +2,7 @@ package com.daqem.jobsplus.client.screen;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
@@ -18,13 +19,13 @@ public abstract class AbstractScreen extends Screen {
         Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
     }
 
-    public void drawDynamicComponent(PoseStack poseStack, Component component, float x, float y, int max_width, int color) {
+    public void drawDynamicComponent(GuiGraphics guiGraphics, Component component, float x, float y, int max_width, int color) {
         float scale = getScale(component, max_width);
 
-        poseStack.pushPose();
-        poseStack.scale(scale, scale, scale);
-        font.draw(poseStack, component, x / scale, y / scale, color);
-        poseStack.popPose();
+        guiGraphics.pose().pushPose();
+        guiGraphics.pose().scale(scale, scale, scale);
+        guiGraphics.drawString(font, component, (int) (x / scale), (int) (y / scale), color, false);
+        guiGraphics.pose().popPose();
     }
 
     private float getScale(Component component, int max_width) {
@@ -37,11 +38,11 @@ public abstract class AbstractScreen extends Screen {
         return scale;
     }
 
-    public void drawRightAlignedString(@NotNull PoseStack poseStack, @NotNull String text, int posX, int posY, int color) {
-        font.draw(poseStack, text, (float) posX - font.width(text), (float) posY, color);
+    public void drawRightAlignedString(@NotNull GuiGraphics guiGraphics, @NotNull String text, int posX, int posY, int color) {
+        guiGraphics.drawString(font, text, posX - font.width(text), posY, color, false);
     }
 
-    public void drawCenteredString(@NotNull PoseStack poseStack, @NotNull String text, int posX, int posY, int color) {
-        font.draw(poseStack, text, (float) (posX - font.width(text) / 2), (float) posY, color);
+    public void drawCenteredString(@NotNull GuiGraphics guiGraphics, @NotNull String text, int posX, int posY, int color) {
+        guiGraphics.drawString(font, text, posX - font.width(text) / 2, posY, color, false);
     }
 }

@@ -137,8 +137,7 @@ public class JobCommand {
             Job job = jobsServerPlayer.jobsplus$getJob(jobInstance);
             if (job != null) {
                 job.getPowerupManager().clearPowerups();
-                source.sendSuccess(JobsPlus.translatable(
-                        "command.set.powerup.success_clear", jobInstance.getLocation()), false);
+                source.sendSuccess(() -> JobsPlus.translatable("command.set.powerup.success_clear", jobInstance.getLocation()), false);
             }
         }
         return 0;
@@ -147,9 +146,9 @@ public class JobCommand {
     private static int debug(CommandSourceStack source, ServerPlayer target) {
         if (target instanceof ArcPlayer arcPlayer) {
             arcPlayer.arc$getActionHolders().forEach(actionHolder -> {
-                source.sendSuccess(Component.literal(actionHolder.getLocation().toString()), false);
-                source.sendSuccess(Component.literal("actions: " + actionHolder.getActions().size()), false);
-                source.sendSuccess(Component.literal(" "), false);
+                source.sendSuccess(() -> Component.literal(actionHolder.getLocation().toString()), false);
+                source.sendSuccess(() -> Component.literal("actions: " + actionHolder.getActions().size()), false);
+                source.sendSuccess(() -> Component.literal(" "), false);
             });
         }
         return 0;
@@ -167,7 +166,7 @@ public class JobCommand {
     private static int setCoins(CommandSourceStack source, ServerPlayer target, int coins) {
         if (target instanceof JobsServerPlayer jobsServerPlayer) {
             jobsServerPlayer.jobsplus$setCoins(coins);
-            source.sendSuccess(JobsPlus.translatable(
+            source.sendSuccess(() -> JobsPlus.translatable(
                     "command.set.coins.success", coins, jobsServerPlayer.jobsplus$getName()), false);
         }
         return coins;
@@ -187,7 +186,7 @@ public class JobCommand {
                             "command.set.experience.already_max_level"));
                 }
                 job.setExperience(experience);
-                source.sendSuccess(JobsPlus.translatable(
+                source.sendSuccess(() -> JobsPlus.translatable(
                         "command.set.experience.success", jobInstance.getLocation(), experience, jobsServerPlayer.jobsplus$getName()), false);
             } else {
                 source.sendFailure(JobsPlus.translatable(
@@ -203,7 +202,7 @@ public class JobCommand {
             if (level == 0) {
                 if (job != null) {
                     jobsServerPlayer.jobsplus$removeJob(jobInstance);
-                    source.sendSuccess(JobsPlus.translatable(
+                    source.sendSuccess(() -> JobsPlus.translatable(
                             "command.set.level.removed_job", jobInstance.getLocation(), jobsServerPlayer.jobsplus$getName()), false);
                 } else {
                     source.sendFailure(JobsPlus.translatable(
@@ -218,13 +217,13 @@ public class JobCommand {
 
             if (job != null) {
                 job.setLevel(level);
-                source.sendSuccess(JobsPlus.translatable(
+                source.sendSuccess(() -> JobsPlus.translatable(
                         "command.set.level.success", jobInstance.getLocation(), level, jobsServerPlayer.jobsplus$getName()), false);
             } else {
                 job = jobsServerPlayer.jobsplus$addNewJob(jobInstance);
                 if (job != null) {
                     job.setLevel(level);
-                    source.sendSuccess(JobsPlus.translatable(
+                    source.sendSuccess(() -> JobsPlus.translatable(
                             "command.set.level.success_new_job", jobInstance.getLocation(), level, jobsServerPlayer.jobsplus$getName()), false);
                 } else {
                     source.sendFailure(JobsPlus.translatable(

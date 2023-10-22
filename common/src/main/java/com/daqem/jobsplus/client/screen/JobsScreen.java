@@ -5,7 +5,6 @@ import com.daqem.arc.client.screen.ActionScreen;
 import com.daqem.itemrestrictions.data.ItemRestriction;
 import com.daqem.jobsplus.Constants;
 import com.daqem.jobsplus.JobsPlus;
-import com.daqem.jobsplus.client.render.ModItemRenderer;
 import com.daqem.jobsplus.client.render.RenderColor;
 import com.daqem.jobsplus.config.JobsPlusCommonConfig;
 
@@ -22,10 +21,10 @@ import com.daqem.jobsplus.util.chat.ChatColor;
 import com.daqem.jobsplus.util.experience.ExperienceHandler;
 import com.google.common.collect.ImmutableCollection;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.entity.ItemRenderer;
@@ -90,8 +89,8 @@ public class JobsScreen extends AbstractScreen {
     }
 
     @Override
-    public void render(@NotNull PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
-        this.renderBackground(poseStack);
+    public void render(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+        this.renderBackground(guiGraphics);
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderColor.normal();
         RenderSystem.setShaderTexture(0, BACKGROUND);
@@ -104,13 +103,13 @@ public class JobsScreen extends AbstractScreen {
 
         this.setShownJobs(firstHiddenIndex);
 
-        this.renderBackgroundImage(poseStack);
-        this.renderScrollWheel(poseStack);
-        this.renderButtons(poseStack, mouseX, mouseY);
-        this.renderTooltip(poseStack, mouseX, mouseY);
-        this.renderItems(poseStack);
-        this.renderTexts(poseStack);
-        super.render(poseStack, mouseX, mouseY, partialTicks);
+        this.renderBackgroundImage(guiGraphics);
+        this.renderScrollWheel(guiGraphics);
+        this.renderButtons(guiGraphics, mouseX, mouseY);
+        this.renderTooltip(guiGraphics, mouseX, mouseY);
+        this.renderItems(guiGraphics);
+        this.renderTexts(guiGraphics);
+        super.render(guiGraphics, mouseX, mouseY, partialTicks);
     }
 
     @Override
@@ -139,33 +138,33 @@ public class JobsScreen extends AbstractScreen {
         }
     }
 
-    private void renderBackgroundImage(PoseStack poseStack) {
-        blitThis(poseStack, 0, 0, 0, 0, this.imageWidth, this.imageHeight);
+    private void renderBackgroundImage(GuiGraphics guiGraphics) {
+        blitThis(guiGraphics, 0, 0, 0, 0, this.imageWidth, this.imageHeight);
     }
 
-    private void renderScrollWheel(PoseStack poseStack) {
+    private void renderScrollWheel(GuiGraphics guiGraphics) {
         if (!isScrollBarActive()) RenderColor.grayedOut();
-        blitThis(poseStack, 127, (int) (16 + (123.0F * getScrollOffset())), 0, 207, 12, 15);
+        blitThis(guiGraphics, 127, (int) (16 + (123.0F * getScrollOffset())), 0, 207, 12, 15);
         RenderColor.normal();
     }
 
-    protected void renderTooltip(@NotNull PoseStack poseStack, int mouseX, int mouseY) {
+    protected void renderTooltip(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY) {
         mouseX -= startX;
         mouseY -= startY;
         if (isBetween(mouseX, mouseY, 6, -22, 32, 0)) {
-            super.renderTooltip(poseStack, JobsPlus.translatable("gui.all_jobs"), mouseX + startX, mouseY + startY);
+            guiGraphics.renderTooltip(font, JobsPlus.translatable("gui.all_jobs"), mouseX + startX, mouseY + startY);
         } else if (isBetween(mouseX, mouseY, 6 + 28, -22, 32 + 28, 0)) {
-            super.renderTooltip(poseStack, JobsPlus.translatable("gui.performing_jobs"), mouseX + startX, mouseY + startY);
+            guiGraphics.renderTooltip(font, JobsPlus.translatable("gui.performing_jobs"), mouseX + startX, mouseY + startY);
         } else if (isBetween(mouseX, mouseY, 6 + 28 + 28, -22, 32 + 28 + 28, 0)) {
-            super.renderTooltip(poseStack, JobsPlus.translatable("gui.not_performing_jobs"), mouseX + startX, mouseY + startY);
+            guiGraphics.renderTooltip(font, JobsPlus.translatable("gui.not_performing_jobs"), mouseX + startX, mouseY + startY);
         } else if (isBetween(mouseX, mouseY, 6 + 150, -22, 32 + 150, 0)) {
-            super.renderTooltip(poseStack, JobsPlus.translatable("gui.job_info"), mouseX + startX, mouseY + startY);
+            guiGraphics.renderTooltip(font, JobsPlus.translatable("gui.job_info"), mouseX + startX, mouseY + startY);
         } else if (isBetween(mouseX, mouseY, 6 + 28 + 150, -22, 32 + 28 + 150, 0)) {
-            super.renderTooltip(poseStack, JobsPlus.translatable("gui.job_crafting_recipes"), mouseX + startX, mouseY + startY);
+            guiGraphics.renderTooltip(font, JobsPlus.translatable("gui.job_crafting_recipes"), mouseX + startX, mouseY + startY);
         } else if (isBetween(mouseX, mouseY, 6 + 28 + 28 + 150, -22, 32 + 28 + 28 + 150, 0)) {
-            super.renderTooltip(poseStack, JobsPlus.translatable("gui.job_powerups"), mouseX + startX, mouseY + startY);
+            guiGraphics.renderTooltip(font, JobsPlus.translatable("gui.job_powerups"), mouseX + startX, mouseY + startY);
         } else if (isBetween(mouseX, mouseY, 6 + 28 + 28 + 28 + 150, -22, 32 + 28 + 28 + 28 + 150, 0)) {
-            super.renderTooltip(poseStack, JobsPlus.translatable("gui.job_how_to_get_exp"), mouseX + startX, mouseY + startY);
+            guiGraphics.renderTooltip(font, JobsPlus.translatable("gui.job_how_to_get_exp"), mouseX + startX, mouseY + startY);
         } else if (isBetween(mouseX, mouseY, imageWidth, 35, imageWidth + 21, 60)) {
             if (hasJobSelected()) {
                 if (getSelectedJobLevel() != 0) {
@@ -180,7 +179,7 @@ public class JobsScreen extends AbstractScreen {
                         list = List.of(JobsPlus.translatable("gui.toggle_boss_bar"),
                                 JobsPlus.translatable("gui.active", ChatColor.boldBlue() + JobsPlus.translatable("job.none").getString()));
                     }
-                    super.renderTooltip(poseStack, list, Optional.empty(), mouseX + startX, mouseY + startY + 17);
+                    guiGraphics.renderTooltip(font, list, Optional.empty(), mouseX + startX, mouseY + startY + 17);
                 }
             }
         }
@@ -189,31 +188,31 @@ public class JobsScreen extends AbstractScreen {
                 ItemRestriction itemRestriction = getHoveredItemRestriction(mouseX, mouseY);
                 if (itemRestriction != null) {
                     //TODO: Add tooltip text
-                    super.renderTooltip(poseStack, new ArrayList<>(), Optional.empty(), mouseX + startX, mouseY + startY);
+                    guiGraphics.renderTooltip(font, new ArrayList<>(), Optional.empty(), mouseX + startX, mouseY + startY);
                 }
             }
         }
     }
 
-    private void drawTopButtons(PoseStack poseStack, int mouseX, int mouseY, int buttonAmount, int posXOffset, int startYOffset, int activeButton) {
+    private void drawTopButtons(GuiGraphics guiGraphics, int mouseX, int mouseY, int buttonAmount, int posXOffset, int startYOffset, int activeButton) {
         for (int i = 0; i < buttonAmount; ++i) {
             int posX = posXOffset + (28 * i);
             if (activeButton != i && isBetween(mouseX - startX, mouseY - startY, posX, -19, posX + 25, 0)) {
                 RenderSystem.setShaderColor(0.7F, 0.7F, 1F, 1);
-                drawNotSelectedTopButton(poseStack, activeButton, i, posX);
+                drawNotSelectedTopButton(guiGraphics, activeButton, i, posX);
                 RenderColor.normal();
             } else {
-                drawNotSelectedTopButton(poseStack, activeButton, i, posX);
+                drawNotSelectedTopButton(guiGraphics, activeButton, i, posX);
             }
-            blitThis(poseStack, posX + 3, -21, 0, imageHeight + 56 + startYOffset + (20 * i), 20, 20);
+            blitThis(guiGraphics, posX + 3, -21, 0, imageHeight + 56 + startYOffset + (20 * i), 20, 20);
         }
     }
 
-    private void drawNotSelectedTopButton(PoseStack poseStack, int activeButton, int i, int posX) {
-        blitThis(poseStack, posX, -22, 142, activeButton == i ? imageHeight + 22 : imageHeight, 26, 22);
+    private void drawNotSelectedTopButton(GuiGraphics guiGraphics, int activeButton, int i, int posX) {
+        blitThis(guiGraphics, posX, -22, 142, activeButton == i ? imageHeight + 22 : imageHeight, 26, 22);
     }
 
-    private void drawButtons(PoseStack poseStack, int mouseX, int mouseY, int i, Job job) {
+    private void drawButtons(GuiGraphics guiGraphics, int mouseX, int mouseY, int i, Job job) {
         int j = i - this.startIndex;
         int i1 = (this.startY + 16) - startY + j * 35 - 1;
 
@@ -225,54 +224,54 @@ public class JobsScreen extends AbstractScreen {
                 RenderColor.normalSelected();
             }
         }
-        blitThis(poseStack, 7, i1, 26, this.imageHeight, 116, 35);
+        blitThis(guiGraphics, 7, i1, 26, this.imageHeight, 116, 35);
         RenderColor.normal();
 
         //BADGES
         int level = job.getLevel();
         int maxLevel = job.getJobInstance().getMaxLevel();
-        if (level >= maxLevel * 0.75) blitThis(poseStack, 7 + 5, i1 + 5, 168 + (27 * 3), imageHeight, 27, 27);
-        else if (level >= maxLevel * 0.50) blitThis(poseStack, 7 + 5, i1 + 5, 168 + (27 * 2), imageHeight, 27, 27);
-        else if (level >= maxLevel * 0.25) blitThis(poseStack, 7 + 5, i1 + 5, 168 + 27, imageHeight, 27, 27);
-        else blitThis(poseStack, 7 + 5, i1 + 5, 168, imageHeight, 27, 27);
+        if (level >= maxLevel * 0.75) blitThis(guiGraphics, 7 + 5, i1 + 5, 168 + (27 * 3), imageHeight, 27, 27);
+        else if (level >= maxLevel * 0.50) blitThis(guiGraphics, 7 + 5, i1 + 5, 168 + (27 * 2), imageHeight, 27, 27);
+        else if (level >= maxLevel * 0.25) blitThis(guiGraphics, 7 + 5, i1 + 5, 168 + 27, imageHeight, 27, 27);
+        else blitThis(guiGraphics, 7 + 5, i1 + 5, 168, imageHeight, 27, 27);
     }
 
-    public void renderButtons(PoseStack poseStack, int mouseX, int mouseY) {
+    public void renderButtons(GuiGraphics guiGraphics, int mouseX, int mouseY) {
         //SETTINGS
         if (isBetween(mouseX, mouseY, 3, height - 20, 18, height - 4))
             RenderColor.grayedOut();
-        blit(poseStack, 3, height - 20, 276, 166, 16, 16, 362, 362);
+        guiGraphics.blit(BACKGROUND, 3, height - 20, 276, 166, 16, 16, 362, 362);
         RenderColor.normal();
 
         //DISCORD
         if (isBetween(mouseX, mouseY, width - 19, height - 20, width - 4, height - 5))
             RenderColor.grayedOut();
-        poseStack.pushPose();
-        poseStack.scale(0.5F, 0.5F, 0.5F);
-        blit(poseStack, width * 2 - 38, height * 2 - 40, 276 + 16, 166, 32, 32, 362, 362);
+        guiGraphics.pose().pushPose();
+        guiGraphics.pose().scale(0.5F, 0.5F, 0.5F);
+        guiGraphics.blit(BACKGROUND, width * 2 - 38, height * 2 - 40, 276 + 16, 166, 32, 32, 362, 362);
         RenderColor.normal();
-        poseStack.popPose();
+        guiGraphics.pose().popPose();
 
         // LEFT BUTTONS
-        drawTopButtons(poseStack, mouseX, mouseY, 3, 6, 0, activeLeftButton);
+        drawTopButtons(guiGraphics, mouseX, mouseY, 3, 6, 0, activeLeftButton);
         //RIGHT BUTTONS
-        drawTopButtons(poseStack, mouseX, mouseY, 4, 156, 60, activeRightButton);
+        drawTopButtons(guiGraphics, mouseX, mouseY, 4, 156, 60, activeRightButton);
         //JOB BUTTONS
-        drawJobButtons(poseStack, mouseX, mouseY, firstHiddenIndex);
+        drawJobButtons(guiGraphics, mouseX, mouseY, firstHiddenIndex);
 
         if (hasJobSelected() && (getActiveRightButton() == 1 || getActiveRightButton() == 3)) {
             //BACKGROUND
-            blitThis(poseStack, 158, 15, 183, 198, 144, 140);
+            blitThis(guiGraphics, 158, 15, 183, 198, 144, 140);
 
             //SCROLLBAR
-            blitThis(poseStack, 305, 15, 126, 15, 14, 140);
+            blitThis(guiGraphics, 305, 15, 126, 15, 14, 140);
 
             //SCROLL WHEEL
-            blitThis(poseStack, 306, (int) (16 + (123.0F * getScrollOffsetRight())), 0, 207, 12, 15);
+            blitThis(guiGraphics, 306, (int) (16 + (123.0F * getScrollOffsetRight())), 0, 207, 12, 15);
         }
         if (hasJobSelected()) {
             if (activeRightButton == 0) {
-                drawBigButton(poseStack, mouseX, mouseY);
+                drawBigButton(guiGraphics, mouseX, mouseY);
                 // CRAFTING RECIPE BUTTONS
             } else if (activeRightButton == 1) {
                 //BUTTONS
@@ -285,12 +284,12 @@ public class JobsScreen extends AbstractScreen {
                     if (isBetween(mouseX - startX, mouseY - startY, k, i1, k + 47, i1 + 19)) {
                         RenderColor.buttonHover();
                     }
-                    blitThis(poseStack, k, i1, 26, 201, 48, 20);
+                    blitThis(guiGraphics, k, i1, 26, 201, 48, 20);
                     RenderColor.normal();
                 }
                 //POWERUP BUTTONS
             } else if (activeRightButton == 2) {
-                drawBigButton(poseStack, mouseX, mouseY);
+                drawBigButton(guiGraphics, mouseX, mouseY);
             } else if (activeRightButton == 3) {
                 for (int i = this.startIndexRight; i < firstHiddenIndexRight && i < getSelectedJob().getJobInstance().getActions().size(); ++i) {
                     int j = i - this.startIndexRight;
@@ -300,10 +299,10 @@ public class JobsScreen extends AbstractScreen {
                     if (isBetween(mouseX, mouseY, this.startX + 158, i1 + startY, this.startX + 158 + 144 - 1, i1 + startY + 34)) {
                         RenderColor.normalSelected();
                     }
-                    blitThis(poseStack, 158, i1, 26, this.imageHeight, 116, 31);
-                    blitThis(poseStack, 187, i1, 27, this.imageHeight, 115, 31);
-                    blitThis(poseStack, 158, i1 + 4, 26, this.imageHeight + 4, 116, 31);
-                    blitThis(poseStack, 187, i1 + 4, 27, this.imageHeight + 4, 115, 31);
+                    blitThis(guiGraphics, 158, i1, 26, this.imageHeight, 116, 31);
+                    blitThis(guiGraphics, 187, i1, 27, this.imageHeight, 115, 31);
+                    blitThis(guiGraphics, 158, i1 + 4, 26, this.imageHeight + 4, 116, 31);
+                    blitThis(guiGraphics, 187, i1 + 4, 27, this.imageHeight + 4, 115, 31);
                     RenderColor.normal();
                 }
             }
@@ -311,129 +310,129 @@ public class JobsScreen extends AbstractScreen {
         if (hasJobSelected()) {
             if (getSelectedJobLevel() != 0) {
                 //Boss Bar Background
-                if (getActiveBossBar() == job) blitThis(poseStack, imageWidth, 9 + 26, 142, 234, 22, 26);
-                else blitThis(poseStack, imageWidth, 9 + 26, 164, 234, 19, 26);
+                if (getActiveBossBar() == job) blitThis(guiGraphics, imageWidth, 9 + 26, 142, 234, 22, 26);
+                else blitThis(guiGraphics, imageWidth, 9 + 26, 164, 234, 19, 26);
                 // Boss Bar Icon
-                blitThis(poseStack, imageWidth + 1, 9 + 32, 165, 271, 15, 14);
+                blitThis(guiGraphics, imageWidth + 1, 9 + 32, 165, 271, 15, 14);
             }
         }
     }
 
-    private void drawBigButton(PoseStack poseStack, int mouseX, int mouseY) {
+    private void drawBigButton(GuiGraphics guiGraphics, int mouseX, int mouseY) {
         if (isBetween(mouseX - startX, mouseY - startY, 169, 132, 169 + 138, 132 + 17)) {
             RenderSystem.setShaderColor(0.7F, 0.7F, 1F, 1);
         } else {
             RenderSystem.setShaderColor(0.9F, 0.9F, 0.9F, 1);
         }
-        blitThis(poseStack, 150 + 19, 132, 26, imageHeight + 105, 139, 18);
+        blitThis(guiGraphics, 150 + 19, 132, 26, imageHeight + 105, 139, 18);
         RenderColor.normal();
     }
 
-    private void drawJobButtons(PoseStack poseStack, int mouseX, int mouseY, int firstHiddenIndex) {
+    private void drawJobButtons(GuiGraphics guiGraphics, int mouseX, int mouseY, int firstHiddenIndex) {
         if (activeLeftButton == 0) {
             for (int i = this.startIndex; i < firstHiddenIndex && i < jobs.size(); ++i) {
                 Job job = jobs.get(i);
-                drawButtons(poseStack, mouseX, mouseY, i, job);
+                drawButtons(guiGraphics, mouseX, mouseY, i, job);
             }
         } else if (activeLeftButton == 1 || activeLeftButton == 2) {
             for (int i = this.startIndex; i < firstHiddenIndex; ++i) {
                 if ((activeLeftButton == 1 && getEnabledJobs().size() > i) || (activeLeftButton == 2 && getDisabledJobs().size() > i)) {
                     Job job = activeLeftButton == 1 ? getEnabledJobs().get(i) : getDisabledJobs().get(i);
-                    drawButtons(poseStack, mouseX, mouseY, i, job);
+                    drawButtons(guiGraphics, mouseX, mouseY, i, job);
                 }
             }
         }
     }
 
-    private void drawButtonTexts(PoseStack poseStack, Job job, int i, boolean offset) {
+    private void drawButtonTexts(GuiGraphics guiGraphics, Job job, int i, boolean offset) {
         int j = offset ? i - this.startIndex : i;
         int i1 = (this.startY + 16) + j * 35;
         int level = job.getLevel();
         int exp = getJobExperience(job);
         if (level != 0) {
             int maxExp = ExperienceHandler.getMaxExperienceForLevel(level);
-            font.draw(poseStack, ChatColor.boldGreen() + job.getJobInstance().getName(), startX + 7 + 3 + 35, i1 + 3, 16777215);
-            font.draw(poseStack, ChatColor.aqua() + JobsPlus.translatable("gui.level", ChatColor.reset(), level).getString(), startX + 7 + 3 + 35, i1 + 14, 16777215);
+            guiGraphics.drawString(font, ChatColor.boldGreen() + job.getJobInstance().getName(), startX + 7 + 3 + 35, i1 + 3, 16777215, false);
+            guiGraphics.drawString(font, ChatColor.aqua() + JobsPlus.translatable("gui.level", ChatColor.reset(), level).getString(), startX + 7 + 3 + 35, i1 + 14, 16777215, false);
             if (level != 100)
-                font.draw(poseStack, ChatColor.aqua() + JobsPlus.translatable("gui.exp", ChatColor.reset(), (int) ((double) exp / maxExp * 100), "%").getString(), startX + 7 + 3 + 35, i1 + 23, 16777215);
+                guiGraphics.drawString(font, ChatColor.aqua() + JobsPlus.translatable("gui.exp", ChatColor.reset(), (int) ((double) exp / maxExp * 100), "%").getString(), startX + 7 + 3 + 35, i1 + 23, 16777215, false);
         } else {
-            font.draw(poseStack, ChatColor.boldRed() + job.getJobInstance().getName(), startX + 7 + 3 + 35, i1 + 3, 16777215);
-            font.draw(poseStack, ChatColor.aqua() + JobsPlus.translatable("gui.want_this_job").getString(), startX + 7 + 3 + 35, i1 + 14, 16777215);
-            font.draw(poseStack, ChatColor.aqua() + JobsPlus.translatable("gui.price", ChatColor.reset(), hasFreeClaimableJobs() ? 0 : job.getJobInstance().getPrice()).getString(), startX + 7 + 3 + 35, i1 + 23, 16777215);
+            guiGraphics.drawString(font, ChatColor.boldRed() + job.getJobInstance().getName(), startX + 7 + 3 + 35, i1 + 3, 16777215, false);
+            guiGraphics.drawString(font, ChatColor.aqua() + JobsPlus.translatable("gui.want_this_job").getString(), startX + 7 + 3 + 35, i1 + 14, 16777215, false);
+            guiGraphics.drawString(font, ChatColor.aqua() + JobsPlus.translatable("gui.price", ChatColor.reset(), hasFreeClaimableJobs() ? 0 : job.getJobInstance().getPrice()).getString(), startX + 7 + 3 + 35, i1 + 23, 16777215, false);
         }
     }
 
-    private void drawJobButtonsTexts(PoseStack poseStack, int firstHiddenIndex) {
+    private void drawJobButtonsTexts(GuiGraphics guiGraphics, int firstHiddenIndex) {
         if (activeLeftButton == 0) {
             for (int i = this.startIndex; i < firstHiddenIndex && i < jobs.size(); ++i) {
-                drawButtonTexts(poseStack, jobs.get(i), i, true);
+                drawButtonTexts(guiGraphics, jobs.get(i), i, true);
             }
         } else if (activeLeftButton == 1 || activeLeftButton == 2) {
             int count = 0;
             for (int i = this.startIndex; i < firstHiddenIndex; ++i) {
                 if ((activeLeftButton == 1 && getEnabledJobs().size() > i) || (activeLeftButton == 2 && getDisabledJobs().size() > i)) {
                     Job job = activeLeftButton == 1 ? getEnabledJobs().get(i) : getDisabledJobs().get(i);
-                    drawButtonTexts(poseStack, job, count++, false);
+                    drawButtonTexts(guiGraphics, job, count++, false);
                 }
             }
         }
     }
 
-    public void renderTexts(PoseStack poseStack) {
-        font.draw(poseStack, ChatColor.darkGray() + JobsPlus.translatable("gui.jobs").getString(), startX + 7, startY + 6, 16777215);
-        drawRightAlignedString(poseStack, ChatColor.darkGray() + JobsPlus.translatable("gui.coins.top", getCoins()).getString(), startX + 140, startY + 6, 16777215);
+    public void renderTexts(GuiGraphics guiGraphics) {
+        guiGraphics.drawString(font, ChatColor.darkGray() + JobsPlus.translatable("gui.jobs").getString(), startX + 7, startY + 6, 16777215, false);
+        drawRightAlignedString(guiGraphics, ChatColor.darkGray() + JobsPlus.translatable("gui.coins.top", getCoins()).getString(), startX + 140, startY + 6, 16777215);
 
-        drawJobButtonsTexts(poseStack, firstHiddenIndex);
+        drawJobButtonsTexts(guiGraphics, firstHiddenIndex);
 
         if (!hasJobSelected()) {
-            if (activeRightButton == 0) drawNoJobSelected(poseStack, "info");
-            else if (activeRightButton == 1) drawNoJobSelected(poseStack, "crafting");
-            else if (activeRightButton == 2) drawNoJobSelected(poseStack, "powerups");
-            else if (activeRightButton == 3) drawNoJobSelected(poseStack, "how_to_get_exp");
+            if (activeRightButton == 0) drawNoJobSelected(guiGraphics, "info");
+            else if (activeRightButton == 1) drawNoJobSelected(guiGraphics, "crafting");
+            else if (activeRightButton == 2) drawNoJobSelected(guiGraphics, "powerups");
+            else if (activeRightButton == 3) drawNoJobSelected(guiGraphics, "how_to_get_exp");
         } else {
             int centerR = startX + (imageWidth + 150) / 2;
             if (activeRightButton == 0) {
-                drawnBigJobTitle(poseStack);
-                drawJobInfo(poseStack);
+                drawnBigJobTitle(guiGraphics);
+                drawJobInfo(guiGraphics);
                 if (getSelectedJobLevel() == 0) {
-                    drawCenteredString(poseStack, ChatColor.white() + JobsPlus.translatable("gui.job.start").getString(), centerR, startY + 137, 16777215);
+                    drawCenteredString(guiGraphics, ChatColor.white() + JobsPlus.translatable("gui.job.start").getString(), centerR, startY + 137, 16777215);
                 } else {
-                    drawCenteredString(poseStack, ChatColor.white() + JobsPlus.translatable("gui.job.stop").getString(), centerR, startY + 137, 16777215);
+                    drawCenteredString(guiGraphics, ChatColor.white() + JobsPlus.translatable("gui.job.stop").getString(), centerR, startY + 137, 16777215);
                 }
             } else if (activeRightButton == 1) {
-                drawCenteredString(poseStack, ChatColor.darkGray() + JobsPlus.translatable("gui.crafting").getString(), centerR, startY + 6, 16777215);
+                drawCenteredString(guiGraphics, ChatColor.darkGray() + JobsPlus.translatable("gui.crafting").getString(), centerR, startY + 6, 16777215);
             } else if (activeRightButton == 2) {
-                drawCenteredString(poseStack, ChatColor.darkGray() + JobsPlus.translatable("gui.powerups.powerups").getString(), centerR, startY +  + 20, 16777215);
+                drawCenteredString(guiGraphics, ChatColor.darkGray() + JobsPlus.translatable("gui.powerups.powerups").getString(), centerR, startY +  + 20, 16777215);
 
                 List<Powerup> allPowerups = getSelectedJob().getPowerupManager().getAllPowerups();
-                font.draw(poseStack, ChatColor.darkGray() + JobsPlus.translatable("gui.powerups.available", getSelectedJob().getJobInstance().getAllPowerups().stream().filter(p -> !allPowerups.stream().map(Powerup::getPowerupInstance).toList().contains(p)).count()).getString(), startX + 150 + 34, startY + 6 + 14 + 36, 16777215);
-                font.draw(poseStack, ChatColor.darkGray() + JobsPlus.translatable("gui.powerups.active", allPowerups.stream().filter(p -> p.getPowerupState() == PowerupState.ACTIVE).count()).getString(), startX + 150 + 34, startY + 6 + 14 + 60, 16777215);
-                font.draw(poseStack, ChatColor.darkGray() + JobsPlus.translatable("gui.powerups.inactive", allPowerups.stream().filter(p -> p.getPowerupState() == PowerupState.INACTIVE).count()).getString(), startX + 150 + 34, startY + 6 + 14 + 70, 16777215);
+                guiGraphics.drawString(font, ChatColor.darkGray() + JobsPlus.translatable("gui.powerups.available", getSelectedJob().getJobInstance().getAllPowerups().stream().filter(p -> !allPowerups.stream().map(Powerup::getPowerupInstance).toList().contains(p)).count()).getString(), startX + 150 + 34, startY + 6 + 14 + 36, 16777215, false);
+                guiGraphics.drawString(font, ChatColor.darkGray() + JobsPlus.translatable("gui.powerups.active", allPowerups.stream().filter(p -> p.getPowerupState() == PowerupState.ACTIVE).count()).getString(), startX + 150 + 34, startY + 6 + 14 + 60, 16777215, false);
+                guiGraphics.drawString(font, ChatColor.darkGray() + JobsPlus.translatable("gui.powerups.inactive", allPowerups.stream().filter(p -> p.getPowerupState() == PowerupState.INACTIVE).count()).getString(), startX + 150 + 34, startY + 6 + 14 + 70, 16777215, false);
 
-                drawCenteredString(poseStack, ChatColor.white() + JobsPlus.translatable("gui.powerups.open_menu").getString(), centerR, startY + 137, 16777215);
+                drawCenteredString(guiGraphics, ChatColor.white() + JobsPlus.translatable("gui.powerups.open_menu").getString(), centerR, startY + 137, 16777215);
             } else if (activeRightButton == 3) {
-                drawCenteredString(poseStack, ChatColor.darkGray() + JobsPlus.translatable("gui.job_how_to_get_exp").append(" ").append(JobsPlus.translatable("gui.click_for_details")).getString(), centerR, startY + 6, 16777215);
+                drawCenteredString(guiGraphics, ChatColor.darkGray() + JobsPlus.translatable("gui.job_how_to_get_exp").append(" ").append(JobsPlus.translatable("gui.click_for_details")).getString(), centerR, startY + 6, 16777215);
                 for (int i = this.startIndexRight; i < firstHiddenIndexRight && i < getSelectedJob().getJobInstance().getActions().size(); ++i) {
                     int j = i - this.startIndexRight;
                     int i1 = 18 + j * 35;
 
                     IAction action = getSelectedJob().getJobInstance().getActions().get(i);
-                    poseStack.pushPose();
-                    poseStack.scale(1.2F, 1.2F, 1.2F);
-                    drawDynamicComponent(poseStack, action.getShortDescription(), (this.startX + 164) / 1.2F, (i1 + startY + 3) / 1.2F, 103, 0x55FFFF);
-                    poseStack.popPose();
-                    drawRightAlignedString(poseStack, String.valueOf(i + 1), this.startX + 298, i1 + startY + 5, 0xA9A9A9);
-                    drawDynamicComponent(poseStack, action.getName(), this.startX + 164, i1 + startY + 17, 103, 0xDDFFFFFF);
+                    guiGraphics.pose().pushPose();
+                    guiGraphics.pose().scale(1.2F, 1.2F, 1.2F);
+                    drawDynamicComponent(guiGraphics, action.getShortDescription(), (this.startX + 164) / 1.2F, (i1 + startY + 3) / 1.2F, 103, 0x55FFFF);
+                    guiGraphics.pose().popPose();
+                    drawRightAlignedString(guiGraphics, String.valueOf(i + 1), this.startX + 298, i1 + startY + 5, 0xA9A9A9);
+                    drawDynamicComponent(guiGraphics, action.getName(), this.startX + 164, i1 + startY + 17, 103, 0xDDFFFFFF);
                 }
             }
         }
     }
 
-    public void renderItems(PoseStack poseStack) {
+    public void renderItems(GuiGraphics guiGraphics) {
         if (minecraft == null) return;
         ItemRenderer itemRenderer = minecraft.getItemRenderer();
 
-        renderJobIcons(firstHiddenIndex);
+        renderJobIcons(guiGraphics, firstHiddenIndex);
 
         if (hasJobSelected()) {
             if (activeRightButton == 1) {
@@ -442,21 +441,21 @@ public class JobsScreen extends AbstractScreen {
                     int xOffset = startX + 160 + j % 3 * 48;
                     int l = j / 3;
                     int yOffset = startY + 17 + l * 20;
-                    ModItemRenderer.renderAndDecorateItem(itemRenderer, new ItemStack(Items.ACACIA_CHEST_BOAT), xOffset, yOffset, 16);
+                    guiGraphics.renderFakeItem(new ItemStack(Items.ACACIA_CHEST_BOAT), xOffset, yOffset);
                     //TODO: Add item
                     int level = 0;
                     //TODO: Add level
-                    font.draw(poseStack, String.valueOf(level), xOffset + 22, yOffset + 4, job.getLevel() >= level ? 0x55FF55 : 0xFF5555);
+                    guiGraphics.drawString(font, String.valueOf(level), xOffset + 22, yOffset + 4, job.getLevel() >= level ? 0x55FF55 : 0xFF5555, false);
                 }
             }
         }
     }
 
-    private void renderJobIcons(int firstHiddenIndex) {
+    private void renderJobIcons(GuiGraphics guiGraphics, int firstHiddenIndex) {
         for (int i = this.startIndex; i < firstHiddenIndex && i < jobs.size(); ++i) {
             int originalSpot = i - startIndex;
             if (shownJobs.size() > originalSpot) {
-                itemRenderer.renderAndDecorateItem(
+                guiGraphics.renderFakeItem(
                         shownJobs.get(originalSpot).getJobInstance().getIconItem(),
                         startX + 17, startY + 25 + originalSpot * 35);
             }
@@ -769,8 +768,8 @@ public class JobsScreen extends AbstractScreen {
                 getActiveRightButton() == 3 && getSelectedJob().getJobInstance().getActions().size() > 4;
     }
 
-    public void blitThis(PoseStack poseStack, int posX, int posY, int startX, int startY, int stopX, int stopY) {
-        blit(poseStack, this.startX + posX, this.startY + posY, startX, startY, stopX, stopY, 362, 362);
+    public void blitThis(GuiGraphics guiGraphics, int posX, int posY, int startX, int startY, int stopX, int stopY) {
+        guiGraphics.blit(BACKGROUND, this.startX + posX, this.startY + posY, startX, startY, stopX, stopY, 362, 362);
     }
 
     public boolean isBetween(double mouseX, double mouseY, int mouseXTop, int mouseYTop, int mouseXBottom, int mouseYBottom) {
@@ -805,19 +804,19 @@ public class JobsScreen extends AbstractScreen {
         Minecraft.getInstance().setScreen(new ConfirmationScreen(this, messageType, jobInstance, powerup));
     }
 
-    private void drawNoJobSelected(PoseStack poseStack, String string) {
+    private void drawNoJobSelected(GuiGraphics guiGraphics, String string) {
         for (int i = 1; i < 6; i++) {
-            drawCenteredString(poseStack, ChatColor.darkGray() + JobsPlus.translatable("gui.no_job_selected." + string + "." + i).getString(), startX + (imageWidth + 150) / 2, startY + 42 + (i * 9), 16777215);
+            drawCenteredString(guiGraphics, ChatColor.darkGray() + JobsPlus.translatable("gui.no_job_selected." + string + "." + i).getString(), startX + (imageWidth + 150) / 2, startY + 42 + (i * 9), 16777215);
         }
     }
 
-    private void drawJobInfo(PoseStack poseStack) {
+    private void drawJobInfo(GuiGraphics guiGraphics) {
         float scale = 1.0F;
-        while (getTextHeightForDescription(poseStack, scale) > 94) {
+        while (getTextHeightForDescription(guiGraphics, scale) > 94) {
             scale -= 0.025F;
         }
-        poseStack.pushPose();
-        poseStack.scale(scale, scale, scale);
+        guiGraphics.pose().pushPose();
+        guiGraphics.pose().scale(scale, scale, scale);
         String description = job.getJobInstance().getDescription();
         String[] descriptionSplit = description.split(" ");
         int lineCount = 0;
@@ -828,15 +827,15 @@ public class JobsScreen extends AbstractScreen {
                 descriptionSplit = Arrays.copyOfRange(descriptionSplit, 1, descriptionSplit.length);
                 if (descriptionSplit.length == 0) break;
             }
-            font.draw(poseStack, line.toString(), (startX + 163) / scale, (startY + 36 + (lineCount * (9 * scale))) / scale, 5592405);
+            guiGraphics.drawString(font, line.toString(), (int) ((startX + 163) / scale), (int) ((startY + 36 + (lineCount * (9 * scale))) / scale), 5592405, false);
             lineCount++;
         }
-        poseStack.popPose();
+        guiGraphics.pose().popPose();
     }
 
-    private float getTextHeightForDescription(PoseStack poseStack, float scale) {
-        poseStack.pushPose();
-        poseStack.scale(scale, scale, scale);
+    private float getTextHeightForDescription(GuiGraphics guiGraphics, float scale) {
+        guiGraphics.pose().pushPose();
+        guiGraphics.pose().scale(scale, scale, scale);
         String description = job.getJobInstance().getDescription();
         String[] descriptionSplit = description.split(" ");
         int lineCount = 0;
@@ -849,24 +848,24 @@ public class JobsScreen extends AbstractScreen {
             }
             lineCount++;
         }
-        poseStack.popPose();
+        guiGraphics.pose().popPose();
         return lineCount * (9 * scale);
     }
 
-    public void drawnBigJobTitle(PoseStack poseStack) {
-        poseStack.pushPose();
-        poseStack.scale(2F, 2F, 2F);
-        font.draw(poseStack, ChatColor.bold() + job.getJobInstance().getName(), (startX + 156) / 2F, (startY + 5) / 2F, job.getJobInstance().getColorDecimal());
-        poseStack.popPose();
+    public void drawnBigJobTitle(GuiGraphics guiGraphics) {
+        guiGraphics.pose().pushPose();
+        guiGraphics.pose().scale(2F, 2F, 2F);
+        guiGraphics.drawString(font, ChatColor.bold() + job.getJobInstance().getName(), (int) ((startX + 156) / 2F), (int) ((startY + 5) / 2F), job.getJobInstance().getColorDecimal(), false);
+        guiGraphics.pose().popPose();
         if (getSelectedJobLevel() != 0) {
-            font.draw(poseStack, ChatColor.darkGray() + JobsPlus.translatable("gui.level", ChatColor.reset(), getSelectedJobLevel()).getString(), startX + 156, startY + 22, 16777215);
+            guiGraphics.drawString(font, ChatColor.darkGray() + JobsPlus.translatable("gui.level", ChatColor.reset(), getSelectedJobLevel()).getString(), startX + 156, startY + 22, 16777215, false);
             if (getSelectedJobLevel() != 100)
-                font.draw(poseStack, ChatColor.darkGray() + JobsPlus.translatable("gui.exp", ChatColor.reset(), "[" + getSelectedJobExperience() + "/" + getSelectedJobMaxEXP() + "]").getString(), startX + 216, startY + 22, 16777215);
+                guiGraphics.drawString(font, ChatColor.darkGray() + JobsPlus.translatable("gui.exp", ChatColor.reset(), "[" + getSelectedJobExperience() + "/" + getSelectedJobMaxEXP() + "]").getString(), startX + 216, startY + 22, 16777215, false);
         } else {
-            font.draw(poseStack, ChatColor.darkGray() + JobsPlus.translatable("gui.want_this_job").getString(), startX + 156, startY + 22, 16777215);
-            drawRightAlignedString(poseStack, ChatColor.darkGray() + JobsPlus.translatable("gui.price", ChatColor.reset(), hasFreeClaimableJobs() ? 0 : getSelectedJob().getJobInstance().getPrice()).getString(), startX + imageWidth - 10, startY + 22, 16777215);
+            guiGraphics.drawString(font, ChatColor.darkGray() + JobsPlus.translatable("gui.want_this_job").getString(), startX + 156, startY + 22, 16777215, false);
+            drawRightAlignedString(guiGraphics, ChatColor.darkGray() + JobsPlus.translatable("gui.price", ChatColor.reset(), hasFreeClaimableJobs() ? 0 : getSelectedJob().getJobInstance().getPrice()).getString(), startX + imageWidth - 10, startY + 22, 16777215);
         }
-        font.draw(poseStack, ChatFormatting.STRIKETHROUGH + "                                        ", startX + 156, startY + 28, 16777215);
+        guiGraphics.drawString(font, ChatFormatting.STRIKETHROUGH + "                                        ", startX + 156, startY + 28, 16777215, false);
     }
 
     @Override

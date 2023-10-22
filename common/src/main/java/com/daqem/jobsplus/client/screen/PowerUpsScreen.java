@@ -13,6 +13,7 @@ import com.daqem.jobsplus.integration.arc.holder.holders.powerup.PowerupInstance
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -66,8 +67,7 @@ public class PowerUpsScreen extends AbstractScreen {
     }
 
     @Override
-    public void render(@NotNull PoseStack poseStack, int mouseX, int mouseY, float ticks) {
-
+    public void render(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float ticks) {
         this.startX = (double) (this.width - WINDOW_WIDTH) / 2;
         this.startY = (double) (this.height - WINDOW_HEIGHT) / 2;
 
@@ -84,50 +84,35 @@ public class PowerUpsScreen extends AbstractScreen {
             this.centered = true;
         }
 
-        this.renderBackground(poseStack);
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        RenderColor.normal();
+        this.renderBackground(guiGraphics);
+        guiGraphics.fill((int) (WINDOW_WIDTH + startX) + 21, (int) (WINDOW_HEIGHT + startY) + 24, (int) this.startX - 16 - 6, (int) this.startY - 16 - 18, 0x80000000);
 
-        poseStack.pushPose();
-        RenderSystem.enableDepthTest();
-        RenderSystem.colorMask(false, false, false, false);
-        fill(poseStack, 4680, 2260, -4680, -2260, -16777216);
-        RenderSystem.colorMask(true, true, true, true);
-        poseStack.translate(0.0, 0.0, -1);
-        RenderSystem.depthFunc(518);
-        fill(poseStack, (int) (WINDOW_WIDTH + startX) + 21, (int) (WINDOW_HEIGHT + startY) + 24, (int) this.startX - 16 - 6, (int) this.startY - 16 - 18, -16777216);
-        RenderSystem.depthFunc(515);
 
         int windowX = Mth.floor(this.scrollX);
         int windowY = Mth.floor(this.scrollY);
 
+
         if (getHoveredWidget(mouseX, mouseY, windowX, windowY) != null && isHoveringInWindow(mouseX, mouseY)) {
             RenderColor.grayedOut();
-            this.renderBackground(poseStack, windowX, windowY);
+            this.renderBackground(guiGraphics, windowX, windowY);
             RenderColor.normal();
         } else {
-            this.renderBackground(poseStack, windowX, windowY);
+            this.renderBackground(guiGraphics, windowX, windowY);
         }
-
 
         if (jobInstance != null) {
-            font.draw(poseStack, jobInstance.getName() + " (level " + job.getLevel() + ") Power-ups", (float) this.startX - 16, (float) this.startY - 16 - 12, 0x404040);
-            drawRightAlignedString(poseStack, "Coins: " + coins, (int) ((float) this.startX + WINDOW_WIDTH + 16), (int) ((float) this.startY - 16 - 12), 0x404040);
+            guiGraphics.drawString(font, jobInstance.getName() + " (level " + job.getLevel() + ") Power-ups", (int) this.startX - 16, (int) this.startY - 16 - 12, 0x404040, false);
+            drawRightAlignedString(guiGraphics, "Coins: " + coins, (int) ((float) this.startX + WINDOW_WIDTH + 16), (int) ((float) this.startY - 16 - 12), 0x404040);
         }
 
-        poseStack.pushPose();
         if (isHoveringInWindow(mouseX, mouseY)) {
-            PoseStack poseStack2 = RenderSystem.getModelViewStack();
-            poseStack2.pushPose();
-            poseStack2.translate(0, 0, 400.0);
+            PoseStack hoverPoseStack = RenderSystem.getModelViewStack();
+            hoverPoseStack.pushPose();
+            hoverPoseStack.translate(0, 0, 400);
             RenderSystem.applyModelViewMatrix();
-            RenderSystem.enableDepthTest();
-            this.renderTooltip(poseStack, mouseX, mouseY, windowX, windowY, ticks);
-            RenderSystem.disableDepthTest();
-            poseStack2.popPose();
-            RenderSystem.applyModelViewMatrix();
+            this.renderTooltip(guiGraphics, mouseX, mouseY, windowX, windowY, ticks);
+            hoverPoseStack.popPose();
         }
-        poseStack.popPose();
 
         if (this.width != this.lastWidth || this.height != this.lastHeight) {
             this.centered = false;
@@ -144,30 +129,24 @@ public class PowerUpsScreen extends AbstractScreen {
                 && mouseY <= this.startY + WINDOW_HEIGHT + 15;
     }
 
-    public void renderBackground(@NotNull PoseStack poseStack, int windowX, int windowY) {
-        RenderSystem.setShaderTexture(0, jobInstance.getPowerupBackground());
-
+    public void renderBackground(@NotNull GuiGraphics guiGraphics, int windowX, int windowY) {
         for(int m = -1; m <= WINDOW_WIDTH / 16; ++m) {
             for(int n = -1; n <= WINDOW_HEIGHT / 16; ++n) {
-                blit(poseStack, (int) (16 * m + this.startX), (int) (16 * n + this.startY), 0.0F, 0.0F, 16, 16, 16, 16);
+                guiGraphics.blit(jobInstance.getPowerupBackground(), (int) (16 * m + this.startX), (int) (16 * n + this.startY), 0.0F, 0.0F, 16, 16, 16, 16);
             }
         }
-
-        RenderSystem.setShaderTexture(0, BACKGROUND);
-        this.rootWidget.draw(poseStack, windowX, windowY, this.startX, this.startY);
-        RenderSystem.depthFunc(518);
-        poseStack.translate(0.0, 0.0, -950.0);
-        RenderSystem.colorMask(false, false, false, false);
-        fill(poseStack, 4680, 2260, -4680, -2260, -16777216);
-        RenderSystem.colorMask(true, true, true, true);
-        RenderSystem.depthFunc(515);
+        guiGraphics.enableScissor((int) this.startX - 16, (int) this.startY - 16, (int) this.startX - 16 + WINDOW_WIDTH + 32, (int) this.startY - 16 + WINDOW_HEIGHT + 32);
+        this.rootWidget.draw(guiGraphics, windowX, windowY, this.startX, this.startY);
+        guiGraphics.disableScissor();
 
         //Border
+        PoseStack borderPoseStack = RenderSystem.getModelViewStack();
+        borderPoseStack.pushPose();
+        borderPoseStack.translate(0, 0, 300);
+        RenderSystem.applyModelViewMatrix();
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.enableBlend();
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        RenderSystem.setShaderTexture(0, new ResourceLocation("textures/gui/advancements/window.png"));
-        poseStack.popPose();
 
         int width = WINDOW_WIDTH + 32;
         int height = WINDOW_HEIGHT + 32;
@@ -175,11 +154,12 @@ public class PowerUpsScreen extends AbstractScreen {
         int textureHeight = 140;
         int borderSize = 9;
         int borderSizeTop = 18;
-        blit(poseStack, (int) this.startX - 16 - borderSize, (int) this.startY - 16 - borderSizeTop, 0.0F, 0.0F, width / 2 + borderSize, textureHeight / 2 + borderSizeTop + borderSize + 1, 256, 256);
-        blit(poseStack, (int) this.startX - 16 - borderSize + (width / 2 + borderSize), (int) this.startY - 16 - borderSizeTop, (float) textureWidth / 2 - borderSize * 2, 0.0F, width / 2 + borderSize, textureHeight / 2 + borderSizeTop + borderSize + 1, 256, 256);
+        guiGraphics.blit(new ResourceLocation("textures/gui/advancements/window.png"), (int) this.startX - 16 - borderSize, (int) this.startY - 16 - borderSizeTop, 0.0F, 0.0F, width / 2 + borderSize, textureHeight / 2 + borderSizeTop + borderSize + 1, 256, 256);
+        guiGraphics.blit(new ResourceLocation("textures/gui/advancements/window.png"), (int) this.startX - 16 - borderSize + (width / 2 + borderSize), (int) this.startY - 16 - borderSizeTop, (float) textureWidth / 2 - borderSize * 2, 0.0F, width / 2 + borderSize, textureHeight / 2 + borderSizeTop + borderSize + 1, 256, 256);
 
-        blit(poseStack, (int) this.startX - 16 - borderSize, (int) this.startY - 16 - borderSize + height / 2 + borderSize, 0.0F, (float) textureHeight / 2 - borderSize * 2, width / 2 + borderSize, textureHeight / 2 + borderSizeTop, 256, 256);
-        blit(poseStack, (int) this.startX - 16 - borderSize + (width / 2 + borderSize), (int) this.startY - 16 - borderSize + height / 2 + borderSize, (float) textureWidth / 2 - borderSize * 2, (float) textureHeight / 2 - borderSize * 2, width / 2 + borderSize, textureHeight / 2 + borderSizeTop, 256, 256);
+        guiGraphics.blit(new ResourceLocation("textures/gui/advancements/window.png"), (int) this.startX - 16 - borderSize, (int) this.startY - 16 - borderSize + height / 2 + borderSize, 0.0F, (float) textureHeight / 2 - borderSize * 2, width / 2 + borderSize, textureHeight / 2 + borderSizeTop, 256, 256);
+        guiGraphics.blit(new ResourceLocation("textures/gui/advancements/window.png"), (int) this.startX - 16 - borderSize + (width / 2 + borderSize), (int) this.startY - 16 - borderSize + height / 2 + borderSize, (float) textureWidth / 2 - borderSize * 2, (float) textureHeight / 2 - borderSize * 2, width / 2 + borderSize, textureHeight / 2 + borderSizeTop, 256, 256);
+        borderPoseStack.popPose();
     }
 
     @Override
@@ -246,11 +226,11 @@ public class PowerUpsScreen extends AbstractScreen {
         return max - min > boundary;
     }
 
-    private void renderTooltip(@NotNull PoseStack poseStack, int mouseX, int mouseY, int windowX, int windowY, float ticks) {
+    private void renderTooltip(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, int windowX, int windowY, float ticks) {
         PowerupWidget widget = getHoveredWidget(mouseX, mouseY, windowX, windowY);
 
         if (widget != null) {
-            widget.drawHovered(poseStack, windowX, windowY);
+            widget.drawHovered(guiGraphics, windowX, windowY);
         }
     }
 

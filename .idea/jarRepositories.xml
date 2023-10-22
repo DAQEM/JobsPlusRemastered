@@ -32,14 +32,14 @@
       <option name="url" value="https://cursemaven.com" />
     </remote-repository>
     <remote-repository>
+      <option name="id" value="UserLocalRemappedMods" />
+      <option name="name" value="UserLocalRemappedMods" />
+      <option name="url" value="file:/$PROJECT_DIR$/../../../../Minecraft%20Projects/JobsPlus/Remastered/JobsPlusRemastered%201.20.1/.gradle/loom-cache/remapped_mods/" />
+    </remote-repository>
+    <remote-repository>
       <option name="id" value="Fabric" />
       <option name="name" value="Fabric" />
       <option name="url" value="https://maven.fabricmc.net/" />
-    </remote-repository>
-    <remote-repository>
-      <option name="id" value="UserLocalRemappedMods" />
-      <option name="name" value="UserLocalRemappedMods" />
-      <option name="url" value="file:/$PROJECT_DIR$/../../../../../Minecraft%20Projects/JobsPlus/Remastered/JobsPlusRemastered%201.19.2/JobsPlusRemastered/.gradle/loom-cache/remapped_mods/" />
     </remote-repository>
     <remote-repository>
       <option name="id" value="Mojang" />

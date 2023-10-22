@@ -10,11 +10,10 @@ import com.daqem.jobsplus.integration.arc.holder.holders.job.JobInstance;
 import com.daqem.jobsplus.integration.arc.holder.holders.powerup.PowerupInstance;
 import com.google.common.collect.Lists;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.StringSplitter;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.locale.Language;
 import net.minecraft.network.chat.Component;
@@ -30,7 +29,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
 
-public class PowerupWidget extends GuiComponent {
+public class PowerupWidget {
 
     private static final ResourceLocation WIDGETS_LOCATION = new ResourceLocation("textures/gui/advancements/widgets.png");
     public final static int HEIGHT = 29;
@@ -323,13 +322,13 @@ public class PowerupWidget extends GuiComponent {
                 && mouseY >= yPosition && mouseY <= yPosition + iconHeight;
     }
     
-    public void draw(PoseStack poseStack, int offsetX, int offsetY, double startX, double startY) {
+    public void draw(GuiGraphics guiGraphics, int offsetX, int offsetY, double startX, double startY) {
         this.getChildren().forEach(child -> {
             if (child.getParent() != null) {
                 if (child.getPowerupState() == PowerupState.LOCKED) {
                     RenderColor.grayedOut();
                 }
-                drawConnectivity(poseStack, Mth.floor(child.getParent().getX() * WIDTH) + offsetX, Mth.floor(child.getParent().getY() * HEIGHT) + offsetY, Mth.floor(child.getX() * WIDTH) + offsetX, Mth.floor(child.getY() * HEIGHT) + offsetY, false);
+                drawConnectivity(guiGraphics, Mth.floor(child.getParent().getX() * WIDTH) + offsetX, Mth.floor(child.getParent().getY() * HEIGHT) + offsetY, Mth.floor(child.getX() * WIDTH) + offsetX, Mth.floor(child.getY() * HEIGHT) + offsetY, false);
                 if (child.getPowerupState() == PowerupState.LOCKED) {
                     RenderColor.normal();
                 }
@@ -340,28 +339,28 @@ public class PowerupWidget extends GuiComponent {
                 if (child.getPowerupState() == PowerupState.LOCKED) {
                     RenderColor.grayedOut();
                 }
-                drawConnectivity(poseStack, Mth.floor(child.getParent().getX() * WIDTH) + offsetX, Mth.floor(child.getParent().getY() * HEIGHT) + offsetY, Mth.floor(child.getX() * WIDTH) + offsetX, Mth.floor(child.getY() * HEIGHT) + offsetY, true);
+                drawConnectivity(guiGraphics, Mth.floor(child.getParent().getX() * WIDTH) + offsetX, Mth.floor(child.getParent().getY() * HEIGHT) + offsetY, Mth.floor(child.getX() * WIDTH) + offsetX, Mth.floor(child.getY() * HEIGHT) + offsetY, true);
                 if (child.getPowerupState() == PowerupState.LOCKED) {
                     RenderColor.normal();
                 }
             }
         });
         RenderSystem.setShaderTexture(0, WIDGETS_LOCATION);
-        drawPowerupIcon(poseStack, null, this.getPowerupState(), Mth.floor(this.x * WIDTH) + offsetX, Mth.floor(this.y * HEIGHT) + offsetY);
+        drawPowerupIcon(guiGraphics, null, this.getPowerupState(), Mth.floor(this.x * WIDTH) + offsetX, Mth.floor(this.y * HEIGHT) + offsetY);
 
         if (Mth.floor(this.x * WIDTH) + offsetX < startX + 246
                 && Mth.floor(this.x * WIDTH) + offsetX > startX - 31
                 && Mth.floor(this.y * HEIGHT) + offsetY < startY + 134
                 && Mth.floor(this.y * HEIGHT) + offsetY > startY - 40
         ) {
-            Minecraft.getInstance().getItemRenderer().renderAndDecorateFakeItem(powerupInstance.getIcon(), Mth.floor(this.x * WIDTH) + offsetX + 4, Mth.floor(this.y * HEIGHT) + offsetY + 4);
-            Minecraft.getInstance().getItemRenderer().renderGuiItemDecorations(Minecraft.getInstance().font, powerupInstance.getIcon(), Mth.floor(this.x * WIDTH) + offsetX + 3, Mth.floor(this.y * HEIGHT) + offsetY + 2);
+            guiGraphics.renderFakeItem(powerupInstance.getIcon(), Mth.floor(this.x * WIDTH) + offsetX + 4, Mth.floor(this.y * HEIGHT) + offsetY + 4);
+            guiGraphics.renderItemDecorations(Minecraft.getInstance().font, powerupInstance.getIcon(), Mth.floor(this.x * WIDTH) + offsetX + 3, Mth.floor(this.y * HEIGHT) + offsetY + 2);
         }
 
-        this.getChildren().forEach(child -> child.draw(poseStack, offsetX, offsetY, startX, startY));
+        this.getChildren().forEach(child -> child.draw(guiGraphics, offsetX, offsetY, startX, startY));
     }
 
-    public void drawHovered(PoseStack poseStack, int offsetX, int offsetY) {
+    public void drawHovered(GuiGraphics guiGraphics, int offsetX, int offsetY) {
         int x = Mth.floor(this.x * WIDTH) + offsetX;
         int y = Mth.floor(this.y * HEIGHT) + offsetY;
 
@@ -398,62 +397,35 @@ public class PowerupWidget extends GuiComponent {
         }
         int lines = 32 + var10001 * 9 + priceExtraHeight + textHeight + heightBetweenText + textHeight;
 
-        this.render9Sprite(poseStack, x - 4, y + 2, totalWidth, lines, 10, 200, 26, 0, 52);
+        guiGraphics.blitNineSliced(WIDGETS_LOCATION, x - 4, y + 2, totalWidth, lines, 10, 200, 26, 0, 52);
+        if (this.getPowerupState() == PowerupState.NOT_OWNED || this.getPowerupState() == PowerupState.LOCKED) {
+            guiGraphics.blit(WIDGETS_LOCATION, x - 4 + 2, y + 2 + lines - 28, 2, 52 + 26 - 10 + 5, totalWidth - 4, 1);
+        }
         if (this.getPowerupState() == PowerupState.LOCKED || this.getPowerupState() == PowerupState.NOT_OWNED) {
-            blit(poseStack, x - 4, y + 2, 0, 29, totalWidth - 4, 20);
-            blit(poseStack, x, y + 2, 200 - totalWidth + 4, 29, totalWidth - 4, 20);
+            guiGraphics.blit(WIDGETS_LOCATION, x - 4, y + 2, 0, 29, totalWidth - 4, 20);
+            guiGraphics.blit(WIDGETS_LOCATION, x, y + 2, 200 - totalWidth + 4, 29, totalWidth - 4, 20);
         } else {
-            blit(poseStack, x - 4, y + 2, 0, 3, totalWidth - 4, 20);
-            blit(poseStack, x, y + 2, 200 - totalWidth + 4, 3, totalWidth - 4, 20);
+            guiGraphics.blit(WIDGETS_LOCATION, x - 4, y + 2, 0, 3, totalWidth - 4, 20);
+            guiGraphics.blit(WIDGETS_LOCATION, x, y + 2, 200 - totalWidth + 4, 3, totalWidth - 4, 20);
         }
 
-        drawPowerupIcon(poseStack, powerupInstance, this.getPowerupState(), x, y);
+        drawPowerupIcon(guiGraphics, powerupInstance, this.getPowerupState(), x, y);
 
-        Minecraft.getInstance().font.draw(poseStack, powerupInstance.getName(), x + 28, y + 8, 0xFFFFFFFF);
+        guiGraphics.drawString(minecraftFont, powerupInstance.getName(), x + 28, y + 8, 0xFFFFFFFF, false);
         for (int i1 = 0; i1 < descriptions.size(); i1++) {
             FormattedCharSequence line = descriptions.get(i1);
-            Minecraft.getInstance().font.draw(poseStack, line, x, y + 27 + i1 * 9, 0xFFAAAAAA);
+            guiGraphics.drawString(minecraftFont,line, x, y + 27 + i1 * 9, 0xFFAAAAAA, false);
         }
         if (this.getPowerupState() == PowerupState.NOT_OWNED || this.getPowerupState() == PowerupState.LOCKED) {
-            Minecraft.getInstance().font.draw(poseStack, "Required level: " + powerupInstance.getRequiredLevel(), x, y + 27 + descriptions.size() * 9 + priceExtraHeight, 0xFFAAAAAA);
-            Minecraft.getInstance().font.draw(poseStack, "Price: " + powerupInstance.getPrice(), x, y + 27 + descriptions.size() * 9 + textHeight + heightBetweenText + priceExtraHeight, 0xFFAAAAAA);
+            guiGraphics.drawString(minecraftFont,"Required level: " + powerupInstance.getRequiredLevel(), x, y + 27 + descriptions.size() * 9 + priceExtraHeight, 0xFFAAAAAA, false);
+            guiGraphics.drawString(minecraftFont,"Price: " + powerupInstance.getPrice(), x, y + 27 + descriptions.size() * 9 + textHeight + heightBetweenText + priceExtraHeight, 0xFFAAAAAA, false);
         }
 
-        Minecraft.getInstance().getItemRenderer().renderAndDecorateFakeItem(powerupInstance.getIcon(), x + 4, y + 4);
-        Minecraft.getInstance().getItemRenderer().renderGuiItemDecorations(Minecraft.getInstance().font, powerupInstance.getIcon(), x + 3, y + 2);
+        guiGraphics.renderFakeItem(powerupInstance.getIcon(), x + 4, y + 4);
+        guiGraphics.renderItemDecorations(Minecraft.getInstance().font, powerupInstance.getIcon(), x + 3, y + 2);
     }
 
-    protected void render9Sprite(PoseStack poseStack, int i, int j, int k, int l, int m, int n, int o, int p, int q) {
-        this.blit(poseStack, i, j, p, q, m, m);
-        this.renderRepeating(poseStack, i + m, j, k - m - m, m, p + m, q, n - m - m, o);
-        this.blit(poseStack, i + k - m, j, p + n - m, q, m, m);
-        this.blit(poseStack, i, j + l - m, p, q + o - m, m, m);
-        this.renderRepeating(poseStack, i + m, j + l - m, k - m - m, m, p + m, q + o - m, n - m - m, o);
-        this.blit(poseStack, i + k - m, j + l - m, p + n - m, q + o - m, m, m);
-        this.renderRepeating(poseStack, i, j + m, m, l - m - m, p, q + m, n, o - m - m);
-        this.renderRepeating(poseStack, i + m, j + m, k - m - m, l - m - m, p + m, q + m, n - m - m, o - m - m);
-        this.renderRepeating(poseStack, i + k - m, j + m, m, l - m - m, p + n - m, q + m, n, o - m - m);
-
-        if (this.getPowerupState() == PowerupState.NOT_OWNED || this.getPowerupState() == PowerupState.LOCKED) {
-            this.blit(poseStack, i + 2, j + l - 28, p + 2, q + o - m + 5, k - 4, 1);
-        }
-    }
-
-    protected void renderRepeating(PoseStack poseStack, int i, int j, int k, int l, int m, int n, int o, int p) {
-        for(int q = 0; q < k; q += o) {
-            int r = i + q;
-            int s = Math.min(o, k - q);
-
-            for(int t = 0; t < l; t += p) {
-                int u = j + t;
-                int v = Math.min(p, l - t);
-                this.blit(poseStack, r, u, m, n, s, v);
-            }
-        }
-
-    }
-
-    private void drawConnectivity(PoseStack poseStack, int xFrom, int yFrom, int xTo, int yTo, boolean isWhite) {
+    private void drawConnectivity(GuiGraphics guiGraphics, int xFrom, int yFrom, int xTo, int yTo, boolean isWhite) {
         int spacing = 2;
         int centerHeight = 24 / 2;
         int xOffset = 24;
@@ -464,49 +436,49 @@ public class PowerupWidget extends GuiComponent {
         int color = isWhite ? 0xFFFFFFFF : 0xFF000000;
 
         if (isWhite) {
-            hLine(poseStack, xFromOffset, xFromOffset + spacing, yFromCenter, color);
-            vLine(poseStack, xFromOffset + spacing, yFromCenter, yToCenter, color);
-            hLine(poseStack, xToOffset, xToOffset + spacing, yToCenter, color);
+            guiGraphics.hLine(xFromOffset, xFromOffset + spacing, yFromCenter, color);
+            guiGraphics.vLine(xFromOffset + spacing, yFromCenter, yToCenter, color);
+            guiGraphics.hLine(xToOffset, xToOffset + spacing, yToCenter, color);
         } else {
-            hLine(poseStack, xFromOffset, xToOffset + 1, yFromCenter - 1, color);
-            hLine(poseStack, xFromOffset, xToOffset + 1, yFromCenter, color);
-            hLine(poseStack, xFromOffset, xToOffset + 1, yFromCenter + 1, color);
+            guiGraphics.hLine(xFromOffset, xToOffset + 1, yFromCenter - 1, color);
+            guiGraphics.hLine(xFromOffset, xToOffset + 1, yFromCenter, color);
+            guiGraphics.hLine(xFromOffset, xToOffset + 1, yFromCenter + 1, color);
 
-            vLine(poseStack, xToOffset - 1, yToCenter, yFromCenter, color);
-            vLine(poseStack, xToOffset + 1, yToCenter, yFromCenter, color);
+            guiGraphics.vLine(xToOffset - 1, yToCenter, yFromCenter, color);
+            guiGraphics.vLine(xToOffset + 1, yToCenter, yFromCenter, color);
 
-            hLine(poseStack, xToOffset - 1, xToOffset + spacing, yToCenter - 1, color);
-            hLine(poseStack, xToOffset - 1, xToOffset + spacing, yToCenter, color);
-            hLine(poseStack, xToOffset - 1, xToOffset + spacing, yToCenter + 1, color);
+            guiGraphics.hLine(xToOffset - 1, xToOffset + spacing, yToCenter - 1, color);
+            guiGraphics.hLine(xToOffset - 1, xToOffset + spacing, yToCenter, color);
+            guiGraphics.hLine(xToOffset - 1, xToOffset + spacing, yToCenter + 1, color);
         }
     }
 
-    private void drawPowerupIcon(PoseStack poseStack, PowerupInstance powerup, PowerupState state, int x, int y) {
+    private void drawPowerupIcon(GuiGraphics guiGraphics, PowerupInstance powerup, PowerupState state, int x, int y) {
         switch (state) {
-            case ACTIVE -> drawActivePowerupIcon(poseStack, powerup, x, y, 24, 24);
-            case INACTIVE -> drawInactivePowerupIcon(poseStack, powerup, x, y, 24, 24);
-            case NOT_OWNED -> drawNotOwnedPowerupIcon(poseStack, powerup, x, y, 24, 24);
-            case LOCKED -> drawLockedPowerupIcon(poseStack, powerup, x, y, 24, 24);
+            case ACTIVE -> drawActivePowerupIcon(guiGraphics, powerup, x, y, 24, 24);
+            case INACTIVE -> drawInactivePowerupIcon(guiGraphics, powerup, x, y, 24, 24);
+            case NOT_OWNED -> drawNotOwnedPowerupIcon(guiGraphics, powerup, x, y, 24, 24);
+            case LOCKED -> drawLockedPowerupIcon(guiGraphics, powerup, x, y, 24, 24);
         }
     }
 
-    private void drawActivePowerupIcon(PoseStack poseStack, PowerupInstance powerup, int x, int y, int width, int height) {
-        blit(poseStack, x, y, 1, 129, width, height);
+    private void drawActivePowerupIcon(GuiGraphics guiGraphics, PowerupInstance powerup, int x, int y, int width, int height) {
+        guiGraphics.blit(WIDGETS_LOCATION, x, y, 1, 129, width, height);
     }
 
-    private void drawInactivePowerupIcon(PoseStack poseStack, PowerupInstance powerup, int x, int y, int width, int height) {
+    private void drawInactivePowerupIcon(GuiGraphics guiGraphics, PowerupInstance powerup, int x, int y, int width, int height) {
         RenderColor.red();
-        blit(poseStack, x, y, 1, 129, width, height);
+        guiGraphics.blit(WIDGETS_LOCATION, x, y, 1, 129, width, height);
         RenderColor.normal();
     }
 
-    private void drawNotOwnedPowerupIcon(PoseStack poseStack, PowerupInstance powerup, int x, int y, int width, int height) {
-        blit(poseStack, x, y, 1, 155, width, height);
+    private void drawNotOwnedPowerupIcon(GuiGraphics guiGraphics, PowerupInstance powerup, int x, int y, int width, int height) {
+        guiGraphics.blit(WIDGETS_LOCATION, x, y, 1, 155, width, height);
     }
 
-    private void drawLockedPowerupIcon(PoseStack poseStack, PowerupInstance powerup, int x, int y, int width, int height) {
+    private void drawLockedPowerupIcon(GuiGraphics guiGraphics, PowerupInstance powerup, int x, int y, int width, int height) {
         RenderColor.grayedOut();
-        blit(poseStack, x, y, 1, 155, width, height);
+        guiGraphics.blit(WIDGETS_LOCATION, x, y, 1, 155, width, height);
         RenderColor.normal();
     }
 

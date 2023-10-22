@@ -12,8 +12,8 @@ import com.daqem.jobsplus.networking.utils.ConfirmationMessageType;
 import com.daqem.jobsplus.integration.arc.holder.holders.job.JobInstance;
 import com.daqem.jobsplus.integration.arc.holder.holders.powerup.PowerupInstance;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.Util;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
@@ -80,8 +80,8 @@ public class ConfirmationScreen extends AbstractScreen {
     }
 
     @Override
-    public void render(@NotNull PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
-        this.renderBackground(poseStack);
+    public void render(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+        this.renderBackground(guiGraphics);
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderColor.normal();
         RenderSystem.setShaderTexture(0, BACKGROUND);
@@ -91,35 +91,35 @@ public class ConfirmationScreen extends AbstractScreen {
         startX = (this.width - imageWidth) / 2;
         startY = (this.height - IMAGE_HEIGHT) / 2;
 
-        drawBackground(poseStack);
-        drawButtons(poseStack);
+        drawBackground(guiGraphics);
+        drawButtons(guiGraphics);
 
-        drawMessage(poseStack);
-        drawButtonMessages(poseStack);
+        drawMessage(guiGraphics);
+        drawButtonMessages(guiGraphics);
 
-        super.render(poseStack, mouseX, mouseY, partialTicks);
+        super.render(guiGraphics, mouseX, mouseY, partialTicks);
     }
 
-    private void drawButtons(@NotNull PoseStack poseStack) {
+    private void drawButtons(@NotNull GuiGraphics guiGraphics) {
         if (messageType.getButtonType() == ConfirmationButtonType.BACK) {
-            drawButton(poseStack, ButtonType.BACK);
+            drawButton(guiGraphics, ButtonType.BACK);
         } else {
-            drawButton(poseStack, ButtonType.YES);
-            drawButton(poseStack, ButtonType.CANCEL);
+            drawButton(guiGraphics, ButtonType.YES);
+            drawButton(guiGraphics, ButtonType.CANCEL);
         }
     }
 
-    private void drawButtonMessages(@NotNull PoseStack poseStack) {
+    private void drawButtonMessages(@NotNull GuiGraphics guiGraphics) {
         if (messageType.getButtonType() == ConfirmationButtonType.BACK) {
-            drawButtonMessage(poseStack, JobsPlus.translatable("gui.confirmation.back"), ButtonType.BACK);
+            drawButtonMessage(guiGraphics, JobsPlus.translatable("gui.confirmation.back"), ButtonType.BACK);
         } else {
-            drawButtonMessage(poseStack, JobsPlus.translatable("gui.confirmation.yes"), ButtonType.YES);
-            drawButtonMessage(poseStack, JobsPlus.translatable("gui.confirmation.cancel"), ButtonType.CANCEL);
+            drawButtonMessage(guiGraphics, JobsPlus.translatable("gui.confirmation.yes"), ButtonType.YES);
+            drawButtonMessage(guiGraphics, JobsPlus.translatable("gui.confirmation.cancel"), ButtonType.CANCEL);
         }
     }
 
-    private void drawButtonMessage(@NotNull PoseStack poseStack, Component component, ButtonType buttonType) {
-        font.draw(poseStack, component, width / 2F - font.width(component) / 2F + buttonType.offset, startY + 34, TEXT_COLOR);
+    private void drawButtonMessage(@NotNull GuiGraphics guiGraphics, Component component, ButtonType buttonType) {
+        guiGraphics.drawString(font, component, (int) (width / 2F - font.width(component) / 2F + buttonType.offset), startY + 34, TEXT_COLOR, false);
     }
 
     @Override
@@ -155,32 +155,32 @@ public class ConfirmationScreen extends AbstractScreen {
         return super.mouseClicked(mouseX, mouseY, clickType);
     }
 
-    private void drawMessage(@NotNull PoseStack poseStack) {
+    private void drawMessage(@NotNull GuiGraphics guiGraphics) {
         if (messageType.getMessage().getString().contains("\n")) {
             String[] lines = messageType.getMessage().getString().split("\n");
             for (int i = 0; i < lines.length; i++) {
-                drawCenteredString(poseStack, lines[i], (int) (width / 2F), (int) (height / 2F - (font.lineHeight * lines.length) / 2F + (font.lineHeight * i)), TEXT_COLOR);
+                drawCenteredString(guiGraphics, lines[i], (int) (width / 2F), (int) (height / 2F - (font.lineHeight * lines.length) / 2F + (font.lineHeight * i)), TEXT_COLOR);
             }
             imageWidth = font.width(Arrays.stream(lines).max(Comparator.comparingInt(String::length)).orElse(""));
         } else {
-            font.draw(poseStack, messageType.getMessage(), startX, height / 2F - (font.lineHeight) / 2F, TEXT_COLOR);
+            guiGraphics.drawString(font, messageType.getMessage(), startX, (int) (height / 2F - (font.lineHeight) / 2F), TEXT_COLOR, false);
         }
     }
 
-    private void drawBackground(@NotNull PoseStack poseStack) {
+    private void drawBackground(@NotNull GuiGraphics guiGraphics) {
         final int offset = 5;
-        blit(poseStack, startX - LEFT_WIDTH - offset, startY, LEFT_START_POS, 0, LEFT_WIDTH, IMAGE_HEIGHT);
+        guiGraphics.blit(BACKGROUND, startX - LEFT_WIDTH - offset, startY, LEFT_START_POS, 0, LEFT_WIDTH, IMAGE_HEIGHT);
         for (int i = -offset; i < imageWidth + offset; i++) {
-            blit(poseStack, startX + i, startY, MIDDLE_START_POS, 0, MIDDLE_WIDTH, IMAGE_HEIGHT);
+            guiGraphics.blit(BACKGROUND, startX + i, startY, MIDDLE_START_POS, 0, MIDDLE_WIDTH, IMAGE_HEIGHT);
         }
-        blit(poseStack, startX + imageWidth + offset, startY, RIGHT_START_POS, 0, RIGHT_WIDTH, IMAGE_HEIGHT);
+        guiGraphics.blit(BACKGROUND, startX + imageWidth + offset, startY, RIGHT_START_POS, 0, RIGHT_WIDTH, IMAGE_HEIGHT);
     }
 
-    private void drawButton(PoseStack poseStack, ButtonType buttonType) {
+    private void drawButton(GuiGraphics guiGraphics, ButtonType buttonType) {
         if (mouse.isHoveringButton(buttonType)) {
             RenderColor.buttonHover();
         }
-        blit(poseStack,
+        guiGraphics.blit(BACKGROUND,
                 (int) ((width / 2F) - (BUTTON_WIDTH / 2F) + buttonType.offset), startY + IMAGE_HEIGHT + BUTTON_TOP_OFFSET,
                 BUTTON_START_POS, 0,
                 BUTTON_WIDTH, BUTTON_HEIGHT);

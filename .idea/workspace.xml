@@ -4,10 +4,31 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bcc74ef4-f9a7-4e60-b152-b758c7331e58" name="Changes" comment="Changed actions list to actions map.">
+    <list default="true" id="5316e986-2bbe-4484-934c-c6ad4cd49949" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/jobsplus/powerups/alchemist/longer_potions_vi.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/jobsplus/powerups/alchemist/longer_potions_vii.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/jobsplus/powerups/alchemist/longer_potions_viii.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/jobsplus/powerups/alchemist/longer_potions_viiii.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/jobsplus/powerups/alchemist/longer_potions_vv.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/jobsplus/powerups/alchemist/longer_potions_vvi.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/jobsplus/powerups/alchemist/longer_potions_xii.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/discord.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/discord.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/git_toolbox_prj.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fabric/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/fabric/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/forge/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/forge/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/client/powerup/PowerupWidget.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/client/powerup/PowerupWidget.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/client/render/ModItemRenderer.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/client/screen/AbstractScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/client/screen/AbstractScreen.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/client/screen/ConfirmationScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/client/screen/ConfirmationScreen.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/client/screen/JobsScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/client/screen/JobsScreen.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/client/screen/PowerUpsScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/client/screen/PowerUpsScreen.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/command/JobCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/command/JobCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/mixin/MixinServerPlayer.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/mixin/MixinServerPlayer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/mixin/client/MixinLocalPlayer.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/mixin/client/MixinLocalPlayer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/resources/jobsplus.accesswidener" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/resources/jobsplus.accesswidener" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -29,12 +50,6 @@
         <task path="$PROJECT_DIR$/fabric">
           <activation />
         </task>
-        <task path="$PROJECT_DIR$/forge">
-          <activation />
-        </task>
-        <task path="$PROJECT_DIR$/common">
-          <activation />
-        </task>
         <projects_view>
           <tree_state>
             <expand />
@@ -44,34 +59,14 @@
       </state>
     </system>
   </component>
-  <component name="FileTemplateManagerImpl">
-    <option name="RECENT_TEMPLATES">
-      <list>
-        <option value="Enum" />
-        <option value="Kotlin Class" />
-        <option value="Interface" />
-        <option value="Class" />
-      </list>
-    </option>
-  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitToolBoxStore">
-    <option name="projectConfigVersion" value="5" />
-  </component>
-  <component name="HighlightingSettingsPerFile">
-    <setting file="mock:///AIAssistantSnippet" root0="ESSENTIAL" />
-    <setting file="mock:///AIAssistantSnippet" root0="ESSENTIAL" />
-    <setting file="mock:///AIAssistantSnippet" root0="ESSENTIAL" />
-  </component>
-  <component name="MarkdownSettingsMigration">
-    <option name="stateVersion" value="1" />
-  </component>
-  <component name="ProjectColorInfo">{
-  &quot;associatedIndex&quot;: 7
-}</component>
-  <component name="ProjectId" id="2RkzzFiZLKcuMq5EQ5h4EjW0LsG" />
+  <component name="ProjectColorInfo"><![CDATA[{
+  "customColor": "",
+  "associatedIndex": 7
+}]]></component>
+  <component name="ProjectId" id="2X7T63MRkND6bARheGEyzOOCWQO" />
   <component name="ProjectViewState">
     <option name="showLibraryContents" value="true" />
   </component>
@@ -80,14 +75,12 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "1.19.2",
-    "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "G:/root/Minecraft Projects/Arc/Arc 1.20.1/Arc",
+    "git-widget-placeholder": "1.20.1",
+    "last_opened_file_path": "G:/root/Minecraft Projects/JobsPlus/Remastered/JobsPlusRemastered 1.20.1/common/src/main/resources/data/jobsplus/jobsplus/powerups/alchemist",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
     "project.structure.last.edited": "Project",
     "project.structure.proportion": "0.0",
     "project.structure.side.proportion": "0.0",
@@ -97,110 +90,11 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="G:\root\Minecraft Projects\JobsPlus\Remastered\JobsPlusRemastered 1.19.2\JobsPlusRemastered\common\src\main\resources\data\jobsplus\arc\hunter\powerup" />
-      <recent name="G:\root\Minecraft Projects\JobsPlus\Remastered\JobsPlusRemastered 1.19.2\JobsPlusRemastered\common\src\main\resources\data\jobsplus\jobsplus\powerups\hunter" />
-      <recent name="G:\root\Minecraft Projects\JobsPlus\Remastered\JobsPlusRemastered 1.19.2\JobsPlusRemastered\common\src\main\resources\data\jobsplus\arc\miner\powerup" />
-      <recent name="G:\root\Minecraft Projects\JobsPlus\Remastered\JobsPlusRemastered 1.19.2\JobsPlusRemastered\common\src\main\resources\data\jobsplus\jobsplus\powerups\miner" />
-      <recent name="G:\root\Minecraft Projects\JobsPlus\Remastered\JobsPlusRemastered 1.19.2\JobsPlusRemastered\common\src\main\resources\data\jobsplus\arc\farmer\powerup" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="G:\root\Minecraft Projects\JobsPlus\Remastered\JobsPlusRemastered 1.19.2\JobsPlusRemastered\common\src\main\resources\data\jobsplus\arc\lumberjack" />
-      <recent name="G:\root\Minecraft Projects\JobsPlus\Remastered\JobsPlusRemastered 1.19.2\JobsPlusRemastered\common\src\main\resources\data\jobsplus\arc\alchemist\powerup" />
-      <recent name="G:\root\Minecraft Projects\JobsPlus\Remastered\JobsPlusRemastered 1.19.2\JobsPlusRemastered\common\src\main\resources\assets" />
-      <recent name="G:\root\Minecraft Projects\JobsPlus\Remastered\JobsPlusRemastered 1.19.2\JobsPlusRemastered\common\src\main\resources\data\jobsplus\jobsplus" />
-      <recent name="G:\root\Minecraft Projects\JobsPlus\Remastered\JobsPlusRemastered 1.19.2\JobsPlusRemastered\fabric\src\main\resources" />
+      <recent name="G:\root\Minecraft Projects\JobsPlus\Remastered\JobsPlusRemastered 1.20.1\common\src\main\resources\data\jobsplus\jobsplus\powerups\alchemist" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.JobsPlusRemastered [curseforge]">
-    <configuration name="JobsPlusRemastered [build]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value="build" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <RunAsTest>false</RunAsTest>
-      <method v="2" />
-    </configuration>
-    <configuration name="JobsPlusRemastered [curseforge]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value="curseforge" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <RunAsTest>false</RunAsTest>
-      <method v="2" />
-    </configuration>
-    <configuration name="JobsPlusRemastered [genSources]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value="genSources" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <RunAsTest>false</RunAsTest>
-      <method v="2" />
-    </configuration>
-    <configuration name="JobsPlusRemastered:fabric [build]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$/fabric" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value="build" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <RunAsTest>false</RunAsTest>
-      <method v="2" />
-    </configuration>
-    <configuration name="JobsPlusRemastered:fabric [runClient]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+  <component name="RunManager">
+    <configuration name="JobsPlusRemastered 1.20.1:fabric [runClient]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$/fabric" />
@@ -222,379 +116,25 @@
       <RunAsTest>false</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration default="true" type="JetRunConfigurationType">
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
-      <option name="filePath" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.JobsPlusRemastered [curseforge]" />
-        <item itemvalue="Gradle.JobsPlusRemastered [build]" />
-        <item itemvalue="Gradle.JobsPlusRemastered:fabric [runClient]" />
-        <item itemvalue="Gradle.JobsPlusRemastered [genSources]" />
-        <item itemvalue="Gradle.JobsPlusRemastered:fabric [build]" />
+        <item itemvalue="Gradle.JobsPlusRemastered 1.20.1:fabric [runClient]" />
       </list>
     </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="bcc74ef4-f9a7-4e60-b152-b758c7331e58" name="Changes" comment="" />
-      <created>1687809130704</created>
+      <changelist id="5316e986-2bbe-4484-934c-c6ad4cd49949" name="Changes" comment="" />
+      <created>1697978943438</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1687809130704</updated>
-      <workItem from="1687809133988" duration="66000" />
-      <workItem from="1687809213840" duration="17876000" />
-      <workItem from="1687854729845" duration="32690000" />
-      <workItem from="1687982478837" duration="17929000" />
-      <workItem from="1688029688006" duration="30373000" />
-      <workItem from="1688111884630" duration="25022000" />
-      <workItem from="1688208993519" duration="14534000" />
-      <workItem from="1688246206890" duration="1766000" />
-      <workItem from="1688291957416" duration="11463000" />
-      <workItem from="1688304583336" duration="332000" />
-      <workItem from="1688316942700" duration="737000" />
-      <workItem from="1688397926134" duration="2278000" />
-      <workItem from="1688407376116" duration="1976000" />
-      <workItem from="1688464534659" duration="238000" />
-      <workItem from="1688467235277" duration="1556000" />
-      <workItem from="1688469705353" duration="5742000" />
-      <workItem from="1688538810660" duration="809000" />
-      <workItem from="1688539687051" duration="11787000" />
-      <workItem from="1688558531978" duration="4736000" />
-      <workItem from="1688568156285" duration="4273000" />
-      <workItem from="1688582547501" duration="1828000" />
-      <workItem from="1688653624578" duration="1985000" />
-      <workItem from="1688678402890" duration="4457000" />
-      <workItem from="1688719451817" duration="29984000" />
-      <workItem from="1688773630974" duration="48000" />
-      <workItem from="1689086584483" duration="4537000" />
-      <workItem from="1689146132967" duration="277000" />
-      <workItem from="1689147740851" duration="2441000" />
-      <workItem from="1689173855270" duration="2546000" />
-      <workItem from="1689249724523" duration="1360000" />
-      <workItem from="1689858738749" duration="6290000" />
-      <workItem from="1692284048581" duration="2674000" />
-      <workItem from="1692298012257" duration="8758000" />
-      <workItem from="1692345788024" duration="7780000" />
-      <workItem from="1692362626586" duration="14000" />
-      <workItem from="1692368959970" duration="6172000" />
-      <workItem from="1692391526327" duration="1209000" />
-      <workItem from="1692428474041" duration="10895000" />
-      <workItem from="1692643765766" duration="2489000" />
-      <workItem from="1692661694240" duration="6429000" />
-      <workItem from="1692690880530" duration="24288000" />
-      <workItem from="1692727643933" duration="3370000" />
-      <workItem from="1692732440196" duration="1003000" />
-      <workItem from="1692776340748" duration="4255000" />
-      <workItem from="1692795335492" duration="829000" />
-      <workItem from="1692812285715" duration="2081000" />
-      <workItem from="1693207471887" duration="628000" />
-      <workItem from="1693389231792" duration="1407000" />
-      <workItem from="1693398763209" duration="5000" />
-      <workItem from="1694619784230" duration="1102000" />
-      <workItem from="1694808150978" duration="383000" />
-      <workItem from="1694808825292" duration="180000" />
-      <workItem from="1694862131401" duration="184000" />
-      <workItem from="1694862599959" duration="7994000" />
-      <workItem from="1694981321726" duration="599000" />
-      <workItem from="1695031643319" duration="615000" />
-      <workItem from="1695758316412" duration="3108000" />
+      <updated>1697978943438</updated>
+      <workItem from="1697978946211" duration="8470000" />
     </task>
-    <task id="LOCAL-00001" summary="Added alchemist powerups">
-      <option name="closed" value="true" />
-      <created>1687815962866</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1687815962866</updated>
-    </task>
-    <task id="LOCAL-00002" summary="Started coding Powerups Screen">
-      <option name="closed" value="true" />
-      <created>1687885472652</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1687885472652</updated>
-    </task>
-    <task id="LOCAL-00003" summary="Almost done with Powerups Screen">
-      <option name="closed" value="true" />
-      <created>1688000931386</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1688000931386</updated>
-    </task>
-    <task id="LOCAL-00004" summary="Added tags to icons.">
-      <option name="closed" value="true" />
-      <created>1688035872221</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1688035872221</updated>
-    </task>
-    <task id="LOCAL-00005" summary="Added buttons to PowerUpsScreen">
-      <option name="closed" value="true" />
-      <created>1688043011431</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1688043011431</updated>
-    </task>
-    <task id="LOCAL-00006" summary="Added powerups background to jobs">
-      <option name="closed" value="true" />
-      <created>1688052195110</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1688052195110</updated>
-    </task>
-    <task id="LOCAL-00007" summary="Added powerups button to the jobs screen.">
-      <option name="closed" value="true" />
-      <created>1688061516321</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
-      <option name="project" value="LOCAL" />
-      <updated>1688061516321</updated>
-    </task>
-    <task id="LOCAL-00008" summary="fixed powerup conditions">
-      <option name="closed" value="true" />
-      <created>1688112399468</created>
-      <option name="number" value="00008" />
-      <option name="presentableId" value="LOCAL-00008" />
-      <option name="project" value="LOCAL" />
-      <updated>1688112399468</updated>
-    </task>
-    <task id="LOCAL-00009" summary="Added Digger unbreaking powerups">
-      <option name="closed" value="true" />
-      <created>1688126689464</created>
-      <option name="number" value="00009" />
-      <option name="presentableId" value="LOCAL-00009" />
-      <option name="project" value="LOCAL" />
-      <updated>1688126689464</updated>
-    </task>
-    <task id="LOCAL-00010" summary="Added digger shovel efficiency powerup.">
-      <option name="closed" value="true" />
-      <created>1688304711620</created>
-      <option name="number" value="00010" />
-      <option name="presentableId" value="LOCAL-00010" />
-      <option name="project" value="LOCAL" />
-      <updated>1688304711620</updated>
-    </task>
-    <task id="LOCAL-00011" summary="Add icons.">
-      <option name="closed" value="true" />
-      <created>1688475441625</created>
-      <option name="number" value="00011" />
-      <option name="presentableId" value="LOCAL-00011" />
-      <option name="project" value="LOCAL" />
-      <updated>1688475441625</updated>
-    </task>
-    <task id="LOCAL-00012" summary="Added Arc dependency.">
-      <option name="closed" value="true" />
-      <created>1688475623816</created>
-      <option name="number" value="00012" />
-      <option name="presentableId" value="LOCAL-00012" />
-      <option name="project" value="LOCAL" />
-      <updated>1688475623816</updated>
-    </task>
-    <task id="LOCAL-00013" summary="Updated Arc dependency.">
-      <option name="closed" value="true" />
-      <created>1688539325629</created>
-      <option name="number" value="00013" />
-      <option name="presentableId" value="LOCAL-00013" />
-      <option name="project" value="LOCAL" />
-      <updated>1688539325629</updated>
-    </task>
-    <task id="LOCAL-00014" summary="Updated all project to latest/recommended">
-      <option name="closed" value="true" />
-      <created>1688542199977</created>
-      <option name="number" value="00014" />
-      <option name="presentableId" value="LOCAL-00014" />
-      <option name="project" value="LOCAL" />
-      <updated>1688542199977</updated>
-    </task>
-    <task id="LOCAL-00015" summary="Integrated Arc Lib into the mod.">
-      <option name="closed" value="true" />
-      <created>1688773128420</created>
-      <option name="number" value="00015" />
-      <option name="presentableId" value="LOCAL-00015" />
-      <option name="project" value="LOCAL" />
-      <updated>1688773128420</updated>
-    </task>
-    <task id="LOCAL-00016" summary="Integrated Item Restrictions into the mod.">
-      <option name="closed" value="true" />
-      <created>1689175654544</created>
-      <option name="number" value="00016" />
-      <option name="presentableId" value="LOCAL-00016" />
-      <option name="project" value="LOCAL" />
-      <updated>1689175654544</updated>
-    </task>
-    <task id="LOCAL-00017" summary="Integrated Arc fully into the mod and added some power-ups.">
-      <option name="closed" value="true" />
-      <created>1692659210784</created>
-      <option name="number" value="00017" />
-      <option name="presentableId" value="LOCAL-00017" />
-      <option name="project" value="LOCAL" />
-      <updated>1692659210784</updated>
-    </task>
-    <task id="LOCAL-00018" summary="Added all powerups">
-      <option name="closed" value="true" />
-      <created>1692709227478</created>
-      <option name="number" value="00018" />
-      <option name="presentableId" value="LOCAL-00018" />
-      <option name="project" value="LOCAL" />
-      <updated>1692709227478</updated>
-    </task>
-    <task id="LOCAL-00019" summary="Added Builder Powerups">
-      <option name="closed" value="true" />
-      <created>1692722003275</created>
-      <option name="number" value="00019" />
-      <option name="presentableId" value="LOCAL-00019" />
-      <option name="project" value="LOCAL" />
-      <updated>1692722003275</updated>
-    </task>
-    <task id="LOCAL-00020" summary="Fixed action sync issue between server and client.">
-      <option name="closed" value="true" />
-      <created>1692725242511</created>
-      <option name="number" value="00020" />
-      <option name="presentableId" value="LOCAL-00020" />
-      <option name="project" value="LOCAL" />
-      <updated>1692725242511</updated>
-    </task>
-    <task id="LOCAL-00021" summary="Setting up for beta testing.">
-      <option name="closed" value="true" />
-      <created>1692732225441</created>
-      <option name="number" value="00021" />
-      <option name="presentableId" value="LOCAL-00021" />
-      <option name="project" value="LOCAL" />
-      <updated>1692732225441</updated>
-    </task>
-    <task id="LOCAL-00022" summary="Removed old tests">
-      <option name="closed" value="true" />
-      <created>1692732812828</created>
-      <option name="number" value="00022" />
-      <option name="presentableId" value="LOCAL-00022" />
-      <option name="project" value="LOCAL" />
-      <updated>1692732812828</updated>
-    </task>
-    <task id="LOCAL-00023" summary="Added exp and level up message.">
-      <option name="closed" value="true" />
-      <created>1692780132305</created>
-      <option name="number" value="00023" />
-      <option name="presentableId" value="LOCAL-00023" />
-      <option name="project" value="LOCAL" />
-      <updated>1692780132305</updated>
-    </task>
-    <task id="LOCAL-00024" summary="Changed package name from interation to integration.">
-      <option name="closed" value="true" />
-      <created>1695762064678</created>
-      <option name="number" value="00024" />
-      <option name="presentableId" value="LOCAL-00024" />
-      <option name="project" value="LOCAL" />
-      <updated>1695762064678</updated>
-    </task>
-    <task id="LOCAL-00025" summary="Changed actions list to actions map.">
-      <option name="closed" value="true" />
-      <created>1695762408168</created>
-      <option name="number" value="00025" />
-      <option name="presentableId" value="LOCAL-00025" />
-      <option name="project" value="LOCAL" />
-      <updated>1695762408168</updated>
-    </task>
-    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
-  </component>
-  <component name="Vcs.Log.Tabs.Properties">
-    <option name="TAB_STATES">
-      <map>
-        <entry key="MAIN">
-          <value>
-            <State />
-          </value>
-        </entry>
-      </map>
-    </option>
-  </component>
-  <component name="VcsManagerConfiguration">
-    <MESSAGE value="Added alchemist powerups" />
-    <MESSAGE value="Started coding Powerups Screen" />
-    <MESSAGE value="Almost done with Powerups Screen" />
-    <MESSAGE value="Added tags to icons." />
-    <MESSAGE value="Added buttons to PowerUpsScreen" />
-    <MESSAGE value="Added powerups background to jobs" />
-    <MESSAGE value="Added powerups button to the jobs screen." />
-    <MESSAGE value="fixed powerup conditions" />
-    <MESSAGE value="Added Digger unbreaking powerups" />
-    <MESSAGE value="Added digger shovel efficiency powerup." />
-    <MESSAGE value="Add icons." />
-    <MESSAGE value="Added Arc dependency." />
-    <MESSAGE value="Updated Arc dependency." />
-    <MESSAGE value="Updated all project to latest/recommended" />
-    <MESSAGE value="Integrated Arc Lib into the mod." />
-    <MESSAGE value="Integrated Item Restrictions into the mod." />
-    <MESSAGE value="Integrated Arc fully into the mod and added some power-ups." />
-    <MESSAGE value="Added all powerups" />
-    <MESSAGE value="Added Builder Powerups" />
-    <MESSAGE value="Fixed action sync issue between server and client." />
-    <MESSAGE value="Setting up for beta testing." />
-    <MESSAGE value="Removed old tests" />
-    <MESSAGE value="Added exp and level up message." />
-    <MESSAGE value="Changed package name from interation to integration." />
-    <MESSAGE value="Changed actions list to actions map." />
-    <option name="LAST_COMMIT_MESSAGE" value="Changed actions list to actions map." />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-method">
-          <url>jar://$PROJECT_DIR$/.gradle/loom-cache/remapped_mods/loom_mappings_1_19_2_layered_hash_40359_v2/curse/maven/arc-883593/4629939/arc-883593-4629939.jar!/com/daqem/arc/mixin/MixinServerPlayer.class</url>
-          <line>80</line>
-          <properties class="com.daqem.arc.mixin.MixinServerPlayer">
-            <option name="EMULATED" value="true" />
-            <option name="WATCH_EXIT" value="false" />
-          </properties>
-          <option name="timeStamp" value="8" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>jar://$PROJECT_DIR$/.gradle/loom-cache/remapped_mods/loom_mappings_1_19_2_layered_hash_40359_v2/curse/maven/arc-883593/4629939/arc-883593-4629939.jar!/com/daqem/arc/mixin/MixinServerPlayer.class</url>
-          <line>81</line>
-          <option name="timeStamp" value="9" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>jar://$PROJECT_DIR$/.gradle/loom-cache/remapped_mods/loom_mappings_1_19_2_layered_hash_40359_v2/curse/maven/item-restrictions-887774/4641726/item-restrictions-887774-4641726.jar!/com/daqem/itemrestrictions/mixin/item/MixinItemStack.class</url>
-          <line>47</line>
-          <option name="timeStamp" value="17" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>jar://$PROJECT_DIR$/.gradle/loom-cache/remapped_mods/loom_mappings_1_19_2_layered_hash_40359_v2/curse/maven/arc-883593/4709374/arc-883593-4709374.jar!/com/daqem/arc/mixin/client/MixinLocalPlayer.class</url>
-          <line>34</line>
-          <option name="timeStamp" value="34" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
-    <pin-to-top-manager>
-      <pinned-members>
-        <PinnedItemInfo parentTag="net.minecraft.tags.TagKey" memberName="registry" />
-        <PinnedItemInfo parentTag="com.daqem.jobsplus.player.job.Job" memberName="player" />
-        <PinnedItemInfo parentTag="com.daqem.itemrestrictions.data.ItemRestriction" memberName="conditions" />
-        <PinnedItemInfo parentTag="com.daqem.jobsplus.player.job.Job" memberName="powerupManager" />
-        <PinnedItemInfo parentTag="com.daqem.jobsplus.interation.arc.action.holder.holders.powerup.PowerupInstance" memberName="name" />
-      </pinned-members>
-    </pin-to-top-manager>
-  </component>
-  <component name="XSLT-Support.FileAssociations.UIState">
-    <expand />
-    <select />
   </component>
 </project>
