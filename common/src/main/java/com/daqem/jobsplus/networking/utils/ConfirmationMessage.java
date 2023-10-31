@@ -12,9 +12,8 @@ public class ConfirmationMessage {
         this.message = message;
     }
 
-    public ConfirmationMessage withObjects(Object... objects) {
+    public void withObjects(Object... objects) {
         this.objects = objects;
-        return this;
     }
 
     public Component getComponent() {

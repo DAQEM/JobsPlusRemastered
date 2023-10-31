@@ -25,7 +25,6 @@ import net.minecraft.network.chat.TextColor;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.player.ProfilePublicKey;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
@@ -35,8 +34,10 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import javax.annotation.Nullable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Mixin(ServerPlayer.class)
@@ -143,11 +144,6 @@ public abstract class MixinServerPlayer extends Player implements JobsServerPlay
     }
 
     @Override
-    public @NotNull UUID jobsplus$getUUID() {
-        return super.getUUID();
-    }
-
-    @Override
     public List<IActionHolder> jobsplus$getActionHolders() {
         List<IActionHolder> actionHolders = new ArrayList<>(jobsplus$getJobInstances());
         actionHolders.addAll(jobsplus$getJobs().stream()
@@ -160,6 +156,7 @@ public abstract class MixinServerPlayer extends Player implements JobsServerPlay
 
     @Override
     public ServerPlayer jobsplus$getServerPlayer() {
+        //noinspection DataFlowIssue
         return (ServerPlayer) (Object) this;
     }
 
@@ -182,16 +179,6 @@ public abstract class MixinServerPlayer extends Player implements JobsServerPlay
     @Override
     public void jobsplus$setUpdatedFromOldJobsPlus(boolean updatedFromOldJobsPlus) {
         this.jobsplus$updatedFromOldJobsPLus = updatedFromOldJobsPlus;
-    }
-
-    @Override
-    public double jobsplus$nextRandomDouble() {
-        return this.jobsplus$getServerPlayer().getRandom().nextDouble();
-    }
-
-    @Override
-    public Level jobsplus$getLevel() {
-        return super.level();
     }
 
     @Override

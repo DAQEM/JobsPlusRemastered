@@ -192,7 +192,7 @@ public class ConfirmationScreen extends AbstractScreen {
         if (withPacket) {
             if (lastScreen instanceof JobsScreen jobsScreen) {
                 new PacketOpenMenuC2S(jobsScreen).sendToServer();
-            } else if (lastScreen instanceof PowerUpsScreen powerUpsScreen) {
+            } else if (lastScreen instanceof PowerUpsScreen) {
                 new PacketOpenPowerupsMenuC2S(job).sendToServer();
             } else {
                 new PacketOpenMenuC2S().sendToServer();

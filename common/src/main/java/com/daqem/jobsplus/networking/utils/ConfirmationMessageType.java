@@ -27,13 +27,8 @@ public enum ConfirmationMessageType {
         return confirmationButtonType;
     }
 
-    public ConfirmationMessage getConfirmationMessage() {
-        return this.confirmationMessage;
-    }
-
-    public ConfirmationMessageType withObjects(Object... objects) {
+    public void withObjects(Object... objects) {
         this.confirmationMessage.withObjects(objects);
-        return this;
     }
 
     public RequireCoinsType getRequireCoinsType() {
@@ -46,7 +41,6 @@ public enum ConfirmationMessageType {
 
     public enum RequireCoinsType {
         START_JOB,
-        STOP_JOB,
         POWER_UP,
         NONE
     }

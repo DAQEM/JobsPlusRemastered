@@ -39,11 +39,6 @@ public class JobExperiencePercentageCondition extends AbstractCondition {
     }
 
     @Override
-    public String toString() {
-        return super.toString();
-    }
-
-    @Override
     public IConditionType<? extends ICondition> getType() {
         return JobsPlusConditionType.JOB_EXPERIENCE_PERCENTAGE;
     }

@@ -23,15 +23,12 @@ import java.util.List;
 
 public class PowerUpsScreen extends AbstractScreen {
 
-    private static final ResourceLocation BACKGROUND = JobsPlus.getId("textures/gui/powerup_screen.png");
     private static final int WINDOW_WIDTH = 16 * 15;
     private static final int WINDOW_HEIGHT = 16 * 8;
 
     private final JobsScreen previousScreen;
     private final Job job;
     private final JobInstance jobInstance;
-    private final List<PowerupInstance> rootPowerups;
-    private final List<Powerup> allPowerups;
     private final int coins;
 
     private final PowerupWidget rootWidget;
@@ -55,8 +52,6 @@ public class PowerUpsScreen extends AbstractScreen {
         this.previousScreen = previousScreen;
         this.job = job;
         this.jobInstance = job.getJobInstance();
-        this.rootPowerups = rootPowerups;
-        this.allPowerups = allPowerups;
         this.coins = coins;
 
         PowerupInstance rootInstance = new PowerupInstance(null, null, jobInstance.getName() + " Power-ups", "Choose a power-up you want to buy.", jobInstance.getIconItem(), 0, 0);
@@ -110,7 +105,7 @@ public class PowerUpsScreen extends AbstractScreen {
             hoverPoseStack.pushPose();
             hoverPoseStack.translate(0, 0, 400);
             RenderSystem.applyModelViewMatrix();
-            this.renderTooltip(guiGraphics, mouseX, mouseY, windowX, windowY, ticks);
+            this.renderTooltip(guiGraphics, mouseX, mouseY, windowX, windowY);
             hoverPoseStack.popPose();
         }
 
@@ -201,6 +196,7 @@ public class PowerUpsScreen extends AbstractScreen {
         this.isScrolling = false;
     }
 
+    @SuppressWarnings("SameReturnValue")
     private boolean initiateScrolling(double f, double g){
         if (!this.isScrolling){
             this.isScrolling = true;
@@ -226,7 +222,7 @@ public class PowerUpsScreen extends AbstractScreen {
         return max - min > boundary;
     }
 
-    private void renderTooltip(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, int windowX, int windowY, float ticks) {
+    private void renderTooltip(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, int windowX, int windowY) {
         PowerupWidget widget = getHoveredWidget(mouseX, mouseY, windowX, windowY);
 
         if (widget != null) {

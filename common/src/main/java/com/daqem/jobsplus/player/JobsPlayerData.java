@@ -20,19 +20,6 @@ import java.util.List;
 public record JobsPlayerData(List<Job> activeJobs, List<Job> inactiveJobs, int coins) {
 
     /**
-     * This method is used to convert the data from a Player object to a JobsPlayerData object.
-     *
-     * @param jobsServerPlayer - The player object that contains the data.
-     * @return - The JobsPlayerData object that was created from the player object.
-     */
-    public static JobsPlayerData fromPlayer(JobsServerPlayer jobsServerPlayer) {
-        return new JobsPlayerData(
-                jobsServerPlayer.jobsplus$getJobs(),
-                jobsServerPlayer.jobsplus$getInactiveJobs(),
-                jobsServerPlayer.jobsplus$getCoins());
-    }
-
-    /**
      * This method is used to convert the data from a compound tag to a JobsPlayerData object.
      *
      * @param compoundTag - The compound tag that contains the data.

@@ -6,6 +6,7 @@ pluginManagement {
         maven {
             url "https://cursemaven.com"
             content {
+                //noinspection GroovyAssignabilityCheck
                 includeGroup "curse.maven"
             }
         }
@@ -13,8 +14,11 @@ pluginManagement {
     }
 }
 
+//noinspection GroovyAssignabilityCheck
 include("common")
+//noinspection GroovyAssignabilityCheck
 include("fabric")
+//noinspection GroovyAssignabilityCheck
 include("forge")
 
 rootProject.name = "jobsplus"

@@ -13,6 +13,7 @@ import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.commands.synchronization.ArgumentTypeInfo;
 import net.minecraft.network.FriendlyByteBuf;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -61,11 +62,12 @@ public class EnumArgument<T extends Enum<T>> implements ArgumentType<T> {
 
         @SuppressWarnings("unchecked")
         @Override
-        public Template deserializeFromNetwork(FriendlyByteBuf buffer) {
+        public @NotNull Template deserializeFromNetwork(FriendlyByteBuf buffer) {
             try {
                 String name = buffer.readUtf();
                 return new Template((Class<T>) Class.forName(name));
             } catch (ClassNotFoundException e) {
+                //noinspection DataFlowIssue
                 return null;
             }
         }
@@ -76,7 +78,7 @@ public class EnumArgument<T extends Enum<T>> implements ArgumentType<T> {
         }
 
         @Override
-        public Template unpack(EnumArgument<T> argument) {
+        public @NotNull Template unpack(EnumArgument<T> argument) {
             return new Template(argument.enumClass);
         }
 
@@ -88,12 +90,12 @@ public class EnumArgument<T extends Enum<T>> implements ArgumentType<T> {
             }
 
             @Override
-            public EnumArgument<T> instantiate(CommandBuildContext p_223435_) {
+            public @NotNull EnumArgument<T> instantiate(@NotNull CommandBuildContext p_223435_) {
                 return new EnumArgument<>(this.enumClass);
             }
 
             @Override
-            public ArgumentTypeInfo<EnumArgument<T>, ?> type() {
+            public @NotNull ArgumentTypeInfo<EnumArgument<T>, ?> type() {
                 return Info.this;
             }
         }

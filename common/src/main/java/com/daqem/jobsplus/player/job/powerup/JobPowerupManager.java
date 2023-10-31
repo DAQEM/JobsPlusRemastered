@@ -3,7 +3,6 @@ package com.daqem.jobsplus.player.job.powerup;
 import com.daqem.jobsplus.player.JobsPlayer;
 import com.daqem.jobsplus.player.JobsServerPlayer;
 import com.daqem.jobsplus.player.job.Job;
-import com.daqem.jobsplus.integration.arc.holder.holders.job.JobInstance;
 import com.daqem.jobsplus.integration.arc.holder.holders.powerup.PowerupInstance;
 import org.jetbrains.annotations.NotNull;
 
@@ -12,24 +11,10 @@ import java.util.*;
 
 public class JobPowerupManager {
 
-    private final JobInstance job;
-    private List<Powerup> powerups;
+    private final List<Powerup> powerups;
 
-    public JobPowerupManager(JobInstance job, @NotNull List<Powerup> powerups) {
-        this.job = job;
+    public JobPowerupManager(@NotNull List<Powerup> powerups) {
         this.powerups = sortPowerups(powerups);
-    }
-
-    public JobInstance getJob() {
-        return job;
-    }
-
-    public List<Powerup> getPowerups() {
-        return powerups;
-    }
-
-    public void setPowerups(List<Powerup> powerups) {
-        this.powerups = powerups;
     }
 
     public @Nullable Powerup getPowerup(PowerupInstance powerupInstance) {
@@ -129,7 +114,6 @@ public class JobPowerupManager {
         }
     }
 
-
     public void removePowerup(PowerupInstance powerupInstance) {
         Powerup powerup = getPowerup(powerupInstance);
         if (powerup != null) {
@@ -139,14 +123,6 @@ public class JobPowerupManager {
             } else {
                 powerups.remove(powerup);
             }
-        }
-    }
-
-    public void setPowerupState(@NotNull Powerup powerup, @NotNull PowerupState powerupState) {
-        if (powerupState == PowerupState.NOT_OWNED) {
-            removePowerup(powerup.getPowerupInstance());
-        } else {
-            powerup.setPowerupState(powerupState);
         }
     }
 

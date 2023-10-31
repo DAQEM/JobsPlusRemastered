@@ -10,7 +10,6 @@ import com.daqem.jobsplus.config.JobsPlusCommonConfig;
 import com.daqem.jobsplus.integration.arc.holder.holders.job.JobInstance;
 import com.daqem.jobsplus.integration.arc.holder.holders.powerup.PowerupInstance;
 import com.daqem.jobsplus.integration.arc.holder.holders.powerup.PowerupManager;
-import com.daqem.jobsplus.networking.c2s.PacketOpenMenuC2S;
 import com.daqem.jobsplus.networking.utils.ConfirmationMessageType;
 import com.daqem.jobsplus.player.JobsPlayerData;
 import com.daqem.jobsplus.player.job.Job;
@@ -26,7 +25,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -169,23 +167,6 @@ public class JobsScreen extends AbstractScreen {
             guiGraphics.renderTooltip(font, JobsPlus.translatable("gui.job_powerups"), mouseX + startX, mouseY + startY);
         } else if (isBetween(mouseX, mouseY, 6 + 28 + 28 + 28 + 150, -22, 32 + 28 + 28 + 28 + 150, 0)) {
             guiGraphics.renderTooltip(font, JobsPlus.translatable("gui.job_how_to_get_exp"), mouseX + startX, mouseY + startY);
-        } else if (isBetween(mouseX, mouseY, imageWidth, 35, imageWidth + 21, 60)) {
-            if (hasJobSelected()) {
-                if (getSelectedJobLevel() != 0) {
-                    List<Component> list = new ArrayList<>();
-                    final Job activeBossBarJob = getActiveBossBar();
-
-//                    if (activeBossBarJob != -1 && Jobs.getJobFromInt(activeBossBarJob) != null) {
-                    if (activeBossBarJob != null) {
-//                        list = List.of(JobsPlus.translatable("gui.toggle_boss_bar"),
-//                                JobsPlus.translatable("gui.active", ChatHandler.ColorizedJobName(Objects.requireNonNull(Jobs.getJobFromInt(activeBossBarJob))).replace(" ", "")));
-                    } else {
-                        list = List.of(JobsPlus.translatable("gui.toggle_boss_bar"),
-                                JobsPlus.translatable("gui.active", ChatColor.boldBlue() + JobsPlus.translatable("job.none").getString()));
-                    }
-                    guiGraphics.renderTooltip(font, list, Optional.empty(), mouseX + startX, mouseY + startY + 17);
-                }
-            }
         }
         if (activeRightButton == 1) {
             if (hasJobSelected()) {
@@ -322,15 +303,6 @@ public class JobsScreen extends AbstractScreen {
                 }
             }
         }
-        if (hasJobSelected()) {
-//            if (getSelectedJobLevel() != 0) {
-//                //Boss Bar Background
-//                if (getActiveBossBar() == job) blitThis(guiGraphics, imageWidth, 9 + 26, 142, 234, 22, 26);
-//                else blitThis(guiGraphics, imageWidth, 9 + 26, 164, 234, 19, 26);
-//                // Boss Bar Icon
-//                blitThis(guiGraphics, imageWidth + 1, 9 + 32, 165, 271, 15, 14);
-//            }
-        }
     }
 
     private void drawBigButton(GuiGraphics guiGraphics, int mouseX, int mouseY) {
@@ -417,7 +389,7 @@ public class JobsScreen extends AbstractScreen {
             } else if (activeRightButton == 1) {
                 drawCenteredString(guiGraphics, ChatColor.darkGray() + JobsPlus.translatable("gui.restrictions").getString(), centerR, startY + 6, 16777215);
             } else if (activeRightButton == 2) {
-                drawCenteredString(guiGraphics, ChatColor.darkGray() + JobsPlus.translatable("gui.powerups.powerups").getString(), centerR, startY +  + 20, 16777215);
+                drawCenteredString(guiGraphics, ChatColor.darkGray() + JobsPlus.translatable("gui.powerups.powerups").getString(), centerR, startY + 20, 16777215);
 
                 List<Powerup> allPowerups = getSelectedJob().getPowerupManager().getAllPowerups();
                 guiGraphics.drawString(font, ChatColor.darkGray() + JobsPlus.translatable("gui.powerups.available", getSelectedJob().getJobInstance().getAllPowerups().stream().filter(p -> !allPowerups.stream().map(Powerup::getPowerupInstance).toList().contains(p)).count()).getString(), startX + 150 + 34, startY + 6 + 14 + 36, 16777215, false);
@@ -445,7 +417,6 @@ public class JobsScreen extends AbstractScreen {
 
     public void renderItems(GuiGraphics guiGraphics) {
         if (minecraft == null) return;
-        ItemRenderer itemRenderer = minecraft.getItemRenderer();
 
         renderJobIcons(guiGraphics, firstHiddenIndex);
 
@@ -483,8 +454,9 @@ public class JobsScreen extends AbstractScreen {
         this.scrollingRight = false;
 
         //SETTINGS
+        //noinspection StatementWithEmptyBody
         if (isBetween(mouseX, mouseY, 3, height - 20, 19, height - 4)) {
-//            ModPackets.INSTANCE.sendToServer(new PacketUserSettingsServer("MAIN"));
+            //TODO: SETTINGS
         }
 
         //DISCORD
@@ -532,17 +504,6 @@ public class JobsScreen extends AbstractScreen {
             this.scrollingRight = true;
         }
 
-        //BOSSBAR
-        if (hasJobSelected()) {
-            if (getSelectedJobLevel() != 0) {
-                //BOSSBAR
-                if (isBetween(mouseX, mouseY, imageWidth, 35, imageWidth + 21, 60)) {
-//                    if (job == getActiveBossBar()) ModPackets.INSTANCE.sendToServer(new PacketBossBarr("NONE"));
-//                    else ModPackets.INSTANCE.sendToServer(new PacketBossBarr(Jobs.getEnglishString(job)));
-//                    ModPackets.INSTANCE.sendToServer(new PacketOpenMenu(job, activeLeftButton, activeRightButton, selectedButton, scrollOffs, startIndex));
-                }
-            }
-        }
         //ALL JOBS BUTTON
         if (isBetween(mouseX, mouseY, 6, -22, 32, 0)) {
             playClientGUIClick();
@@ -660,12 +621,12 @@ public class JobsScreen extends AbstractScreen {
         ResourceLocation jobLocation = jobInstance.getLocation();
         jobs.stream().filter(j -> j.getJobInstance() == jobInstance).findFirst()
                 .ifPresent(job -> Minecraft.getInstance().setScreen(new PowerUpsScreen(this, job,
-                rootPowerups.stream()
-                        .filter(
-                                p -> p.getJobLocation().equals(jobLocation))
-                        .toList(),
-                job.getPowerupManager().getAllPowerups(),
-                getCoins())));
+                        rootPowerups.stream()
+                                .filter(
+                                        p -> p.getJobLocation().equals(jobLocation))
+                                .toList(),
+                        job.getPowerupManager().getAllPowerups(),
+                        getCoins())));
     }
 
     private void openActionScreen(JobInstance jobInstance, IAction action) {
@@ -814,10 +775,6 @@ public class JobsScreen extends AbstractScreen {
         Minecraft.getInstance().setScreen(new ConfirmationScreen(this, messageType, job));
     }
 
-    public void openConfirmScreen(ConfirmationMessageType messageType, JobInstance jobInstance, PowerupInstance powerup) {
-        Minecraft.getInstance().setScreen(new ConfirmationScreen(this, messageType, jobInstance, powerup));
-    }
-
     private void drawNoJobSelected(GuiGraphics guiGraphics, String string) {
         for (int i = 1; i < 6; i++) {
             drawCenteredString(guiGraphics, ChatColor.darkGray() + JobsPlus.translatable("gui.no_job_selected." + string + "." + i).getString(), startX + (imageWidth + 150) / 2, startY + 42 + (i * 9), 16777215);
@@ -835,6 +792,7 @@ public class JobsScreen extends AbstractScreen {
         String[] descriptionSplit = description.split(" ");
         int lineCount = 0;
         while (descriptionSplit.length > 0) {
+            //noinspection DuplicatedCode
             StringBuilder line = new StringBuilder();
             while (font.width(line + descriptionSplit[0]) < (150 / scale)) {
                 line.append(descriptionSplit[0]).append(" ");
@@ -854,6 +812,7 @@ public class JobsScreen extends AbstractScreen {
         String[] descriptionSplit = description.split(" ");
         int lineCount = 0;
         while (descriptionSplit.length > 0) {
+            //noinspection DuplicatedCode
             StringBuilder line = new StringBuilder();
             while (font.width(line + descriptionSplit[0]) < (150 / scale)) {
                 line.append(descriptionSplit[0]).append(" ");
@@ -940,36 +899,6 @@ public class JobsScreen extends AbstractScreen {
 
     private int getJobStartPrice(JobInstance jobInstance) {
         return jobInstance.getPrice();
-    }
-
-    private int getPowerupPrice(PowerupInstance powerupInstance) {
-        return powerupInstance.getPrice();
-    }
-
-    private Job getActiveBossBar() {
-        return null;
-//        return this.dataTag.getInt("ActiveBossBar");
-    }
-
-    private PowerupState getSelectedJobPowerupState(PowerupInstance powerupInstance) {
-        if (getSelectedJob().getPowerupManager().getPowerup(powerupInstance) == null) return PowerupState.NOT_OWNED;
-        return Objects.requireNonNull(getSelectedJob().getPowerupManager().getPowerup(powerupInstance)).getPowerupState();
-    }
-
-    private boolean hasBoughtPowerup(PowerupInstance powerup) {
-        return getSelectedJob().getPowerupManager().getPowerup(powerup) != null;
-    }
-
-    private boolean hasPowerupActive(PowerupInstance powerup) {
-        return getSelectedJobPowerupState(powerup) == PowerupState.ACTIVE;
-    }
-
-    private boolean hasPowerupDisabled(PowerupInstance powerup) {
-        return getSelectedJobPowerupState(powerup) == PowerupState.INACTIVE;
-    }
-
-    private void refreshScreen() {
-        new PacketOpenMenuC2S(this).sendToServer();
     }
 
     private ArrayList<Job> getEnabledJobs() {

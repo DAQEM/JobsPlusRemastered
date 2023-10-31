@@ -1,5 +1,6 @@
 package com.daqem.jobsplus.networking.s2c;
 
+import com.daqem.jobsplus.JobsPlus;
 import com.daqem.jobsplus.client.screen.JobsScreen;
 import com.daqem.jobsplus.networking.JobsPlusNetworking;
 import com.daqem.jobsplus.integration.arc.holder.holders.job.JobInstance;
@@ -45,7 +46,7 @@ public class PacketOpenPowerupsMenuS2C extends BaseS2CMessage {
             try {
                 new JobsScreen(serverData).openPowerupsScreenForJobInstance(jobInstance);
             } catch (Exception e) {
-                e.printStackTrace();
+                JobsPlus.LOGGER.error("Error opening powerups menu: " + e);
             }
         }
     }

@@ -28,7 +28,7 @@ public class Job {
     private final JobPowerupManager powerupManager;
     private int level;
     private int experience;
-    private ExpCollector expCollector = new ExpCollector();
+    private final ExpCollector expCollector = new ExpCollector();
 
     public Job(JobsPlayer player, JobInstance jobInstance) {
         this(player, jobInstance, 0, 0, new ArrayList<>());
@@ -45,7 +45,7 @@ public class Job {
     public Job(JobsPlayer player, JobInstance jobInstance, int level, int experience, @NotNull List<Powerup> powerups) {
         this.player = player;
         this.jobInstance = jobInstance;
-        this.powerupManager = new JobPowerupManager(jobInstance, powerups);
+        this.powerupManager = new JobPowerupManager(powerups);
         this.level = level;
         this.experience = experience;
     }

@@ -7,6 +7,7 @@ import java.util.function.Supplier;
 
 public class JobsPlusCommonConfig {
 
+    @SuppressWarnings({"EmptyMethod", "unused"})
     public static void init() {
     }
 

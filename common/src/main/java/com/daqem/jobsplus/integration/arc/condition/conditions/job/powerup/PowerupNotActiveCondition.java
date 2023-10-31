@@ -20,7 +20,7 @@ import java.util.Objects;
 
 public class PowerupNotActiveCondition extends AbstractCondition {
 
-    ResourceLocation powerupThatShouldNotBeActiveLocation;
+    private final ResourceLocation powerupThatShouldNotBeActiveLocation;
 
     public PowerupNotActiveCondition(boolean inverted, ResourceLocation powerupThatShouldNotBeActiveLocation) {
         super(inverted);
@@ -37,9 +37,9 @@ public class PowerupNotActiveCondition extends AbstractCondition {
                     .findFirst()
                     .orElse(null);
 
-            return powerup == null || (powerup != null
-                    && (powerup.getPowerupInstance().getLocation().equals(this.powerupThatShouldNotBeActiveLocation)
-                    && powerup.getPowerupState() != PowerupState.ACTIVE));
+            return powerup == null ||
+                    (powerup.getPowerupInstance().getLocation().equals(this.powerupThatShouldNotBeActiveLocation)
+                            && powerup.getPowerupState() != PowerupState.ACTIVE);
         }
         return false;
     }

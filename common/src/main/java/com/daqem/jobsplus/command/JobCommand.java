@@ -118,11 +118,9 @@ public class JobCommand {
                                     serverPlayer.sendSystemMessage(JobsPlus.literal(
                                             attribute.getAttribute().getDescriptionId() + ": " + attribute.getValue()
                                     ));
-                                    attribute.getModifiers().forEach(attributeModifier -> {
-                                        serverPlayer.sendSystemMessage(JobsPlus.literal(
-                                                attributeModifier.getName() + ": " + attributeModifier.getAmount()
-                                        ));
-                                    });
+                                    attribute.getModifiers().forEach(attributeModifier -> serverPlayer.sendSystemMessage(JobsPlus.literal(
+                                            attributeModifier.getName() + ": " + attributeModifier.getAmount()
+                                    )));
                                     serverPlayer.sendSystemMessage(JobsPlus.literal(" "));
                                 });
                             }
@@ -132,6 +130,7 @@ public class JobCommand {
         );
     }
 
+    @SuppressWarnings("SameReturnValue")
     private static int clearPowerups(CommandSourceStack source, ServerPlayer targetPlayer, JobInstance jobInstance) {
         if (targetPlayer instanceof JobsServerPlayer jobsServerPlayer) {
             Job job = jobsServerPlayer.jobsplus$getJob(jobInstance);
@@ -143,6 +142,7 @@ public class JobCommand {
         return 0;
     }
 
+    @SuppressWarnings("SameReturnValue")
     private static int debug(CommandSourceStack source, ServerPlayer target) {
         if (target instanceof ArcPlayer arcPlayer) {
             arcPlayer.arc$getActionHolders().forEach(actionHolder -> {
@@ -154,24 +154,29 @@ public class JobCommand {
         return 0;
     }
 
+    @SuppressWarnings("SameReturnValue")
     private static int setPowerup(CommandSourceStack source, ServerPlayer target, JobInstance jobInstance, PowerupInstance powerupInstance, PowerupState powerupState) {
         if (target instanceof JobsServerPlayer jobsServerPlayer) {
             Job job = jobsServerPlayer.jobsplus$getJob(jobInstance);
             job.getPowerupManager().forceAddPowerup(powerupInstance, powerupState);
             jobsServerPlayer.jobsplus$updateJob(job);
+            source.sendSuccess(() -> JobsPlus.translatable(
+                    "command.set.powerup.success", jobInstance.getLocation(), powerupInstance.getLocation(), powerupState), false);
         }
         return 1;
     }
 
+    @SuppressWarnings("SameReturnValue")
     private static int setCoins(CommandSourceStack source, ServerPlayer target, int coins) {
         if (target instanceof JobsServerPlayer jobsServerPlayer) {
             jobsServerPlayer.jobsplus$setCoins(coins);
             source.sendSuccess(() -> JobsPlus.translatable(
                     "command.set.coins.success", coins, jobsServerPlayer.jobsplus$getName()), false);
         }
-        return coins;
+        return 0;
     }
 
+    @SuppressWarnings("SameReturnValue")
     private static int setExperience(CommandSourceStack source, ServerPlayer target, JobInstance jobInstance, int experience) {
         if (target instanceof JobsServerPlayer jobsServerPlayer) {
             Job job = jobsServerPlayer.jobsplus$getJob(jobInstance);
@@ -193,9 +198,10 @@ public class JobCommand {
                         "command.does_not_have_job", jobsServerPlayer.jobsplus$getName(), jobInstance.getLocation()));
             }
         }
-        return experience;
+        return 0;
     }
 
+    @SuppressWarnings("SameReturnValue")
     private static int setLevel(CommandSourceStack source, ServerPlayer target, JobInstance jobInstance, int level) {
         if (target instanceof JobsServerPlayer jobsServerPlayer) {
             Job job = jobsServerPlayer.jobsplus$getJob(jobInstance);
@@ -208,11 +214,11 @@ public class JobCommand {
                     source.sendFailure(JobsPlus.translatable(
                             "command.set.level.does_not_have_job"));
                 }
-                return level;
+                return 0;
             } else if (level > jobInstance.getMaxLevel()) {
                 source.sendFailure(JobsPlus.translatable(
                         "command.set.level.cannot_be_higher_than_max", jobInstance.getMaxLevel()));
-                return level;
+                return 0;
             }
 
             if (job != null) {
@@ -234,6 +240,6 @@ public class JobCommand {
             source.sendFailure(JobsPlus.translatable(
                     "command.set.level.invalid_target"));
         }
-        return level;
+        return 0;
     }
 }

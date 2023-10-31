@@ -78,10 +78,6 @@ public abstract class JobManager extends SimpleJsonResourceReloadListener {
         return jobs;
     }
 
-    public void setJobs(Map<ResourceLocation, JobInstance> jobs) {
-        this.jobs = ImmutableMap.copyOf(jobs);
-    }
-
     public void replaceJobs(List<JobInstance> jobs) {
         Map<ResourceLocation, JobInstance> tempJobInstances = new HashMap<>();
         jobs.forEach(job -> {

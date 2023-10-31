@@ -1,6 +1,7 @@
 package com.daqem.jobsplus.networking.c2s;
 
 import com.daqem.jobsplus.Constants;
+import com.daqem.jobsplus.JobsPlus;
 import com.daqem.jobsplus.client.screen.JobsScreen;
 import com.daqem.jobsplus.networking.JobsPlusNetworking;
 import com.daqem.jobsplus.networking.s2c.PacketOpenMenuS2C;
@@ -24,16 +25,6 @@ public class PacketOpenMenuC2S extends BaseC2SMessage {
     private final float scrollOffsetRight;
     private final int startIndex;
     private final int startIndexRight;
-
-    public PacketOpenMenuC2S(int activeLeftButton, int activeRightButton, int selectedButton, float ScrollOffset, float ScrollOffsetRight, int startIndex, int startIndexRight) {
-        this.activeLeftButton = activeLeftButton;
-        this.activeRightButton = activeRightButton;
-        this.selectedButton = selectedButton;
-        this.scrollOffset = ScrollOffset;
-        this.scrollOffsetRight = ScrollOffsetRight;
-        this.startIndex = startIndex;
-        this.startIndexRight = startIndexRight;
-    }
 
     public PacketOpenMenuC2S(JobsScreen jobsScreen) {
         this.activeLeftButton = jobsScreen.getActiveLeftButton();
@@ -106,7 +97,7 @@ public class PacketOpenMenuC2S extends BaseC2SMessage {
                     new PacketOpenMenuS2C(serverData).sendTo((ServerPlayer) serverPlayer);
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                JobsPlus.LOGGER.error("Error opening Jobs+ menu (server side): " + e);
             }
         }
     }

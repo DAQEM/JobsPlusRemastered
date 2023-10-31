@@ -1,10 +1,13 @@
+//file:noinspection GroovyAssignabilityCheck
+//file:noinspection GrDeprecatedAPIUsage
+//file:noinspection DependencyNotationArgument
 plugins {
     id "com.github.johnrengelman.shadow" version "7.1.2"
     id 'com.matthewprenger.cursegradle' version '1.4.0'
     id "com.modrinth.minotaur" version "2.+"
 }
 
-version = "$rootProject.mod_version"
+version = "$project.mod_version"
 
 architectury {
     platformSetupLoomIde()
@@ -12,10 +15,12 @@ architectury {
 }
 
 loom {
+    //noinspection GroovyAccessibility
     accessWidenerPath = project(":common").loom.accessWidenerPath
 
     forge {
         convertAccessWideners = true
+        //noinspection GrUnresolvedAccess
         extraAccessWideners.add loom.accessWidenerPath.get().asFile.name
 
         mixinConfig "jobsplus-common.mixins.json"
@@ -41,9 +46,9 @@ repositories {
 }
 
 dependencies {
-    forge "net.minecraftforge:forge:${rootProject.forge_version}"
+    forge "net.minecraftforge:forge:${project.forge_version}"
     // Remove the next line if you don't want to depend on the API
-    modApi "dev.architectury:architectury-forge:${rootProject.architectury_version}"
+    modApi "dev.architectury:architectury-forge:${project.architectury_version}"
 
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
@@ -83,11 +88,15 @@ jar {
 sourcesJar {
     def commonSources = project(":common").sourcesJar
     dependsOn commonSources
+    //noinspection GrUnresolvedAccess
     from commonSources.archiveFile.map { zipTree(it) }
 }
 
+//noinspection GrUnresolvedAccess
 components.java {
+    //noinspection GrUnresolvedAccess
     withVariantsFromConfiguration(project.configurations.shadowRuntimeElements) {
+        //noinspection GrUnresolvedAccess
         skip()
     }
 }
@@ -95,7 +104,9 @@ components.java {
 publishing {
     publications {
         mavenForge(MavenPublication) {
+            //noinspection GrUnresolvedAccess
             artifactId = rootProject.archives_base_name + "-" + project.name
+            //noinspection GrUnresolvedAccess
             from components.java
         }
     }
@@ -110,9 +121,9 @@ publishing {
 curseforge {
     apiKey = System.getenv("CURSEFORGE_API_KEY")
     project {
-        id = rootProject.curse_forge_project_id
-        releaseType = rootProject.curse_forge_release_type
-        addGameVersion "$rootProject.minecraft_version"
+        id = project.curse_forge_project_id
+        releaseType = project.curse_forge_release_type
+        addGameVersion project.minecraft_version
         addGameVersion "Java 17"
         addGameVersion "Forge"
 
@@ -123,7 +134,7 @@ curseforge {
         }
 
         mainArtifact(remapJar) {
-            displayName = "Jobs+ Forge $rootProject.minecraft_version - $rootProject.mod_version"
+            displayName = "Jobs+ Forge $project.minecraft_version - $project.mod_version"
         }
 
         addArtifact(sourcesJar) {

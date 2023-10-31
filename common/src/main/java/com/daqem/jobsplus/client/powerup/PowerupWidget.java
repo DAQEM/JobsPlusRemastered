@@ -6,7 +6,6 @@ import com.daqem.jobsplus.client.screen.PowerUpsScreen;
 import com.daqem.jobsplus.player.job.Job;
 import com.daqem.jobsplus.player.job.powerup.Powerup;
 import com.daqem.jobsplus.player.job.powerup.PowerupState;
-import com.daqem.jobsplus.integration.arc.holder.holders.job.JobInstance;
 import com.daqem.jobsplus.integration.arc.holder.holders.powerup.PowerupInstance;
 import com.google.common.collect.Lists;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -36,7 +35,6 @@ public class PowerupWidget {
     public final static int WIDTH = 28;
 
     private final Job job;
-    private final JobInstance jobInstance;
     private final PowerupInstance powerupInstance;
     private final Powerup powerup;
     private final List<Powerup> allPowerups;
@@ -57,7 +55,6 @@ public class PowerupWidget {
 
     public PowerupWidget(Job job, PowerupInstance powerupInstance, @Nullable Powerup powerup, List<Powerup> allPowerups, @Nullable PowerupWidget treeNodePosition, @Nullable PowerupWidget treeNodePosition2, int i, int j) {
         this.job = job;
-        this.jobInstance = job.getJobInstance();
         this.powerupInstance = powerupInstance;
         this.powerup = powerup;
         this.allPowerups = allPowerups;
@@ -212,7 +209,7 @@ public class PowerupWidget {
     }
 
     private PowerupWidget apportion(PowerupWidget treeNodePosition) {
-        if (this.previousSibling != null) {
+        if (this.previousSibling != null && this.parent != null) {
             PowerupWidget treeNodePosition2 = this;
             PowerupWidget treeNodePosition3 = this;
             PowerupWidget treeNodePosition4 = this.previousSibling;
@@ -227,8 +224,8 @@ public class PowerupWidget {
                 treeNodePosition2 = treeNodePosition2.previousOrThread();
                 treeNodePosition5 = treeNodePosition5.previousOrThread();
                 treeNodePosition3 = treeNodePosition3.nextOrThread();
-                treeNodePosition3.ancestor = this;
-                float j = treeNodePosition4.y + h - (treeNodePosition2.y + f) + 1.0F;
+                Objects.requireNonNull(treeNodePosition3).ancestor = this;
+                float j = Objects.requireNonNull(treeNodePosition4).y + h - (Objects.requireNonNull(treeNodePosition2).y + f) + 1.0F;
                 if (j > 0.0F) {
                     treeNodePosition4.getAncestor(this, treeNodePosition).moveSubtree(this, j);
                     f += j;
@@ -237,7 +234,7 @@ public class PowerupWidget {
 
                 h += treeNodePosition4.mod;
                 f += treeNodePosition2.mod;
-                i += treeNodePosition5.mod;
+                i += Objects.requireNonNull(treeNodePosition5).mod;
             }
 
             if (treeNodePosition4.nextOrThread() != null && treeNodePosition3.nextOrThread() == null) {
@@ -269,7 +266,7 @@ public class PowerupWidget {
     }
 
     private PowerupWidget getAncestor(PowerupWidget treeNodePosition, PowerupWidget treeNodePosition2) {
-        return this.ancestor != null && treeNodePosition.parent.children.contains(this.ancestor) ? this.ancestor : treeNodePosition2;
+        return this.ancestor != null && Objects.requireNonNull(treeNodePosition.parent).children.contains(this.ancestor) ? this.ancestor : treeNodePosition2;
     }
 
     private void finalizePosition() {
@@ -346,7 +343,7 @@ public class PowerupWidget {
             }
         });
         RenderSystem.setShaderTexture(0, WIDGETS_LOCATION);
-        drawPowerupIcon(guiGraphics, null, this.getPowerupState(), Mth.floor(this.x * WIDTH) + offsetX, Mth.floor(this.y * HEIGHT) + offsetY);
+        drawPowerupIcon(guiGraphics, this.getPowerupState(), Mth.floor(this.x * WIDTH) + offsetX, Mth.floor(this.y * HEIGHT) + offsetY);
 
         if (Mth.floor(this.x * WIDTH) + offsetX < startX + 246
                 && Mth.floor(this.x * WIDTH) + offsetX > startX - 31
@@ -373,6 +370,7 @@ public class PowerupWidget {
 
         int i = 0;
         int stringLength = String.valueOf(i).length();
+        //noinspection ConstantValue
         int extraWidthCondition = i > 1 ? minecraftFont.width("  ") + minecraftFont.width("0") * stringLength * 2 + minecraftFont.width("/") : 0;
         int totalWidth = 29 + minecraftFont.width(powerupInstance.getName()) + extraWidthCondition + 3 + 5;
 
@@ -409,7 +407,7 @@ public class PowerupWidget {
             guiGraphics.blit(WIDGETS_LOCATION, x, y + 2, 200 - totalWidth + 4, 3, totalWidth - 4, 20);
         }
 
-        drawPowerupIcon(guiGraphics, powerupInstance, this.getPowerupState(), x, y);
+        drawPowerupIcon(guiGraphics, this.getPowerupState(), x, y);
 
         guiGraphics.drawString(minecraftFont, powerupInstance.getName(), x + 28, y + 8, 0xFFFFFFFF, false);
         for (int i1 = 0; i1 < descriptions.size(); i1++) {
@@ -453,30 +451,34 @@ public class PowerupWidget {
         }
     }
 
-    private void drawPowerupIcon(GuiGraphics guiGraphics, PowerupInstance powerup, PowerupState state, int x, int y) {
+    private void drawPowerupIcon(GuiGraphics guiGraphics, PowerupState state, int x, int y) {
         switch (state) {
-            case ACTIVE -> drawActivePowerupIcon(guiGraphics, powerup, x, y, 24, 24);
-            case INACTIVE -> drawInactivePowerupIcon(guiGraphics, powerup, x, y, 24, 24);
-            case NOT_OWNED -> drawNotOwnedPowerupIcon(guiGraphics, powerup, x, y, 24, 24);
-            case LOCKED -> drawLockedPowerupIcon(guiGraphics, powerup, x, y, 24, 24);
+            case ACTIVE -> drawActivePowerupIcon(guiGraphics, x, y, 24, 24);
+            case INACTIVE -> drawInactivePowerupIcon(guiGraphics, x, y, 24, 24);
+            case NOT_OWNED -> drawNotOwnedPowerupIcon(guiGraphics, x, y, 24, 24);
+            case LOCKED -> drawLockedPowerupIcon(guiGraphics, x, y, 24, 24);
         }
     }
 
-    private void drawActivePowerupIcon(GuiGraphics guiGraphics, PowerupInstance powerup, int x, int y, int width, int height) {
+    @SuppressWarnings("SameParameterValue")
+    private void drawActivePowerupIcon(GuiGraphics guiGraphics, int x, int y, int width, int height) {
         guiGraphics.blit(WIDGETS_LOCATION, x, y, 1, 129, width, height);
     }
 
-    private void drawInactivePowerupIcon(GuiGraphics guiGraphics, PowerupInstance powerup, int x, int y, int width, int height) {
+    @SuppressWarnings("SameParameterValue")
+    private void drawInactivePowerupIcon(GuiGraphics guiGraphics, int x, int y, int width, int height) {
         RenderColor.red();
         guiGraphics.blit(WIDGETS_LOCATION, x, y, 1, 129, width, height);
         RenderColor.normal();
     }
 
-    private void drawNotOwnedPowerupIcon(GuiGraphics guiGraphics, PowerupInstance powerup, int x, int y, int width, int height) {
+    @SuppressWarnings("SameParameterValue")
+    private void drawNotOwnedPowerupIcon(GuiGraphics guiGraphics, int x, int y, int width, int height) {
         guiGraphics.blit(WIDGETS_LOCATION, x, y, 1, 155, width, height);
     }
 
-    private void drawLockedPowerupIcon(GuiGraphics guiGraphics, PowerupInstance powerup, int x, int y, int width, int height) {
+    @SuppressWarnings("SameParameterValue")
+    private void drawLockedPowerupIcon(GuiGraphics guiGraphics, int x, int y, int width, int height) {
         RenderColor.grayedOut();
         guiGraphics.blit(WIDGETS_LOCATION, x, y, 1, 155, width, height);
         RenderColor.normal();
@@ -502,12 +504,9 @@ public class PowerupWidget {
         float f = Float.MAX_VALUE;
         int[] var6 = new int[]{0, 10, -10, 25, -25};
 
-        int var7 = var6.length;
-
-        for(int var8 = 0; var8 < var7; ++var8) {
-            int j = var6[var8];
+        for (int j : var6) {
             List<FormattedText> list2 = stringSplitter.splitLines(component, i - j, Style.EMPTY);
-            float g = Math.abs(getMaxWidth(stringSplitter, list2) - (float)i);
+            float g = Math.abs(getMaxWidth(stringSplitter, list2) - (float) i);
             if (g <= 10.0F) {
                 return list2;
             }

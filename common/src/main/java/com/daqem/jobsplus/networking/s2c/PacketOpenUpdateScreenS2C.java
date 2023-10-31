@@ -4,7 +4,6 @@ import com.daqem.jobsplus.client.screen.ConfirmationScreen;
 import com.daqem.jobsplus.client.screen.JobsScreen;
 import com.daqem.jobsplus.networking.JobsPlusNetworking;
 import com.daqem.jobsplus.networking.utils.ConfirmationMessageType;
-import com.daqem.jobsplus.integration.arc.holder.holders.job.JobInstance;
 import dev.architectury.networking.NetworkManager;
 import dev.architectury.networking.simple.BaseS2CMessage;
 import dev.architectury.networking.simple.MessageType;
@@ -45,7 +44,7 @@ public class PacketOpenUpdateScreenS2C extends BaseS2CMessage {
             Minecraft.getInstance().setScreen(new ConfirmationScreen(
                     jobsScreen,
                     ConfirmationMessageType.JOBS_PLUS_UPDATE,
-                    (JobInstance) null));
+                    null));
         }
     }
 }

@@ -1,14 +1,12 @@
 package com.daqem.jobsplus.player;
 
 import com.daqem.arc.api.action.holder.IActionHolder;
-import com.daqem.jobsplus.player.job.Job;
 import com.daqem.jobsplus.integration.arc.holder.holders.job.JobInstance;
+import com.daqem.jobsplus.player.job.Job;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.Level;
 
 import javax.annotation.Nullable;
 import java.util.List;
-import java.util.UUID;
 
 public interface JobsPlayer {
 
@@ -35,13 +33,7 @@ public interface JobsPlayer {
 
     String jobsplus$getName();
 
-    double jobsplus$nextRandomDouble();
-
     Player jobsplus$getPlayer();
-
-    Level jobsplus$getLevel();
-
-    UUID jobsplus$getUUID();
 
     List<IActionHolder> jobsplus$getActionHolders();
 }

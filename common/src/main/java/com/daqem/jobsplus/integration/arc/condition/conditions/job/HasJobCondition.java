@@ -53,6 +53,7 @@ public class HasJobCondition extends AbstractCondition implements IJobCondition{
         return JobsPlusConditionSerializer.HAS_JOB;
     }
 
+    @Override
     public ResourceLocation getJobLocation() {
         return jobLocation;
     }

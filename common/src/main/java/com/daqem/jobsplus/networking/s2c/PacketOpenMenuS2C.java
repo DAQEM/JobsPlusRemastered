@@ -1,5 +1,6 @@
 package com.daqem.jobsplus.networking.s2c;
 
+import com.daqem.jobsplus.JobsPlus;
 import com.daqem.jobsplus.client.screen.JobsScreen;
 import com.daqem.jobsplus.networking.JobsPlusNetworking;
 import dev.architectury.networking.NetworkManager;
@@ -41,7 +42,7 @@ public class PacketOpenMenuS2C extends BaseS2CMessage {
             try {
                 Minecraft.getInstance().setScreen(new JobsScreen(serverData));
             } catch (Exception e) {
-                e.printStackTrace();
+                JobsPlus.LOGGER.error("Error opening Jobs+ menu (client side): " + e);
             }
         }
     }

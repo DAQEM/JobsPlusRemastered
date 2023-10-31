@@ -3,9 +3,9 @@ package com.daqem.jobsplus.mixin.client;
 import com.daqem.arc.api.action.holder.IActionHolder;
 import com.daqem.arc.api.player.ArcPlayer;
 import com.daqem.jobsplus.client.player.JobsClientPlayer;
-import com.daqem.jobsplus.player.job.Job;
 import com.daqem.jobsplus.integration.arc.holder.holders.job.JobInstance;
 import com.daqem.jobsplus.integration.arc.holder.holders.job.JobManager;
+import com.daqem.jobsplus.player.job.Job;
 import com.daqem.jobsplus.player.job.powerup.Powerup;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -13,16 +13,12 @@ import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.player.ProfilePublicKey;
-import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Mixin(LocalPlayer.class)
 public abstract class MixinLocalPlayer extends AbstractClientPlayer implements JobsClientPlayer {
@@ -108,28 +104,8 @@ public abstract class MixinLocalPlayer extends AbstractClientPlayer implements J
     }
 
     @Override
-    public double jobsplus$nextRandomDouble() {
-        return jobsplus$getLocalPlayer().getRandom().nextDouble();
-    }
-
-    @Override
-    public @NotNull UUID getUUID() {
-        return super.getUUID();
-    }
-
-    @Override
     public Player jobsplus$getPlayer() {
         return jobsplus$getLocalPlayer();
-    }
-
-    @Override
-    public Level jobsplus$getLevel() {
-        return super.level();
-    }
-
-    @Override
-    public UUID jobsplus$getUUID() {
-        return super.getUUID();
     }
 
     @Override
@@ -145,6 +121,7 @@ public abstract class MixinLocalPlayer extends AbstractClientPlayer implements J
 
     @Override
     public LocalPlayer jobsplus$getLocalPlayer() {
+        //noinspection DataFlowIssue
         return (LocalPlayer) (Object) this;
     }
 
