@@ -30,6 +30,7 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
@@ -42,6 +43,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class JobsScreen extends AbstractScreen {
 
@@ -50,7 +52,7 @@ public class JobsScreen extends AbstractScreen {
     private final int imageHeight = 166;
     private final JobsPlayerData jobsPlayerData;
     private final LinkedList<Job> jobs = new LinkedList<>();
-    private final LinkedList<ItemRestriction> jobItemRestrictions = new LinkedList<>();
+    private final Map<ItemRestriction, Integer> jobItemRestrictions = new HashMap<>();
     private final LinkedList<Job> shownJobs = new LinkedList<>();
     private int activeRightButton;
     private int activeLeftButton;
@@ -118,7 +120,13 @@ public class JobsScreen extends AbstractScreen {
 
         jobItemRestrictions.clear();
         if (hasJobSelected()) {
-            jobItemRestrictions.addAll(getSelectedJob().getJobInstance().getItemRestrictions());
+            Map<ItemRestriction, Integer> itemRestrictions = getSelectedJob().getJobInstance().getItemRestrictions();
+            //sort them by value
+            itemRestrictions.entrySet().stream()
+                    .sorted(Map.Entry.comparingByValue())
+                    .forEachOrdered(x -> jobItemRestrictions.put(x.getKey(), x.getValue()));
+
+            jobItemRestrictions.putAll(itemRestrictions);
         }
     }
 
@@ -187,8 +195,19 @@ public class JobsScreen extends AbstractScreen {
             if (hasJobSelected()) {
                 ItemRestriction itemRestriction = getHoveredItemRestriction(mouseX, mouseY);
                 if (itemRestriction != null) {
-                    //TODO: Add tooltip text
-                    guiGraphics.renderTooltip(font, new ArrayList<>(), Optional.empty(), mouseX + startX, mouseY + startY);
+                    List<Component> literal = new ArrayList<>(List.of(JobsPlus.translatable("restrictions")));
+
+                    String str = itemRestriction.getRestrictionTypes().stream()
+                            .map(restrictionType -> JobsPlus.translatable(restrictionType.getTranslationKey()).getString())
+                            .reduce((s, s2) -> s + ", " + s2).orElse("");
+
+                    List<MutableComponent> components = Arrays.stream(str.split(", "))
+                            .map(s -> JobsPlus.literal(s).withStyle(ChatFormatting.GRAY))
+                            .toList();
+
+                    literal.addAll(components);
+
+                    guiGraphics.renderTooltip(font, literal, Optional.empty(), mouseX + startX, mouseY + startY);
                 }
             }
         }
@@ -308,13 +327,13 @@ public class JobsScreen extends AbstractScreen {
             }
         }
         if (hasJobSelected()) {
-            if (getSelectedJobLevel() != 0) {
-                //Boss Bar Background
-                if (getActiveBossBar() == job) blitThis(guiGraphics, imageWidth, 9 + 26, 142, 234, 22, 26);
-                else blitThis(guiGraphics, imageWidth, 9 + 26, 164, 234, 19, 26);
-                // Boss Bar Icon
-                blitThis(guiGraphics, imageWidth + 1, 9 + 32, 165, 271, 15, 14);
-            }
+//            if (getSelectedJobLevel() != 0) {
+//                //Boss Bar Background
+//                if (getActiveBossBar() == job) blitThis(guiGraphics, imageWidth, 9 + 26, 142, 234, 22, 26);
+//                else blitThis(guiGraphics, imageWidth, 9 + 26, 164, 234, 19, 26);
+//                // Boss Bar Icon
+//                blitThis(guiGraphics, imageWidth + 1, 9 + 32, 165, 271, 15, 14);
+//            }
         }
     }
 
@@ -400,7 +419,7 @@ public class JobsScreen extends AbstractScreen {
                     drawCenteredString(guiGraphics, ChatColor.white() + JobsPlus.translatable("gui.job.stop").getString(), centerR, startY + 137, 16777215);
                 }
             } else if (activeRightButton == 1) {
-                drawCenteredString(guiGraphics, ChatColor.darkGray() + JobsPlus.translatable("gui.crafting").getString(), centerR, startY + 6, 16777215);
+                drawCenteredString(guiGraphics, ChatColor.darkGray() + JobsPlus.translatable("gui.restrictions").getString(), centerR, startY + 6, 16777215);
             } else if (activeRightButton == 2) {
                 drawCenteredString(guiGraphics, ChatColor.darkGray() + JobsPlus.translatable("gui.powerups.powerups").getString(), centerR, startY +  + 20, 16777215);
 
@@ -441,10 +460,9 @@ public class JobsScreen extends AbstractScreen {
                     int xOffset = startX + 160 + j % 3 * 48;
                     int l = j / 3;
                     int yOffset = startY + 17 + l * 20;
-                    guiGraphics.renderFakeItem(new ItemStack(Items.ACACIA_CHEST_BOAT), xOffset, yOffset);
-                    //TODO: Add item
-                    int level = 0;
-                    //TODO: Add level
+                    ItemRestriction itemRestriction = jobItemRestrictions.keySet().stream().toList().get(i);
+                    guiGraphics.renderFakeItem(itemRestriction.getIcon(), xOffset, yOffset);
+                    int level = jobItemRestrictions.get(itemRestriction);
                     guiGraphics.drawString(font, String.valueOf(level), xOffset + 22, yOffset + 4, job.getLevel() >= level ? 0x55FF55 : 0xFF5555, false);
                 }
             }
@@ -690,7 +708,7 @@ public class JobsScreen extends AbstractScreen {
             if (isBetween(mouseX, mouseY,
                     startX + (j % amountX) * buttonWidth, startY + (j / amountY) * buttonHeight,
                     startX + buttonWidth + (j % amountX) * buttonWidth - 1, startY + buttonHeight + (j / amountY) * buttonHeight - 1)) {
-                return jobItemRestrictions.get(i);
+                return jobItemRestrictions.keySet().stream().toList().get(i);
             }
         }
         return null;

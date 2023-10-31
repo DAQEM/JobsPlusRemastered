@@ -52,6 +52,6 @@ side = "BOTH"
 [[dependencies.jobsplus]]
 modId = "itemrestrictions"
 mandatory = true
-versionRange = "[1.0,)"
+versionRange = "[1.1,)"
 ordering = "NONE"
 side = "BOTH"

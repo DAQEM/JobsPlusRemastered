@@ -8,6 +8,7 @@ import com.daqem.itemrestrictions.data.ItemRestrictionManager;
 import com.daqem.jobsplus.JobsPlus;
 import com.daqem.jobsplus.config.JobsPlusCommonConfig;
 import com.daqem.jobsplus.data.serializer.JobsPlusSerializer;
+import com.daqem.jobsplus.integration.arc.condition.conditions.job.JobLevelCondition;
 import com.daqem.jobsplus.integration.arc.holder.holders.powerup.PowerupInstance;
 import com.daqem.jobsplus.integration.arc.holder.type.JobsPlusActionHolderType;
 import com.daqem.jobsplus.integration.arc.condition.conditions.job.HasJobCondition;
@@ -123,15 +124,20 @@ public class JobInstance implements IActionHolder {
         return isDefault;
     }
 
-    public List<ItemRestriction> getItemRestrictions() {
+    public Map<ItemRestriction, Integer> getItemRestrictions() {
         if (itemRestrictions == null) {
             itemRestrictions = ItemRestrictionManager.getInstance().getItemRestrictions().stream()
                     .filter(itemRestriction -> itemRestriction.getConditions().stream()
-                            .anyMatch(condition -> condition instanceof HasJobCondition hasJobCondition
-                                    && hasJobCondition.getJobLocation().equals(location)))
-                    .toList();
+                            .anyMatch(condition ->
+                                    (condition instanceof HasJobCondition hasJobCondition && hasJobCondition.getJobLocation().equals(location))
+                                            || (condition instanceof JobLevelCondition jobLevelCondition && jobLevelCondition.getJobLocation().equals(location)
+                                    ))).toList();
         }
-        return itemRestrictions;
+        return itemRestrictions.stream().collect(HashMap::new, (map, itemRestriction) -> map.put(itemRestriction, itemRestriction.getConditions().stream()
+                .filter(condition -> condition instanceof JobLevelCondition)
+                .map(iCondition -> ((JobLevelCondition) iCondition).getLevel())
+                .max(Integer::compareTo)
+                .orElse(1)), HashMap::putAll);
     }
 
     public void setPowerups(List<PowerupInstance> powerupInstances) {

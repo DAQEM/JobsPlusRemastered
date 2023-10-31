@@ -4,9 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5316e986-2bbe-4484-934c-c6ad4cd49949" name="Changes" comment="Fixed lumberjack getting exp from mining stone.&#10;Fixed Job EXP Multiplier reward.&#10;Fixed Job EXP visual glitch">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="5316e986-2bbe-4484-934c-c6ad4cd49949" name="Changes" comment="Fixed Item Restrictions in GUI.">
+      <change afterPath="$PROJECT_DIR$/common/src/test/java/com/daqem/jobsplus/test/miner.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/client/screen/JobsScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/client/screen/JobsScreen.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/integration/arc/condition/conditions/job/JobLevelCondition.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/integration/arc/condition/conditions/job/JobLevelCondition.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/integration/arc/holder/holders/job/JobInstance.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/integration/arc/holder/holders/job/JobInstance.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/resources/assets/jobsplus/lang/en_us.json" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/resources/assets/jobsplus/lang/en_us.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fabric/src/main/resources/fabric.mod.json" beforeDir="false" afterPath="$PROJECT_DIR$/fabric/src/main/resources/fabric.mod.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/forge/src/main/resources/META-INF/mods.toml" beforeDir="false" afterPath="$PROJECT_DIR$/forge/src/main/resources/META-INF/mods.toml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -57,7 +63,7 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
     &quot;git-widget-placeholder&quot;: &quot;1.20.1&quot;,
-    &quot;last_opened_file_path&quot;: &quot;G:/root/Minecraft Projects/JobsPlus/Remastered/JobsPlusRemastered 1.20.1/common/src/main/resources/data/jobsplus/jobsplus/powerups/alchemist&quot;,
+    &quot;last_opened_file_path&quot;: &quot;G:/root/Minecraft Projects/JobsPlus/Remastered/JobsPlusRemastered 1.20.1/common/src/main/resources/data/jobsplus/restrictions&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -71,10 +77,15 @@
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="G:\root\Minecraft Projects\JobsPlus\Remastered\JobsPlusRemastered 1.20.1\common\src\main\resources\data\jobsplus\restrictions" />
       <recent name="G:\root\Minecraft Projects\JobsPlus\Remastered\JobsPlusRemastered 1.20.1\common\src\main\resources\data\jobsplus\jobsplus\powerups\alchemist" />
     </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="G:\root\Minecraft Projects\JobsPlus\Remastered\JobsPlusRemastered 1.20.1\common\src\test\java\com\daqem\jobsplus\test" />
+      <recent name="G:\root\Minecraft Projects\JobsPlus\Remastered\JobsPlusRemastered 1.20.1\common\src\main\resources\data\jobsplus\itemrestrictions\restrictions" />
+    </key>
   </component>
-  <component name="RunManager" selected="Application.Minecraft Client (:fabric)">
+  <component name="RunManager" selected="Gradle.JobsPlusRemastered 1.20.1 [curseforge]">
     <configuration name="JobsPlusRemastered 1.20.1 [curseforge]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -136,7 +147,10 @@
       <updated>1697978943438</updated>
       <workItem from="1697978946211" duration="9162000" />
       <workItem from="1697993615660" duration="1889000" />
-      <workItem from="1697997880585" duration="6644000" />
+      <workItem from="1697997880585" duration="8352000" />
+      <workItem from="1698437488614" duration="697000" />
+      <workItem from="1698487253200" duration="8511000" />
+      <workItem from="1698762783576" duration="23000" />
     </task>
     <task id="LOCAL-00001" summary="Ported to 1.20.1">
       <option name="closed" value="true" />
@@ -162,7 +176,23 @@
       <option name="project" value="LOCAL" />
       <updated>1698001365204</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Fixed dependencies">
+      <option name="closed" value="true" />
+      <created>1698006151897</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1698006151897</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Fixed descriptions.">
+      <option name="closed" value="true" />
+      <created>1698006275997</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1698006275997</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -172,16 +202,14 @@
     <MESSAGE value="Ported to 1.20.1" />
     <MESSAGE value="Removed testing powerups" />
     <MESSAGE value="Fixed lumberjack getting exp from mining stone.&#10;Fixed Job EXP Multiplier reward.&#10;Fixed Job EXP visual glitch" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed lumberjack getting exp from mining stone.&#10;Fixed Job EXP Multiplier reward.&#10;Fixed Job EXP visual glitch" />
+    <MESSAGE value="Fixed dependencies" />
+    <MESSAGE value="Fixed descriptions." />
+    <MESSAGE value="Fixed Item Restrictions in GUI." />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed Item Restrictions in GUI." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>jar://$PROJECT_DIR$/.gradle/loom-cache/remapped_mods/loom_mappings_1_20_1_layered_hash_40359_v2/curse/maven/arc-883593/4770424-sources-4770425/arc-883593-4770424-sources-4770425-sources.jar!/com/daqem/arc/data/reward/effect/EffectAmplifierAdditionReward.java</url>
-          <line>32</line>
-          <option name="timeStamp" value="9" />
-        </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>jar://$PROJECT_DIR$/.gradle/loom-cache/remapped_mods/loom_mappings_1_20_1_layered_hash_40359_v2/curse/maven/arc-883593/4811635-sources-4811636/arc-883593-4811635-sources-4811636-sources.jar!/com/daqem/arc/data/reward/effect/RemoveEffectReward.java</url>
           <line>24</line>

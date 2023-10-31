@@ -1,0 +1,17 @@
+{
+	"icon": {
+		"item": "minecraft:stone_pickaxe"
+	},
+	"types": [ "craft", "enchant", "repair", "use_item", "item_break_block", "hurt_entity" ],
+	"conditions": [
+		{
+			"type": "jobsplus:job_level",
+			"job": "jobsplus:miner",
+			"level": 10
+		},
+		{
+			"type": "arc:item",
+			"item": "minecraft:stone_pickaxe"
+		}
+	]
+}

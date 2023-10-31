@@ -21,14 +21,12 @@ public class JobLevelCondition extends AbstractCondition {
     private static final String EMPTY_JOB_LOCATION = "jobsplus:empty";
 
     private final ResourceLocation jobLocation;
-    private final int min;
-    private final int max;
+    private final int level;
 
-    public JobLevelCondition(boolean inverted, ResourceLocation jobLocation, int min, int max) {
+    public JobLevelCondition(boolean inverted, ResourceLocation jobLocation, int level) {
         super(inverted);
         this.jobLocation = jobLocation;
-        this.min = min;
-        this.max = max;
+        this.level = level;
     }
 
     @Override
@@ -44,9 +42,10 @@ public class JobLevelCondition extends AbstractCondition {
 
         if (actionData.getPlayer() instanceof JobsServerPlayer jobsServerPlayer) {
             Job job = jobsServerPlayer.jobsplus$getJob(jobInstance);
-            if (job != null) {
-                return job.getLevel() >= min && job.getLevel() <= max;
-            }
+            int level;
+            if (job == null) level = 0;
+            else level = job.getLevel();
+            return level <= this.level;
         }
 
         return false;
@@ -62,6 +61,14 @@ public class JobLevelCondition extends AbstractCondition {
         return JobsPlusConditionSerializer.JOB_LEVEL;
     }
 
+    public ResourceLocation getJobLocation() {
+        return jobLocation;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
     public static class Serializer implements ConditionSerializer<JobLevelCondition> {
 
         @Override
@@ -69,8 +76,7 @@ public class JobLevelCondition extends AbstractCondition {
             return new JobLevelCondition(
                     inverted,
                     new ResourceLocation(GsonHelper.getAsString(jsonObject, "job", EMPTY_JOB_LOCATION)),
-                    GsonHelper.getAsInt(jsonObject, "min", 0),
-                    GsonHelper.getAsInt(jsonObject, "max", Integer.MAX_VALUE));
+                    GsonHelper.getAsInt(jsonObject, "level"));
         }
 
         @Override
@@ -78,7 +84,6 @@ public class JobLevelCondition extends AbstractCondition {
             return new JobLevelCondition(
                     inverted,
                     friendlyByteBuf.readResourceLocation(),
-                    friendlyByteBuf.readInt(),
                     friendlyByteBuf.readInt());
         }
 
@@ -86,8 +91,7 @@ public class JobLevelCondition extends AbstractCondition {
         public void toNetwork(FriendlyByteBuf friendlyByteBuf, JobLevelCondition type) {
             ConditionSerializer.super.toNetwork(friendlyByteBuf, type);
             friendlyByteBuf.writeResourceLocation(type.jobLocation);
-            friendlyByteBuf.writeInt(type.min);
-            friendlyByteBuf.writeInt(type.max);
+            friendlyByteBuf.writeInt(type.level);
         }
     }
 }
