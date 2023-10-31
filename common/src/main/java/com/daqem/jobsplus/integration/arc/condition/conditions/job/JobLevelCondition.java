@@ -16,7 +16,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 
-public class JobLevelCondition extends AbstractCondition {
+public class JobLevelCondition extends AbstractCondition implements IJobCondition {
 
     private static final String EMPTY_JOB_LOCATION = "jobsplus:empty";
 
@@ -65,7 +65,8 @@ public class JobLevelCondition extends AbstractCondition {
         return jobLocation;
     }
 
-    public int getLevel() {
+    @Override
+    public int getRequiredLevel() {
         return level;
     }
 

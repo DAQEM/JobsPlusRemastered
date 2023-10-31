@@ -16,7 +16,7 @@ import com.google.gson.JsonObject;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 
-public class HasJobCondition extends AbstractCondition {
+public class HasJobCondition extends AbstractCondition implements IJobCondition{
 
     private final ResourceLocation jobLocation;
 
@@ -55,6 +55,11 @@ public class HasJobCondition extends AbstractCondition {
 
     public ResourceLocation getJobLocation() {
         return jobLocation;
+    }
+
+    @Override
+    public int getRequiredLevel() {
+        return 0;
     }
 
     public static class Serializer implements ConditionSerializer<HasJobCondition> {

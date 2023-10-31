@@ -7,16 +7,15 @@ import com.daqem.jobsplus.Constants;
 import com.daqem.jobsplus.JobsPlus;
 import com.daqem.jobsplus.client.render.RenderColor;
 import com.daqem.jobsplus.config.JobsPlusCommonConfig;
-
+import com.daqem.jobsplus.integration.arc.holder.holders.job.JobInstance;
+import com.daqem.jobsplus.integration.arc.holder.holders.powerup.PowerupInstance;
+import com.daqem.jobsplus.integration.arc.holder.holders.powerup.PowerupManager;
 import com.daqem.jobsplus.networking.c2s.PacketOpenMenuC2S;
 import com.daqem.jobsplus.networking.utils.ConfirmationMessageType;
 import com.daqem.jobsplus.player.JobsPlayerData;
 import com.daqem.jobsplus.player.job.Job;
 import com.daqem.jobsplus.player.job.powerup.Powerup;
 import com.daqem.jobsplus.player.job.powerup.PowerupState;
-import com.daqem.jobsplus.integration.arc.holder.holders.job.JobInstance;
-import com.daqem.jobsplus.integration.arc.holder.holders.powerup.PowerupInstance;
-import com.daqem.jobsplus.integration.arc.holder.holders.powerup.PowerupManager;
 import com.daqem.jobsplus.util.chat.ChatColor;
 import com.daqem.jobsplus.util.experience.ExperienceHandler;
 import com.google.common.collect.ImmutableCollection;
@@ -33,17 +32,14 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.*;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.*;
 
 public class JobsScreen extends AbstractScreen {
 

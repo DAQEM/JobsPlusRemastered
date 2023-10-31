@@ -8,6 +8,7 @@ import com.daqem.itemrestrictions.data.ItemRestrictionManager;
 import com.daqem.jobsplus.JobsPlus;
 import com.daqem.jobsplus.config.JobsPlusCommonConfig;
 import com.daqem.jobsplus.data.serializer.JobsPlusSerializer;
+import com.daqem.jobsplus.integration.arc.condition.conditions.job.IJobCondition;
 import com.daqem.jobsplus.integration.arc.condition.conditions.job.JobLevelCondition;
 import com.daqem.jobsplus.integration.arc.holder.holders.powerup.PowerupInstance;
 import com.daqem.jobsplus.integration.arc.holder.type.JobsPlusActionHolderType;
@@ -28,6 +29,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class JobInstance implements IActionHolder {
 
@@ -43,7 +45,6 @@ public class JobInstance implements IActionHolder {
     private final boolean isDefault;
     private final Map<ResourceLocation, IAction> actions = new HashMap<>();
     private List<PowerupInstance> powerupInstances;
-    private List<ItemRestriction> itemRestrictions;
 
     public JobInstance(String name, int price, int maxLevel, String color, ItemStack iconItem, String description, ResourceLocation powerupBackground, boolean isDefault) {
         this(name, price, maxLevel, color, iconItem, description, powerupBackground, isDefault, new ArrayList<>());
@@ -125,19 +126,17 @@ public class JobInstance implements IActionHolder {
     }
 
     public Map<ItemRestriction, Integer> getItemRestrictions() {
-        if (itemRestrictions == null) {
-            itemRestrictions = ItemRestrictionManager.getInstance().getItemRestrictions().stream()
-                    .filter(itemRestriction -> itemRestriction.getConditions().stream()
-                            .anyMatch(condition ->
-                                    (condition instanceof HasJobCondition hasJobCondition && hasJobCondition.getJobLocation().equals(location))
-                                            || (condition instanceof JobLevelCondition jobLevelCondition && jobLevelCondition.getJobLocation().equals(location)
-                                    ))).toList();
-        }
-        return itemRestrictions.stream().collect(HashMap::new, (map, itemRestriction) -> map.put(itemRestriction, itemRestriction.getConditions().stream()
-                .filter(condition -> condition instanceof JobLevelCondition)
-                .map(iCondition -> ((JobLevelCondition) iCondition).getLevel())
-                .max(Integer::compareTo)
-                .orElse(1)), HashMap::putAll);
+        return ItemRestrictionManager.getInstance().getItemRestrictions().stream()
+                .filter(itemRestriction -> itemRestriction.getConditions().stream()
+                        .anyMatch(condition -> condition instanceof IJobCondition jobCondition && jobCondition.getJobLocation().equals(location)))
+                .collect(Collectors.toMap(
+                        itemRestriction -> itemRestriction,
+                        itemRestriction -> itemRestriction.getConditions().stream()
+                                .filter(condition -> condition instanceof IJobCondition)
+                                .map(iCondition -> ((IJobCondition) iCondition).getRequiredLevel())
+                                .max(Integer::compareTo)
+                                .orElse(0)
+                ));
     }
 
     public void setPowerups(List<PowerupInstance> powerupInstances) {

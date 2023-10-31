@@ -4,15 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5316e986-2bbe-4484-934c-c6ad4cd49949" name="Changes" comment="Fixed Item Restrictions in GUI.">
-      <change afterPath="$PROJECT_DIR$/common/src/test/java/com/daqem/jobsplus/test/miner.json" afterDir="false" />
+    <list default="true" id="5316e986-2bbe-4484-934c-c6ad4cd49949" name="Changes" comment="Fixed JobLevelCondition">
+      <change afterPath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/integration/arc/condition/conditions/job/IJobCondition.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/client/screen/JobsScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/client/screen/JobsScreen.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/config/JobsPlusCommonConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/config/JobsPlusCommonConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/integration/arc/condition/conditions/job/HasJobCondition.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/integration/arc/condition/conditions/job/HasJobCondition.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/integration/arc/condition/conditions/job/JobLevelCondition.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/integration/arc/condition/conditions/job/JobLevelCondition.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/integration/arc/holder/holders/job/JobInstance.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/integration/arc/holder/holders/job/JobInstance.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/resources/assets/jobsplus/lang/en_us.json" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/resources/assets/jobsplus/lang/en_us.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fabric/src/main/resources/fabric.mod.json" beforeDir="false" afterPath="$PROJECT_DIR$/fabric/src/main/resources/fabric.mod.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/forge/src/main/resources/META-INF/mods.toml" beforeDir="false" afterPath="$PROJECT_DIR$/forge/src/main/resources/META-INF/mods.toml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -42,6 +41,13 @@
         </projects_view>
       </state>
     </system>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -85,7 +91,7 @@
       <recent name="G:\root\Minecraft Projects\JobsPlus\Remastered\JobsPlusRemastered 1.20.1\common\src\main\resources\data\jobsplus\itemrestrictions\restrictions" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.JobsPlusRemastered 1.20.1 [curseforge]">
+  <component name="RunManager" selected="Application.Minecraft Client (:fabric)">
     <configuration name="JobsPlusRemastered 1.20.1 [curseforge]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -150,7 +156,7 @@
       <workItem from="1697997880585" duration="8352000" />
       <workItem from="1698437488614" duration="697000" />
       <workItem from="1698487253200" duration="8511000" />
-      <workItem from="1698762783576" duration="23000" />
+      <workItem from="1698762783576" duration="1895000" />
     </task>
     <task id="LOCAL-00001" summary="Ported to 1.20.1">
       <option name="closed" value="true" />
@@ -192,7 +198,15 @@
       <option name="project" value="LOCAL" />
       <updated>1698006275997</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Fixed JobLevelCondition">
+      <option name="closed" value="true" />
+      <created>1698762852711</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1698762852711</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -205,7 +219,8 @@
     <MESSAGE value="Fixed dependencies" />
     <MESSAGE value="Fixed descriptions." />
     <MESSAGE value="Fixed Item Restrictions in GUI." />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed Item Restrictions in GUI." />
+    <MESSAGE value="Fixed JobLevelCondition" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed JobLevelCondition" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

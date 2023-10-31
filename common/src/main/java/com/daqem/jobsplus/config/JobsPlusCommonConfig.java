@@ -18,10 +18,6 @@ public class JobsPlusCommonConfig {
 
     public static final Supplier<Integer> coinsPerLevelUp;
 
-    public static final Supplier<Boolean> restrictionsEnabledForCreative;
-    public static final Supplier<Boolean> showRestrictionMessageForCreative;
-    public static final Supplier<Boolean> showRestrictionMessage;
-
 
     static {
         IConfigBuilder config = ConfigBuilders.newTomlConfig("jobsplus", null, false);
@@ -36,12 +32,6 @@ public class JobsPlusCommonConfig {
         config.push("coins");
         coinsPerLevelUp = config.comment("the amount of coins a player gets when they level up a job").define("coins_per_level_up", 1, 0, Integer.MAX_VALUE);
         config.pop();
-        config.pop();
-
-        config.push("restrictions");
-        restrictionsEnabledForCreative = config.comment("if true, restrictions are enabled for creative players").define("restrictions_enabled_for_creative", false);
-        showRestrictionMessageForCreative = config.comment("if true, a message is shown to creative players when they are bypassing a restriction").define("show_restriction_message_for_creative", true);
-        showRestrictionMessage = config.comment("if true, a message is shown to players when they are restricted").define("show_restriction_message", true);
         config.pop();
 
         config.build();
