@@ -8,6 +8,9 @@ plugins {
 }
 
 version = "$project.mod_version"
+def config_library_version = "$project.config_library_version"
+def arc_version = "$project.arc_version"
+def item_restrictions_version = "$project.item_restrictions_version"
 
 architectury {
     platformSetupLoomIde()
@@ -44,9 +47,17 @@ dependencies {
 
 processResources {
     inputs.property "version", project.version
+    inputs.property "config_library_version", config_library_version
+    inputs.property "arc_version", arc_version
+    inputs.property "item_restrictions_version", item_restrictions_version
 
     filesMatching("fabric.mod.json") {
-        expand "version": project.version
+        expand([
+                "version": project.version,
+                "config_library_version": config_library_version,
+                "arc_version": arc_version,
+                "item_restrictions_version": item_restrictions_version
+        ])
     }
 }
 

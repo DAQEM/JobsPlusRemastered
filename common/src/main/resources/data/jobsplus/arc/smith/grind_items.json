@@ -4,8 +4,6 @@
     "id": "jobsplus:smith"
   },
   "type": "arc:on_grind_item",
-  "short_description": "Grind items together",
-  "description": "Grinding items together is a unique skill that only a true Smith can master. By grinding items like tools, you'll earn even more job experience and level up faster. Keep grinding away, and you'll become a legendary Smith in no time!",
   "rewards": [
     {
       "type": "jobsplus:job_exp",

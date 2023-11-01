@@ -7,53 +7,27 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5316e986-2bbe-4484-934c-c6ad4cd49949" name="Changes" comment="Added interface for Job Conditions to retrieve job location and required job level.">
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
+    <list default="true" id="5316e986-2bbe-4484-934c-c6ad4cd49949" name="Changes" comment="Resolved all IDE warnings and errors">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/common/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/JobsPlusExpectPlatform.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/JobsPlusExpectPlatform.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/client/JobsPlusClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/client/JobsPlusClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/client/powerup/PowerupWidget.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/client/powerup/PowerupWidget.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/client/render/RenderColor.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/client/render/RenderColor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/client/screen/AbstractScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/client/screen/AbstractScreen.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/client/screen/ConfirmationScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/client/screen/ConfirmationScreen.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/client/screen/JobsScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/client/screen/JobsScreen.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/client/screen/PowerUpsScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/client/screen/PowerUpsScreen.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/command/JobCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/command/JobCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/command/arguments/EnumArgument.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/command/arguments/EnumArgument.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/config/JobsPlusCommonConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/config/JobsPlusCommonConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/event/EventPlayerJoin.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/event/EventPlayerJoin.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/integration/arc/condition/conditions/job/HasJobCondition.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/integration/arc/condition/conditions/job/HasJobCondition.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/integration/arc/condition/conditions/job/JobExperiencePercentageCondition.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/integration/arc/condition/conditions/job/JobExperiencePercentageCondition.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/integration/arc/condition/conditions/job/powerup/PowerupNotActiveCondition.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/integration/arc/condition/conditions/job/powerup/PowerupNotActiveCondition.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/integration/arc/holder/holders/job/JobInstance.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/integration/arc/holder/holders/job/JobInstance.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/integration/arc/holder/holders/job/JobManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/integration/arc/holder/holders/job/JobManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/integration/arc/holder/holders/powerup/PowerupManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/integration/arc/holder/holders/powerup/PowerupManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/mixin/MixinServerPlayer.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/mixin/MixinServerPlayer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/mixin/client/MixinLocalPlayer.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/mixin/client/MixinLocalPlayer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/networking/c2s/PacketOpenMenuC2S.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/networking/c2s/PacketOpenMenuC2S.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/networking/s2c/PacketOpenMenuS2C.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/networking/s2c/PacketOpenMenuS2C.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/networking/s2c/PacketOpenPowerupsMenuS2C.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/networking/s2c/PacketOpenPowerupsMenuS2C.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/networking/s2c/PacketOpenUpdateScreenS2C.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/networking/s2c/PacketOpenUpdateScreenS2C.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/networking/utils/ConfirmationMessage.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/networking/utils/ConfirmationMessage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/networking/utils/ConfirmationMessageType.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/networking/utils/ConfirmationMessageType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/player/JobsPlayer.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/player/JobsPlayer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/player/JobsPlayerData.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/player/JobsPlayerData.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/JobsPlus.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/JobsPlus.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/integration/arc/reward/rewards/job/JobExpMultiplierReward.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/integration/arc/reward/rewards/job/JobExpMultiplierReward.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/integration/arc/reward/rewards/job/JobExpReward.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/integration/arc/reward/rewards/job/JobExpReward.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/player/job/Job.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/player/job/Job.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/player/job/powerup/JobPowerupManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/player/job/powerup/JobPowerupManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/player/job/powerup/PowerupState.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/player/job/powerup/PowerupState.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/util/chat/ChatColor.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/util/chat/ChatColor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/resources/assets/jobsplus/lang/en_us.json" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/resources/assets/jobsplus/lang/en_us.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/resources/assets/jobsplus/textures/gui/powerup_screen.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/arc/smith/craft_tools_armor.json" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/arc/smith/craft_tools_armor.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/arc/smith/grind_items.json" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/arc/smith/grind_items.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/arc/smith/smelt_ores.json" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/arc/smith/smelt_ores.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/arc/smith/use_anvil.json" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/arc/smith/use_anvil.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/jobsplus/powerups/lumberjack/axe_efficiency_i.json" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/jobsplus/powerups/lumberjack/axe_efficiency_i.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/jobsplus/powerups/lumberjack/axe_efficiency_ii.json" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/jobsplus/powerups/lumberjack/axe_efficiency_ii.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/jobsplus/powerups/lumberjack/axe_efficiency_iii.json" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/jobsplus/powerups/lumberjack/axe_efficiency_iii.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/jobsplus/powerups/lumberjack/axe_efficiency_iv.json" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/jobsplus/powerups/lumberjack/axe_efficiency_iv.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/jobsplus/powerups/lumberjack/axe_efficiency_v.json" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/jobsplus/powerups/lumberjack/axe_efficiency_v.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/fabric/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/fabric/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fabric/src/main/java/com/daqem/jobsplus/fabric/JobsPlusExpectPlatformImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/fabric/src/main/java/com/daqem/jobsplus/fabric/JobsPlusExpectPlatformImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fabric/src/main/java/com/daqem/jobsplus/fabric/JobsPlusFabric.java" beforeDir="false" afterPath="$PROJECT_DIR$/fabric/src/main/java/com/daqem/jobsplus/fabric/JobsPlusFabric.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fabric/src/main/resources/fabric.mod.json" beforeDir="false" afterPath="$PROJECT_DIR$/fabric/src/main/resources/fabric.mod.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/forge/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/forge/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/forge/src/main/java/com/daqem/jobsplus/forge/JobsPlusExpectPlatformImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/forge/src/main/java/com/daqem/jobsplus/forge/JobsPlusExpectPlatformImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/forge/src/main/java/com/daqem/jobsplus/forge/SideProxyForge.java" beforeDir="false" afterPath="$PROJECT_DIR$/forge/src/main/java/com/daqem/jobsplus/forge/SideProxyForge.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/settings.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/forge/src/main/resources/META-INF/mods.toml" beforeDir="false" afterPath="$PROJECT_DIR$/forge/src/main/resources/META-INF/mods.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -107,26 +81,26 @@
   <component name="ProjectViewState">
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "1.20.1",
-    "last_opened_file_path": "G:/root/Minecraft Projects/JobsPlus/Remastered/JobsPlusRemastered 1.20.1/common/src/main/resources/data/jobsplus/restrictions",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "run.code.analysis.last.selected.profile": "pProject Default",
-    "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;1.20.1&quot;,
+    &quot;last_opened_file_path&quot;: &quot;G:/root/Minecraft Projects/JobsPlus/Remastered/JobsPlusRemastered 1.20.1/common/src/main/resources/data/jobsplus/restrictions&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.project.gradle&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="G:\root\Minecraft Projects\JobsPlus\Remastered\JobsPlusRemastered 1.20.1\common\src\main\resources\data\jobsplus\restrictions" />
@@ -150,6 +124,28 @@
         <option name="taskNames">
           <list>
             <option value="curseforge" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="JobsPlusRemastered 1.20.1 [processResources]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="processResources" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -184,6 +180,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.JobsPlusRemastered 1.20.1 [processResources]" />
         <item itemvalue="Gradle.JobsPlusRemastered 1.20.1 [curseforge]" />
         <item itemvalue="Gradle.JobsPlusRemastered 1.20.1:fabric [runClient]" />
       </list>
@@ -202,7 +199,9 @@
       <workItem from="1697997880585" duration="8352000" />
       <workItem from="1698437488614" duration="697000" />
       <workItem from="1698487253200" duration="8511000" />
-      <workItem from="1698762783576" duration="8708000" />
+      <workItem from="1698762783576" duration="9196000" />
+      <workItem from="1698780187546" duration="52000" />
+      <workItem from="1698782921986" duration="8777000" />
     </task>
     <task id="LOCAL-00001" summary="Ported to 1.20.1">
       <option name="closed" value="true" />
@@ -260,7 +259,15 @@
       <option name="project" value="LOCAL" />
       <updated>1698764715258</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Resolved all IDE warnings and errors">
+      <option name="closed" value="true" />
+      <created>1698772196634</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1698772196634</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -275,7 +282,8 @@
     <MESSAGE value="Fixed Item Restrictions in GUI." />
     <MESSAGE value="Fixed JobLevelCondition" />
     <MESSAGE value="Added interface for Job Conditions to retrieve job location and required job level." />
-    <option name="LAST_COMMIT_MESSAGE" value="Added interface for Job Conditions to retrieve job location and required job level." />
+    <MESSAGE value="Resolved all IDE warnings and errors" />
+    <option name="LAST_COMMIT_MESSAGE" value="Resolved all IDE warnings and errors" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -284,6 +292,26 @@
           <url>jar://$PROJECT_DIR$/.gradle/loom-cache/remapped_mods/loom_mappings_1_20_1_layered_hash_40359_v2/curse/maven/arc-883593/4811635-sources-4811636/arc-883593-4811635-sources-4811636-sources.jar!/com/daqem/arc/data/reward/effect/RemoveEffectReward.java</url>
           <line>24</line>
           <option name="timeStamp" value="11" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>jar://$PROJECT_DIR$/.gradle/loom-cache/remapped_mods/loom_mappings_1_20_1_layered_hash_40359_v2/curse/maven/arc-883593/4811723-sources-4811724/arc-883593-4811723-sources-4811724-sources.jar!/com/daqem/arc/event/triggers/PlayerEvents.java</url>
+          <line>112</line>
+          <option name="timeStamp" value="12" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>jar://$PROJECT_DIR$/.gradle/loom-cache/remapped_mods/loom_mappings_1_20_1_layered_hash_40359_v2/curse/maven/arc-883593/4811723-sources-4811724/arc-883593-4811723-sources-4811724-sources.jar!/com/daqem/arc/event/triggers/PlayerEvents.java</url>
+          <line>72</line>
+          <option name="timeStamp" value="13" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>jar://$PROJECT_DIR$/.gradle/loom-cache/remapped_mods/loom_mappings_1_20_1_layered_hash_40359_v2/curse/maven/arc-883593/4811723-sources-4811724/arc-883593-4811723-sources-4811724-sources.jar!/com/daqem/arc/mixin/MixinRecipeHolder.java</url>
+          <line>15</line>
+          <option name="timeStamp" value="14" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>jar://$PROJECT_DIR$/.gradle/loom-cache/remapped_mods/loom_mappings_1_20_1_layered_hash_40359_v2/curse/maven/arc-883593/4830344-sources-4830345/arc-883593-4830344-sources-4830345-sources.jar!/com/daqem/arc/mixin/MixinRecipeHolder.java</url>
+          <line>19</line>
+          <option name="timeStamp" value="16" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

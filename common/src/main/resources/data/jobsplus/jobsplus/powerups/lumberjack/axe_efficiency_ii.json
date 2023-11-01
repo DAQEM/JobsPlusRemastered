@@ -2,7 +2,7 @@
   "job": "jobsplus:lumberjack",
   "parent": "jobsplus:lumberjack/axe_efficiency_i",
   "name": "Axe Efficiency II",
-  "description": "Axes dig 20% faster.",
+  "description": "Axes chop 20% faster.",
   "icon": {
     "item": "minecraft:golden_axe",
     "count": 2

@@ -1,6 +1,7 @@
 package com.daqem.jobsplus;
 
 import com.daqem.arc.registry.ArcRegistry;
+import com.daqem.jobsplus.config.JobsPlusCommonConfig;
 import com.daqem.jobsplus.event.EventPlayerJoin;
 import com.daqem.jobsplus.event.command.EventRegisterCommands;
 import com.daqem.jobsplus.integration.arc.holder.type.JobsPlusActionHolderType;
@@ -59,5 +60,15 @@ public class JobsPlus {
 
     public static MutableComponent literal(String str) {
         return Component.literal(str);
+    }
+
+    public static void debug(String s) {
+        debug(s, new Object[0]);
+    }
+
+    public static void debug(String message, Object... objects) {
+        if (JobsPlusCommonConfig.isDebug.get()) {
+            LOGGER.warn("DEBUG MESSAGE: " + message, objects);
+        }
     }
 }

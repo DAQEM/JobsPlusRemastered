@@ -47,13 +47,17 @@ public class JobExpMultiplierReward extends AbstractReward {
         IActionHolder sourceActionHolder = actionData.getSourceActionHolder();
         ArcPlayer player = actionData.getPlayer();
         if (player instanceof JobsServerPlayer jobsServerPlayer) {
-            Job job = null;
-            if (sourceActionHolder instanceof JobInstance jobInstance) {
-                if (!jobInstance.getLocation().equals(jobLocation)) return new ActionResult();
-                job = jobsServerPlayer.jobsplus$getJob(jobInstance);
-            } else if (sourceActionHolder instanceof PowerupInstance powerupInstance) {
-                if (!powerupInstance.getJobLocation().equals(jobLocation)) return new ActionResult();
-                job = jobsServerPlayer.jobsplus$getJob(JobInstance.of(powerupInstance.getJobLocation()));
+            Job job = actionData.getData(JobsPlusActionDataType.ONLY_FOR_JOB);
+            if (job == null) {
+                if (sourceActionHolder instanceof JobInstance jobInstance) {
+                    if (!jobInstance.getLocation().equals(jobLocation)) return new ActionResult();
+                    job = jobsServerPlayer.jobsplus$getJob(jobInstance);
+                } else if (sourceActionHolder instanceof PowerupInstance powerupInstance) {
+                    if (!powerupInstance.getJobLocation().equals(jobLocation)) return new ActionResult();
+                    job = jobsServerPlayer.jobsplus$getJob(JobInstance.of(powerupInstance.getJobLocation()));
+                }
+            } else {
+                if (!job.getJobInstance().getLocation().equals(jobLocation)) return new ActionResult();
             }
             if (job != null) {
                 Integer exp = actionData.getData(JobsPlusActionDataType.JOB_EXP);

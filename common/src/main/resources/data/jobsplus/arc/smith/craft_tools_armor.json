@@ -16,6 +16,7 @@
     {
       "type": "arc:items",
       "items": [
+        "#minecraft:tools",
         "#forge:tools",
         "#c:tools",
         "#c:swords",

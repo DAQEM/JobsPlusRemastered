@@ -42,9 +42,10 @@ allprojects {
 
     //noinspection GrUnresolvedAccess
     archivesBaseName = rootProject.archives_base_name
-    //noinspection GrUnresolvedAccess
     version = rootProject.mod_version
-    //noinspection GrUnresolvedAccess
+    config_library_version = rootProject.config_library_version
+    arc_version = rootProject.arc_version
+    item_restrictions_version = rootProject.item_restrictions_version
     group = rootProject.maven_group
 
     repositories {

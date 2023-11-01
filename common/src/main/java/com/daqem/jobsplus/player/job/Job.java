@@ -1,6 +1,7 @@
 package com.daqem.jobsplus.player.job;
 
 import com.daqem.jobsplus.Constants;
+import com.daqem.jobsplus.JobsPlus;
 import com.daqem.jobsplus.event.triggers.JobEvents;
 import com.daqem.jobsplus.player.JobsPlayer;
 import com.daqem.jobsplus.player.JobsServerPlayer;
@@ -79,11 +80,13 @@ public class Job {
     }
 
     public void addExperience(int experience) {
+        JobsPlus.debug("Adding {} experience to {}'s {} job.", experience, player.jobsplus$getName(), jobInstance.getName());
         setExperience(getExperience() + experience);
         JobEvents.onJobExperience(player, this, experience);
     }
 
     public void addExperienceWithoutEvent(int experience) {
+        JobsPlus.debug("Adding {} experience to {}'s {} job without event.", experience, player.jobsplus$getName(), jobInstance.getName());
         setExperience(getExperience() + experience);
     }
 

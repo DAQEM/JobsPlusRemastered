@@ -4,8 +4,6 @@
     "id": "jobsplus:smith"
   },
   "type": "arc:on_smelt_item",
-  "short_description": "Smelt ores",
-  "description": "Smelting ores is another way to earn job experience as a Smith. By smelting ores, you can increase your level. Don't forget about coal, lapis lazuli, and redstone - they count too!",
   "rewards": [
     {
       "type": "jobsplus:job_exp",
