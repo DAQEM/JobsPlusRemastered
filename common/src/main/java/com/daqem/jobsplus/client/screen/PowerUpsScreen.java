@@ -54,7 +54,7 @@ public class PowerUpsScreen extends AbstractScreen {
         this.jobInstance = job.getJobInstance();
         this.coins = coins;
 
-        PowerupInstance rootInstance = new PowerupInstance(null, null, jobInstance.getName() + " Power-ups", "Choose a power-up you want to buy.", jobInstance.getIconItem(), 0, 0);
+        PowerupInstance rootInstance = new PowerupInstance(null, null, jobInstance.getName().getString() + " Power-ups", "Choose a power-up you want to buy.", jobInstance.getIconItem(), 0, 0);
         rootPowerups.forEach(rootInstance::addChild);
 
         this.rootWidget = PowerupWidget.run(job, rootInstance, allPowerups);
@@ -96,7 +96,7 @@ public class PowerUpsScreen extends AbstractScreen {
         }
 
         if (jobInstance != null) {
-            guiGraphics.drawString(font, jobInstance.getName() + " (level " + job.getLevel() + ") Power-ups", (int) this.startX - 16, (int) this.startY - 16 - 12, 0x404040, false);
+            guiGraphics.drawString(font, jobInstance.getName().getString() + " (level " + job.getLevel() + ") Power-ups", (int) this.startX - 16, (int) this.startY - 16 - 12, 0x404040, false);
             drawRightAlignedString(guiGraphics, "Coins: " + coins, (int) ((float) this.startX + WINDOW_WIDTH + 16), (int) ((float) this.startY - 16 - 12), 0x404040);
         }
 

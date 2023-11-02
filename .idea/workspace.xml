@@ -7,26 +7,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5316e986-2bbe-4484-934c-c6ad4cd49949" name="Changes" comment="Resolved all IDE warnings and errors">
+    <list default="true" id="5316e986-2bbe-4484-934c-c6ad4cd49949" name="Changes" comment="Turned the Jobs names and descriptions into translatables.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/JobsPlus.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/JobsPlus.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/integration/arc/reward/rewards/job/JobExpMultiplierReward.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/integration/arc/reward/rewards/job/JobExpMultiplierReward.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/integration/arc/reward/rewards/job/JobExpReward.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/integration/arc/reward/rewards/job/JobExpReward.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/client/screen/JobsScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/client/screen/JobsScreen.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/client/screen/PowerUpsScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/client/screen/PowerUpsScreen.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/event/triggers/JobEvents.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/event/triggers/JobEvents.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/integration/arc/holder/holders/job/JobInstance.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/integration/arc/holder/holders/job/JobInstance.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/mixin/MixinServerPlayer.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/mixin/MixinServerPlayer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/player/job/Job.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/com/daqem/jobsplus/player/job/Job.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/arc/smith/craft_tools_armor.json" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/arc/smith/craft_tools_armor.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/arc/smith/grind_items.json" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/arc/smith/grind_items.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/arc/smith/smelt_ores.json" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/arc/smith/smelt_ores.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/arc/smith/use_anvil.json" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/arc/smith/use_anvil.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/jobsplus/powerups/lumberjack/axe_efficiency_i.json" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/jobsplus/powerups/lumberjack/axe_efficiency_i.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/jobsplus/powerups/lumberjack/axe_efficiency_ii.json" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/jobsplus/powerups/lumberjack/axe_efficiency_ii.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/jobsplus/powerups/lumberjack/axe_efficiency_iii.json" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/jobsplus/powerups/lumberjack/axe_efficiency_iii.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/jobsplus/powerups/lumberjack/axe_efficiency_iv.json" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/jobsplus/powerups/lumberjack/axe_efficiency_iv.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/jobsplus/powerups/lumberjack/axe_efficiency_v.json" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/resources/data/jobsplus/jobsplus/powerups/lumberjack/axe_efficiency_v.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fabric/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/fabric/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fabric/src/main/resources/fabric.mod.json" beforeDir="false" afterPath="$PROJECT_DIR$/fabric/src/main/resources/fabric.mod.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/forge/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/forge/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/forge/src/main/resources/META-INF/mods.toml" beforeDir="false" afterPath="$PROJECT_DIR$/forge/src/main/resources/META-INF/mods.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/resources/assets/jobsplus/lang/en_us.json" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/resources/assets/jobsplus/lang/en_us.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -180,8 +169,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.JobsPlusRemastered 1.20.1 [processResources]" />
         <item itemvalue="Gradle.JobsPlusRemastered 1.20.1 [curseforge]" />
+        <item itemvalue="Gradle.JobsPlusRemastered 1.20.1 [processResources]" />
         <item itemvalue="Gradle.JobsPlusRemastered 1.20.1:fabric [runClient]" />
       </list>
     </recent_temporary>
@@ -201,7 +190,8 @@
       <workItem from="1698487253200" duration="8511000" />
       <workItem from="1698762783576" duration="9196000" />
       <workItem from="1698780187546" duration="52000" />
-      <workItem from="1698782921986" duration="8777000" />
+      <workItem from="1698782921986" duration="9913000" />
+      <workItem from="1698947483229" duration="4407000" />
     </task>
     <task id="LOCAL-00001" summary="Ported to 1.20.1">
       <option name="closed" value="true" />
@@ -267,7 +257,15 @@
       <option name="project" value="LOCAL" />
       <updated>1698772196634</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Fixed all know issues">
+      <option name="closed" value="true" />
+      <created>1698797995429</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1698797995429</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -283,7 +281,9 @@
     <MESSAGE value="Fixed JobLevelCondition" />
     <MESSAGE value="Added interface for Job Conditions to retrieve job location and required job level." />
     <MESSAGE value="Resolved all IDE warnings and errors" />
-    <option name="LAST_COMMIT_MESSAGE" value="Resolved all IDE warnings and errors" />
+    <MESSAGE value="Fixed all know issues" />
+    <MESSAGE value="Turned the Jobs names and descriptions into translatables." />
+    <option name="LAST_COMMIT_MESSAGE" value="Turned the Jobs names and descriptions into translatables." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

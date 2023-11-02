@@ -292,7 +292,7 @@ public abstract class MixinServerPlayer extends Player implements JobsServerPlay
             ExpCollector expCollector = job.getExpCollector();
             int exp = expCollector.getExp();
             if (exp > 0) {
-                MutableComponent component = JobsPlus.translatable("job.exp.gain", exp, jobInstance.getName()).withStyle(Style.EMPTY.withColor(TextColor.fromRgb(jobInstance.getColorDecimal()))).withStyle(ChatFormatting.BOLD);
+                MutableComponent component = JobsPlus.translatable("job.exp.gain", exp, jobInstance.getName().getString()).withStyle(Style.EMPTY.withColor(TextColor.fromRgb(jobInstance.getColorDecimal()))).withStyle(ChatFormatting.BOLD);
                 jobsplus$getServerPlayer().sendSystemMessage(component, true);
             }
             expCollector.clear();

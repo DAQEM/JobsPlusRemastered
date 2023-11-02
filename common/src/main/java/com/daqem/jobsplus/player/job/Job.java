@@ -80,13 +80,13 @@ public class Job {
     }
 
     public void addExperience(int experience) {
-        JobsPlus.debug("Adding {} experience to {}'s {} job.", experience, player.jobsplus$getName(), jobInstance.getName());
+        JobsPlus.debug("Adding {} experience to {}'s {} job.", experience, player.jobsplus$getName(), jobInstance.getName().getString());
         setExperience(getExperience() + experience);
         JobEvents.onJobExperience(player, this, experience);
     }
 
     public void addExperienceWithoutEvent(int experience) {
-        JobsPlus.debug("Adding {} experience to {}'s {} job without event.", experience, player.jobsplus$getName(), jobInstance.getName());
+        JobsPlus.debug("Adding {} experience to {}'s {} job without event.", experience, player.jobsplus$getName(), jobInstance.getName().getString());
         setExperience(getExperience() + experience);
     }
 

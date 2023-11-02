@@ -33,28 +33,24 @@ public class JobInstance implements IActionHolder {
 
     private ResourceLocation location;
 
-    private final String name;
     private final int price;
     private final int maxLevel;
     private final String color;
     private final ItemStack iconItem;
-    private final String description;
     private final ResourceLocation powerupBackground;
     private final boolean isDefault;
     private final Map<ResourceLocation, IAction> actions = new HashMap<>();
     private List<PowerupInstance> powerupInstances;
 
-    public JobInstance(String name, int price, int maxLevel, String color, ItemStack iconItem, String description, ResourceLocation powerupBackground, boolean isDefault) {
-        this(name, price, maxLevel, color, iconItem, description, powerupBackground, isDefault, new ArrayList<>());
+    public JobInstance(int price, int maxLevel, String color, ItemStack iconItem, ResourceLocation powerupBackground, boolean isDefault) {
+        this(price, maxLevel, color, iconItem, powerupBackground, isDefault, new ArrayList<>());
     }
 
-    public JobInstance(String name, int price, int maxLevel, String color, ItemStack iconItem, String description, ResourceLocation powerupBackground, boolean isDefault, List<PowerupInstance> powerupInstances) {
-        this.name = name;
+    public JobInstance(int price, int maxLevel, String color, ItemStack iconItem, ResourceLocation powerupBackground, boolean isDefault, List<PowerupInstance> powerupInstances) {
         this.price = price;
         this.maxLevel = maxLevel;
         this.color = color;
         this.iconItem = iconItem;
-        this.description = description;
         this.powerupBackground = powerupBackground;
         this.isDefault = isDefault;
         this.powerupInstances = powerupInstances;
@@ -76,12 +72,12 @@ public class JobInstance implements IActionHolder {
         return maxLevel;
     }
 
-    public String getName() {
-        return name;
+    public MutableComponent getName() {
+        return JobsPlus.translatable("job." + location.getNamespace() + "." + location.getPath() + ".name");
     }
 
-    public MutableComponent getNameComponent() {
-        return JobsPlus.literal(name).withStyle(style -> style.withColor(getColorDecimal()));
+    public MutableComponent getDescription() {
+        return JobsPlus.translatable("job." + location.getNamespace() + "." + location.getPath() + ".description");
     }
 
     public List<PowerupInstance> getPowerups() {
@@ -109,10 +105,6 @@ public class JobInstance implements IActionHolder {
 
     public ItemStack getIconItem() {
         return iconItem;
-    }
-
-    public String getDescription() {
-        return description;
     }
 
     public ResourceLocation getPowerupBackground() {
@@ -174,24 +166,20 @@ public class JobInstance implements IActionHolder {
         public JobInstance deserialize(JsonElement element, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
             JsonObject json = element.getAsJsonObject();
             return new JobInstance(
-                    GsonHelper.getAsString(json, "name"),
                     GsonHelper.getAsInt(json, "price"),
                     GsonHelper.getAsInt(json, "max_level"),
                     GsonHelper.getAsString(json, "color"),
                     getItemStack(GsonHelper.getAsJsonObject(json, "icon")),
-                    GsonHelper.getAsString(json, "description"),
                     new ResourceLocation(GsonHelper.getAsString(json, "background", "minecraft:textures/block/stone.png")),
                     GsonHelper.getAsBoolean(json, "is_default", false));
         }
 
         public JobInstance fromNetwork(FriendlyByteBuf friendlyByteBuf) {
             JobInstance job = new JobInstance(
-                    friendlyByteBuf.readUtf(),
                     friendlyByteBuf.readVarInt(),
                     friendlyByteBuf.readVarInt(),
                     friendlyByteBuf.readUtf(),
                     friendlyByteBuf.readItem(),
-                    friendlyByteBuf.readUtf(),
                     friendlyByteBuf.readResourceLocation(),
                     friendlyByteBuf.readBoolean()
             );
@@ -200,12 +188,10 @@ public class JobInstance implements IActionHolder {
         }
 
         public void toNetwork(FriendlyByteBuf friendlyByteBuf, JobInstance jobInstance) {
-            friendlyByteBuf.writeUtf(jobInstance.name);
             friendlyByteBuf.writeVarInt(jobInstance.price);
             friendlyByteBuf.writeVarInt(jobInstance.maxLevel);
             friendlyByteBuf.writeUtf(jobInstance.color);
             friendlyByteBuf.writeItem(jobInstance.iconItem);
-            friendlyByteBuf.writeUtf(jobInstance.description);
             friendlyByteBuf.writeResourceLocation(jobInstance.powerupBackground);
             friendlyByteBuf.writeBoolean(jobInstance.isDefault);
             friendlyByteBuf.writeResourceLocation(jobInstance.location);

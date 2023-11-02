@@ -28,6 +28,7 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
@@ -75,7 +76,7 @@ public class JobsScreen extends AbstractScreen {
         this.jobsPlayerData = JobsPlayerData.fromNBT(dataTag);
         this.jobs.addAll(jobsPlayerData.activeJobs());
         this.jobs.addAll(jobsPlayerData.inactiveJobs());
-        this.jobs.sort(Comparator.comparing(Job::getLevel).reversed().thenComparing(job -> job.getJobInstance().getName()));
+        this.jobs.sort(Comparator.comparing(Job::getLevel).reversed().thenComparing(job -> job.getJobInstance().getName().getString()));
 
         if (selectedButton < 0) {
             this.job = null;
@@ -338,12 +339,12 @@ public class JobsScreen extends AbstractScreen {
         int exp = getJobExperience(job);
         if (level != 0) {
             int maxExp = ExperienceHandler.getMaxExperienceForLevel(level);
-            guiGraphics.drawString(font, ChatColor.boldGreen() + job.getJobInstance().getName(), startX + 7 + 3 + 35, i1 + 3, 16777215, false);
+            guiGraphics.drawString(font, job.getJobInstance().getName().withStyle(Style.EMPTY.withColor(ChatFormatting.GREEN).withBold(true)), startX + 7 + 3 + 35, i1 + 3, 16777215, false);
             guiGraphics.drawString(font, ChatColor.aqua() + JobsPlus.translatable("gui.level", ChatColor.reset(), level).getString(), startX + 7 + 3 + 35, i1 + 14, 16777215, false);
             if (level != 100)
                 guiGraphics.drawString(font, ChatColor.aqua() + JobsPlus.translatable("gui.exp", ChatColor.reset(), (int) ((double) exp / maxExp * 100), "%").getString(), startX + 7 + 3 + 35, i1 + 23, 16777215, false);
         } else {
-            guiGraphics.drawString(font, ChatColor.boldRed() + job.getJobInstance().getName(), startX + 7 + 3 + 35, i1 + 3, 16777215, false);
+            guiGraphics.drawString(font, job.getJobInstance().getName().withStyle(Style.EMPTY.withColor(ChatFormatting.RED).withBold(true)), startX + 7 + 3 + 35, i1 + 3, 16777215, false);
             guiGraphics.drawString(font, ChatColor.aqua() + JobsPlus.translatable("gui.want_this_job").getString(), startX + 7 + 3 + 35, i1 + 14, 16777215, false);
             guiGraphics.drawString(font, ChatColor.aqua() + JobsPlus.translatable("gui.price", ChatColor.reset(), hasFreeClaimableJobs() ? 0 : job.getJobInstance().getPrice()).getString(), startX + 7 + 3 + 35, i1 + 23, 16777215, false);
         }
@@ -788,13 +789,17 @@ public class JobsScreen extends AbstractScreen {
         }
         guiGraphics.pose().pushPose();
         guiGraphics.pose().scale(scale, scale, scale);
-        String description = job.getJobInstance().getDescription();
+        String description = JobsPlus.translatable("job." + job.getJobInstance().getLocation().toString().replace(":", ".") + ".description").getString();
         String[] descriptionSplit = description.split(" ");
         int lineCount = 0;
-        while (descriptionSplit.length > 0) {
+        int loopCount = 0;
+        while (descriptionSplit.length > 0 && loopCount < 100) {
+            loopCount++;
             //noinspection DuplicatedCode
             StringBuilder line = new StringBuilder();
-            while (font.width(line + descriptionSplit[0]) < (150 / scale)) {
+            int loopCount2 = 0;
+            while (font.width(line + descriptionSplit[0]) < (150 / scale) && loopCount2 < 100) {
+                loopCount2++;
                 line.append(descriptionSplit[0]).append(" ");
                 descriptionSplit = Arrays.copyOfRange(descriptionSplit, 1, descriptionSplit.length);
                 if (descriptionSplit.length == 0) break;
@@ -808,13 +813,17 @@ public class JobsScreen extends AbstractScreen {
     private float getTextHeightForDescription(GuiGraphics guiGraphics, float scale) {
         guiGraphics.pose().pushPose();
         guiGraphics.pose().scale(scale, scale, scale);
-        String description = job.getJobInstance().getDescription();
+        String description = JobsPlus.translatable("job." + job.getJobInstance().getLocation().toString().split(":")[1] + ".description").getString();
         String[] descriptionSplit = description.split(" ");
         int lineCount = 0;
-        while (descriptionSplit.length > 0) {
+        int loopCount = 0;
+        while (descriptionSplit.length > 0 && loopCount < 100) {
+            loopCount++;
             //noinspection DuplicatedCode
             StringBuilder line = new StringBuilder();
-            while (font.width(line + descriptionSplit[0]) < (150 / scale)) {
+            int loopCount2 = 0;
+            while (font.width(line + descriptionSplit[0]) < (150 / scale) && loopCount2 < 100) {
+                loopCount2++;
                 line.append(descriptionSplit[0]).append(" ");
                 descriptionSplit = Arrays.copyOfRange(descriptionSplit, 1, descriptionSplit.length);
                 if (descriptionSplit.length == 0) break;
@@ -828,7 +837,7 @@ public class JobsScreen extends AbstractScreen {
     public void drawnBigJobTitle(GuiGraphics guiGraphics) {
         guiGraphics.pose().pushPose();
         guiGraphics.pose().scale(2F, 2F, 2F);
-        guiGraphics.drawString(font, ChatColor.bold() + job.getJobInstance().getName(), (int) ((startX + 156) / 2F), (int) ((startY + 5) / 2F), job.getJobInstance().getColorDecimal(), false);
+        guiGraphics.drawString(font, job.getJobInstance().getName().withStyle(Style.EMPTY.withBold(true)), (int) ((startX + 156) / 2F), (int) ((startY + 5) / 2F), job.getJobInstance().getColorDecimal(), false);
         guiGraphics.pose().popPose();
         if (getSelectedJobLevel() != 0) {
             guiGraphics.drawString(font, ChatColor.darkGray() + JobsPlus.translatable("gui.level", ChatColor.reset(), getSelectedJobLevel()).getString(), startX + 156, startY + 22, 16777215, false);
