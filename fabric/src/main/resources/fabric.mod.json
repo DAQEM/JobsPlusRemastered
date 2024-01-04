@@ -32,6 +32,7 @@
     "architectury": ">=9.1.12",
     "supermartijn642configlib": ">=${config_library_version}",
     "arc": ">=${arc_version}",
-    "itemrestrictions": ">=${item_restrictions_version}"
+    "itemrestrictions": ">=${item_restrictions_version}",
+    "uilib": ">=${ui_library_version}"
   }
 }

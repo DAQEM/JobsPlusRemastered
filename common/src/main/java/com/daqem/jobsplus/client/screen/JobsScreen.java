@@ -1,7 +1,7 @@
 package com.daqem.jobsplus.client.screen;
 
 import com.daqem.arc.api.action.IAction;
-import com.daqem.arc.client.screen.ActionScreen;
+import com.daqem.arc.client.gui.action.ActionScreen;
 import com.daqem.itemrestrictions.data.ItemRestriction;
 import com.daqem.jobsplus.Constants;
 import com.daqem.jobsplus.JobsPlus;
@@ -631,7 +631,7 @@ public class JobsScreen extends AbstractScreen {
     }
 
     private void openActionScreen(JobInstance jobInstance, IAction action) {
-        Minecraft.getInstance().setScreen(new ActionScreen(this, jobInstance.getActions(), action, new Color(45, 32, 23, 0)));
+        Minecraft.getInstance().setScreen(new ActionScreen(jobInstance.getActions(), action));
     }
 
     private void setJob() {

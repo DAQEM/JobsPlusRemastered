@@ -43,6 +43,7 @@ dependencies {
     modImplementation "curse.maven:supermartijn642s-config-lib-438332:${project.config_library_file_fabric}"
     modImplementation "curse.maven:arc-883593:${project.arc_file_fabric}"
     modImplementation "curse.maven:item-restrictions-887774:${project.item_restrictions_file_fabric}"
+    modImplementation "curse.maven:ui-933200:${project.ui_library_file_fabric}"
 }
 
 processResources {
@@ -50,13 +51,15 @@ processResources {
     inputs.property "config_library_version", config_library_version
     inputs.property "arc_version", arc_version
     inputs.property "item_restrictions_version", item_restrictions_version
+    inputs.property "ui_library_version", project.ui_library_version
 
     filesMatching("fabric.mod.json") {
         expand([
                 "version": project.version,
                 "config_library_version": config_library_version,
                 "arc_version": arc_version,
-                "item_restrictions_version": item_restrictions_version
+                "item_restrictions_version": item_restrictions_version,
+                "ui_library_version": project.ui_library_version
         ])
     }
 }
@@ -84,6 +87,11 @@ sourcesJar {
     dependsOn commonSources
     //noinspection GrUnresolvedAccess
     from commonSources.archiveFile.map { zipTree(it) }
+}
+
+remapSourcesJar {
+    //noinspection GroovyAccessibility
+    archiveClassifier = "fabric-sources"
 }
 
 //noinspection GrUnresolvedAccess
@@ -124,6 +132,8 @@ curseforge {
 
         relations {
             requiredDependency("architectury-api")
+            requiredDependency("arc")
+            requiredDependency("ui")
             requiredDependency("item-restrictions")
             requiredDependency("supermartijn642s-config-lib")
         }
@@ -132,7 +142,7 @@ curseforge {
             displayName = "Jobs+ Fabric $project.minecraft_version - $project.mod_version"
         }
 
-        addArtifact(sourcesJar) {
+        addArtifact(remapSourcesJar) {
         }
     }
     options {
@@ -143,3 +153,22 @@ curseforge {
 afterEvaluate {
     tasks.curseforge916985.dependsOn remapJar
 }
+
+//modrinth {
+//    token = System.getenv("MODRINTH_API_KEY")
+//    projectId = "hxGLlCnq"
+//    versionName = "Jobs+ Fabric $rootProject.minecraft_version - $rootProject.mod_version"
+//    versionNumber = "$rootProject.mod_version"
+//    versionType = "$rootProject.curse_forge_release_type"
+//    uploadFile = remapJar
+//    additionalFiles = [remapSourcesJar]
+//    gameVersions = ["$rootProject.minecraft_version"]
+//    loaders = ["fabric"]
+//    changelog = rootProject.file('changelog.md').text
+//    dependencies {
+//        required.project "architectury-api"
+//        required.project "arc"
+//        required.project "item-restrictions"
+//        required.project "supermartijn642s-config-lib"
+//    }
+//}

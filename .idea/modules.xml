@@ -2,6 +2,13 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/common/com.daqem.jobsplus.jobsplus.common.iml" filepath="$PROJECT_DIR$/.idea/modules/common/com.daqem.jobsplus.jobsplus.common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/common/com.daqem.jobsplus.jobsplus.common.main.iml" filepath="$PROJECT_DIR$/.idea/modules/common/com.daqem.jobsplus.jobsplus.common.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/common/com.daqem.jobsplus.jobsplus.common.test.iml" filepath="$PROJECT_DIR$/.idea/modules/common/com.daqem.jobsplus.jobsplus.common.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/fabric/com.daqem.jobsplus.jobsplus.fabric.main.iml" filepath="$PROJECT_DIR$/.idea/modules/fabric/com.daqem.jobsplus.jobsplus.fabric.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/fabric/com.daqem.jobsplus.jobsplus.fabric.test.iml" filepath="$PROJECT_DIR$/.idea/modules/fabric/com.daqem.jobsplus.jobsplus.fabric.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/forge/com.daqem.jobsplus.jobsplus.forge.main.iml" filepath="$PROJECT_DIR$/.idea/modules/forge/com.daqem.jobsplus.jobsplus.forge.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/forge/com.daqem.jobsplus.jobsplus.forge.test.iml" filepath="$PROJECT_DIR$/.idea/modules/forge/com.daqem.jobsplus.jobsplus.forge.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/common/jobsplus.common.iml" filepath="$PROJECT_DIR$/.idea/modules/common/jobsplus.common.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/common/jobsplus.common.main.iml" filepath="$PROJECT_DIR$/.idea/modules/common/jobsplus.common.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/common/jobsplus.common.test.iml" filepath="$PROJECT_DIR$/.idea/modules/common/jobsplus.common.test.iml" />

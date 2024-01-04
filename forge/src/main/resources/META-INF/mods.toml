@@ -55,3 +55,10 @@ mandatory = true
 versionRange = "[${item_restrictions_version},)"
 ordering = "NONE"
 side = "BOTH"
+
+[[dependencies.jobsplus]]
+modId = "uilib"
+mandatory = true
+versionRange = "[${ui_library_version},)"
+ordering = "NONE"
+side = "CLIENT"

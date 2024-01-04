@@ -28,6 +28,7 @@ dependencies {
     compileOnlyApi "curse.maven:supermartijn642s-config-lib-438332:${project.config_library_file_fabric}"
     modImplementation "curse.maven:arc-883593:${project.arc_file_fabric}-sources-${project.arc_file_fabric_sources}"
     modImplementation "curse.maven:item-restrictions-887774:${project.item_restrictions_file_fabric}-sources-${project.item_restrictions_file_fabric_sources}"
+    modImplementation "curse.maven:ui-933200:${project.ui_library_file_fabric}-sources-${project.ui_library_file_fabric_sources}"
 
     testImplementation "org.junit.jupiter:junit-jupiter-api:${project.jUnitVersion}"
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${project.jUnitVersion}"
