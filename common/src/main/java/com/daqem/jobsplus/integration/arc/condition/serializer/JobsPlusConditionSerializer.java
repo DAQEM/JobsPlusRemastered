@@ -9,6 +9,7 @@ import com.daqem.jobsplus.integration.arc.condition.conditions.job.JobExperience
 import com.daqem.jobsplus.integration.arc.condition.conditions.job.JobLevelCondition;
 import com.daqem.jobsplus.integration.arc.condition.conditions.job.powerup.PowerupNoChildrenActiveCondition;
 import com.daqem.jobsplus.integration.arc.condition.conditions.job.powerup.PowerupNotActiveCondition;
+import com.daqem.jobsplus.integration.arc.condition.conditions.powerup.HasPowerupActivatedCondition;
 
 public interface JobsPlusConditionSerializer<T extends ICondition> extends ConditionSerializer<T> {
 
@@ -17,6 +18,8 @@ public interface JobsPlusConditionSerializer<T extends ICondition> extends Condi
     IConditionSerializer<PowerupNoChildrenActiveCondition> POWERUP_NO_CHILDREN_ACTIVE = ConditionSerializer.register(JobsPlus.getId("powerup_no_children_active"), new PowerupNoChildrenActiveCondition.Serializer());
     IConditionSerializer<PowerupNotActiveCondition> POWERUP_NOT_ACTIVE = ConditionSerializer.register(JobsPlus.getId("powerup_not_active"), new PowerupNotActiveCondition.Serializer());
     IConditionSerializer<HasJobCondition> HAS_JOB = ConditionSerializer.register(JobsPlus.getId("has_job"), new HasJobCondition.Serializer());
+
+    IConditionSerializer<HasPowerupActivatedCondition> HAS_POWERUP_ACTIVATED = ConditionSerializer.register(JobsPlus.getId("has_powerup_activated"), new HasPowerupActivatedCondition.Serializer());
 
     static void init() {
     }

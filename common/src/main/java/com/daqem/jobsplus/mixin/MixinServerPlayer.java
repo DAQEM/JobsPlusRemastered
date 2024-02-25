@@ -8,6 +8,7 @@ import com.daqem.jobsplus.JobsPlus;
 import com.daqem.jobsplus.config.JobsPlusCommonConfig;
 import com.daqem.jobsplus.integration.arc.holder.holders.job.JobInstance;
 import com.daqem.jobsplus.integration.arc.holder.holders.job.JobManager;
+import com.daqem.jobsplus.integration.arc.holder.holders.powerup.PowerupInstance;
 import com.daqem.jobsplus.networking.sync.jobs.ClientboundRemoveJobPacket;
 import com.daqem.jobsplus.networking.sync.jobs.ClientboundUpdateJobPacket;
 import com.daqem.jobsplus.player.JobsServerPlayer;
@@ -124,6 +125,16 @@ public abstract class MixinServerPlayer extends Player implements JobsServerPlay
         if (jobLocation == null) return null;
         return this.jobsplus$jobs.stream()
                 .filter(job -> job.getJobInstance().getLocation().equals(jobLocation.getLocation()))
+                .findFirst()
+                .orElse(null);
+    }
+
+    @Override
+    public @Nullable Powerup jobsplus$getPowerup(PowerupInstance powerupInstance) {
+        return jobsplus$getJobs().stream()
+                .map(Job::getPowerupManager)
+                .flatMap(powerupManager -> powerupManager.getAllPowerups().stream())
+                .filter(powerup -> powerup.getPowerupInstance().getLocation().equals(powerupInstance.getLocation()))
                 .findFirst()
                 .orElse(null);
     }

@@ -9,6 +9,7 @@ import com.daqem.jobsplus.integration.arc.condition.conditions.job.JobExperience
 import com.daqem.jobsplus.integration.arc.condition.conditions.job.JobLevelCondition;
 import com.daqem.jobsplus.integration.arc.condition.conditions.job.powerup.PowerupNoChildrenActiveCondition;
 import com.daqem.jobsplus.integration.arc.condition.conditions.job.powerup.PowerupNotActiveCondition;
+import com.daqem.jobsplus.integration.arc.condition.conditions.powerup.HasPowerupActivatedCondition;
 
 public interface JobsPlusConditionType<T extends ICondition> extends ConditionType<T> {
 
@@ -16,7 +17,9 @@ public interface JobsPlusConditionType<T extends ICondition> extends ConditionTy
     ConditionType<JobLevelCondition> JOB_LEVEL = ConditionType.register(JobsPlus.getId("job_level"));
     ConditionType<PowerupNoChildrenActiveCondition> POWERUP_NO_CHILDREN_ACTIVE = ConditionType.register(JobsPlus.getId("powerup_no_children_active"));
     ConditionType<PowerupNotActiveCondition> POWERUP_NOT_ACTIVE = ConditionType.register(JobsPlus.getId("powerup_not_active"));
-    IConditionType<HasJobCondition> HAS_JOB = ConditionType.register(JobsPlus.getId("has_job"));
+    ConditionType<HasJobCondition> HAS_JOB = ConditionType.register(JobsPlus.getId("has_job"));
+
+    ConditionType<HasPowerupActivatedCondition> HAS_POWERUP_ACTIVATED = ConditionType.register(JobsPlus.getId("has_powerup_activated"));
 
     static void init() {
     }

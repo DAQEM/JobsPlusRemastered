@@ -160,21 +160,22 @@ curseforge {
     }
 }
 
-//modrinth {
-//    token = System.getenv("MODRINTH_API_KEY")
-//    projectId = "hxGLlCnq"
-//    versionName = "Jobs+ Forge $rootProject.minecraft_version - $rootProject.mod_version"
-//    versionNumber = "$rootProject.mod_version"
-//    versionType = "$rootProject.curse_forge_release_type"
-//    uploadFile = remapJar
-//    additionalFiles = [remapSourcesJar]
-//    gameVersions = ["$rootProject.minecraft_version"]
-//    loaders = ["forge"]
-//    changelog = rootProject.file('changelog.md').text
-//    dependencies {
-//        required.project "architectury-api"
-//        required.project "arc"
-//        required.project "item-restrictions"
-//        required.project "supermartijn642s-config-lib"
-//    }
-//}
+modrinth {
+    token = System.getenv("MODRINTH_API_KEY")
+    projectId = "hxGLlCnq"
+    versionName = "Jobs+ Forge $rootProject.minecraft_version - $rootProject.mod_version"
+    versionNumber = "$rootProject.mod_version"
+    versionType = "$rootProject.curse_forge_release_type"
+    uploadFile = remapJar
+    additionalFiles = [remapSourcesJar]
+    gameVersions = ["$rootProject.minecraft_version"]
+    loaders = ["forge"]
+    changelog = rootProject.file('changelog.md').text
+    dependencies {
+        required.project "architectury-api"
+        required.project "arc"
+        required.project "ui-lib"
+        required.project "item-restrictions"
+        required.project "supermartijn642s-config-lib"
+    }
+}
