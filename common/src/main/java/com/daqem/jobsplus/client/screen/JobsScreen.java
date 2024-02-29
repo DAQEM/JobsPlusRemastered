@@ -65,7 +65,7 @@ public class JobsScreen extends AbstractScreen {
     private int startIndexRight;
 
     public JobsScreen(CompoundTag dataTag) {
-        super(JobsPlus.literal("Jobs"));
+        super(JobsPlus.translatable("gui.title.jobs"));
         this.activeLeftButton = dataTag.getInt(Constants.ACTIVE_LEFT_BUTTON);
         this.activeRightButton = dataTag.getInt(Constants.ACTIVE_RIGHT_BUTTON);
         this.selectedButton = dataTag.getInt(Constants.SELECTED_BUTTON);

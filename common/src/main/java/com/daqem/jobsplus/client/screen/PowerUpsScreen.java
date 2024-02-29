@@ -48,7 +48,7 @@ public class PowerUpsScreen extends AbstractScreen {
     private int lastHeight = 0;
 
     public PowerUpsScreen(JobsScreen previousScreen, Job job, List<PowerupInstance> rootPowerups, List<Powerup> allPowerups, int coins) {
-        super(JobsPlus.literal("Power-ups"));
+        super(JobsPlus.translatable("gui.title.powerups"));
         this.previousScreen = previousScreen;
         this.job = job;
         this.jobInstance = job.getJobInstance();

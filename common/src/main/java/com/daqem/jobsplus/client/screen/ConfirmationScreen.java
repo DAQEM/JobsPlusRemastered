@@ -65,7 +65,7 @@ public class ConfirmationScreen extends AbstractScreen {
     }
 
     protected ConfirmationScreen(Screen lastScreen, ConfirmationMessageType messageType) {
-        super(JobsPlus.literal("Confirmation"));
+        super(JobsPlus.translatable("gui.title.confirmation"));
         this.lastScreen = lastScreen;
         this.messageType = messageType;
     }
