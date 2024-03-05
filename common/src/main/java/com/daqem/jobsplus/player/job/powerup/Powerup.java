@@ -1,8 +1,8 @@
 package com.daqem.jobsplus.player.job.powerup;
 
 import com.daqem.jobsplus.integration.arc.holder.holders.powerup.PowerupInstance;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 

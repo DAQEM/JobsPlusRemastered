@@ -6,7 +6,7 @@ import com.daqem.itemrestrictions.data.ItemRestriction;
 import com.daqem.jobsplus.Constants;
 import com.daqem.jobsplus.JobsPlus;
 import com.daqem.jobsplus.client.render.RenderColor;
-import com.daqem.jobsplus.config.JobsPlusCommonConfig;
+import com.daqem.jobsplus.config.JobsPlusConfig;
 import com.daqem.jobsplus.integration.arc.holder.holders.job.JobInstance;
 import com.daqem.jobsplus.integration.arc.holder.holders.powerup.PowerupInstance;
 import com.daqem.jobsplus.integration.arc.holder.holders.powerup.PowerupManager;
@@ -34,7 +34,6 @@ import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -267,7 +266,7 @@ public class JobsScreen extends AbstractScreen {
             blitThis(guiGraphics, 306, (int) (16 + (123.0F * getScrollOffsetRight())), 0, 207, 12, 15);
         }
         if (hasJobSelected()) {
-            if (activeRightButton == 0) {
+            if (activeRightButton == 0 && (getSelectedJobLevel() == 0 || JobsPlusConfig.allowJobStopRefund.get())) {
                 drawBigButton(guiGraphics, mouseX, mouseY);
                 // CRAFTING RECIPE BUTTONS
             } else if (activeRightButton == 1) {
@@ -384,7 +383,7 @@ public class JobsScreen extends AbstractScreen {
                 drawJobInfo(guiGraphics);
                 if (getSelectedJobLevel() == 0) {
                     drawCenteredString(guiGraphics, ChatColor.white() + JobsPlus.translatable("gui.job.start").getString(), centerR, startY + 137, 16777215);
-                } else {
+                } else if (JobsPlusConfig.allowJobStopRefund.get()) {
                     drawCenteredString(guiGraphics, ChatColor.white() + JobsPlus.translatable("gui.job.stop").getString(), centerR, startY + 137, 16777215);
                 }
             } else if (activeRightButton == 1) {
@@ -577,8 +576,8 @@ public class JobsScreen extends AbstractScreen {
             // JOB START STOP BUTTON
             if (activeRightButton == 0) {
                 if (isBetween(mouseX, mouseY, 169, 132, 169 + 138, 132 + 18)) {
-                    playClientGUIClick();
                     if (getSelectedJobLevel() == 0) {
+                        playClientGUIClick();
                         if (hasFreeClaimableJobs()) {
                             openConfirmScreen(ConfirmationMessageType.START_JOB_FREE, job.getJobInstance());
                         } else {
@@ -587,7 +586,8 @@ public class JobsScreen extends AbstractScreen {
                             else
                                 openConfirmScreen(ConfirmationMessageType.NOT_ENOUGH_COINS_START, job.getJobInstance());
                         }
-                    } else {
+                    } else if (JobsPlusConfig.allowJobStopRefund.get()) {
+                        playClientGUIClick();
                         openConfirmScreen(ConfirmationMessageType.STOP_JOB, job.getJobInstance());
                     }
                 }
@@ -899,7 +899,7 @@ public class JobsScreen extends AbstractScreen {
     }
 
     private int getAmountOfFreeJobs() {
-        return JobsPlusCommonConfig.amountOfFreeJobs.get();
+        return JobsPlusConfig.amountOfFreeJobs.get();
     }
 
     private boolean hasFreeClaimableJobs() {

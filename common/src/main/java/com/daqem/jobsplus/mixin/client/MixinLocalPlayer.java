@@ -65,9 +65,11 @@ public abstract class MixinLocalPlayer extends AbstractClientPlayer implements J
 
     @Override
     public void jobsplus$removeJob(JobInstance jobInstance) {
-        Job jobToRemove = jobsplus$getJob(jobInstance);
-        jobsplus$jobs.remove(jobToRemove);
-        jobsplus$removeActionHolders(jobToRemove);
+        Job job = jobsplus$getJob(jobInstance);
+        if (job != null) {
+            jobsplus$jobs.remove(job);
+            jobsplus$removeActionHolders(job);
+        }
     }
 
     @Override

@@ -110,6 +110,6 @@ public abstract class PowerupManager extends SimpleJsonResourceReloadListener {
         powerups = ImmutableMap.copyOf(sortPowerups(powerupInstances));
         powerups.forEach((location, powerup) -> ActionHolderManager.getInstance().registerActionHolder(powerup));
         JobManager.getInstance().addPowerups(powerups);
-        JobsPlus.LOGGER.info("Updated {} powerups", powerups.size());
+        JobsPlus.LOGGER.info("Updated {} powerups", powerupInstances.size());
     }
 }

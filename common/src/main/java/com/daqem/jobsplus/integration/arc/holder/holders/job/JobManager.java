@@ -4,7 +4,7 @@ import com.daqem.arc.api.action.holder.ActionHolderManager;
 import com.daqem.arc.data.ActionManager;
 import com.daqem.jobsplus.JobsPlus;
 import com.daqem.jobsplus.JobsPlusExpectPlatform;
-import com.daqem.jobsplus.config.JobsPlusCommonConfig;
+import com.daqem.jobsplus.config.JobsPlusConfig;
 import com.daqem.jobsplus.integration.arc.holder.holders.powerup.PowerupInstance;
 import com.daqem.jobsplus.integration.arc.holder.type.JobsPlusActionHolderType;
 import com.google.common.collect.ImmutableMap;
@@ -47,7 +47,7 @@ public abstract class JobManager extends SimpleJsonResourceReloadListener {
         map.forEach((location, jsonElement) -> {
             try {
                 JobInstance job = GSON.fromJson(jsonElement.getAsJsonObject(), JobInstance.class);
-                if (!job.isDefault() || (job.isDefault() && JobsPlusCommonConfig.enableDefaultJobs.get())) {
+                if (!job.isDefault() || (job.isDefault() && JobsPlusConfig.enableDefaultJobs.get())) {
                     job.setLocation(location);
                     tempJobInstances.put(location, job);
                     ActionHolderManager.getInstance().registerActionHolder(job);
