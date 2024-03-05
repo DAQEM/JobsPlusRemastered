@@ -5,8 +5,8 @@ import com.daqem.jobsplus.player.JobsServerPlayer;
 import com.daqem.jobsplus.player.job.Job;
 import com.daqem.jobsplus.integration.arc.holder.holders.powerup.PowerupInstance;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.util.*;
 
 public class JobPowerupManager {

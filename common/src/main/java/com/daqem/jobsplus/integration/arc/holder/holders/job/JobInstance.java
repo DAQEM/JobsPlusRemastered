@@ -6,7 +6,7 @@ import com.daqem.arc.api.action.holder.type.IActionHolderType;
 import com.daqem.itemrestrictions.data.ItemRestriction;
 import com.daqem.itemrestrictions.data.ItemRestrictionManager;
 import com.daqem.jobsplus.JobsPlus;
-import com.daqem.jobsplus.config.JobsPlusCommonConfig;
+import com.daqem.jobsplus.config.JobsPlusConfig;
 import com.daqem.jobsplus.data.serializer.JobsPlusSerializer;
 import com.daqem.jobsplus.integration.arc.condition.conditions.job.IJobCondition;
 import com.daqem.jobsplus.integration.arc.holder.holders.powerup.PowerupInstance;
@@ -65,7 +65,7 @@ public class JobInstance implements IActionHolder {
     }
 
     public int getStopRefund() {
-        return price * JobsPlusCommonConfig.jobStopRefundPercentage.get() / 100;
+        return price * JobsPlusConfig.jobStopRefundPercentage.get() / 100;
     }
 
     public int getMaxLevel() {
@@ -158,6 +158,11 @@ public class JobInstance implements IActionHolder {
 
     public void clearActions() {
         actions.clear();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof JobInstance jobInstance && jobInstance.location.equals(location);
     }
 
     public static class Serializer implements JobsPlusSerializer<JobInstance> {

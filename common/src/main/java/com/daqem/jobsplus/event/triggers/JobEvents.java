@@ -3,7 +3,7 @@ package com.daqem.jobsplus.event.triggers;
 import com.daqem.arc.api.action.data.ActionDataBuilder;
 import com.daqem.arc.api.player.ArcPlayer;
 import com.daqem.jobsplus.JobsPlus;
-import com.daqem.jobsplus.config.JobsPlusCommonConfig;
+import com.daqem.jobsplus.config.JobsPlusConfig;
 import com.daqem.jobsplus.integration.arc.data.type.JobsPlusActionDataType;
 import com.daqem.jobsplus.integration.arc.holder.holders.job.JobInstance;
 import com.daqem.jobsplus.integration.arc.action.type.JobsPlusActionType;
@@ -20,7 +20,7 @@ public class JobEvents {
                     .build()
                     .sendToAction();
         }
-        player.jobsplus$addCoins(JobsPlusCommonConfig.coinsPerLevelUp.get());
+        player.jobsplus$addCoins(JobsPlusConfig.coinsPerLevelUp.get());
         if (player.jobsplus$getPlayer() instanceof ServerPlayer serverPlayer) {
 
             JobInstance jobInstance = job.getJobInstance();

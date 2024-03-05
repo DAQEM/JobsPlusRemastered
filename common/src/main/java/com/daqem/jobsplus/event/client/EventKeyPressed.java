@@ -3,7 +3,7 @@ package com.daqem.jobsplus.event.client;
 import com.daqem.arc.api.player.ArcPlayer;
 import com.daqem.jobsplus.client.JobsPlusClient;
 import com.daqem.jobsplus.client.screen.JobsScreen;
-import com.daqem.jobsplus.config.JobsPlusCommonConfig;
+import com.daqem.jobsplus.config.JobsPlusConfig;
 import com.daqem.jobsplus.networking.c2s.PacketOpenMenuC2S;
 import dev.architectury.event.EventResult;
 import dev.architectury.event.events.client.ClientRawInputEvent;
@@ -20,7 +20,7 @@ public class EventKeyPressed {
                 if (screen instanceof JobsScreen) screen.onClose();
                 else if (screen == null) new PacketOpenMenuC2S().sendToServer();
             }
-            if (JobsPlusCommonConfig.isDebug.get()) {
+            if (JobsPlusConfig.isDebug.get()) {
                 if (keyCode == GLFW.GLFW_KEY_P && action == 1) {
                     if (client.player != null) {
                         if (client.player instanceof ArcPlayer arcPlayer) {

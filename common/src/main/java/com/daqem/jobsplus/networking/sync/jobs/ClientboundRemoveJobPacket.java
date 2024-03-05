@@ -1,6 +1,8 @@
 package com.daqem.jobsplus.networking.sync.jobs;
 
+import com.daqem.jobsplus.JobsPlus;
 import com.daqem.jobsplus.client.player.JobsClientPlayer;
+import com.daqem.jobsplus.config.JobsPlusConfig;
 import com.daqem.jobsplus.integration.arc.holder.holders.job.JobInstance;
 import com.daqem.jobsplus.networking.JobsPlusNetworking;
 import dev.architectury.networking.NetworkManager;
@@ -34,7 +36,11 @@ public class ClientboundRemoveJobPacket extends BaseS2CMessage {
     @Override
     public void handle(NetworkManager.PacketContext context) {
         if (context.getPlayer() instanceof JobsClientPlayer player) {
-            player.jobsplus$removeJob(JobInstance.of(jobLocation));
+            if (JobsPlusConfig.allowJobStopRefund.get()) {
+                player.jobsplus$removeJob(JobInstance.of(jobLocation));
+            } else {
+                JobsPlus.LOGGER.warn("Received a remove job packet, but the server does not allow job stop refunds.");
+            }
         }
     }
 }

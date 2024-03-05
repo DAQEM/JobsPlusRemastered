@@ -5,7 +5,7 @@ import com.daqem.arc.api.player.ArcPlayer;
 import com.daqem.arc.api.player.ArcServerPlayer;
 import com.daqem.jobsplus.Constants;
 import com.daqem.jobsplus.JobsPlus;
-import com.daqem.jobsplus.config.JobsPlusCommonConfig;
+import com.daqem.jobsplus.config.JobsPlusConfig;
 import com.daqem.jobsplus.integration.arc.holder.holders.job.JobInstance;
 import com.daqem.jobsplus.integration.arc.holder.holders.job.JobManager;
 import com.daqem.jobsplus.integration.arc.holder.holders.powerup.PowerupInstance;
@@ -28,13 +28,13 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -107,7 +107,7 @@ public abstract class MixinServerPlayer extends Player implements JobsServerPlay
     @Override
     public void jobsplus$refundJob(@NotNull JobInstance jobInstance) {
         int refund = jobInstance.getStopRefund();
-        if (jobsplus$getJobs().size() > JobsPlusCommonConfig.amountOfFreeJobs.get()) {
+        if (jobsplus$getJobs().size() > JobsPlusConfig.amountOfFreeJobs.get()) {
             if (refund > 0) {
                 jobsplus$addCoins(refund);
             }
