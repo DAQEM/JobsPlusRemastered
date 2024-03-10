@@ -19,8 +19,6 @@ public interface JobsServerPlayer extends JobsPlayer {
 
     void jobsplus$refundJob(@NotNull JobInstance jobInstance);
 
-    boolean jobsplus$getUpdatedFromOldJobsPlus();
-
     void jobsplus$setUpdatedFromOldJobsPlus(boolean b);
 
     void jobsplus$updateJob(Job job);

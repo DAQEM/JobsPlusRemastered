@@ -5,7 +5,6 @@ import com.daqem.jobsplus.JobsPlus;
 import com.daqem.jobsplus.client.screen.JobsScreen;
 import com.daqem.jobsplus.networking.JobsPlusNetworking;
 import com.daqem.jobsplus.networking.s2c.PacketOpenMenuS2C;
-import com.daqem.jobsplus.networking.s2c.PacketOpenUpdateScreenS2C;
 import com.daqem.jobsplus.player.JobsServerPlayer;
 import com.daqem.jobsplus.player.job.Job;
 import dev.architectury.networking.NetworkManager;
@@ -91,11 +90,7 @@ public class PacketOpenMenuC2S extends BaseC2SMessage {
                 serverData.putInt(Constants.START_INDEX, startIndex);
                 serverData.putInt(Constants.START_INDEX_RIGHT, startIndexRight);
 
-                if (serverPlayer.jobsplus$getUpdatedFromOldJobsPlus()) {
-                    new PacketOpenUpdateScreenS2C(serverData).sendTo((ServerPlayer) serverPlayer);
-                } else {
-                    new PacketOpenMenuS2C(serverData).sendTo((ServerPlayer) serverPlayer);
-                }
+                new PacketOpenMenuS2C(serverData).sendTo((ServerPlayer) serverPlayer);
             } catch (Exception e) {
                 JobsPlus.LOGGER.error("Error opening Jobs+ menu (server side): " + e);
             }
