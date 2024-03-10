@@ -9,9 +9,7 @@ public enum ConfirmationMessageType {
     START_JOB_PAID(new ConfirmationMessage("start_job_paid"), ConfirmationButtonType.YES_NO, RequireCoinsType.START_JOB),
     NOT_ENOUGH_COINS_START(new ConfirmationMessage("error.not_enough_coins_start"), ConfirmationButtonType.BACK, RequireCoinsType.START_JOB),
     NOT_ENOUGH_COINS_POWERUP(new ConfirmationMessage("error.not_enough_coins_powerup"), ConfirmationButtonType.BACK, RequireCoinsType.POWER_UP),
-    JOB_NOT_ENABLED(new ConfirmationMessage("error.job_not_enabled"), ConfirmationButtonType.BACK, RequireCoinsType.NONE),
-
-    JOBS_PLUS_UPDATE(new ConfirmationMessage("jobsplus_update"), ConfirmationButtonType.YES_NO, RequireCoinsType.NONE);
+    JOB_NOT_ENABLED(new ConfirmationMessage("error.job_not_enabled"), ConfirmationButtonType.BACK, RequireCoinsType.NONE);
 
     private final ConfirmationMessage confirmationMessage;
     private final ConfirmationButtonType confirmationButtonType;

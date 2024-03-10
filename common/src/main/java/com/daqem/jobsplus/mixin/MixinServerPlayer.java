@@ -48,8 +48,6 @@ public abstract class MixinServerPlayer extends Player implements JobsServerPlay
     private List<Job> jobsplus$jobs = new ArrayList<>();
     @Unique
     private int jobsplus$coins = 0;
-    @Unique
-    private boolean jobsplus$updatedFromOldJobsPLus = false;
 
     public MixinServerPlayer(Level level, BlockPos blockPos, float yaw, GameProfile gameProfile) {
         super(level, blockPos, yaw, gameProfile);
@@ -183,16 +181,6 @@ public abstract class MixinServerPlayer extends Player implements JobsServerPlay
     }
 
     @Override
-    public boolean jobsplus$getUpdatedFromOldJobsPlus() {
-        return this.jobsplus$updatedFromOldJobsPLus;
-    }
-
-    @Override
-    public void jobsplus$setUpdatedFromOldJobsPlus(boolean updatedFromOldJobsPlus) {
-        this.jobsplus$updatedFromOldJobsPLus = updatedFromOldJobsPlus;
-    }
-
-    @Override
     public void jobsplus$updateJob(Job job) {
         this.jobsplus$updateActionHolders(job);
         this.jobsplus$updateJobOnClient(job);
@@ -228,7 +216,8 @@ public abstract class MixinServerPlayer extends Player implements JobsServerPlay
         if (oldPlayer instanceof JobsServerPlayer oldJobsServerPlayer) {
             this.jobsplus$jobs = oldJobsServerPlayer.jobsplus$getJobs();
             this.jobsplus$coins = oldJobsServerPlayer.jobsplus$getCoins();
-            this.jobsplus$updatedFromOldJobsPLus = oldJobsServerPlayer.jobsplus$getUpdatedFromOldJobsPlus();
+
+            this.jobsplus$jobs.forEach(job -> job.setPlayer(this));
         }
     }
 
@@ -237,7 +226,6 @@ public abstract class MixinServerPlayer extends Player implements JobsServerPlay
         CompoundTag jobsTag = new CompoundTag();
         jobsTag.put(Constants.JOBS, Job.Serializer.toNBT(this.jobsplus$jobs));
         jobsTag.putInt(Constants.COINS, this.jobsplus$coins);
-        jobsTag.putBoolean(Constants.JOBSPLUS_UPDATE, this.jobsplus$updatedFromOldJobsPLus);
 
         compoundTag.put(Constants.JOBS_DATA, jobsTag);
     }
@@ -250,50 +238,10 @@ public abstract class MixinServerPlayer extends Player implements JobsServerPlay
                 .collect(Collectors.toCollection(ArrayList::new));
         this.jobsplus$coins = jobsTag.getInt(Constants.COINS);
 
-        this.jobsplus$updatedFromOldJobsPLus = jobsTag.getBoolean(Constants.JOBSPLUS_UPDATE);
-
-        CompoundTag forgeCaps = compoundTag.getCompound("ForgeCaps").getCompound("jobsplus:jobs");
-        if (!forgeCaps.isEmpty()) {
-            jobsplus$readFromOldJobsPlusData(forgeCaps);
-        }
-
         if (jobsplus$getServerPlayer() instanceof ArcServerPlayer arcServerPlayer) {
             List<IActionHolder> iActionHolders = this.jobsplus$getActionHolders();
             arcServerPlayer.arc$addActionHolders(new ArrayList<>(iActionHolders));
         }
-    }
-
-    @Unique
-    private void jobsplus$readFromOldJobsPlusData(CompoundTag tag) {
-        Map<String, int[]> map = new HashMap<>();
-        List<Job> jobs = new ArrayList<>();
-
-        this.jobsplus$coins = tag.getInt("coins");
-
-        map.put("alchemist", tag.getIntArray("alchemist"));
-        map.put("builder", tag.getIntArray("builder"));
-        map.put("digger", tag.getIntArray("digger"));
-        map.put("enchanter", tag.getIntArray("enchanter"));
-        map.put("farmer", tag.getIntArray("farmer"));
-        map.put("fisherman", tag.getIntArray("fisherman"));
-        map.put("hunter", tag.getIntArray("hunter"));
-        map.put("lumberjack", tag.getIntArray("lumberjack"));
-        map.put("miner", tag.getIntArray("miner"));
-        map.put("smith", tag.getIntArray("smith"));
-
-        map.forEach((string, intArray) -> {
-            int level = intArray[0];
-            int experience = intArray[1];
-            List<Boolean> powerUps = List.of(intArray[2] != 0, intArray[3] != 0, intArray[4] != 0);
-
-            JobInstance jobInstance = JobManager.getInstance().getJobInstance(JobsPlus.getId(string));
-            if (jobInstance != null) {
-                jobs.add(new Job(this, jobInstance, level, experience, new ArrayList<>()));
-                this.jobsplus$addCoins((int) (powerUps.stream().filter(b -> b).count() * 10));
-            }
-        });
-        this.jobsplus$jobs = jobs;
-        this.jobsplus$updatedFromOldJobsPLus = true;
     }
 
     @Inject(at = @At("TAIL"), method = "tick()V")

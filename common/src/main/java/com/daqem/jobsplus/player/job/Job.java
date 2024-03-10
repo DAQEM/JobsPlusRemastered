@@ -24,9 +24,9 @@ import java.util.List;
 
 public class Job {
 
-    private final JobsPlayer player;
     private final JobInstance jobInstance;
     private final JobPowerupManager powerupManager;
+    private JobsPlayer player;
     private int level;
     private int experience;
     private final ExpCollector expCollector = new ExpCollector();
@@ -105,6 +105,10 @@ public class Job {
     public static int getExperienceToLevelUp(int level) {
         if (level == 0) return 0;
         return (int) (100 + level * level * 0.5791);
+    }
+
+    public void setPlayer(JobsPlayer player) {
+        this.player = player;
     }
 
     public CompoundTag toNBT() {
