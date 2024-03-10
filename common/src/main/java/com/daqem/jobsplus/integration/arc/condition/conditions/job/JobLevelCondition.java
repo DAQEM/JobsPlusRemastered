@@ -40,15 +40,15 @@ public class JobLevelCondition extends AbstractCondition implements IJobConditio
             return false;
         }
 
+        int playerJobLevel = 0;
         if (actionData.getPlayer() instanceof JobsServerPlayer jobsServerPlayer) {
-            Job job = jobsServerPlayer.jobsplus$getJob(jobInstance);
-            int level;
-            if (job == null) level = 0;
-            else level = job.getLevel();
-            return level <= this.level;
+            Job playerJob = jobsServerPlayer.jobsplus$getJob(jobInstance);
+            if (playerJob != null) {
+                playerJobLevel = playerJob.getLevel();
+            }
         }
 
-        return false;
+        return playerJobLevel >= this.level;
     }
 
     @Override
