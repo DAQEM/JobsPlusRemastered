@@ -6,9 +6,7 @@ import com.daqem.arc.api.player.ArcPlayer;
 import com.daqem.arc.api.reward.AbstractReward;
 import com.daqem.arc.api.reward.IReward;
 import com.daqem.arc.api.reward.serializer.IRewardSerializer;
-import com.daqem.arc.api.reward.serializer.RewardSerializer;
 import com.daqem.arc.api.reward.type.IRewardType;
-import com.daqem.jobsplus.integration.arc.reward.serializer.JobsPlusRewardSerializer;
 import com.daqem.jobsplus.integration.arc.reward.type.JobsPlusRewardType;
 import com.daqem.jobsplus.player.JobsServerPlayer;
 import com.google.gson.JsonObject;
@@ -30,11 +28,6 @@ public class JobCoinReward extends AbstractReward {
     }
 
     @Override
-    public IRewardSerializer<? extends IReward> getSerializer() {
-        return JobsPlusRewardSerializer.JOB_EXP_MULTIPLIER;
-    }
-
-    @Override
     public ActionResult apply(ActionData actionData) {
         ArcPlayer player = actionData.getPlayer();
         if (player instanceof JobsServerPlayer jobsServerPlayer) {
@@ -43,7 +36,7 @@ public class JobCoinReward extends AbstractReward {
         return new ActionResult();
     }
 
-    public static class Serializer implements RewardSerializer<JobCoinReward> {
+    public static class Serializer implements IRewardSerializer<JobCoinReward> {
 
         @Override
         public JobCoinReward fromJson(JsonObject jsonObject, double chance, int priority) {
@@ -63,7 +56,7 @@ public class JobCoinReward extends AbstractReward {
 
         @Override
         public void toNetwork(FriendlyByteBuf friendlyByteBuf, JobCoinReward type) {
-            RewardSerializer.super.toNetwork(friendlyByteBuf, type);
+            IRewardSerializer.super.toNetwork(friendlyByteBuf, type);
             friendlyByteBuf.writeInt(type.amount);
         }
     }

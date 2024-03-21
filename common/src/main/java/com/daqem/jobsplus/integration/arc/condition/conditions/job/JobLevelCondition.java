@@ -3,11 +3,9 @@ package com.daqem.jobsplus.integration.arc.condition.conditions.job;
 import com.daqem.arc.api.action.data.ActionData;
 import com.daqem.arc.api.condition.AbstractCondition;
 import com.daqem.arc.api.condition.ICondition;
-import com.daqem.arc.api.condition.serializer.ConditionSerializer;
 import com.daqem.arc.api.condition.serializer.IConditionSerializer;
 import com.daqem.arc.api.condition.type.IConditionType;
 import com.daqem.jobsplus.integration.arc.holder.holders.job.JobInstance;
-import com.daqem.jobsplus.integration.arc.condition.serializer.JobsPlusConditionSerializer;
 import com.daqem.jobsplus.integration.arc.condition.type.JobsPlusConditionType;
 import com.daqem.jobsplus.player.JobsServerPlayer;
 import com.daqem.jobsplus.player.job.Job;
@@ -55,12 +53,7 @@ public class JobLevelCondition extends AbstractCondition implements IJobConditio
     public IConditionType<? extends ICondition> getType() {
         return JobsPlusConditionType.JOB_LEVEL;
     }
-
-    @Override
-    public IConditionSerializer<? extends ICondition> getSerializer() {
-        return JobsPlusConditionSerializer.JOB_LEVEL;
-    }
-
+    
     public ResourceLocation getJobLocation() {
         return jobLocation;
     }
@@ -70,7 +63,7 @@ public class JobLevelCondition extends AbstractCondition implements IJobConditio
         return level;
     }
 
-    public static class Serializer implements ConditionSerializer<JobLevelCondition> {
+    public static class Serializer implements IConditionSerializer<JobLevelCondition> {
 
         @Override
         public JobLevelCondition fromJson(ResourceLocation location, JsonObject jsonObject, boolean inverted) {
@@ -90,7 +83,7 @@ public class JobLevelCondition extends AbstractCondition implements IJobConditio
 
         @Override
         public void toNetwork(FriendlyByteBuf friendlyByteBuf, JobLevelCondition type) {
-            ConditionSerializer.super.toNetwork(friendlyByteBuf, type);
+            IConditionSerializer.super.toNetwork(friendlyByteBuf, type);
             friendlyByteBuf.writeResourceLocation(type.jobLocation);
             friendlyByteBuf.writeInt(type.level);
         }

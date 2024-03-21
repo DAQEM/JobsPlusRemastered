@@ -3,11 +3,9 @@ package com.daqem.jobsplus.integration.arc.condition.conditions.job;
 import com.daqem.arc.api.action.data.ActionData;
 import com.daqem.arc.api.condition.AbstractCondition;
 import com.daqem.arc.api.condition.ICondition;
-import com.daqem.arc.api.condition.serializer.ConditionSerializer;
 import com.daqem.arc.api.condition.serializer.IConditionSerializer;
 import com.daqem.arc.api.condition.type.IConditionType;
 import com.daqem.jobsplus.integration.arc.holder.holders.job.JobInstance;
-import com.daqem.jobsplus.integration.arc.condition.serializer.JobsPlusConditionSerializer;
 import com.daqem.jobsplus.integration.arc.condition.type.JobsPlusConditionType;
 import com.daqem.jobsplus.player.JobsServerPlayer;
 import com.daqem.jobsplus.player.job.Job;
@@ -43,12 +41,7 @@ public class JobExperiencePercentageCondition extends AbstractCondition {
         return JobsPlusConditionType.JOB_EXPERIENCE_PERCENTAGE;
     }
 
-    @Override
-    public IConditionSerializer<? extends ICondition> getSerializer() {
-        return JobsPlusConditionSerializer.JOB_EXPERIENCE_PERCENTAGE;
-    }
-
-    public static class Serializer implements ConditionSerializer<JobExperiencePercentageCondition> {
+    public static class Serializer implements IConditionSerializer<JobExperiencePercentageCondition> {
 
         @Override
         public JobExperiencePercentageCondition fromJson(ResourceLocation location, JsonObject jsonObject, boolean inverted) {
@@ -66,7 +59,7 @@ public class JobExperiencePercentageCondition extends AbstractCondition {
 
         @Override
         public void toNetwork(FriendlyByteBuf friendlyByteBuf, JobExperiencePercentageCondition type) {
-            ConditionSerializer.super.toNetwork(friendlyByteBuf, type);
+            IConditionSerializer.super.toNetwork(friendlyByteBuf, type);
             friendlyByteBuf.writeDouble(type.percentage);
         }
     }

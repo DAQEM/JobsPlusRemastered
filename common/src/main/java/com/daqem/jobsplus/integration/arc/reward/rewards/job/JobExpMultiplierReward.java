@@ -5,14 +5,11 @@ import com.daqem.arc.api.action.holder.IActionHolder;
 import com.daqem.arc.api.action.result.ActionResult;
 import com.daqem.arc.api.player.ArcPlayer;
 import com.daqem.arc.api.reward.AbstractReward;
-import com.daqem.arc.api.reward.IReward;
 import com.daqem.arc.api.reward.serializer.IRewardSerializer;
-import com.daqem.arc.api.reward.serializer.RewardSerializer;
 import com.daqem.arc.api.reward.type.IRewardType;
 import com.daqem.jobsplus.integration.arc.data.type.JobsPlusActionDataType;
 import com.daqem.jobsplus.integration.arc.holder.holders.job.JobInstance;
 import com.daqem.jobsplus.integration.arc.holder.holders.powerup.PowerupInstance;
-import com.daqem.jobsplus.integration.arc.reward.serializer.JobsPlusRewardSerializer;
 import com.daqem.jobsplus.integration.arc.reward.type.JobsPlusRewardType;
 import com.daqem.jobsplus.player.JobsServerPlayer;
 import com.daqem.jobsplus.player.job.Job;
@@ -35,11 +32,6 @@ public class JobExpMultiplierReward extends AbstractReward {
     @Override
     public IRewardType<?> getType() {
         return JobsPlusRewardType.JOB_EXP_MULTIPLIER;
-    }
-
-    @Override
-    public IRewardSerializer<? extends IReward> getSerializer() {
-        return JobsPlusRewardSerializer.JOB_EXP_MULTIPLIER;
     }
 
     @Override
@@ -70,7 +62,7 @@ public class JobExpMultiplierReward extends AbstractReward {
         return new ActionResult();
     }
 
-    public static class Serializer implements RewardSerializer<JobExpMultiplierReward> {
+    public static class Serializer implements IRewardSerializer<JobExpMultiplierReward> {
 
         @Override
         public JobExpMultiplierReward fromJson(JsonObject jsonObject, double chance, int priority) {
@@ -92,7 +84,7 @@ public class JobExpMultiplierReward extends AbstractReward {
 
         @Override
         public void toNetwork(FriendlyByteBuf friendlyByteBuf, JobExpMultiplierReward type) {
-            RewardSerializer.super.toNetwork(friendlyByteBuf, type);
+            IRewardSerializer.super.toNetwork(friendlyByteBuf, type);
             friendlyByteBuf.writeResourceLocation(type.jobLocation);
             friendlyByteBuf.writeDouble(type.multiplier);
         }

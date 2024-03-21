@@ -3,12 +3,10 @@ package com.daqem.jobsplus.integration.arc.condition.conditions.powerup;
 import com.daqem.arc.api.action.data.ActionData;
 import com.daqem.arc.api.condition.AbstractCondition;
 import com.daqem.arc.api.condition.ICondition;
-import com.daqem.arc.api.condition.serializer.ConditionSerializer;
 import com.daqem.arc.api.condition.serializer.IConditionSerializer;
 import com.daqem.arc.api.condition.type.IConditionType;
 import com.daqem.jobsplus.JobsPlus;
 import com.daqem.jobsplus.integration.arc.condition.conditions.job.HasJobCondition;
-import com.daqem.jobsplus.integration.arc.condition.serializer.JobsPlusConditionSerializer;
 import com.daqem.jobsplus.integration.arc.condition.type.JobsPlusConditionType;
 import com.daqem.jobsplus.integration.arc.holder.holders.job.JobInstance;
 import com.daqem.jobsplus.integration.arc.holder.holders.powerup.PowerupInstance;
@@ -35,11 +33,6 @@ public class HasPowerupActivatedCondition extends AbstractCondition  {
     }
 
     @Override
-    public IConditionSerializer<? extends ICondition> getSerializer() {
-        return JobsPlusConditionSerializer.HAS_POWERUP_ACTIVATED;
-    }
-
-    @Override
     public boolean isMet(ActionData actionData) {
         PowerupInstance powerupInstance = PowerupInstance.of(powerupLocation);
         if (powerupInstance != null) {
@@ -55,7 +48,7 @@ public class HasPowerupActivatedCondition extends AbstractCondition  {
         return false;
     }
 
-    public static class Serializer implements ConditionSerializer<HasPowerupActivatedCondition> {
+    public static class Serializer implements IConditionSerializer<HasPowerupActivatedCondition> {
 
         @Override
         public HasPowerupActivatedCondition fromJson(ResourceLocation location, JsonObject jsonObject, boolean inverted) {
@@ -73,7 +66,7 @@ public class HasPowerupActivatedCondition extends AbstractCondition  {
 
         @Override
         public void toNetwork(FriendlyByteBuf friendlyByteBuf, HasPowerupActivatedCondition type) {
-            ConditionSerializer.super.toNetwork(friendlyByteBuf, type);
+            IConditionSerializer.super.toNetwork(friendlyByteBuf, type);
             friendlyByteBuf.writeResourceLocation(type.powerupLocation);
         }
     }
