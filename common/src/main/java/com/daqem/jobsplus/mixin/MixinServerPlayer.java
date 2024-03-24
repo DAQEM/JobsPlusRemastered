@@ -15,6 +15,7 @@ import com.daqem.jobsplus.player.JobsServerPlayer;
 import com.daqem.jobsplus.player.job.Job;
 import com.daqem.jobsplus.player.job.exp.ExpCollector;
 import com.daqem.jobsplus.player.job.powerup.Powerup;
+import com.daqem.jobsplus.player.job.powerup.PowerupState;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -157,7 +158,8 @@ public abstract class MixinServerPlayer extends Player implements JobsServerPlay
         List<IActionHolder> actionHolders = new ArrayList<>(jobsplus$getJobInstances());
         actionHolders.addAll(jobsplus$getJobs().stream()
                 .map(Job::getPowerupManager)
-                .flatMap(powerupManager -> powerupManager.getAllPowerups().stream())
+                .flatMap(powerupManager -> powerupManager.getAllPowerups().stream()
+                        .filter(powerup -> powerup.getPowerupState() == PowerupState.ACTIVE))
                 .map(Powerup::getPowerupInstance)
                 .toList());
         return actionHolders;
@@ -192,7 +194,9 @@ public abstract class MixinServerPlayer extends Player implements JobsServerPlay
             arcPlayer.arc$removeActionHolder(job.getJobInstance());
             job.getPowerupManager().getAllPowerups().forEach(powerup -> arcPlayer.arc$removeActionHolder(powerup.getPowerupInstance()));
             arcPlayer.arc$addActionHolder(job.getJobInstance());
-            job.getPowerupManager().getAllPowerups().forEach(powerup -> arcPlayer.arc$addActionHolder(powerup.getPowerupInstance()));
+            job.getPowerupManager().getAllPowerups().stream()
+                    .filter(powerup -> powerup.getPowerupState() == PowerupState.ACTIVE)
+                    .forEach(powerup -> arcPlayer.arc$addActionHolder(powerup.getPowerupInstance()));
         }
     }
 

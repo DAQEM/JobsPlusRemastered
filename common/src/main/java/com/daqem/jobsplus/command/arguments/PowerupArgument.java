@@ -32,7 +32,7 @@ public class PowerupArgument implements ArgumentType<PowerupInstance> {
     public <S> CompletableFuture<Suggestions> listSuggestions(CommandContext<S> context, SuggestionsBuilder builder) {
         List<ResourceLocation> powerups = new ArrayList<>();
         try {
-            powerups = context.getArgument("job", JobInstance.class).getAllPowerups().stream().map(PowerupInstance::getLocation).toList();
+            powerups = context.getArgument("job", JobInstance.class).getPowerups().stream().map(PowerupInstance::getLocation).toList();
         } catch (NullPointerException ignored) {
         }
         return SharedSuggestionProvider.suggest(powerups.stream().map(ResourceLocation::toString), builder);

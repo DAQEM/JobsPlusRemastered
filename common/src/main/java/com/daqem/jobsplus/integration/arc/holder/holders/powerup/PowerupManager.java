@@ -1,8 +1,6 @@
 package com.daqem.jobsplus.integration.arc.holder.holders.powerup;
 
 import com.daqem.arc.api.action.holder.ActionHolderManager;
-import com.daqem.arc.data.ActionManager;
-import com.daqem.jobsplus.JobsPlus;
 import com.daqem.jobsplus.JobsPlusExpectPlatform;
 import com.daqem.jobsplus.integration.arc.holder.holders.job.JobManager;
 import com.daqem.jobsplus.integration.arc.holder.type.JobsPlusActionHolderType;
@@ -10,6 +8,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.mojang.logging.LogUtils;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -19,7 +18,6 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -41,28 +39,24 @@ public abstract class PowerupManager extends SimpleJsonResourceReloadListener {
 
     @Override
     protected void apply(@NotNull Map<ResourceLocation, JsonElement> map, @NotNull ResourceManager resourceManager, @NotNull ProfilerFiller profilerFiller) {
+        ActionHolderManager actionHolderManager = ActionHolderManager.getInstance();
+        actionHolderManager.clearAllActionHoldersForType(JobsPlusActionHolderType.POWERUP_INSTANCE);
         List<PowerupInstance> tempPowerups = new ArrayList<>();
 
         map.forEach((location, jsonElement) -> {
             try {
-                PowerupInstance powerup = GSON.fromJson(jsonElement, PowerupInstance.class);
-                powerup.setLocation(location);
+                JsonObject jsonObject = jsonElement.getAsJsonObject();
+                jsonObject.addProperty("location", location.toString());
+                PowerupInstance powerup = GSON.fromJson(jsonObject, PowerupInstance.class);
                 tempPowerups.add(powerup);
-                ActionHolderManager.getInstance().registerActionHolder(powerup);
-
-                powerup.clearActions();
-                ActionManager.getInstance().getActions().stream()
-                        .filter(action -> action.getActionHolderType() == JobsPlusActionHolderType.POWERUP_INSTANCE && action.getActionHolderLocation().equals(location))
-                        .forEach(powerup::addAction);
             } catch (Exception e) {
                 LOGGER.error("Could not deserialize job {} because: {}", location, e.getMessage());
                 throw e;
             }
         });
 
-        powerups = ImmutableMap.copyOf(sortPowerups(tempPowerups));
-        JobManager.getInstance().addPowerups(powerups);
-        LOGGER.info("Loaded {} job powerups", getAllPowerups().size());
+        LOGGER.info("Loaded {} job powerups", tempPowerups.size());
+        actionHolderManager.registerActionHolders(new ArrayList<>(tempPowerups));
     }
 
     public static PowerupManager getInstance() {
@@ -70,46 +64,15 @@ public abstract class PowerupManager extends SimpleJsonResourceReloadListener {
     }
 
     public ImmutableMap<ResourceLocation, PowerupInstance> getRootPowerups() {
-        return powerups;
-    }
-
-    public Map<ResourceLocation, PowerupInstance> sortPowerups(List<PowerupInstance> powerupInstances) {
-        powerupInstances.forEach(powerupInstance -> {
-            if (powerupInstance.getParentLocation() != null) {
-                PowerupInstance parent = getPowerupFromList(powerupInstances, powerupInstance.getParentLocation());
-                if (parent != null) {
-                    powerupInstance.setParent(parent);
-                    parent.addChild(powerupInstance);
-                }
-            }
-        });
-
-        return powerupInstances.stream()
-                .filter(powerupInstance -> powerupInstance.getParent() == null)
-                .collect(ImmutableMap.toImmutableMap(PowerupInstance::getLocation, powerup -> powerup));
-    }
-
-    public PowerupInstance getPowerupFromList(List<PowerupInstance> powerupInstances, ResourceLocation location) {
-        return powerupInstances.stream().filter(powerupInstance -> powerupInstance.getLocation().equals(location)).findFirst().orElse(null);
+        return getAllPowerups().entrySet().stream()
+                .filter(entry -> entry.getValue().getParentLocation() == null)
+                .collect(ImmutableMap.toImmutableMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
     public Map<ResourceLocation, PowerupInstance> getAllPowerups() {
-        return getAllPowerupsRecursive(powerups);
-    }
-
-    private Map<ResourceLocation, PowerupInstance> getAllPowerupsRecursive(Map<ResourceLocation, PowerupInstance> powerups) {
-        Map<ResourceLocation, PowerupInstance> allPowerups = new HashMap<>();
-        powerups.forEach((location, powerup) -> {
-            allPowerups.put(location, powerup);
-            allPowerups.putAll(getAllPowerupsRecursive(powerup.getChildren().stream().collect(ImmutableMap.toImmutableMap(PowerupInstance::getLocation, powerupInstance -> powerupInstance))));
-        });
-        return allPowerups;
-    }
-
-    public void replacePowerups(List<PowerupInstance> powerupInstances) {
-        powerups = ImmutableMap.copyOf(sortPowerups(powerupInstances));
-        powerups.forEach((location, powerup) -> ActionHolderManager.getInstance().registerActionHolder(powerup));
-        JobManager.getInstance().addPowerups(powerups);
-        JobsPlus.LOGGER.info("Updated {} powerups", powerupInstances.size());
+        return ActionHolderManager.getInstance().getActionHolders().stream()
+                .filter(actionHolder -> actionHolder instanceof PowerupInstance)
+                .map(actionHolder -> (PowerupInstance) actionHolder)
+                .collect(ImmutableMap.toImmutableMap(PowerupInstance::getLocation, powerupInstance -> powerupInstance));
     }
 }

@@ -158,8 +158,7 @@ public class JobCommand {
     private static int setPowerup(CommandSourceStack source, ServerPlayer target, JobInstance jobInstance, PowerupInstance powerupInstance, PowerupState powerupState) {
         if (target instanceof JobsServerPlayer jobsServerPlayer) {
             Job job = jobsServerPlayer.jobsplus$getJob(jobInstance);
-            job.getPowerupManager().forceAddPowerup(powerupInstance, powerupState);
-            jobsServerPlayer.jobsplus$updateJob(job);
+            job.getPowerupManager().forceAddPowerup(jobsServerPlayer, job, powerupInstance, powerupState);
             source.sendSuccess(() -> JobsPlus.translatable(
                     "command.set.powerup.success", jobInstance.getLocation(), powerupInstance.getLocation(), powerupState), false);
         }

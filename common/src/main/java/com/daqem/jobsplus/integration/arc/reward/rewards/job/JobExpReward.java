@@ -5,11 +5,8 @@ import com.daqem.arc.api.action.result.ActionResult;
 import com.daqem.arc.api.reward.AbstractReward;
 import com.daqem.arc.api.reward.IReward;
 import com.daqem.arc.api.reward.serializer.IRewardSerializer;
-import com.daqem.arc.api.reward.serializer.RewardSerializer;
 import com.daqem.arc.api.reward.type.IRewardType;
-import com.daqem.jobsplus.integration.arc.data.type.JobsPlusActionDataType;
 import com.daqem.jobsplus.integration.arc.holder.holders.job.JobInstance;
-import com.daqem.jobsplus.integration.arc.reward.serializer.JobsPlusRewardSerializer;
 import com.daqem.jobsplus.integration.arc.reward.type.JobsPlusRewardType;
 import com.daqem.jobsplus.player.JobsServerPlayer;
 import com.daqem.jobsplus.player.job.Job;
@@ -38,11 +35,6 @@ public class JobExpReward extends AbstractReward {
     }
 
     @Override
-    public IRewardSerializer<? extends IReward> getSerializer() {
-        return JobsPlusRewardSerializer.JOB_EXP;
-    }
-
-    @Override
     public ActionResult apply(ActionData actionData) {
         if (actionData.getSourceActionHolder() instanceof JobInstance jobInstance) {
             if (actionData.getPlayer() instanceof JobsServerPlayer jobsServerPlayer) {
@@ -56,7 +48,7 @@ public class JobExpReward extends AbstractReward {
         return new ActionResult();
     }
 
-    public static class Serializer implements RewardSerializer<JobExpReward> {
+    public static class Serializer implements IRewardSerializer<JobExpReward> {
         @Override
         public JobExpReward fromJson(JsonObject jsonObject, double chance, int priority) {
             return new JobExpReward(
@@ -77,7 +69,7 @@ public class JobExpReward extends AbstractReward {
 
         @Override
         public void toNetwork(FriendlyByteBuf friendlyByteBuf, JobExpReward type) {
-            RewardSerializer.super.toNetwork(friendlyByteBuf, type);
+            IRewardSerializer.super.toNetwork(friendlyByteBuf, type);
             friendlyByteBuf.writeInt(type.min);
             friendlyByteBuf.writeInt(type.max);
         }

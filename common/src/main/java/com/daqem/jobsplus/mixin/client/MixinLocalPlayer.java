@@ -7,6 +7,7 @@ import com.daqem.jobsplus.integration.arc.holder.holders.job.JobInstance;
 import com.daqem.jobsplus.integration.arc.holder.holders.job.JobManager;
 import com.daqem.jobsplus.player.job.Job;
 import com.daqem.jobsplus.player.job.powerup.Powerup;
+import com.daqem.jobsplus.player.job.powerup.PowerupState;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.AbstractClientPlayer;
@@ -147,7 +148,9 @@ public abstract class MixinLocalPlayer extends AbstractClientPlayer implements J
             arcPlayer.arc$removeActionHolder(job.getJobInstance());
             job.getPowerupManager().getAllPowerups().forEach(powerup -> arcPlayer.arc$removeActionHolder(powerup.getPowerupInstance()));
             arcPlayer.arc$addActionHolder(job.getJobInstance());
-            job.getPowerupManager().getAllPowerups().forEach(powerup -> arcPlayer.arc$addActionHolder(powerup.getPowerupInstance()));
+            job.getPowerupManager().getAllPowerups().stream()
+                    .filter(powerup -> powerup.getPowerupState() == PowerupState.ACTIVE)
+                    .forEach(powerup -> arcPlayer.arc$addActionHolder(powerup.getPowerupInstance()));
         }
     }
 }

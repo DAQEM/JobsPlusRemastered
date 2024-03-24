@@ -14,40 +14,17 @@ public class JobPowerupManager {
     private final List<Powerup> powerups;
 
     public JobPowerupManager(@NotNull List<Powerup> powerups) {
-        this.powerups = sortPowerups(powerups);
+        this.powerups = powerups;
     }
 
-    public @Nullable Powerup getPowerup(PowerupInstance powerupInstance) {
-        if (powerupInstance == null) {
-            return null;
-        }
-        return getPowerupRecursive(powerups, powerupInstance);
-    }
-
-    public Powerup getPowerupRecursive(List<Powerup> powerups, PowerupInstance powerupInstance) {
-        for (Powerup powerup : powerups) {
-            if (powerup.getPowerupInstance().getLocation().equals(powerupInstance.getLocation())) {
-                return powerup;
-            }
-            Powerup found = getPowerupRecursive(powerup.getChildren(), powerupInstance);
-            if (found != null) {
-                return found;
-            }
-        }
-        return null;
+    public Optional<Powerup> getPowerup(PowerupInstance powerupInstance) {
+        return powerups.stream()
+                .filter(powerup -> powerup.getPowerupInstance().getLocation().equals(powerupInstance.getLocation()))
+                .findFirst();
     }
 
     public List<Powerup> getAllPowerups() {
-        return getAllPowerupsRecursive(powerups);
-    }
-
-    private List<Powerup> getAllPowerupsRecursive(List<Powerup> powerups) {
-        List<Powerup> allPowerups = new ArrayList<>();
-        for (Powerup powerup : powerups) {
-            allPowerups.add(powerup);
-            allPowerups.addAll(getAllPowerupsRecursive(powerup.getChildren()));
-        }
-        return allPowerups;
+        return powerups;
     }
 
     public boolean addPowerup(JobsPlayer player, Job job, PowerupInstance powerupInstance) {
@@ -56,18 +33,9 @@ public class JobPowerupManager {
 
     public boolean addPowerup(JobsPlayer player, Job job, PowerupInstance powerupInstance, PowerupState powerupState) {
         if (canAddPowerup(powerupInstance)) {
-            if (powerupInstance.getParent() == null) {
-                powerups.add(new Powerup(powerupInstance, powerupState));
-                this.sendJobUpdatePacket(job, player);
-                return true;
-            } else {
-                Powerup parent = getPowerup(powerupInstance.getParent());
-                if (parent != null) {
-                    parent.getChildren().add(new Powerup(powerupInstance, powerupState));
-                    this.sendJobUpdatePacket(job, player);
-                    return true;
-                }
-            }
+            powerups.add(new Powerup(powerupInstance, powerupState));
+            this.sendJobUpdatePacket(job, player);
+            return true;
         }
         return false;
     }
@@ -79,82 +47,47 @@ public class JobPowerupManager {
     }
 
     public boolean canAddPowerup(PowerupInstance powerupInstance) {
-        if (powerupInstance.getParent() == null) {
-            return true;
-        }
-        Powerup parent = getPowerup(powerupInstance.getParent());
-        return parent != null;
+        if (powerupInstance.getParent() == null) return true;
+        return getPowerup(powerupInstance.getParent()).isPresent();
     }
 
-    public void forceAddPowerup(PowerupInstance powerupInstance, PowerupState powerupState) {
-        Powerup powerup = getPowerup(powerupInstance);
-        if (powerup == null) {
-            powerup = new Powerup(powerupInstance, powerupState);
-            forceAddPowerupRecursive(powerupInstance, powerup, powerupState);
-        } else {
-            if (powerupState == PowerupState.NOT_OWNED) {
-                removePowerup(powerupInstance);
-            } else {
-                powerup.setPowerupState(powerupState);
-            }
-        }
-    }
-
-    private void forceAddPowerupRecursive(PowerupInstance powerupInstance, Powerup powerup, PowerupState powerupState) {
-        if (powerupInstance.getParent() == null) {
-            powerups.add(powerup);
-        } else {
-            Powerup parent = getPowerup(powerupInstance.getParent());
-            if (parent == null) {
-                parent = new Powerup(powerupInstance.getParent(), powerupState);
-                forceAddPowerupRecursive(powerupInstance.getParent(), parent, powerupState);
-            }
-            parent.getChildren().add(powerup);
-            powerup.setParent(parent);
-        }
-    }
-
-    public void removePowerup(PowerupInstance powerupInstance) {
-        Powerup powerup = getPowerup(powerupInstance);
-        if (powerup != null) {
-            Powerup parent = powerup.getParent();
-            if (parent != null) {
-                parent.getChildren().remove(powerup);
-            } else {
-                powerups.remove(powerup);
-            }
-        }
-    }
-
-    public List<Powerup> sortPowerups(List<Powerup> powerups) {
-        List<Powerup> rootPowerups = new ArrayList<>();
-
-        Map<PowerupInstance, Powerup> powerupMap = new HashMap<>();
-        for (Powerup powerup : powerups) {
-            powerupMap.put(powerup.getPowerupInstance(), powerup);
-        }
-
-        for (Powerup powerup : powerups) {
-            PowerupInstance powerupInstance = powerup.getPowerupInstance();
-            if (powerupInstance != null) {
-                PowerupInstance parentInstance = powerupInstance.getParent();
-                if (parentInstance != null) {
-                    Powerup parentPowerup = powerupMap.get(parentInstance);
-                    if (parentPowerup != null) {
-                        parentPowerup.getChildren().add(powerup);
-                        powerup.setParent(parentPowerup);
-                    }
-                } else {
-                    rootPowerups.add(powerup);
-                }
-            }
-        }
-
-        rootPowerups.sort(Comparator.comparing(powerup -> powerup.getPowerupInstance().getLocation()));
-        return rootPowerups;
+    public void forceAddPowerup(JobsPlayer player, Job job, PowerupInstance powerupInstance, PowerupState powerupState) {
+        powerups.add(new Powerup(powerupInstance, powerupState));
+        this.sendJobUpdatePacket(job, player);
     }
 
     public void clearPowerups() {
         powerups.clear();
+    }
+
+    public Optional<Powerup> getParent(PowerupInstance powerupInstance) {
+        PowerupInstance parentPowerupInstance = powerupInstance.getParent();
+        if (parentPowerupInstance == null) return Optional.empty();
+        return getPowerup(parentPowerupInstance);
+    }
+
+    public Optional<Powerup> getParent(Powerup powerup) {
+        PowerupInstance parentPowerupInstance = powerup.getPowerupInstance().getParent();
+        if (parentPowerupInstance == null) return Optional.empty();
+        return getPowerup(parentPowerupInstance);
+    }
+
+    public List<Powerup> getChildren(PowerupInstance powerupInstance) {
+        return getChildren(powerupInstance, powerups);
+    }
+
+    public List<Powerup> getChildren(Powerup powerup) {
+        return getChildren(powerup, powerups);
+    }
+
+    public static List<Powerup> getChildren(PowerupInstance powerupInstance, List<Powerup> powerups) {
+        return powerups.stream()
+                .filter(powerup -> powerup.getPowerupInstance().getParentLocation() != null
+                        && powerup.getPowerupInstance().getParentLocation().equals(powerupInstance.getLocation()))
+                .toList();
+    }
+
+    public static List<Powerup> getChildren(Powerup powerup, List<Powerup> powerups) {
+        return getChildren(powerup.getPowerupInstance(), powerups);
     }
 }

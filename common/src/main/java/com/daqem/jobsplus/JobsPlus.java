@@ -4,11 +4,8 @@ import com.daqem.arc.registry.ArcRegistry;
 import com.daqem.jobsplus.config.JobsPlusConfig;
 import com.daqem.jobsplus.event.command.EventRegisterCommands;
 import com.daqem.jobsplus.integration.arc.holder.type.JobsPlusActionHolderType;
-import com.daqem.jobsplus.integration.arc.action.serializer.JobsPlusActionSerializer;
 import com.daqem.jobsplus.integration.arc.action.type.JobsPlusActionType;
-import com.daqem.jobsplus.integration.arc.condition.serializer.JobsPlusConditionSerializer;
 import com.daqem.jobsplus.integration.arc.condition.type.JobsPlusConditionType;
-import com.daqem.jobsplus.integration.arc.reward.serializer.JobsPlusRewardSerializer;
 import com.daqem.jobsplus.integration.arc.reward.type.JobsPlusRewardType;
 import com.daqem.jobsplus.networking.JobsPlusNetworking;
 import com.mojang.logging.LogUtils;
@@ -37,9 +34,6 @@ public class JobsPlus {
         JobsPlusRewardType.init();
         JobsPlusConditionType.init();
         JobsPlusActionHolderType.init();
-        JobsPlusActionSerializer.init();
-        JobsPlusRewardSerializer.init();
-        JobsPlusConditionSerializer.init();
     }
 
     private static void registerEvents() {

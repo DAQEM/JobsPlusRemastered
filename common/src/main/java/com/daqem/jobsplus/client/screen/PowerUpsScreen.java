@@ -54,8 +54,13 @@ public class PowerUpsScreen extends AbstractScreen {
         this.jobInstance = job.getJobInstance();
         this.coins = coins;
 
-        PowerupInstance rootInstance = new PowerupInstance(null, null, jobInstance.getName().getString() + " Power-ups", "Choose a power-up you want to buy.", jobInstance.getIconItem(), 0, 0);
-        rootPowerups.forEach(rootInstance::addChild);
+        PowerupInstance rootInstance = new PowerupInstance(null, null, null, jobInstance.getName().getString() + " Power-ups", "Choose a power-up you want to buy.", jobInstance.getIconItem(), 0, 0) {
+
+            @Override
+            public List<PowerupInstance> getChildren() {
+                return rootPowerups;
+            }
+        };
 
         this.rootWidget = PowerupWidget.run(job, rootInstance, allPowerups);
         this.rootWidget.setMinMaxXY(this);

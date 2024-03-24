@@ -4,8 +4,6 @@
     "id": "jobsplus:digger"
   },
   "type": "arc:on_break_block",
-  "short_description": "Digging other blocks",
-  "description": "Diggers who want to earn more job experience can try their hand at breaking other blocks with their shovel or by hand, like clay and grass blocks. However, these blocks are more uncommon, making them more rewarding to break. Keep at it, and you'll soon become a master Digger!",
   "rewards": [
     {
       "type": "jobsplus:job_exp",

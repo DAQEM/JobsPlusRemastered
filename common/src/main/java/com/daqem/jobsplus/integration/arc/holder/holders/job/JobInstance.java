@@ -1,7 +1,8 @@
 package com.daqem.jobsplus.integration.arc.holder.holders.job;
 
-import com.daqem.arc.api.action.IAction;
-import com.daqem.arc.api.action.holder.IActionHolder;
+import com.daqem.arc.api.action.holder.AbstractActionHolder;
+import com.daqem.arc.api.action.holder.ActionHolderManager;
+import com.daqem.arc.api.action.holder.serializer.IActionHolderSerializer;
 import com.daqem.arc.api.action.holder.type.IActionHolderType;
 import com.daqem.itemrestrictions.data.ItemRestriction;
 import com.daqem.itemrestrictions.data.ItemRestrictionManager;
@@ -24,14 +25,11 @@ import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class JobInstance implements IActionHolder {
-
-    private ResourceLocation location;
+public class JobInstance extends AbstractActionHolder {
 
     private final int price;
     private final int maxLevel;
@@ -39,25 +37,19 @@ public class JobInstance implements IActionHolder {
     private final ItemStack iconItem;
     private final ResourceLocation powerupBackground;
     private final boolean isDefault;
-    private final Map<ResourceLocation, IAction> actions = new HashMap<>();
-    private List<PowerupInstance> powerupInstances;
 
-    public JobInstance(int price, int maxLevel, String color, ItemStack iconItem, ResourceLocation powerupBackground, boolean isDefault) {
-        this(price, maxLevel, color, iconItem, powerupBackground, isDefault, new ArrayList<>());
+    public JobInstance(ResourceLocation location, int price, int maxLevel, String color, ItemStack iconItem, ResourceLocation powerupBackground, boolean isDefault) {
+        this(location, price, maxLevel, color, iconItem, powerupBackground, isDefault, new ArrayList<>());
     }
 
-    public JobInstance(int price, int maxLevel, String color, ItemStack iconItem, ResourceLocation powerupBackground, boolean isDefault, List<PowerupInstance> powerupInstances) {
+    public JobInstance(ResourceLocation location, int price, int maxLevel, String color, ItemStack iconItem, ResourceLocation powerupBackground, boolean isDefault, List<PowerupInstance> powerupInstances) {
+        super(location);
         this.price = price;
         this.maxLevel = maxLevel;
         this.color = color;
         this.iconItem = iconItem;
         this.powerupBackground = powerupBackground;
         this.isDefault = isDefault;
-        this.powerupInstances = powerupInstances;
-    }
-
-    public void setLocation(ResourceLocation location) {
-        this.location = location;
     }
 
     public int getPrice() {
@@ -81,22 +73,10 @@ public class JobInstance implements IActionHolder {
     }
 
     public List<PowerupInstance> getPowerups() {
-        return powerupInstances;
-    }
-
-    public List<PowerupInstance> getAllPowerups() {
-        List<PowerupInstance> powerups = new ArrayList<>();
-        getPowerupsRecursive(powerupInstances, powerups);
-        return powerups;
-    }
-
-    private void getPowerupsRecursive(List<PowerupInstance> powerups, List<PowerupInstance> powerupInstances) {
-        for (PowerupInstance powerupInstance : powerups) {
-            powerupInstances.add(powerupInstance);
-            if (powerupInstance.hasChildPowerups()) {
-                getPowerupsRecursive(powerupInstance.getPowerups(), powerupInstances);
-            }
-        }
+        return ActionHolderManager.getInstance().getActionHolders().stream()
+                .filter(actionHolder -> actionHolder instanceof PowerupInstance powerupInstance && powerupInstance.getJobLocation().equals(location))
+                .map(actionHolder -> (PowerupInstance) actionHolder)
+                .collect(Collectors.toList());
     }
 
     public int getColorDecimal() {
@@ -129,23 +109,6 @@ public class JobInstance implements IActionHolder {
                 ));
     }
 
-    public void setPowerups(List<PowerupInstance> powerupInstances) {
-        this.powerupInstances = powerupInstances;
-    }
-
-    public ResourceLocation getLocation() {
-        return location;
-    }
-
-    public List<IAction> getActions() {
-        return actions.values().stream().toList();
-    }
-
-    @Override
-    public void addAction(IAction action) {
-        actions.put(action.getLocation(), action);
-    }
-
     @Override
     public IActionHolderType<?> getType() {
         return JobsPlusActionHolderType.JOB_INSTANCE;
@@ -156,21 +119,18 @@ public class JobInstance implements IActionHolder {
         return JobManager.getInstance().getJobs().get(location);
     }
 
-    public void clearActions() {
-        actions.clear();
-    }
-
     @Override
     public boolean equals(Object obj) {
         return obj instanceof JobInstance jobInstance && jobInstance.location.equals(location);
     }
 
-    public static class Serializer implements JobsPlusSerializer<JobInstance> {
+    public static class Serializer implements JobsPlusSerializer<JobInstance>, IActionHolderSerializer<JobInstance> {
 
         @Override
         public JobInstance deserialize(JsonElement element, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
             JsonObject json = element.getAsJsonObject();
             return new JobInstance(
+                    new ResourceLocation(GsonHelper.getAsString(json, "location")),
                     GsonHelper.getAsInt(json, "price"),
                     GsonHelper.getAsInt(json, "max_level"),
                     GsonHelper.getAsString(json, "color"),
@@ -179,8 +139,19 @@ public class JobInstance implements IActionHolder {
                     GsonHelper.getAsBoolean(json, "is_default", false));
         }
 
+        @Override
+        public JobInstance fromJson(ResourceLocation location, JsonObject jsonObject, int i) {
+            return null;
+        }
+
+        @Override
+        public JobInstance fromNetwork(ResourceLocation location, FriendlyByteBuf friendlyByteBuf, int i) {
+            return fromNetwork(friendlyByteBuf);
+        }
+
         public JobInstance fromNetwork(FriendlyByteBuf friendlyByteBuf) {
-            JobInstance job = new JobInstance(
+            return new JobInstance(
+                    friendlyByteBuf.readResourceLocation(),
                     friendlyByteBuf.readVarInt(),
                     friendlyByteBuf.readVarInt(),
                     friendlyByteBuf.readUtf(),
@@ -188,18 +159,16 @@ public class JobInstance implements IActionHolder {
                     friendlyByteBuf.readResourceLocation(),
                     friendlyByteBuf.readBoolean()
             );
-            job.setLocation(friendlyByteBuf.readResourceLocation());
-            return job;
         }
 
         public void toNetwork(FriendlyByteBuf friendlyByteBuf, JobInstance jobInstance) {
+            friendlyByteBuf.writeResourceLocation(jobInstance.location);
             friendlyByteBuf.writeVarInt(jobInstance.price);
             friendlyByteBuf.writeVarInt(jobInstance.maxLevel);
             friendlyByteBuf.writeUtf(jobInstance.color);
             friendlyByteBuf.writeItem(jobInstance.iconItem);
             friendlyByteBuf.writeResourceLocation(jobInstance.powerupBackground);
             friendlyByteBuf.writeBoolean(jobInstance.isDefault);
-            friendlyByteBuf.writeResourceLocation(jobInstance.location);
         }
     }
 }

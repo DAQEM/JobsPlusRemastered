@@ -42,11 +42,10 @@ public class PacketTogglePowerUpC2S extends BaseC2SMessage {
         if (context.getPlayer() instanceof JobsServerPlayer serverPlayer) {
             Job job = serverPlayer.jobsplus$getJob(jobInstance);
             if (job != null) {
-                Powerup powerup = job.getPowerupManager().getPowerup(powerupInstance);
-                if (powerup != null) {
+                job.getPowerupManager().getPowerup(powerupInstance).ifPresent(powerup -> {
                     powerup.toggle();
                     serverPlayer.jobsplus$updateJob(job);
-                }
+                });
             }
         }
     }

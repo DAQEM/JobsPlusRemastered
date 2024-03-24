@@ -4,6 +4,7 @@ import com.daqem.jobsplus.JobsPlus;
 import com.daqem.jobsplus.client.render.RenderColor;
 import com.daqem.jobsplus.client.screen.PowerUpsScreen;
 import com.daqem.jobsplus.player.job.Job;
+import com.daqem.jobsplus.player.job.powerup.JobPowerupManager;
 import com.daqem.jobsplus.player.job.powerup.Powerup;
 import com.daqem.jobsplus.player.job.powerup.PowerupState;
 import com.daqem.jobsplus.integration.arc.holder.holders.powerup.PowerupInstance;
@@ -97,7 +98,8 @@ public class PowerupWidget {
             if (powerup.getPowerupInstance().equals(powerupInstance)) {
                 return powerup;
             }
-            Powerup powerupForPowerupInstance = getPowerupForPowerupInstanceRecursive(powerupInstance, powerup.getChildren());
+            List<Powerup> children1 = JobPowerupManager.getChildren(powerup, allPowerups);
+            Powerup powerupForPowerupInstance = getPowerupForPowerupInstanceRecursive(powerupInstance, children1);
             if (powerupForPowerupInstance != null) {
                 return powerupForPowerupInstance;
             }

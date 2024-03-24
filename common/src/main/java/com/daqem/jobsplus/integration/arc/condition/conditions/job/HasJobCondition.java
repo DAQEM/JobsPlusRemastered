@@ -3,12 +3,10 @@ package com.daqem.jobsplus.integration.arc.condition.conditions.job;
 import com.daqem.arc.api.action.data.ActionData;
 import com.daqem.arc.api.condition.AbstractCondition;
 import com.daqem.arc.api.condition.ICondition;
-import com.daqem.arc.api.condition.serializer.ConditionSerializer;
 import com.daqem.arc.api.condition.serializer.IConditionSerializer;
 import com.daqem.arc.api.condition.type.IConditionType;
 import com.daqem.jobsplus.JobsPlus;
 import com.daqem.jobsplus.integration.arc.holder.holders.job.JobInstance;
-import com.daqem.jobsplus.integration.arc.condition.serializer.JobsPlusConditionSerializer;
 import com.daqem.jobsplus.integration.arc.condition.type.JobsPlusConditionType;
 import com.daqem.jobsplus.player.JobsServerPlayer;
 import com.daqem.jobsplus.player.job.Job;
@@ -47,12 +45,6 @@ public class HasJobCondition extends AbstractCondition implements IJobCondition{
     public IConditionType<? extends ICondition> getType() {
         return JobsPlusConditionType.HAS_JOB;
     }
-
-    @Override
-    public IConditionSerializer<? extends ICondition> getSerializer() {
-        return JobsPlusConditionSerializer.HAS_JOB;
-    }
-
     @Override
     public ResourceLocation getJobLocation() {
         return jobLocation;
@@ -63,7 +55,7 @@ public class HasJobCondition extends AbstractCondition implements IJobCondition{
         return 0;
     }
 
-    public static class Serializer implements ConditionSerializer<HasJobCondition> {
+    public static class Serializer implements IConditionSerializer<HasJobCondition> {
 
         @Override
         public HasJobCondition fromJson(ResourceLocation location, JsonObject jsonObject, boolean inverted) {
@@ -81,7 +73,7 @@ public class HasJobCondition extends AbstractCondition implements IJobCondition{
 
         @Override
         public void toNetwork(FriendlyByteBuf friendlyByteBuf, HasJobCondition type) {
-            ConditionSerializer.super.toNetwork(friendlyByteBuf, type);
+            IConditionSerializer.super.toNetwork(friendlyByteBuf, type);
             friendlyByteBuf.writeResourceLocation(type.jobLocation);
         }
     }

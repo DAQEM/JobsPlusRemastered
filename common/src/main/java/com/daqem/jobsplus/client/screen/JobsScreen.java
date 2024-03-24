@@ -392,7 +392,7 @@ public class JobsScreen extends AbstractScreen {
                 drawCenteredString(guiGraphics, ChatColor.darkGray() + JobsPlus.translatable("gui.powerups.powerups").getString(), centerR, startY + 20, 16777215);
 
                 List<Powerup> allPowerups = getSelectedJob().getPowerupManager().getAllPowerups();
-                guiGraphics.drawString(font, ChatColor.darkGray() + JobsPlus.translatable("gui.powerups.available", getSelectedJob().getJobInstance().getAllPowerups().stream().filter(p -> !allPowerups.stream().map(Powerup::getPowerupInstance).toList().contains(p)).count()).getString(), startX + 150 + 34, startY + 6 + 14 + 36, 16777215, false);
+                guiGraphics.drawString(font, ChatColor.darkGray() + JobsPlus.translatable("gui.powerups.available", getSelectedJob().getJobInstance().getPowerups().stream().filter(p -> !allPowerups.stream().map(Powerup::getPowerupInstance).toList().contains(p)).count()).getString(), startX + 150 + 34, startY + 6 + 14 + 36, 16777215, false);
                 guiGraphics.drawString(font, ChatColor.darkGray() + JobsPlus.translatable("gui.powerups.active", allPowerups.stream().filter(p -> p.getPowerupState() == PowerupState.ACTIVE).count()).getString(), startX + 150 + 34, startY + 6 + 14 + 60, 16777215, false);
                 guiGraphics.drawString(font, ChatColor.darkGray() + JobsPlus.translatable("gui.powerups.inactive", allPowerups.stream().filter(p -> p.getPowerupState() == PowerupState.INACTIVE).count()).getString(), startX + 150 + 34, startY + 6 + 14 + 70, 16777215, false);
 

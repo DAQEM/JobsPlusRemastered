@@ -2,12 +2,10 @@ package com.daqem.jobsplus.integration.arc.action.actions.job;
 
 import com.daqem.arc.api.action.AbstractAction;
 import com.daqem.arc.api.action.holder.type.IActionHolderType;
-import com.daqem.arc.api.action.serializer.ActionSerializer;
 import com.daqem.arc.api.action.serializer.IActionSerializer;
 import com.daqem.arc.api.action.type.IActionType;
 import com.daqem.arc.api.condition.ICondition;
 import com.daqem.arc.api.reward.IReward;
-import com.daqem.jobsplus.integration.arc.action.serializer.JobsPlusActionSerializer;
 import com.daqem.jobsplus.integration.arc.action.type.JobsPlusActionType;
 import com.google.gson.*;
 import net.minecraft.network.FriendlyByteBuf;
@@ -26,12 +24,7 @@ public class JobExpAction extends AbstractAction {
         return JobsPlusActionType.JOB_EXP;
     }
 
-    @Override
-    public IActionSerializer<?> getSerializer() {
-        return JobsPlusActionSerializer.JOB_EXP;
-    }
-
-    public static class Serializer implements ActionSerializer<JobExpAction> {
+    public static class Serializer implements IActionSerializer<JobExpAction> {
 
         @Override
         public JobExpAction fromJson(ResourceLocation location, JsonObject jsonObject, ResourceLocation actionHolderLocation, IActionHolderType<?> actionHolderType, boolean performOnClient, List<IReward> rewards, List<ICondition> conditions) {
@@ -45,7 +38,7 @@ public class JobExpAction extends AbstractAction {
 
         @Override
         public void toNetwork(FriendlyByteBuf friendlyByteBuf, JobExpAction type) {
-            ActionSerializer.super.toNetwork(friendlyByteBuf, type);
+            IActionSerializer.super.toNetwork(friendlyByteBuf, type);
         }
     }
 }
